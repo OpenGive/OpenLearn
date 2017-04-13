@@ -1,0 +1,25 @@
+machine:
+    services:
+        - docker
+    java:
+        version: oraclejdk8
+    node:
+        version: 6.9.5
+dependencies:
+    cache_directories:
+        - node
+        - node_modules
+        - ~/.gradle
+        - $HOME/.yarn-cache
+    override:
+        - java -version
+        # Repo for Yarn
+        - curl -o- -L https://yarnpkg.com/install.sh | bash
+        - export PATH=$HOME/.yarn/bin:$PATH
+        - yarn install
+test:
+    override:
+        - chmod +x gradlew
+        - ./gradlew clean test --no-daemon
+        - yarn test
+        - ./gradlew bootRepackage -Pprod -x test --no-daemon
