@@ -1,5 +1,4 @@
-# opengive
-This application was generated using JHipster 4.2.0, you can find documentation and help at [https://jhipster.github.io/documentation-archive/v4.2.0](https://jhipster.github.io/documentation-archive/v4.2.0).
+# OpenGive - Denver 2017
 
 ## Development
 
@@ -54,8 +53,6 @@ Edit [src/main/webapp/content/css/vendor.css](src/main/webapp/content/css/vendor
 
 Note: there are still few other things remaining to do for Leaflet that we won't detail here.
 
-For further instructions on how to develop with JHipster, have a look at [Using JHipster in development][].
-
 ### Using angular-cli
 
 You can also use [Angular CLI][] to generate some custom client code.
@@ -83,8 +80,6 @@ To ensure everything worked, run:
 
 Then navigate to [http://localhost:8080](http://localhost:8080) in your browser.
 
-Refer to [Using JHipster in production][] for more details.
-
 ## Testing
 
 To launch your application's tests, run:
@@ -109,7 +104,7 @@ For more information, refer to the [Running tests page][].
 
 ## Using Docker to simplify development (optional)
 
-You can use Docker to improve your JHipster development experience. A number of docker-compose configuration are available in the [src/main/docker](src/main/docker) folder to launch required third party services.
+You can use Docker to improve the OpenGive development experience. A number of docker-compose configuration are available in the [src/main/docker](src/main/docker) folder to launch required third party services.
 For example, to start a mariadb database in a docker container, run:
 
     docker-compose -f src/main/docker/mariadb.yml up -d
@@ -132,15 +127,6 @@ For more information refer to [Using Docker and Docker-Compose][], this page als
 ## Continuous Integration (optional)
 
 To configure CI for your project, run the ci-cd sub-generator (`yo jhipster:ci-cd`), this will let you generate configuration files for a number of Continuous Integration systems. Consult the [Setting up Continuous Integration][] page for more information.
-
-[JHipster Homepage and latest documentation]: https://jhipster.github.io
-[JHipster 4.2.0 archive]: https://jhipster.github.io/documentation-archive/v4.2.0
-
-[Using JHipster in development]: https://jhipster.github.io/documentation-archive/v4.2.0/development/
-[Using Docker and Docker-Compose]: https://jhipster.github.io/documentation-archive/v4.2.0/docker-compose
-[Using JHipster in production]: https://jhipster.github.io/documentation-archive/v4.2.0/production/
-[Running tests page]: https://jhipster.github.io/documentation-archive/v4.2.0/running-tests/
-[Setting up Continuous Integration]: https://jhipster.github.io/documentation-archive/v4.2.0/setting-up-ci/
 
 [Gatling]: http://gatling.io/
 [Node.js]: https://nodejs.org/
