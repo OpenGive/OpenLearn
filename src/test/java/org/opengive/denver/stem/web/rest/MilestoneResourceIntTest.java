@@ -1,6 +1,6 @@
 package org.opengive.denver.stem.web.rest;
 
-import org.opengive.denver.stem.OpengiveApp;
+import org.opengive.denver.stem.OpenGiveApplication;
 
 import org.opengive.denver.stem.domain.Milestone;
 import org.opengive.denver.stem.repository.MilestoneRepository;
@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see MilestoneResource
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = OpengiveApp.class)
+@SpringBootTest(classes = OpenGiveApplication.class)
 public class MilestoneResourceIntTest {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";

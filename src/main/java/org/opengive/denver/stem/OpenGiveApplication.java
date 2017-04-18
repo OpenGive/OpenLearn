@@ -24,13 +24,13 @@ import java.util.Collection;
 @ComponentScan
 @EnableAutoConfiguration(exclude = {MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class})
 @EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class})
-public class OpengiveApp {
+public class OpenGiveApplication {
 
-    private static final Logger log = LoggerFactory.getLogger(OpengiveApp.class);
+    private static final Logger log = LoggerFactory.getLogger(OpenGiveApplication.class);
 
     private final Environment env;
 
-    public OpengiveApp(Environment env) {
+    public OpenGiveApplication(Environment env) {
         this.env = env;
     }
 
@@ -61,7 +61,7 @@ public class OpengiveApp {
      * @throws UnknownHostException if the local host name could not be resolved into an address
      */
     public static void main(String[] args) throws UnknownHostException {
-        SpringApplication app = new SpringApplication(OpengiveApp.class);
+        SpringApplication app = new SpringApplication(OpenGiveApplication.class);
         DefaultProfileUtil.addDefaultProfile(app);
         Environment env = app.run(args).getEnvironment();
         String protocol = "http";

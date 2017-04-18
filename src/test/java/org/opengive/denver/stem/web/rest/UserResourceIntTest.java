@@ -1,6 +1,6 @@
 package org.opengive.denver.stem.web.rest;
 
-import org.opengive.denver.stem.OpengiveApp;
+import org.opengive.denver.stem.OpenGiveApplication;
 import org.opengive.denver.stem.domain.User;
 import org.opengive.denver.stem.repository.UserRepository;
 import org.opengive.denver.stem.repository.search.UserSearchRepository;
@@ -41,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see UserResource
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = OpengiveApp.class)
+@SpringBootTest(classes = OpenGiveApplication.class)
 public class UserResourceIntTest {
 
     private static final String DEFAULT_LOGIN = "johndoe";

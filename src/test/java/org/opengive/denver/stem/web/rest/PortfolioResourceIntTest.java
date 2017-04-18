@@ -1,6 +1,6 @@
 package org.opengive.denver.stem.web.rest;
 
-import org.opengive.denver.stem.OpengiveApp;
+import org.opengive.denver.stem.OpenGiveApplication;
 
 import org.opengive.denver.stem.domain.Portfolio;
 import org.opengive.denver.stem.domain.User;
@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see PortfolioResource
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = OpengiveApp.class)
+@SpringBootTest(classes = OpenGiveApplication.class)
 public class PortfolioResourceIntTest {
 
     @Autowired

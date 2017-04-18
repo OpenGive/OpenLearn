@@ -1,6 +1,6 @@
 package org.opengive.denver.stem.web.rest;
 
-import org.opengive.denver.stem.OpengiveApp;
+import org.opengive.denver.stem.OpenGiveApplication;
 
 import org.opengive.denver.stem.domain.Program;
 import org.opengive.denver.stem.domain.User;
@@ -42,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see ProgramResource
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = OpengiveApp.class)
+@SpringBootTest(classes = OpenGiveApplication.class)
 public class ProgramResourceIntTest {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";

@@ -1,6 +1,6 @@
 package org.opengive.denver.stem.web.rest;
 
-import org.opengive.denver.stem.OpengiveApp;
+import org.opengive.denver.stem.OpenGiveApplication;
 import org.opengive.denver.stem.domain.Authority;
 import org.opengive.denver.stem.domain.User;
 import org.opengive.denver.stem.repository.AuthorityRepository;
@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see AccountResource
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = OpengiveApp.class)
+@SpringBootTest(classes = OpenGiveApplication.class)
 public class AccountResourceIntTest {
 
     @Autowired

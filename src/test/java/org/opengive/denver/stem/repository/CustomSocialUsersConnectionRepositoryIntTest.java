@@ -1,6 +1,6 @@
 package org.opengive.denver.stem.repository;
 
-import org.opengive.denver.stem.OpengiveApp;
+import org.opengive.denver.stem.OpenGiveApplication;
 import org.opengive.denver.stem.domain.SocialUserConnection;
 
 import org.junit.Before;
@@ -30,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = OpengiveApp.class)
+@SpringBootTest(classes = OpenGiveApplication.class)
 @Transactional
 public class CustomSocialUsersConnectionRepositoryIntTest {
 

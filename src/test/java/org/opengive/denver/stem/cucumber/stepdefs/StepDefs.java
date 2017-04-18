@@ -1,6 +1,6 @@
 package org.opengive.denver.stem.cucumber.stepdefs;
 
-import org.opengive.denver.stem.OpengiveApp;
+import org.opengive.denver.stem.OpenGiveApplication;
 
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @WebAppConfiguration
 @SpringBootTest
-@ContextConfiguration(classes = OpengiveApp.class)
+@ContextConfiguration(classes = OpenGiveApplication.class)
 public abstract class StepDefs {
 
     protected ResultActions actions;

@@ -1,6 +1,6 @@
 package org.opengive.denver.stem.service;
 
-import org.opengive.denver.stem.OpengiveApp;
+import org.opengive.denver.stem.OpenGiveApplication;
 import org.opengive.denver.stem.domain.User;
 import org.opengive.denver.stem.config.Constants;
 import org.opengive.denver.stem.repository.UserRepository;
@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.*;
  * @see UserService
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = OpengiveApp.class)
+@SpringBootTest(classes = OpenGiveApplication.class)
 @Transactional
 public class UserServiceIntTest {
 

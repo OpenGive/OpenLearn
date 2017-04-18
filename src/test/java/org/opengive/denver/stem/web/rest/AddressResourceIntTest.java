@@ -1,6 +1,6 @@
 package org.opengive.denver.stem.web.rest;
 
-import org.opengive.denver.stem.OpengiveApp;
+import org.opengive.denver.stem.OpenGiveApplication;
 
 import org.opengive.denver.stem.domain.Address;
 import org.opengive.denver.stem.repository.AddressRepository;
@@ -37,7 +37,7 @@ import org.opengive.denver.stem.domain.enumeration.State;
  * @see AddressResource
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = OpengiveApp.class)
+@SpringBootTest(classes = OpenGiveApplication.class)
 public class AddressResourceIntTest {
 
     private static final String DEFAULT_STREET_ADDRESS_1 = "AAAAAAAAAA";
