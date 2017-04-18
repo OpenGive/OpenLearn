@@ -11,7 +11,6 @@ import { MilestoneDeletePopupComponent } from './milestone-delete-dialog.compone
 
 import { Principal } from '../../shared';
 
-
 export const milestoneRoute: Routes = [
   {
     path: 'milestone',

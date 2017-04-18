@@ -26,14 +26,14 @@ export class ProgramDetailComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.subscription = this.route.params.subscribe(params => {
+        this.subscription = this.route.params.subscribe((params) => {
             this.load(params['id']);
         });
         this.registerChangeInPrograms();
     }
 
-    load (id) {
-        this.programService.find(id).subscribe(program => {
+    load(id) {
+        this.programService.find(id).subscribe((program) => {
             this.program = program;
         });
     }
@@ -47,7 +47,6 @@ export class ProgramDetailComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInPrograms() {
-        this.eventSubscriber = this.eventManager.subscribe('programListModification', response => this.load(this.program.id));
+        this.eventSubscriber = this.eventManager.subscribe('programListModification', (response) => this.load(this.program.id));
     }
-
 }

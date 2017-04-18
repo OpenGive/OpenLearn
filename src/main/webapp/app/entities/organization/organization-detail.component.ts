@@ -26,14 +26,14 @@ export class OrganizationDetailComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.subscription = this.route.params.subscribe(params => {
+        this.subscription = this.route.params.subscribe((params) => {
             this.load(params['id']);
         });
         this.registerChangeInOrganizations();
     }
 
-    load (id) {
-        this.organizationService.find(id).subscribe(organization => {
+    load(id) {
+        this.organizationService.find(id).subscribe((organization) => {
             this.organization = organization;
         });
     }
@@ -47,7 +47,6 @@ export class OrganizationDetailComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInOrganizations() {
-        this.eventSubscriber = this.eventManager.subscribe('organizationListModification', response => this.load(this.organization.id));
+        this.eventSubscriber = this.eventManager.subscribe('organizationListModification', (response) => this.load(this.organization.id));
     }
-
 }

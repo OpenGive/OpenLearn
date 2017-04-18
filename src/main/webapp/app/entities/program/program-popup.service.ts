@@ -7,7 +7,7 @@ import { ProgramService } from './program.service';
 @Injectable()
 export class ProgramPopupService {
     private isOpen = false;
-    constructor (
+    constructor(
         private datePipe: DatePipe,
         private modalService: NgbModal,
         private router: Router,
@@ -15,14 +15,14 @@ export class ProgramPopupService {
 
     ) {}
 
-    open (component: Component, id?: number | any): NgbModalRef {
+    open(component: Component, id?: number | any): NgbModalRef {
         if (this.isOpen) {
             return;
         }
         this.isOpen = true;
 
         if (id) {
-            this.programService.find(id).subscribe(program => {
+            this.programService.find(id).subscribe((program) => {
                 program.startDate = this.datePipe
                     .transform(program.startDate, 'yyyy-MM-ddThh:mm');
                 program.endDate = this.datePipe
@@ -35,9 +35,9 @@ export class ProgramPopupService {
     }
 
     programModalRef(component: Component, program: Program): NgbModalRef {
-        let modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
+        const modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
         modalRef.componentInstance.program = program;
-        modalRef.result.then(result => {
+        modalRef.result.then((result) => {
             this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true });
             this.isOpen = false;
         }, (reason) => {

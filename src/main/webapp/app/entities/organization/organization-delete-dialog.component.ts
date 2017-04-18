@@ -25,12 +25,12 @@ export class OrganizationDeleteDialogComponent {
         this.jhiLanguageService.setLocations(['organization']);
     }
 
-    clear () {
+    clear() {
         this.activeModal.dismiss('cancel');
     }
 
-    confirmDelete (id: number) {
-        this.organizationService.delete(id).subscribe(response => {
+    confirmDelete(id: number) {
+        this.organizationService.delete(id).subscribe((response) => {
             this.eventManager.broadcast({
                 name: 'organizationListModification',
                 content: 'Deleted an organization'
@@ -49,13 +49,13 @@ export class OrganizationDeletePopupComponent implements OnInit, OnDestroy {
     modalRef: NgbModalRef;
     routeSub: any;
 
-    constructor (
+    constructor(
         private route: ActivatedRoute,
         private organizationPopupService: OrganizationPopupService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe(params => {
+        this.routeSub = this.route.params.subscribe((params) => {
             this.modalRef = this.organizationPopupService
                 .open(OrganizationDeleteDialogComponent, params['id']);
         });

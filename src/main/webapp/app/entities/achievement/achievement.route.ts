@@ -11,7 +11,6 @@ import { AchievementDeletePopupComponent } from './achievement-delete-dialog.com
 
 import { Principal } from '../../shared';
 
-
 export const achievementRoute: Routes = [
   {
     path: 'achievement',

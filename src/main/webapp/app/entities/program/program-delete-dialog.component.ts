@@ -25,12 +25,12 @@ export class ProgramDeleteDialogComponent {
         this.jhiLanguageService.setLocations(['program']);
     }
 
-    clear () {
+    clear() {
         this.activeModal.dismiss('cancel');
     }
 
-    confirmDelete (id: number) {
-        this.programService.delete(id).subscribe(response => {
+    confirmDelete(id: number) {
+        this.programService.delete(id).subscribe((response) => {
             this.eventManager.broadcast({
                 name: 'programListModification',
                 content: 'Deleted an program'
@@ -49,13 +49,13 @@ export class ProgramDeletePopupComponent implements OnInit, OnDestroy {
     modalRef: NgbModalRef;
     routeSub: any;
 
-    constructor (
+    constructor(
         private route: ActivatedRoute,
         private programPopupService: ProgramPopupService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe(params => {
+        this.routeSub = this.route.params.subscribe((params) => {
             this.modalRef = this.programPopupService
                 .open(ProgramDeleteDialogComponent, params['id']);
         });

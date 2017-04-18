@@ -48,7 +48,7 @@ export class PortfolioComponent implements OnInit, OnDestroy {
         this.jhiLanguageService.setLocations(['portfolio']);
     }
 
-    loadAll () {
+    loadAll() {
         if (this.currentSearch) {
             this.portfolioService.search({
                 query: this.currentSearch,
@@ -71,7 +71,7 @@ export class PortfolioComponent implements OnInit, OnDestroy {
         );
     }
 
-    reset () {
+    reset() {
         this.page = 0;
         this.portfolios = [];
         this.loadAll();
@@ -82,7 +82,7 @@ export class PortfolioComponent implements OnInit, OnDestroy {
         this.loadAll();
     }
 
-    clear () {
+    clear() {
         this.portfolios = [];
         this.links = {
             last: 0
@@ -94,7 +94,7 @@ export class PortfolioComponent implements OnInit, OnDestroy {
         this.loadAll();
     }
 
-    search (query) {
+    search(query) {
         if (!query) {
             return this.clear();
         }
@@ -120,18 +120,15 @@ export class PortfolioComponent implements OnInit, OnDestroy {
         this.eventManager.destroy(this.eventSubscriber);
     }
 
-    trackId (index: number, item: Portfolio) {
+    trackId(index: number, item: Portfolio) {
         return item.id;
     }
-
-
-
     registerChangeInPortfolios() {
         this.eventSubscriber = this.eventManager.subscribe('portfolioListModification', (response) => this.reset());
     }
 
-    sort () {
-        let result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
+    sort() {
+        const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
         if (this.predicate !== 'id') {
             result.push('id');
         }
@@ -146,7 +143,7 @@ export class PortfolioComponent implements OnInit, OnDestroy {
         }
     }
 
-    private onError (error) {
+    private onError(error) {
         this.alertService.error(error.message, null, null);
     }
 }

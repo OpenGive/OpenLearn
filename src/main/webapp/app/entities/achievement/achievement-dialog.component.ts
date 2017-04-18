@@ -38,11 +38,11 @@ export class AchievementDialogComponent implements OnInit {
         this.milestoneService.query().subscribe(
             (res: Response) => { this.milestones = res.json(); }, (res: Response) => this.onError(res.json()));
     }
-    clear () {
+    clear() {
         this.activeModal.dismiss('cancel');
     }
 
-    save () {
+    save() {
         this.isSaving = true;
         if (this.achievement.id !== undefined) {
             this.achievementService.update(this.achievement)
@@ -55,13 +55,13 @@ export class AchievementDialogComponent implements OnInit {
         }
     }
 
-    private onSaveSuccess (result: Achievement) {
+    private onSaveSuccess(result: Achievement) {
         this.eventManager.broadcast({ name: 'achievementListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError (error) {
+    private onSaveError(error) {
         try {
             error.json();
         } catch (exception) {
@@ -71,7 +71,7 @@ export class AchievementDialogComponent implements OnInit {
         this.onError(error);
     }
 
-    private onError (error) {
+    private onError(error) {
         this.alertService.error(error.message, null, null);
     }
 
@@ -89,13 +89,13 @@ export class AchievementPopupComponent implements OnInit, OnDestroy {
     modalRef: NgbModalRef;
     routeSub: any;
 
-    constructor (
+    constructor(
         private route: ActivatedRoute,
         private achievementPopupService: AchievementPopupService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe(params => {
+        this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
                 this.modalRef = this.achievementPopupService
                     .open(AchievementDialogComponent, params['id']);

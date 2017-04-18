@@ -44,11 +44,11 @@ export class ItemLinkDialogComponent implements OnInit {
         this.programService.query().subscribe(
             (res: Response) => { this.programs = res.json(); }, (res: Response) => this.onError(res.json()));
     }
-    clear () {
+    clear() {
         this.activeModal.dismiss('cancel');
     }
 
-    save () {
+    save() {
         this.isSaving = true;
         if (this.itemLink.id !== undefined) {
             this.itemLinkService.update(this.itemLink)
@@ -61,13 +61,13 @@ export class ItemLinkDialogComponent implements OnInit {
         }
     }
 
-    private onSaveSuccess (result: ItemLink) {
+    private onSaveSuccess(result: ItemLink) {
         this.eventManager.broadcast({ name: 'itemLinkListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError (error) {
+    private onSaveError(error) {
         try {
             error.json();
         } catch (exception) {
@@ -77,7 +77,7 @@ export class ItemLinkDialogComponent implements OnInit {
         this.onError(error);
     }
 
-    private onError (error) {
+    private onError(error) {
         this.alertService.error(error.message, null, null);
     }
 
@@ -99,13 +99,13 @@ export class ItemLinkPopupComponent implements OnInit, OnDestroy {
     modalRef: NgbModalRef;
     routeSub: any;
 
-    constructor (
+    constructor(
         private route: ActivatedRoute,
         private itemLinkPopupService: ItemLinkPopupService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe(params => {
+        this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
                 this.modalRef = this.itemLinkPopupService
                     .open(ItemLinkDialogComponent, params['id']);

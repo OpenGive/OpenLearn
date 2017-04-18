@@ -6,21 +6,21 @@ import { OrganizationService } from './organization.service';
 @Injectable()
 export class OrganizationPopupService {
     private isOpen = false;
-    constructor (
+    constructor(
         private modalService: NgbModal,
         private router: Router,
         private organizationService: OrganizationService
 
     ) {}
 
-    open (component: Component, id?: number | any): NgbModalRef {
+    open(component: Component, id?: number | any): NgbModalRef {
         if (this.isOpen) {
             return;
         }
         this.isOpen = true;
 
         if (id) {
-            this.organizationService.find(id).subscribe(organization => {
+            this.organizationService.find(id).subscribe((organization) => {
                 this.organizationModalRef(component, organization);
             });
         } else {
@@ -29,9 +29,9 @@ export class OrganizationPopupService {
     }
 
     organizationModalRef(component: Component, organization: Organization): NgbModalRef {
-        let modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
+        const modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
         modalRef.componentInstance.organization = organization;
-        modalRef.result.then(result => {
+        modalRef.result.then((result) => {
             this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true });
             this.isOpen = false;
         }, (reason) => {

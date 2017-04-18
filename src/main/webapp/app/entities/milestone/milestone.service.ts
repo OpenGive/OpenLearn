@@ -12,14 +12,14 @@ export class MilestoneService {
     constructor(private http: Http) { }
 
     create(milestone: Milestone): Observable<Milestone> {
-        let copy: Milestone = Object.assign({}, milestone);
+        const copy: Milestone = Object.assign({}, milestone);
         return this.http.post(this.resourceUrl, copy).map((res: Response) => {
             return res.json();
         });
     }
 
     update(milestone: Milestone): Observable<Milestone> {
-        let copy: Milestone = Object.assign({}, milestone);
+        const copy: Milestone = Object.assign({}, milestone);
         return this.http.put(this.resourceUrl, copy).map((res: Response) => {
             return res.json();
         });
@@ -32,7 +32,7 @@ export class MilestoneService {
     }
 
     query(req?: any): Observable<Response> {
-        let options = this.createRequestOption(req);
+        const options = this.createRequestOption(req);
         return this.http.get(this.resourceUrl, options)
         ;
     }
@@ -42,16 +42,15 @@ export class MilestoneService {
     }
 
     search(req?: any): Observable<Response> {
-        let options = this.createRequestOption(req);
+        const options = this.createRequestOption(req);
         return this.http.get(this.resourceSearchUrl, options)
         ;
     }
 
-
     private createRequestOption(req?: any): BaseRequestOptions {
-        let options: BaseRequestOptions = new BaseRequestOptions();
+        const options: BaseRequestOptions = new BaseRequestOptions();
         if (req) {
-            let params: URLSearchParams = new URLSearchParams();
+            const params: URLSearchParams = new URLSearchParams();
             params.set('page', req.page);
             params.set('size', req.size);
             if (req.sort) {

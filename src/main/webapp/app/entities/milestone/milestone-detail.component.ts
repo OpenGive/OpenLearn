@@ -26,14 +26,14 @@ export class MilestoneDetailComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.subscription = this.route.params.subscribe(params => {
+        this.subscription = this.route.params.subscribe((params) => {
             this.load(params['id']);
         });
         this.registerChangeInMilestones();
     }
 
-    load (id) {
-        this.milestoneService.find(id).subscribe(milestone => {
+    load(id) {
+        this.milestoneService.find(id).subscribe((milestone) => {
             this.milestone = milestone;
         });
     }
@@ -47,7 +47,6 @@ export class MilestoneDetailComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInMilestones() {
-        this.eventSubscriber = this.eventManager.subscribe('milestoneListModification', response => this.load(this.milestone.id));
+        this.eventSubscriber = this.eventManager.subscribe('milestoneListModification', (response) => this.load(this.milestone.id));
     }
-
 }

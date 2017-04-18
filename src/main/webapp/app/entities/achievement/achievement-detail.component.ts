@@ -26,14 +26,14 @@ export class AchievementDetailComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.subscription = this.route.params.subscribe(params => {
+        this.subscription = this.route.params.subscribe((params) => {
             this.load(params['id']);
         });
         this.registerChangeInAchievements();
     }
 
-    load (id) {
-        this.achievementService.find(id).subscribe(achievement => {
+    load(id) {
+        this.achievementService.find(id).subscribe((achievement) => {
             this.achievement = achievement;
         });
     }
@@ -47,7 +47,6 @@ export class AchievementDetailComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInAchievements() {
-        this.eventSubscriber = this.eventManager.subscribe('achievementListModification', response => this.load(this.achievement.id));
+        this.eventSubscriber = this.eventManager.subscribe('achievementListModification', (response) => this.load(this.achievement.id));
     }
-
 }

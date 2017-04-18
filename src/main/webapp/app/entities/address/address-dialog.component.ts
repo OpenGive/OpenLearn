@@ -32,11 +32,11 @@ export class AddressDialogComponent implements OnInit {
         this.isSaving = false;
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
     }
-    clear () {
+    clear() {
         this.activeModal.dismiss('cancel');
     }
 
-    save () {
+    save() {
         this.isSaving = true;
         if (this.address.id !== undefined) {
             this.addressService.update(this.address)
@@ -49,13 +49,13 @@ export class AddressDialogComponent implements OnInit {
         }
     }
 
-    private onSaveSuccess (result: Address) {
+    private onSaveSuccess(result: Address) {
         this.eventManager.broadcast({ name: 'addressListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError (error) {
+    private onSaveError(error) {
         try {
             error.json();
         } catch (exception) {
@@ -65,7 +65,7 @@ export class AddressDialogComponent implements OnInit {
         this.onError(error);
     }
 
-    private onError (error) {
+    private onError(error) {
         this.alertService.error(error.message, null, null);
     }
 }
@@ -79,13 +79,13 @@ export class AddressPopupComponent implements OnInit, OnDestroy {
     modalRef: NgbModalRef;
     routeSub: any;
 
-    constructor (
+    constructor(
         private route: ActivatedRoute,
         private addressPopupService: AddressPopupService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe(params => {
+        this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
                 this.modalRef = this.addressPopupService
                     .open(AddressDialogComponent, params['id']);

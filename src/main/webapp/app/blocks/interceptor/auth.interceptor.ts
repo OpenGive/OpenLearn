@@ -13,7 +13,7 @@ export class AuthInterceptor extends HttpInterceptor {
     }
 
     requestIntercept(options?: RequestOptionsArgs): RequestOptionsArgs {
-        let token = this.localStorage.retrieve('authenticationToken') || this.sessionStorage.retrieve('authenticationToken');
+        const token = this.localStorage.retrieve('authenticationToken') || this.sessionStorage.retrieve('authenticationToken');
         if (token && token.expires_at && token.expires_at > new Date().getTime()) {
             options.headers.append('Authorization', 'Bearer ' + token.access_token);
         }

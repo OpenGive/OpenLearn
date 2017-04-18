@@ -25,12 +25,12 @@ export class AchievementDeleteDialogComponent {
         this.jhiLanguageService.setLocations(['achievement']);
     }
 
-    clear () {
+    clear() {
         this.activeModal.dismiss('cancel');
     }
 
-    confirmDelete (id: number) {
-        this.achievementService.delete(id).subscribe(response => {
+    confirmDelete(id: number) {
+        this.achievementService.delete(id).subscribe((response) => {
             this.eventManager.broadcast({
                 name: 'achievementListModification',
                 content: 'Deleted an achievement'
@@ -49,13 +49,13 @@ export class AchievementDeletePopupComponent implements OnInit, OnDestroy {
     modalRef: NgbModalRef;
     routeSub: any;
 
-    constructor (
+    constructor(
         private route: ActivatedRoute,
         private achievementPopupService: AchievementPopupService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe(params => {
+        this.routeSub = this.route.params.subscribe((params) => {
             this.modalRef = this.achievementPopupService
                 .open(AchievementDeleteDialogComponent, params['id']);
         });

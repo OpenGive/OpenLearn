@@ -38,11 +38,11 @@ export class PortfolioDialogComponent implements OnInit {
         this.userService.query().subscribe(
             (res: Response) => { this.users = res.json(); }, (res: Response) => this.onError(res.json()));
     }
-    clear () {
+    clear() {
         this.activeModal.dismiss('cancel');
     }
 
-    save () {
+    save() {
         this.isSaving = true;
         if (this.portfolio.id !== undefined) {
             this.portfolioService.update(this.portfolio)
@@ -55,13 +55,13 @@ export class PortfolioDialogComponent implements OnInit {
         }
     }
 
-    private onSaveSuccess (result: Portfolio) {
+    private onSaveSuccess(result: Portfolio) {
         this.eventManager.broadcast({ name: 'portfolioListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError (error) {
+    private onSaveError(error) {
         try {
             error.json();
         } catch (exception) {
@@ -71,7 +71,7 @@ export class PortfolioDialogComponent implements OnInit {
         this.onError(error);
     }
 
-    private onError (error) {
+    private onError(error) {
         this.alertService.error(error.message, null, null);
     }
 
@@ -89,13 +89,13 @@ export class PortfolioPopupComponent implements OnInit, OnDestroy {
     modalRef: NgbModalRef;
     routeSub: any;
 
-    constructor (
+    constructor(
         private route: ActivatedRoute,
         private portfolioPopupService: PortfolioPopupService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe(params => {
+        this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
                 this.modalRef = this.portfolioPopupService
                     .open(PortfolioDialogComponent, params['id']);

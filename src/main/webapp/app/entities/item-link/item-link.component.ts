@@ -48,7 +48,7 @@ export class ItemLinkComponent implements OnInit, OnDestroy {
         this.jhiLanguageService.setLocations(['itemLink']);
     }
 
-    loadAll () {
+    loadAll() {
         if (this.currentSearch) {
             this.itemLinkService.search({
                 query: this.currentSearch,
@@ -71,7 +71,7 @@ export class ItemLinkComponent implements OnInit, OnDestroy {
         );
     }
 
-    reset () {
+    reset() {
         this.page = 0;
         this.itemLinks = [];
         this.loadAll();
@@ -82,7 +82,7 @@ export class ItemLinkComponent implements OnInit, OnDestroy {
         this.loadAll();
     }
 
-    clear () {
+    clear() {
         this.itemLinks = [];
         this.links = {
             last: 0
@@ -94,7 +94,7 @@ export class ItemLinkComponent implements OnInit, OnDestroy {
         this.loadAll();
     }
 
-    search (query) {
+    search(query) {
         if (!query) {
             return this.clear();
         }
@@ -120,18 +120,15 @@ export class ItemLinkComponent implements OnInit, OnDestroy {
         this.eventManager.destroy(this.eventSubscriber);
     }
 
-    trackId (index: number, item: ItemLink) {
+    trackId(index: number, item: ItemLink) {
         return item.id;
     }
-
-
-
     registerChangeInItemLinks() {
         this.eventSubscriber = this.eventManager.subscribe('itemLinkListModification', (response) => this.reset());
     }
 
-    sort () {
-        let result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
+    sort() {
+        const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
         if (this.predicate !== 'id') {
             result.push('id');
         }
@@ -146,7 +143,7 @@ export class ItemLinkComponent implements OnInit, OnDestroy {
         }
     }
 
-    private onError (error) {
+    private onError(error) {
         this.alertService.error(error.message, null, null);
     }
 }
