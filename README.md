@@ -122,9 +122,10 @@ Then run:
 
     docker-compose -f src/main/docker/app.yml up -d
 
-For more information refer to [Using Docker and Docker-Compose][], this page also contains information on the docker-compose sub-generator (`yo jhipster:docker-compose`), which is able to generate docker configurations for one or several JHipster applications.
+## Continuous Integration
 
-## Continuous Integration (optional)
+[![Build Status](https://travis-ci.org/Credera/OpenGive-Denver-2017.svg?branch=master)](https://travis-ci.org/Credera/OpenGive-Denver-2017)
+
 TODO
 
 [Gatling]: http://gatling.io/

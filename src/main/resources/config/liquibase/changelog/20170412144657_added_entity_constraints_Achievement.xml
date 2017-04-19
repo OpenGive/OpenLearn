@@ -18,7 +18,7 @@
                                  baseTableName="user_achv"
                                  constraintName="fk_user_achievement_user_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="jhi_user"/>
+                                 referencedTableName="user"/>
                                  
        	<addForeignKeyConstraint baseColumnNames="achv_id"
                                  baseTableName="user_achv"

@@ -12,7 +12,7 @@
                                  baseTableName="portfolio"
                                  constraintName="fk_portfolio_student_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="jhi_user"/>
+                                 referencedTableName="user"/>
 
     </changeSet>
 </databaseChangeLog>

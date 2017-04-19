@@ -12,7 +12,7 @@
                                  baseTableName="user_org"
                                  constraintName="fk_user_organization_user_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="jhi_user"/>
+                                 referencedTableName="user"/>
 
         <addForeignKeyConstraint baseColumnNames="org_id"
                                  baseTableName="user_org"
