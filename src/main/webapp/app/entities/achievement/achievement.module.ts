@@ -3,7 +3,6 @@ import { RouterModule } from '@angular/router';
 
 import { OpengiveSharedModule } from '../../shared';
 import { OpengiveAdminModule } from '../../admin/admin.module';
-
 import {
     AchievementService,
     AchievementPopupService,
@@ -17,7 +16,7 @@ import {
     achievementPopupRoute,
 } from './';
 
-let ENTITY_STATES = [
+const ENTITY_STATES = [
     ...achievementRoute,
     ...achievementPopupRoute,
 ];

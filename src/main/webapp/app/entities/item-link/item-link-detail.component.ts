@@ -26,14 +26,14 @@ export class ItemLinkDetailComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.subscription = this.route.params.subscribe(params => {
+        this.subscription = this.route.params.subscribe((params) => {
             this.load(params['id']);
         });
         this.registerChangeInItemLinks();
     }
 
-    load (id) {
-        this.itemLinkService.find(id).subscribe(itemLink => {
+    load(id) {
+        this.itemLinkService.find(id).subscribe((itemLink) => {
             this.itemLink = itemLink;
         });
     }
@@ -47,7 +47,6 @@ export class ItemLinkDetailComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInItemLinks() {
-        this.eventSubscriber = this.eventManager.subscribe('itemLinkListModification', response => this.load(this.itemLink.id));
+        this.eventSubscriber = this.eventManager.subscribe('itemLinkListModification', (response) => this.load(this.itemLink.id));
     }
-
 }

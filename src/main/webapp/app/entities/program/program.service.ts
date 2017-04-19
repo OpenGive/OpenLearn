@@ -13,7 +13,7 @@ export class ProgramService {
     constructor(private http: Http, private dateUtils: DateUtils) { }
 
     create(program: Program): Observable<Program> {
-        let copy: Program = Object.assign({}, program);
+        const copy: Program = Object.assign({}, program);
         copy.startDate = this.dateUtils.toDate(program.startDate);
         copy.endDate = this.dateUtils.toDate(program.endDate);
         return this.http.post(this.resourceUrl, copy).map((res: Response) => {
@@ -22,7 +22,7 @@ export class ProgramService {
     }
 
     update(program: Program): Observable<Program> {
-        let copy: Program = Object.assign({}, program);
+        const copy: Program = Object.assign({}, program);
 
         copy.startDate = this.dateUtils.toDate(program.startDate);
 
@@ -34,7 +34,7 @@ export class ProgramService {
 
     find(id: number): Observable<Program> {
         return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
-            let jsonResponse = res.json();
+            const jsonResponse = res.json();
             jsonResponse.startDate = this.dateUtils
                 .convertDateTimeFromServer(jsonResponse.startDate);
             jsonResponse.endDate = this.dateUtils
@@ -44,7 +44,7 @@ export class ProgramService {
     }
 
     query(req?: any): Observable<Response> {
-        let options = this.createRequestOption(req);
+        const options = this.createRequestOption(req);
         return this.http.get(this.resourceUrl, options)
             .map((res: any) => this.convertResponse(res))
         ;
@@ -55,14 +55,15 @@ export class ProgramService {
     }
 
     search(req?: any): Observable<Response> {
-        let options = this.createRequestOption(req);
+        const options = this.createRequestOption(req);
         return this.http.get(this.resourceSearchUrl, options)
             .map((res: any) => this.convertResponse(res))
         ;
     }
 
+
     private convertResponse(res: any): any {
-        let jsonResponse = res.json();
+        const jsonResponse = res.json();
         for (let i = 0; i < jsonResponse.length; i++) {
             jsonResponse[i].startDate = this.dateUtils
                 .convertDateTimeFromServer(jsonResponse[i].startDate);
@@ -74,9 +75,9 @@ export class ProgramService {
     }
 
     private createRequestOption(req?: any): BaseRequestOptions {
-        let options: BaseRequestOptions = new BaseRequestOptions();
+        const options: BaseRequestOptions = new BaseRequestOptions();
         if (req) {
-            let params: URLSearchParams = new URLSearchParams();
+            const params: URLSearchParams = new URLSearchParams();
             params.set('page', req.page);
             params.set('size', req.size);
             if (req.sort) {

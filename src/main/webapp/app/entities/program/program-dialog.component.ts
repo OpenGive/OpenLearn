@@ -44,11 +44,11 @@ export class ProgramDialogComponent implements OnInit {
         this.userService.query().subscribe(
             (res: Response) => { this.users = res.json(); }, (res: Response) => this.onError(res.json()));
     }
-    clear () {
+    clear() {
         this.activeModal.dismiss('cancel');
     }
 
-    save () {
+    save() {
         this.isSaving = true;
         if (this.program.id !== undefined) {
             this.programService.update(this.program)
@@ -61,13 +61,13 @@ export class ProgramDialogComponent implements OnInit {
         }
     }
 
-    private onSaveSuccess (result: Program) {
+    private onSaveSuccess(result: Program) {
         this.eventManager.broadcast({ name: 'programListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError (error) {
+    private onSaveError(error) {
         try {
             error.json();
         } catch (exception) {
@@ -77,7 +77,7 @@ export class ProgramDialogComponent implements OnInit {
         this.onError(error);
     }
 
-    private onError (error) {
+    private onError(error) {
         this.alertService.error(error.message, null, null);
     }
 
@@ -99,13 +99,13 @@ export class ProgramPopupComponent implements OnInit, OnDestroy {
     modalRef: NgbModalRef;
     routeSub: any;
 
-    constructor (
+    constructor(
         private route: ActivatedRoute,
         private programPopupService: ProgramPopupService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe(params => {
+        this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
                 this.modalRef = this.programPopupService
                     .open(ProgramDialogComponent, params['id']);

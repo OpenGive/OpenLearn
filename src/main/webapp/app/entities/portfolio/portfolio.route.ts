@@ -11,7 +11,6 @@ import { PortfolioDeletePopupComponent } from './portfolio-delete-dialog.compone
 
 import { Principal } from '../../shared';
 
-
 export const portfolioRoute: Routes = [
   {
     path: 'portfolio',

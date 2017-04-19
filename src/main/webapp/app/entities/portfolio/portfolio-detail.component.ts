@@ -26,14 +26,14 @@ export class PortfolioDetailComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.subscription = this.route.params.subscribe(params => {
+        this.subscription = this.route.params.subscribe((params) => {
             this.load(params['id']);
         });
         this.registerChangeInPortfolios();
     }
 
-    load (id) {
-        this.portfolioService.find(id).subscribe(portfolio => {
+    load(id) {
+        this.portfolioService.find(id).subscribe((portfolio) => {
             this.portfolio = portfolio;
         });
     }
@@ -47,7 +47,6 @@ export class PortfolioDetailComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInPortfolios() {
-        this.eventSubscriber = this.eventManager.subscribe('portfolioListModification', response => this.load(this.portfolio.id));
+        this.eventSubscriber = this.eventManager.subscribe('portfolioListModification', (response) => this.load(this.portfolio.id));
     }
-
 }

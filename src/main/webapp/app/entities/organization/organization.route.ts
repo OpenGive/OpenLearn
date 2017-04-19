@@ -11,7 +11,6 @@ import { OrganizationDeletePopupComponent } from './organization-delete-dialog.c
 
 import { Principal } from '../../shared';
 
-
 export const organizationRoute: Routes = [
   {
     path: 'organization',

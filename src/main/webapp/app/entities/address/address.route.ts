@@ -11,7 +11,6 @@ import { AddressDeletePopupComponent } from './address-delete-dialog.component';
 
 import { Principal } from '../../shared';
 
-
 export const addressRoute: Routes = [
   {
     path: 'address',

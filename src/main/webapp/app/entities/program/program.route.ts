@@ -11,7 +11,6 @@ import { ProgramDeletePopupComponent } from './program-delete-dialog.component';
 
 import { Principal } from '../../shared';
 
-
 export const programRoute: Routes = [
   {
     path: 'program',

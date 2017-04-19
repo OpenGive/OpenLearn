@@ -25,12 +25,12 @@ export class MilestoneDeleteDialogComponent {
         this.jhiLanguageService.setLocations(['milestone']);
     }
 
-    clear () {
+    clear() {
         this.activeModal.dismiss('cancel');
     }
 
-    confirmDelete (id: number) {
-        this.milestoneService.delete(id).subscribe(response => {
+    confirmDelete(id: number) {
+        this.milestoneService.delete(id).subscribe((response) => {
             this.eventManager.broadcast({
                 name: 'milestoneListModification',
                 content: 'Deleted an milestone'
@@ -49,13 +49,13 @@ export class MilestoneDeletePopupComponent implements OnInit, OnDestroy {
     modalRef: NgbModalRef;
     routeSub: any;
 
-    constructor (
+    constructor(
         private route: ActivatedRoute,
         private milestonePopupService: MilestonePopupService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe(params => {
+        this.routeSub = this.route.params.subscribe((params) => {
             this.modalRef = this.milestonePopupService
                 .open(MilestoneDeleteDialogComponent, params['id']);
         });

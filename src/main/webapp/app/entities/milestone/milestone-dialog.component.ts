@@ -38,11 +38,11 @@ export class MilestoneDialogComponent implements OnInit {
         this.programService.query().subscribe(
             (res: Response) => { this.programs = res.json(); }, (res: Response) => this.onError(res.json()));
     }
-    clear () {
+    clear() {
         this.activeModal.dismiss('cancel');
     }
 
-    save () {
+    save() {
         this.isSaving = true;
         if (this.milestone.id !== undefined) {
             this.milestoneService.update(this.milestone)
@@ -55,13 +55,13 @@ export class MilestoneDialogComponent implements OnInit {
         }
     }
 
-    private onSaveSuccess (result: Milestone) {
+    private onSaveSuccess(result: Milestone) {
         this.eventManager.broadcast({ name: 'milestoneListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError (error) {
+    private onSaveError(error) {
         try {
             error.json();
         } catch (exception) {
@@ -71,7 +71,7 @@ export class MilestoneDialogComponent implements OnInit {
         this.onError(error);
     }
 
-    private onError (error) {
+    private onError(error) {
         this.alertService.error(error.message, null, null);
     }
 
@@ -89,13 +89,13 @@ export class MilestonePopupComponent implements OnInit, OnDestroy {
     modalRef: NgbModalRef;
     routeSub: any;
 
-    constructor (
+    constructor(
         private route: ActivatedRoute,
         private milestonePopupService: MilestonePopupService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe(params => {
+        this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
                 this.modalRef = this.milestonePopupService
                     .open(MilestoneDialogComponent, params['id']);

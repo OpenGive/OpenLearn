@@ -11,7 +11,6 @@ import { ItemLinkDeletePopupComponent } from './item-link-delete-dialog.componen
 
 import { Principal } from '../../shared';
 
-
 export const itemLinkRoute: Routes = [
   {
     path: 'item-link',

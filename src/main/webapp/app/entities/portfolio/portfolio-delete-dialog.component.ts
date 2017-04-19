@@ -25,12 +25,12 @@ export class PortfolioDeleteDialogComponent {
         this.jhiLanguageService.setLocations(['portfolio']);
     }
 
-    clear () {
+    clear() {
         this.activeModal.dismiss('cancel');
     }
 
-    confirmDelete (id: number) {
-        this.portfolioService.delete(id).subscribe(response => {
+    confirmDelete(id: number) {
+        this.portfolioService.delete(id).subscribe((response) => {
             this.eventManager.broadcast({
                 name: 'portfolioListModification',
                 content: 'Deleted an portfolio'
@@ -49,13 +49,13 @@ export class PortfolioDeletePopupComponent implements OnInit, OnDestroy {
     modalRef: NgbModalRef;
     routeSub: any;
 
-    constructor (
+    constructor(
         private route: ActivatedRoute,
         private portfolioPopupService: PortfolioPopupService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe(params => {
+        this.routeSub = this.route.params.subscribe((params) => {
             this.modalRef = this.portfolioPopupService
                 .open(PortfolioDeleteDialogComponent, params['id']);
         });

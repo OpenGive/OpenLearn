@@ -6,21 +6,21 @@ import { AchievementService } from './achievement.service';
 @Injectable()
 export class AchievementPopupService {
     private isOpen = false;
-    constructor (
+    constructor(
         private modalService: NgbModal,
         private router: Router,
         private achievementService: AchievementService
 
     ) {}
 
-    open (component: Component, id?: number | any): NgbModalRef {
+    open(component: Component, id?: number | any): NgbModalRef {
         if (this.isOpen) {
             return;
         }
         this.isOpen = true;
 
         if (id) {
-            this.achievementService.find(id).subscribe(achievement => {
+            this.achievementService.find(id).subscribe((achievement) => {
                 this.achievementModalRef(component, achievement);
             });
         } else {
@@ -29,9 +29,9 @@ export class AchievementPopupService {
     }
 
     achievementModalRef(component: Component, achievement: Achievement): NgbModalRef {
-        let modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
+        const modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
         modalRef.componentInstance.achievement = achievement;
-        modalRef.result.then(result => {
+        modalRef.result.then((result) => {
             this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true });
             this.isOpen = false;
         }, (reason) => {

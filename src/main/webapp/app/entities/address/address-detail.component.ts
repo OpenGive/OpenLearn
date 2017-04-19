@@ -26,14 +26,14 @@ export class AddressDetailComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.subscription = this.route.params.subscribe(params => {
+        this.subscription = this.route.params.subscribe((params) => {
             this.load(params['id']);
         });
         this.registerChangeInAddresses();
     }
 
-    load (id) {
-        this.addressService.find(id).subscribe(address => {
+    load(id) {
+        this.addressService.find(id).subscribe((address) => {
             this.address = address;
         });
     }
@@ -47,7 +47,6 @@ export class AddressDetailComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInAddresses() {
-        this.eventSubscriber = this.eventManager.subscribe('addressListModification', response => this.load(this.address.id));
+        this.eventSubscriber = this.eventManager.subscribe('addressListModification', (response) => this.load(this.address.id));
     }
-
 }
