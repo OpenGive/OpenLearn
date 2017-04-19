@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -68,7 +69,12 @@ public class Program implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<ItemLink> resources = new HashSet<>();
 
-    @OneToMany()
+    @OneToMany
+    @JoinTable(
+			name = "STDT_PRGM", 
+			joinColumns = {	@JoinColumn(name = "USER_ID", referencedColumnName = "ID") }, 
+			inverseJoinColumns = { @JoinColumn(name = "PRGM_ID", referencedColumnName = "ID") }
+			)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<User> students = new HashSet<>();

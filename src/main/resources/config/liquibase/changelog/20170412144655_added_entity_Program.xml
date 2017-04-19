@@ -49,5 +49,13 @@
         <dropDefaultValue tableName="program" columnName="start_date" columnDataType="datetime"/>
         <dropDefaultValue tableName="program" columnName="end_date" columnDataType="datetime"/>
         
+        <createTable tableName="stdt_prgm">
+            <column name="user_id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="prgm_id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+        </createTable>
     </changeSet>
 </databaseChangeLog>

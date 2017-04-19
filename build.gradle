@@ -30,6 +30,9 @@ apply plugin: 'war'
 apply plugin: 'propdeps'
 apply plugin: 'com.moowork.node'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
 defaultTasks 'bootRun'
 
 bootRepackage {

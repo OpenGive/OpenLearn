@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -50,7 +52,12 @@ public class Organization implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Program> programs = new HashSet<>();
 
-    @OneToMany()
+    @OneToMany
+    @JoinTable(
+			name = "USER_ORG", 
+			joinColumns = {	@JoinColumn(name = "USER_ID", referencedColumnName = "ID") }, 
+			inverseJoinColumns = { @JoinColumn(name = "ORG_ID", referencedColumnName = "ID") }
+			)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<User> users = new HashSet<>();

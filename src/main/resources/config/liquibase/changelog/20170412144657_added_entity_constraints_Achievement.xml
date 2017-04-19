@@ -13,6 +13,18 @@
                                  constraintName="fk_achievement_milestone_id"
                                  referencedColumnNames="id"
                                  referencedTableName="milestone"/>
-
+                                 
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="user_achv"
+                                 constraintName="fk_user_achievement_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+                                 
+       	<addForeignKeyConstraint baseColumnNames="achv_id"
+                                 baseTableName="user_achv"
+                                 constraintName="fk_user_achievement_achv_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="achievement"/>
+                                 
     </changeSet>
 </databaseChangeLog>

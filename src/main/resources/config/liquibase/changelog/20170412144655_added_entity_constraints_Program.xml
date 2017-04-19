@@ -19,6 +19,19 @@
                                  constraintName="fk_program_instructor_id"
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
+                                 
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="stdt_prgm"
+                                 constraintName="fk_student_program_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="prgm_id"
+                                 baseTableName="stdt_prgm"
+                                 constraintName="fk_student_program_program_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="program"/>
 
     </changeSet>
+    
 </databaseChangeLog>

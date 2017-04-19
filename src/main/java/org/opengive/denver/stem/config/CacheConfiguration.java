@@ -54,7 +54,7 @@ public class CacheConfiguration {
             cm.createCache(org.opengive.denver.stem.domain.Milestone.class.getName(), jcacheConfiguration);
             cm.createCache(org.opengive.denver.stem.domain.Milestone.class.getName() + ".achievements", jcacheConfiguration);
             cm.createCache(org.opengive.denver.stem.domain.Achievement.class.getName(), jcacheConfiguration);
-            cm.createCache(org.opengive.denver.stem.domain.Achievement.class.getName() + ".achievedBies", jcacheConfiguration);
+            cm.createCache(org.opengive.denver.stem.domain.Achievement.class.getName() + ".achievedBy", jcacheConfiguration);
             cm.createCache(org.opengive.denver.stem.domain.ItemLink.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
