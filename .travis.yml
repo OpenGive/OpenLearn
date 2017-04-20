@@ -29,6 +29,7 @@ before_install:
   - export PATH=$HOME/.yarn/bin:$PATH
 install:
   - yarn install
+  - npm rebuild node-sass
 script:
   - chmod +x gradlew
   - ./gradlew clean test
