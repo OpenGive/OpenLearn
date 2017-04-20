@@ -58,7 +58,7 @@
             unique="true">
             <column name="email" type="varchar(100)"/>
         </createIndex>
-        <createTable tableName="jhi_authority">
+        <createTable tableName="authority">
             <column name="name" type="varchar(50)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -79,7 +79,7 @@
                                  baseTableName="user_authority"
                                  constraintName="fk_authority_name"
                                  referencedColumnNames="name"
-                                 referencedTableName="jhi_authority"/>
+                                 referencedTableName="authority"/>
 
         <addForeignKeyConstraint baseColumnNames="user_id"
                                  baseTableName="user_authority"
@@ -98,7 +98,7 @@
         <loadData encoding="UTF-8"
                   file="config/liquibase/authorities.csv"
                   separator=";"
-                  tableName="jhi_authority"/>
+                  tableName="authority"/>
 
         <loadData encoding="UTF-8"
                   file="config/liquibase/users_authorities.csv"

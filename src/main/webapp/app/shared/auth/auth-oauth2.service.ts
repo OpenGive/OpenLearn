@@ -43,7 +43,7 @@ export class AuthServerProvider {
     }
 
     logout(): Observable<any> {
-        return new Observable(observer => {
+        return new Observable((observer) => {
             this.http.post('api/logout', {});
             this.$localStorage.clear('authenticationToken');
             observer.complete();

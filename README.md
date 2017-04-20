@@ -1,5 +1,7 @@
 # OpenGive - Denver 2017
 
+[![Build Status](https://travis-ci.org/Credera/OpenGive-Denver-2017.svg?branch=master)](https://travis-ci.org/Credera/OpenGive-Denver-2017)
+
 ## Development
 
 Before you can build this project, you must install and configure the following dependencies on your machine:
@@ -123,8 +125,6 @@ Then run:
     docker-compose -f src/main/docker/app.yml up -d
 
 ## Continuous Integration
-
-[![Build Status](https://travis-ci.org/Credera/OpenGive-Denver-2017.svg?branch=master)](https://travis-ci.org/Credera/OpenGive-Denver-2017)
 
 TODO
 
