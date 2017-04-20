@@ -11,7 +11,6 @@ sudo: false
 cache:
   directories:
     - node
-    - node_modules
     - $HOME/.gradle
     - $HOME/.yarn-cache
 env:

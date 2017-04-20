@@ -1,6 +1,4 @@
-# OpenGive - Denver 2017
-
-[![Build Status](https://travis-ci.org/Credera/OpenGive-Denver-2017.svg?branch=master)](https://travis-ci.org/Credera/OpenGive-Denver-2017)
+# OpenGive - Denver 2017 [![Build Status](https://travis-ci.org/Credera/OpenGive-Denver-2017.svg?branch=master)](https://travis-ci.org/Credera/OpenGive-Denver-2017)
 
 ## Development
 
@@ -101,8 +99,6 @@ and can be run by starting Spring Boot in one terminal (`./gradlew bootRun`) and
 Performance tests are run by [Gatling][] and written in Scala. They're located in [src/test/gatling](src/test/gatling) and can be run with:
 
     ./gradlew gatlingRun
-
-For more information, refer to the [Running tests page][].
 
 ## Using Docker to simplify development (optional)
 
