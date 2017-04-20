@@ -124,6 +124,6 @@
     "test": "yarn run lint && karma start src/test/javascript/karma.conf.js",
     "test:watch": "karma start --watch",
     "e2e": "protractor src/test/javascript/protractor.conf.js",
-    "postinstall": "webdriver-manager update && yarn run webpack:build"
+    "postinstall": "webdriver-manager update && npm rebuild node-sass && yarn run webpack:build"
   }
 }
