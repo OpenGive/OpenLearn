@@ -140,3 +140,11 @@ Desktop.ini
 # ESLint
 ######################
 .eslintcache
+
+
+######################
+# OpenGive
+######################
+.apt_generated
+.cache-main
+.cache-tests

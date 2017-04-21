@@ -8,12 +8,14 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -67,6 +69,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	@Size(min = 5, max = 100)
 	@Column(length = 100, unique = true)
 	private String email;
+
+	@Size(min = 10, max = 15)
+	@Column(name = "phone_num", length = 15, unique = false)
+	private String phoneNumber;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "addr_id")
+	private Address address;
 
 	@NotNull
 	@Column(nullable = false)
@@ -149,6 +159,22 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
 	public void setEmail(final String email) {
 		this.email = email;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(final String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(final Address address) {
+		this.address = address;
 	}
 
 	public String getImageUrl() {
