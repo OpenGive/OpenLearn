@@ -35,6 +35,7 @@ apply plugin: 'idea'
 
 defaultTasks 'bootRun'
 
+
 bootRepackage {
    mainClass = 'org.opengive.denver.stem.OpenGiveApplication'
 }
