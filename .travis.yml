@@ -36,7 +36,7 @@ script:
   - chmod +x gradlew
   - ./gradlew clean test
   - yarn test
-  - ./gradlew bootRepackage -Pprod buildDocker -x test
+  - sudo ./gradlew bootRepackage -Pprod buildDocker -x test
 #  - ./gradlew deployHeroku
 after_success:
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
