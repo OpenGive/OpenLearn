@@ -36,10 +36,9 @@ script:
   - chmod +x gradlew
   - ./gradlew clean test
   - yarn test
-  - ./gradlew bootRepackage -Pprod -x test
+  - ./gradlew bootRepackage -Pprod buildDocker -x test
 #  - ./gradlew deployHeroku
 after_success:
-  - ./gradlew bootRepackage -Pprod buildDocker
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
   - export REPO=kmcdonald/opengive-denver-2017
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
