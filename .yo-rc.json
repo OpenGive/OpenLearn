@@ -99,6 +99,7 @@
       "es",
       "th",
       "vi"
-    ]
+    ],
+    "herokuAppName": "opengive-denver-2017"
   }
 }
