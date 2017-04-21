@@ -40,10 +40,22 @@ spring:
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: false
             hibernate.cache.region.factory_class: io.github.jhipster.config.jcache.NoDefaultJCacheRegionFactory
+            
+#    data:
+#        elasticsearch:
+#            cluster-name:
+#            cluster-nodes: localhost:9300
+
+#   Run elasticsearch embedded for now
     data:
         elasticsearch:
             cluster-name:
-            cluster-nodes: localhost:9300
+            cluster-nodes:
+            properties:
+                path:
+                  logs: target/elasticsearch/log
+                  data: target/elasticsearch/data
+                  
     mail:
         host: localhost
         port: 25
