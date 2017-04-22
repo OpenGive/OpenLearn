@@ -18,6 +18,7 @@ env:
   - NODE_VERSION=6.10.0
   - SPRING_OUTPUT_ANSI_ENABLED=ALWAYS
   - SPRING_JPA_SHOW_SQL=false
+  - secure: rI/qmiXvy3I3HKNJXzVoG16WkD+1aT3UhJ6uhP6y0exNvktIUa9JWUeaHaVlaxx7b/D1VTeJJgQDNNmeD2pIlIEnVAGwjfnAtECnn1h0IvtluFxfzAk3HTjTWoqfeTgiZAOG5c2MoeI/ya7QMTmhD0TNZ71JNo7XluRc1mlV/4wFa0+mcUkg3qCriPKu9YvNW5o0SVXJpt8XjpduuaYxS0V1LTuGGGAbQMXtDUqgM/h0Yv8j9onaknkR6+If9LJe8ZhFjt28+IyCoeb+88wZ4/VfxJ5ZTSSvuesJmWCsVVFAP/KYbGEbUf3wAbRP0SspWetOwTcEthdtNkx/FzXJ+AhCDBi1jynTaKrK6yK7B8gXOXxdJrKYrBVYKeVhjzNyLRF2vafUf19ZNWoG3G4sCXMSFtenD+p1mHIdf9PrmFUpEevpDht+f/LGvESJYx4QgniMuHQtGSyPDWszVpkcs+RfyZyEezW/G4Xn0DL2gcX6jmCfpyq08ZKGoPwlMDlFVysC0zNnMayK/gwWAcuq0f6g/my3EcrQmAkv20bIu1OEXQq7Vms4F/r2EpGXktkoHZMzzo4OfM+L5RXdO1Ir5Pcn9GqtL7ywTo2G1iD0lnM1ZHkoPPyNY3xCf1XQi+Z2ChQzAjSQUW6GW/qe8W0c4MsR3uQFLccxVgM6iRJZP4s=
 before_install:
 - jdk_switcher use oraclejdk8
 - java -version
@@ -41,14 +42,7 @@ deploy:
   provider: heroku
   api_key:
     secure: hur7VbaZSPjQRtvYkVK2pQRFEozuzMIFBFz8dQZVBMB9EU+Si8fl3XJ+ihqKdYtWEZ53qQ6tDKWXSlrfEQBkf9uS8eMACwkjeJeX8QhSb5fPaJhF1ThCgpkPQnRJ3jsOZwxH0Ggj8+cyCVYZztQebAkHPIZI8Tq1qj6uO5jzkbubnIMSzXm8p3YXhwOKl7jh/Ts2rm00TiOVg1LfMXEdwXEzEtM27pcghRnzzeyraM5SMr+jLfGyYOXX5Tex2pcteJxvDqV6s+qIe8bIlafv5n6tnQqwPVX1A9ffc2my14PYwHtXK/nwAuR0QNJq2+FDcCKr9+BOZG+D2nB+S4wWTet1isCSwGfIYGwLexVO/XZCIEOHVSEJfhM8izfSQgHk9KLZhlFJsgRIarKPaSJC3fdjzOHyDh2neq+PKYawrBeLdHaRUS61uZLPJmedvN7QNS6amDE5pz63T8HjR3ZvphPLhVAtVUX90NFYFmJhbl1uHkHH9Bzpxu40DhgDAxdpWdUNXASdSIQhD+Q7wfAwY+b3ONSmdoY2CMsm+7ZKCd+d0IHFNQLfNgprxo03saod7Bu/rs4ajOok3cFDpr8UpE9hu3GEfFmJ1lD/f9kKrYQHr/4gYtceQlaoprCnkDLgdBxSiKbAVc8SVJvY8g6Xu/VRb2W9oo3ulH6aCUqqqXQ=
-#  skip_cleanup: true
   app: opengive-denver-2017
   on:
     repo: Credera/OpenGive-Denver-2017
-#  run:
-#    - "heroku plugins:install https://github.com/heroku/heroku-deploy"
-#    - "heroku deploy:jar --jar build/libs/*war"
-after_deploy:
-  ./gradlew deployHeroku
-#  heroku plugins:install https://github.com/heroku/heroku-deploy
-#  heroku deploy:jar --jar build/libs/*war
+after_deploy: ./gradlew deployHeroku
