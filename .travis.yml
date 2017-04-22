@@ -36,13 +36,15 @@ script:
   - chmod +x gradlew
   - ./gradlew clean test
   - yarn test
-  - ./gradlew bootRepackage -Pprod buildDocker -x test
+  - ./gradlew bootRepackage -Pprod -x test
 #  - ./gradlew deployHeroku
 after_success:
+  - mkdir -p ./build/docker && cp ./src/main/docker/* ./build/docker && cp ./build/libs/* ./build/docker
+  - cd ./build/docker/
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
   - export REPO=kmcdonald/opengive-denver-2017
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-  - docker build -f Dockerfile -t $REPO:$COMMIT .
+  - docker build -f ./Dockerfile -t $REPO:$COMMIT ./
   - docker tag $REPO:$COMMIT $REPO:$TAG
   - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
   - docker push $REPO
