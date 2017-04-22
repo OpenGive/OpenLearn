@@ -32,7 +32,6 @@ script:
 - ./gradlew clean test
 - yarn test
 - ./gradlew bootRepackage -Pprod -x test
-- ./gradlew deployHeroku
 notifications:
   webhooks:
     on_success: change
@@ -47,5 +46,6 @@ deploy:
   on:
     repo: Credera/OpenGive-Denver-2017
 #after_deploy:
+# ./gradlew deployHeroku
 #  heroku plugins:install https://github.com/heroku/heroku-deploy
 #  heroku deploy:jar --jar build/libs/*war
