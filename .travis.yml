@@ -45,6 +45,9 @@ deploy:
   app: opengive-denver-2017
   on:
     repo: Credera/OpenGive-Denver-2017
+  run:
+    - "heroku plugins:install https://github.com/heroku/heroku-deploy"
+    - "heroku deploy:jar --jar build/libs/*war"
 #after_deploy:
 # ./gradlew deployHeroku
 #  heroku plugins:install https://github.com/heroku/heroku-deploy
