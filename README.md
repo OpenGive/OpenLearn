@@ -41,14 +41,14 @@ During the Hackathon event:
 * Each feature should be developed in its own **feature** branch (for example, **feature/portfolio-management**), which has been based of the **develop** branch
 
 ```
-git fetch
+git fetch --all
 git checkout develop
 git checkout -b feature/portfolio-management
 ```
 
 * As you or your group completes a feature, merge the latest code from the **develop** branch into your feature branch
 ```
-git fetch
+git fetch --all
 git merge origin/develop
 ```
 * Create a pull request to merge your group’s branch into develop: https://help.github.com/articles/creating-a-pull-request/
@@ -151,7 +151,7 @@ Then run:
 
     docker-compose -f src/main/docker/app.yml up -d
 --->
-## Continuous Integration
+## Continuous Integration / Continuous Deployment
 
 [Travis CI] has been setup to automatically download deploy changes which have been approved and merged to the **develop**
 branch.  Upon a successful pull request and merge to **develop**, [Travis CI] will build and run the application on
