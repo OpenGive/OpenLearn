@@ -1,3 +1,10 @@
-<p>
-  login-page works!
-</p>
+<md-input-container>
+  <input type="text" [(ngModel)]="user.email" mdInput placeholder="email">
+</md-input-container>
+<md-input-container>
+  <input type="password" [(ngModel)]="user.password" mdInput placeholder="password">
+</md-input-container>
+
+<button (click)="login()" md-raised-button>Login</button>
+
+{{user | json}}

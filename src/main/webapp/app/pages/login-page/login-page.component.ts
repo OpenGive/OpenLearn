@@ -1,4 +1,10 @@
+import { AuthenticationService } from './../../shared/authentication/authentication.service';
 import { Component, OnInit } from '@angular/core';
+
+export interface User {
+  email?: string;
+  password?: string;
+}
 
 @Component({
   selector: 'app-login-page',
@@ -7,9 +13,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginPageComponent implements OnInit {
 
-  constructor() { }
+  constructor(private _authService: AuthenticationService) { }
 
   ngOnInit() {
   }
 
+  user : User = {
+     email: "",
+     password: ""
+  }
+ 
+  login() {
+    this._authService.login(this.user.email, this.user.password);
+  }
+
 }
+
+
