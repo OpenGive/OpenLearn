@@ -19,17 +19,11 @@ import org.opengive.denver.stem.domain.User;
 public class UserDTO
 {
 
-    private Long id;
+	private Long id;
 
-    @Pattern(regexp = Constants.LOGIN_REGEX)
-    @Size(min = 1, max = 100)
-    private String login;
-
-    @Size(max = 50)
-    private String firstName;
-
-    @Size(max = 50)
-    private String lastName;
+	@Pattern(regexp = Constants.LOGIN_REGEX)
+	@Size(min = 1, max = 100)
+	private String login;
 
 	@Size(max = 50)
 	private String firstName;
@@ -61,6 +55,8 @@ public class UserDTO
 
 	private Set<String> authorities;
 
+	private boolean is14Plus;
+
 	public UserDTO() {
 		// Empty constructor needed for MapStruct.
 	}
@@ -69,13 +65,15 @@ public class UserDTO
 		this(user.getId(), user.getLogin(), user.getFirstName(), user.getLastName(),
 				user.getEmail(), user.getPhoneNumber(), user.getAddress(), user.getActivated(), user.getImageUrl(),
 				user.getCreatedBy(), user.getCreatedDate(), user.getLastModifiedBy(),
-				user.getLastModifiedDate(),	user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet()));
+				user.getLastModifiedDate(),
+				user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet()), user.getIs14Plus());
 	}
 
 	public UserDTO(final Long id, final String login, final String firstName, final String lastName,
 			final String email, final String phoneNumber, final Address address, final boolean activated,
 			final String imageUrl, final String createdBy, final ZonedDateTime createdDate,
-			final String lastModifiedBy, final ZonedDateTime lastModifiedDate, final Set<String> authorities) {
+			final String lastModifiedBy, final ZonedDateTime lastModifiedDate, final Set<String> authorities,
+			final boolean is14Plus) {
 
 		this.id = id;
 		this.login = login;
@@ -89,6 +87,7 @@ public class UserDTO
 		this.lastModifiedBy = lastModifiedBy;
 		this.lastModifiedDate = lastModifiedDate;
 		this.authorities = authorities;
+		this.is14Plus = is14Plus;
 	}
 
 	public Long getId() {
@@ -157,6 +156,10 @@ public class UserDTO
 
 	public Set<String> getAuthorities() {
 		return authorities;
+	}
+
+	public boolean is14Plus() {
+		return is14Plus;
 	}
 
 	@Override

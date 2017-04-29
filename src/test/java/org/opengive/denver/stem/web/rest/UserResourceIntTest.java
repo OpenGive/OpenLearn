@@ -123,6 +123,7 @@ public class UserResourceIntTest {
 		user.setFirstName(DEFAULT_FIRSTNAME);
 		user.setLastName(DEFAULT_LASTNAME);
 		user.setImageUrl(DEFAULT_IMAGEURL);
+		user.setIs14Plus(true);
 		return user;
 	}
 
@@ -155,7 +156,7 @@ public class UserResourceIntTest {
 				null,
 				null,
 				authorities,
-                true);
+				true);
 
 		restUserMockMvc.perform(post("/api/users")
 				.contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -196,7 +197,7 @@ public class UserResourceIntTest {
 				null,
 				null,
 				authorities,
-                true);
+				true);
 
 		// An entity with an existing ID cannot be created, so this API call must fail
 		restUserMockMvc.perform(post("/api/users")
@@ -235,7 +236,7 @@ public class UserResourceIntTest {
 				null,
 				null,
 				authorities,
-                true);
+				true);
 
 		// Create the User
 		restUserMockMvc.perform(post("/api/users")
@@ -274,7 +275,7 @@ public class UserResourceIntTest {
 				null,
 				null,
 				authorities,
-                true);
+				true);
 
 		// Create the User
 		restUserMockMvc.perform(post("/api/users")
@@ -303,7 +304,7 @@ public class UserResourceIntTest {
 		.andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRSTNAME)))
 		.andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LASTNAME)))
 		.andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
-				.andExpect(jsonPath("$.[*].imageUrl").value(hasItem(DEFAULT_IMAGEURL)));
+		.andExpect(jsonPath("$.[*].imageUrl").value(hasItem(DEFAULT_IMAGEURL)));
 	}
 
 	@Test
@@ -321,7 +322,7 @@ public class UserResourceIntTest {
 		.andExpect(jsonPath("$.firstName").value(DEFAULT_FIRSTNAME))
 		.andExpect(jsonPath("$.lastName").value(DEFAULT_LASTNAME))
 		.andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
-				.andExpect(jsonPath("$.imageUrl").value(DEFAULT_IMAGEURL));
+		.andExpect(jsonPath("$.imageUrl").value(DEFAULT_IMAGEURL));
 	}
 
 	@Test
@@ -360,7 +361,7 @@ public class UserResourceIntTest {
 				updatedUser.getLastModifiedBy(),
 				updatedUser.getLastModifiedDate(),
 				authorities,
-                true);
+				true);
 
 		restUserMockMvc.perform(put("/api/users")
 				.contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -406,7 +407,7 @@ public class UserResourceIntTest {
 				updatedUser.getLastModifiedBy(),
 				updatedUser.getLastModifiedDate(),
 				authorities,
-                true);
+				true);
 
 		restUserMockMvc.perform(put("/api/users")
 				.contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -463,7 +464,7 @@ public class UserResourceIntTest {
 				updatedUser.getLastModifiedBy(),
 				updatedUser.getLastModifiedDate(),
 				authorities,
-                true);
+				true);
 
 		restUserMockMvc.perform(put("/api/users")
 				.contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -510,7 +511,7 @@ public class UserResourceIntTest {
 				updatedUser.getLastModifiedBy(),
 				updatedUser.getLastModifiedDate(),
 				authorities,
-                true);
+				true);
 
 		restUserMockMvc.perform(put("/api/users")
 				.contentType(TestUtil.APPLICATION_JSON_UTF8)

@@ -156,7 +156,10 @@ public class AccountResourceIntTest {
 				null,                   // createdDate
 				null,                   // lastModifiedBy
 				null,                   // lastModifiedDate
-				new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)));
+				new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)), true // is
+																				// 14
+																				// plus
+		);
 
 		restMvc.perform(
 				post("/api/register")
@@ -186,7 +189,10 @@ public class AccountResourceIntTest {
 				null,                   // createdDate
 				null,                   // lastModifiedBy
 				null,                   // lastModifiedDate
-				new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)));
+				new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)), true // is
+																				// 14
+																				// plus
+		);
 
 		restUserMockMvc.perform(
 				post("/api/register")
@@ -216,7 +222,10 @@ public class AccountResourceIntTest {
 				null,                   // createdDate
 				null,                   // lastModifiedBy
 				null,                   // lastModifiedDate
-				new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)));
+				new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)), false // is
+																				// 14
+																				// plus
+		);
 
 		restUserMockMvc.perform(
 				post("/api/register")
@@ -246,7 +255,10 @@ public class AccountResourceIntTest {
 				null,                   // createdDate
 				null,                   // lastModifiedBy
 				null,                   // lastModifiedDate
-				new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)));
+				new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)), true // is
+																				// 14
+																				// plus
+		);
 
 		restUserMockMvc.perform(
 				post("/api/register")
@@ -277,13 +289,16 @@ public class AccountResourceIntTest {
 				null,                   // createdDate
 				null,                   // lastModifiedBy
 				null,                   // lastModifiedDate
-				new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)));
+				new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
+				false					// is 14 plus
+				);
 
 		// Duplicate login, different email
 		final ManagedUserVM duplicatedUser = new ManagedUserVM(validUser.getId(), validUser.getLogin(), validUser.getPassword(), validUser.getFirstName(), validUser.getLastName(),
 				"alicejr@example.com", validUser.getPhoneNumber(), validUser.getAddress(), true,
 				validUser.getImageUrl(), validUser.getCreatedBy(), validUser.getCreatedDate(),
-				validUser.getLastModifiedBy(), validUser.getLastModifiedDate(), validUser.getAuthorities());
+				validUser.getLastModifiedBy(), validUser.getLastModifiedDate(), validUser.getAuthorities(),
+				validUser.is14Plus());
 
 		// Good user
 		restMvc.perform(
@@ -322,13 +337,15 @@ public class AccountResourceIntTest {
 				null,                   // createdDate
 				null,                   // lastModifiedBy
 				null,                   // lastModifiedDate
-				new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)));
+				new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
+				true					// is 14 plus
+				);
 
 		// Duplicate email, different login
 		final ManagedUserVM duplicatedUser = new ManagedUserVM(validUser.getId(), "johnjr", validUser.getPassword(), validUser.getLogin(), validUser.getLastName(),
 				validUser.getEmail(), validUser.getPhoneNumber(), validUser.getAddress(), true, validUser.getImageUrl(),
 				validUser.getCreatedBy(), validUser.getCreatedDate(), validUser.getLastModifiedBy(),
-				validUser.getLastModifiedDate(), validUser.getAuthorities());
+				validUser.getLastModifiedDate(), validUser.getAuthorities(), validUser.is14Plus());
 
 		// Good user
 		restMvc.perform(
@@ -366,7 +383,9 @@ public class AccountResourceIntTest {
 				null,                   // createdDate
 				null,                   // lastModifiedBy
 				null,                   // lastModifiedDate
-				new HashSet<>(Arrays.asList(AuthoritiesConstants.ADMIN)));
+				new HashSet<>(Arrays.asList(AuthoritiesConstants.ADMIN)),
+				true					// is 14 plus
+				);
 
 		restMvc.perform(
 				post("/api/register")
@@ -397,7 +416,8 @@ public class AccountResourceIntTest {
 				null,                   // createdDate
 				null,                   // lastModifiedBy
 				null,                   // lastModifiedDate
-				new HashSet<>(Arrays.asList(AuthoritiesConstants.USER))
+				new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
+				true					// is 14 plus
 				);
 
 		restUserMockMvc.perform(
