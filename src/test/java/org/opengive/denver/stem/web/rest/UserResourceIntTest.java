@@ -69,9 +69,6 @@ public class UserResourceIntTest {
 	private static final String DEFAULT_IMAGEURL = "http://placehold.it/50x50";
 	private static final String UPDATED_IMAGEURL = "http://placehold.it/40x40";
 
-	private static final String DEFAULT_LANGKEY = "en";
-	private static final String UPDATED_LANGKEY = "fr";
-
 	@Autowired
 	private UserRepository userRepository;
 
@@ -126,7 +123,6 @@ public class UserResourceIntTest {
 		user.setFirstName(DEFAULT_FIRSTNAME);
 		user.setLastName(DEFAULT_LASTNAME);
 		user.setImageUrl(DEFAULT_IMAGEURL);
-		user.setLangKey(DEFAULT_LANGKEY);
 		return user;
 	}
 
@@ -154,7 +150,6 @@ public class UserResourceIntTest {
 				null,
 				true,
 				DEFAULT_IMAGEURL,
-				DEFAULT_LANGKEY,
 				null,
 				null,
 				null,
@@ -176,7 +171,6 @@ public class UserResourceIntTest {
 		assertThat(testUser.getLastName()).isEqualTo(DEFAULT_LASTNAME);
 		assertThat(testUser.getEmail()).isEqualTo(DEFAULT_EMAIL);
 		assertThat(testUser.getImageUrl()).isEqualTo(DEFAULT_IMAGEURL);
-		assertThat(testUser.getLangKey()).isEqualTo(DEFAULT_LANGKEY);
 	}
 
 	@Test
@@ -197,7 +191,6 @@ public class UserResourceIntTest {
 				null,
 				true,
 				DEFAULT_IMAGEURL,
-				DEFAULT_LANGKEY,
 				null,
 				null,
 				null,
@@ -237,7 +230,6 @@ public class UserResourceIntTest {
 				null,
 				true,
 				DEFAULT_IMAGEURL,
-				DEFAULT_LANGKEY,
 				null,
 				null,
 				null,
@@ -277,7 +269,6 @@ public class UserResourceIntTest {
 				null,
 				true,
 				DEFAULT_IMAGEURL,
-				DEFAULT_LANGKEY,
 				null,
 				null,
 				null,
@@ -312,8 +303,7 @@ public class UserResourceIntTest {
 		.andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRSTNAME)))
 		.andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LASTNAME)))
 		.andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
-		.andExpect(jsonPath("$.[*].imageUrl").value(hasItem(DEFAULT_IMAGEURL)))
-		.andExpect(jsonPath("$.[*].langKey").value(hasItem(DEFAULT_LANGKEY)));
+				.andExpect(jsonPath("$.[*].imageUrl").value(hasItem(DEFAULT_IMAGEURL)));
 	}
 
 	@Test
@@ -331,8 +321,7 @@ public class UserResourceIntTest {
 		.andExpect(jsonPath("$.firstName").value(DEFAULT_FIRSTNAME))
 		.andExpect(jsonPath("$.lastName").value(DEFAULT_LASTNAME))
 		.andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
-		.andExpect(jsonPath("$.imageUrl").value(DEFAULT_IMAGEURL))
-		.andExpect(jsonPath("$.langKey").value(DEFAULT_LANGKEY));
+				.andExpect(jsonPath("$.imageUrl").value(DEFAULT_IMAGEURL));
 	}
 
 	@Test
@@ -366,7 +355,6 @@ public class UserResourceIntTest {
 				updatedUser.getAddress(),
 				updatedUser.getActivated(),
 				UPDATED_IMAGEURL,
-				UPDATED_LANGKEY,
 				updatedUser.getCreatedBy(),
 				updatedUser.getCreatedDate(),
 				updatedUser.getLastModifiedBy(),
@@ -387,7 +375,6 @@ public class UserResourceIntTest {
 		assertThat(testUser.getLastName()).isEqualTo(UPDATED_LASTNAME);
 		assertThat(testUser.getEmail()).isEqualTo(UPDATED_EMAIL);
 		assertThat(testUser.getImageUrl()).isEqualTo(UPDATED_IMAGEURL);
-		assertThat(testUser.getLangKey()).isEqualTo(UPDATED_LANGKEY);
 	}
 
 	@Test
@@ -414,7 +401,6 @@ public class UserResourceIntTest {
 				updatedUser.getAddress(),
 				updatedUser.getActivated(),
 				UPDATED_IMAGEURL,
-				UPDATED_LANGKEY,
 				updatedUser.getCreatedBy(),
 				updatedUser.getCreatedDate(),
 				updatedUser.getLastModifiedBy(),
@@ -436,7 +422,6 @@ public class UserResourceIntTest {
 		assertThat(testUser.getLastName()).isEqualTo(UPDATED_LASTNAME);
 		assertThat(testUser.getEmail()).isEqualTo(UPDATED_EMAIL);
 		assertThat(testUser.getImageUrl()).isEqualTo(UPDATED_IMAGEURL);
-		assertThat(testUser.getLangKey()).isEqualTo(UPDATED_LANGKEY);
 	}
 
 	@Test
@@ -454,7 +439,6 @@ public class UserResourceIntTest {
 		anotherUser.setFirstName("java");
 		anotherUser.setLastName("hipster");
 		anotherUser.setImageUrl("");
-		anotherUser.setLangKey("en");
 		userRepository.saveAndFlush(anotherUser);
 		userSearchRepository.save(anotherUser);
 
@@ -474,7 +458,6 @@ public class UserResourceIntTest {
 				updatedUser.getAddress(),
 				updatedUser.getActivated(),
 				updatedUser.getImageUrl(),
-				updatedUser.getLangKey(),
 				updatedUser.getCreatedBy(),
 				updatedUser.getCreatedDate(),
 				updatedUser.getLastModifiedBy(),
@@ -503,7 +486,6 @@ public class UserResourceIntTest {
 		anotherUser.setFirstName("java");
 		anotherUser.setLastName("hipster");
 		anotherUser.setImageUrl("");
-		anotherUser.setLangKey("en");
 		userRepository.saveAndFlush(anotherUser);
 		userSearchRepository.save(anotherUser);
 
@@ -523,7 +505,6 @@ public class UserResourceIntTest {
 				updatedUser.getAddress(),
 				updatedUser.getActivated(),
 				updatedUser.getImageUrl(),
-				updatedUser.getLangKey(),
 				updatedUser.getCreatedBy(),
 				updatedUser.getCreatedDate(),
 				updatedUser.getLastModifiedBy(),
