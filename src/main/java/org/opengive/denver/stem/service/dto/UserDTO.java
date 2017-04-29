@@ -71,13 +71,13 @@ public class UserDTO
             user.getEmail(), user.getPhoneNumber(), user.getAddress(), user.getActivated(), user.getImageUrl(),
             user.getLangKey(), user.getCreatedBy(), user.getCreatedDate(), user.getLastModifiedBy(),
             user.getLastModifiedDate(),
-            user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet()));
+            user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet()), user.getIs14Plus());
     }
 
     public UserDTO(final Long id, final String login, final String firstName, final String lastName,
         final String email, final String phoneNumber, final Address address, final boolean activated,
         final String imageUrl, final String langKey, final String createdBy, final ZonedDateTime createdDate,
-        final String lastModifiedBy, final ZonedDateTime lastModifiedDate, final Set<String> authorities)
+        final String lastModifiedBy, final ZonedDateTime lastModifiedDate, final Set<String> authorities, final boolean is14Plus)
     {
 
         this.id = id;
@@ -93,6 +93,7 @@ public class UserDTO
         this.lastModifiedBy = lastModifiedBy;
         this.lastModifiedDate = lastModifiedDate;
         this.authorities = authorities;
+        this.is14Plus = is14Plus;
     }
 
     public Long getId()
