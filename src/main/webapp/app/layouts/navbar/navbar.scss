@@ -8,7 +8,7 @@ Navbar
 }
 
 .jh-navbar {
-    background-color: #353d47;
+    background-color: #293038;
     padding: .2em 1em;
     .profile-image {
         margin: -10px 0px;
@@ -17,7 +17,7 @@ Navbar
         border-radius: 50%;
     }
     .dropdown-item.active, .dropdown-item.active:focus, .dropdown-item.active:hover {
-        background-color: #353d47;
+        background-color: #293038;
     }
     .dropdown-toggle::after {
         margin-left: 0.15em;
@@ -77,7 +77,7 @@ Logo styles
     background: url("../../../content/images/opengive-logo-red.svg") no-repeat center top;
     background-size: contain;
     position: absolute;
-    top: 15px;
+    top: 17px;
     left: 15px;
 }
 
