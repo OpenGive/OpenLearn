@@ -1,26 +1,42 @@
-
-/* ==========================================================================
-Main page styles
-========================================================================== */
-
-.hipster {
-    display: inline-block;
-    width: 347px;
-    height: 497px;
-    background: url("../../content/images/opengive-logo-red.svg") no-repeat center top;
-    background-size: contain;
+.home-container {
+    margin-left: calc(-1.5% - 15px);
+    margin-right: calc(-1.5% - 15px);
 }
 
-/* wait autoprefixer update to allow simple generation of high pixel density media query */
-@media
-only screen and (-webkit-min-device-pixel-ratio: 2),
-only screen and (   min--moz-device-pixel-ratio: 2),
-only screen and (     -o-min-device-pixel-ratio: 2/1),
-only screen and (        min-device-pixel-ratio: 2),
-only screen and (                min-resolution: 192dpi),
-only screen and (                min-resolution: 2dppx) {
-    .hipster {
-        background: url("../../content/images/opengive-logo-red.svg") no-repeat center top;
-        background-size: contain;
+.words {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    img {
+        width: 100px;
+        height: 100px;
     }
+
+    p {
+        margin-top: 20px;
+        width: 40%;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    button {
+        border: none;
+        border-radius: 2px;
+        background-color: rgba(246,98,94,1);
+        color: white;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+}
+
+.waves {
+    background-image: url('../../content/images/Waves.png');
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: bottom;
+    width: 100vw;
+    height: 75vh;
+    position: fixed;
+    bottom: 0px;
 }
