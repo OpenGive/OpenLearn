@@ -27,6 +27,7 @@
         color: white;
         padding: 5px 10px;
         cursor: pointer;
+        z-index: 100;
     }
 }
 
@@ -40,3 +41,9 @@
     position: fixed;
     bottom: 0px;
 }
+
+// @media screen and (max-width: 480px) {
+//     .jh-logo-container {
+//         width: 100%;
+//     }
+// }
