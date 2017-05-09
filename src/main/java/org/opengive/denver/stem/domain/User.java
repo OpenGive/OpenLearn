@@ -82,10 +82,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	@Column(nullable = false)
 	private boolean activated = false;
 
-	@Size(min = 2, max = 5)
-	@Column(name = "lang_key", length = 5)
-	private String langKey;
-
 	@Size(max = 256)
 	@Column(name = "image_url", length = 256)
 	private String imageUrl;
@@ -102,6 +98,10 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	@Column(name = "reset_date")
 	private ZonedDateTime resetDate = null;
 
+	@NotNull
+	@Column(name = "is_14_plus", nullable = false)
+	private boolean is14Plus;
+
 	@JsonIgnore
 	@ManyToMany
 	@JoinTable(
@@ -111,6 +111,16 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 	@BatchSize(size = 20)
 	private Set<Authority> authorities = new HashSet<>();
+
+	@ManyToMany
+	@JoinTable(
+			name = "user_org",
+			joinColumns = {@JoinColumn(name = "org_id", referencedColumnName = "id") },
+			inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id") }
+			)
+	@JsonIgnore
+	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+	private final Set<User> organizations = new HashSet<>();
 
 	public Long getId() {
 		return id;
@@ -217,20 +227,22 @@ public class User extends AbstractAuditingEntity implements Serializable {
 		this.resetDate = resetDate;
 	}
 
-	public String getLangKey() {
-		return langKey;
-	}
-
-	public void setLangKey(final String langKey) {
-		this.langKey = langKey;
-	}
-
 	public Set<Authority> getAuthorities() {
 		return authorities;
 	}
 
 	public void setAuthorities(final Set<Authority> authorities) {
 		this.authorities = authorities;
+	}
+
+	public boolean getIs14Plus()
+	{
+		return is14Plus;
+	}
+
+	public void setIs14Plus(final boolean is14Plus)
+	{
+		this.is14Plus = is14Plus;
 	}
 
 	@Override
@@ -252,15 +264,13 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
 	@Override
 	public String toString() {
-		return "User{" +
-				"login='" + login + '\'' +
-				", firstName='" + firstName + '\'' +
-				", lastName='" + lastName + '\'' +
-				", email='" + email + '\'' +
-				", imageUrl='" + imageUrl + '\'' +
-				", activated='" + activated + '\'' +
-				", langKey='" + langKey + '\'' +
-				", activationKey='" + activationKey + '\'' +
-				"}";
+		final StringBuilder builder = new StringBuilder();
+		builder.append("User [id=").append(id).append(", login=").append(login).append(", password=").append(password)
+		.append(", firstName=").append(firstName).append(", lastName=").append(lastName).append(", email=")
+		.append(email).append(", phoneNumber=").append(phoneNumber).append(", address=").append(address)
+		.append(", activated=").append(activated).append(", imageUrl=").append(imageUrl)
+		.append(", authorities=").append(authorities).append("]");
+		return builder.toString();
 	}
+
 }
