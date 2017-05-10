@@ -10,4 +10,4 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     window.loading_screen.finish();
   }
-} 
+}

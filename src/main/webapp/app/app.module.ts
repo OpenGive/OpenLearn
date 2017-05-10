@@ -20,6 +20,13 @@ import {CourseCardComponent} from "./controls/course/course-card/course-card.com
 import {CourseComponent} from "./controls/course/course/course.component";
 import {ParallaxHeaderComponent} from "./controls/layout/parallax-header/parallax-header.component";
 import {UserService} from "./services/user.service";
+import {UserRouteAccessService} from "./shared/auth/user-route-access-service";
+import {Principal} from "./shared/auth/principal.service";
+import {AccountService} from "./shared/auth/account.service";
+import {LoginService} from "./shared/login/login.service";
+import {CookieModule} from "ngx-cookie";
+import {AuthServerProvider} from "./shared/auth/auth-oauth2.service";
+import {StateStorageService} from "./shared/auth/state-storage.service";
 
 @NgModule({
   declarations: [
@@ -42,9 +49,18 @@ import {UserService} from "./services/user.service";
     AppRoutingModule,
     MaterialModule.forRoot(),
     BrowserAnimationsModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    CookieModule.forRoot()
   ],
-  providers: [UserService],
+  providers: [
+    UserService,
+    UserRouteAccessService,
+    Principal,
+    AccountService,
+    LoginService,
+    AuthServerProvider,
+    StateStorageService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
