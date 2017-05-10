@@ -34,7 +34,8 @@ export class AuthServerProvider {
             const expiredAt = new Date();
             expiredAt.setSeconds(expiredAt.getSeconds() + response.expires_in);
             response.expires_at = expiredAt.getTime();
-            this.$localStorage.store('authenticationToken', response);
+            this.$localStorage.storeToken(response);
+            console.log(response);
             return response;
         }
     }

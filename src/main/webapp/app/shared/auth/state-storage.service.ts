@@ -24,12 +24,13 @@ export class StateStorageService {
         return this.$sessionStorage.getObject('destinationState');
     }
 
-    storeToken(url: string) {
-        this.$sessionStorage.put('bearerToken', url);
+    storeToken(tokens: any) {
+        this.$sessionStorage.putObject('tokens', tokens);
     }
 
     getToken() {
-        return this.$sessionStorage.get('bearerToken');
+        let bearerToken = (this.$sessionStorage.getObject('tokens') as any);
+        return bearerToken.bearerToken;
     }
 
     clearToken() {

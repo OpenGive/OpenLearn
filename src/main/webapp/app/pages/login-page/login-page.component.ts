@@ -2,13 +2,11 @@ import {Component, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
 
 import {LoginService} from "../../shared/login/login.service";
-import {AuthServerProvider} from "../../shared/auth/auth-oauth2.service";
 
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
-  styleUrls: ['./login-page.component.css'],
-  providers: [AuthServerProvider]
+  styleUrls: ['./login-page.component.css']
 })
 export class LoginPageComponent implements OnInit /*, AfterViewInit*/ {
   authenticationError: boolean;
