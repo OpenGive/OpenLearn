@@ -1,10 +1,31 @@
-<md-input-container>
-  <input type="text" [(ngModel)]="user.email" mdInput placeholder="email">
-</md-input-container>
-<md-input-container>
-  <input type="password" [(ngModel)]="user.password" mdInput placeholder="password">
-</md-input-container>
+<div class="margin-md-top">
+<div fxLayout="row" fxLayoutAlign="center center" >
 
-<button (click)="login()" md-raised-button>Login</button>
+  LOGO HERE
 
-{{user | json}}
+</div>
+<div fxLayout="row" fxLayoutAlign="center center">
+<!--[fxFlex.md]="flexSettings.md" [fxFlex.lg]="flexSettings.lg"-->
+    <md-input-container [fxFlex.xs]="flexSettings.xs" [fxFlex.gt-xs]="flexSettings.sm" color="primary">
+      <i mdPrefix class="fa fa-user fa-lg"></i>
+      <input mdInput placeholder="Username">
+    </md-input-container>
+
+
+</div>
+<div fxLayout="row" fxLayoutAlign="center center">
+<md-input-container [fxFlex.xs]="flexSettings.xs" [fxFlex.gt-xs]="flexSettings.sm" color="primary">
+    <i mdPrefix class="fa fa-lock fa-lg"></i>
+    <input type="password" mdInput placeholder="Password">
+  </md-input-container>
+</div>
+<div fxLayout="row" fxLayoutAlign="center center">
+  <button md-raised-button [fxFlex.xs]="flexSettings.xs" [fxFlex.gt-xs]="flexSettings.sm" color="primary">
+  SIGN IN
+  </button>
+</div>
+</div>
+
+
+
+  

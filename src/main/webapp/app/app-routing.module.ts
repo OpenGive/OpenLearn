@@ -1,34 +1,33 @@
-import { FormsModule } from '@angular/forms';
-import { AuthenticationService } from './shared/authentication/authentication.service';
-import { IsLoggedInGuardService } from './shared/authentication/is-logged-in-guard.service';
-import { MaterialModule } from '@angular/material';
-import { LandingPageComponent } from "./pages/landing-page/landing-page.component";
-import { AdminPageComponent } from './pages/admin-page/admin-page.component';
-import { ProgramPageComponent } from './pages/program-page/program-page.component';
+import { CourseComponent } from './controls/course/course/course.component';
+import { PortfolioComponent } from './controls/portfolio/portfolio/portfolio.component';
 import { StudentPageComponent } from './pages/student-page/student-page.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
+import { CoursePageComponent } from './pages/course-page/course-page.component';
+import { LandingPageComponent } from './pages/landing-page/landing-page.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from "@angular/router";
 
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import 'hammerjs';
 
-export const ROUTES: Routes = [
+const ROUTES: Routes = [
   { path: '', component: LandingPageComponent },
   { path: 'login', component: LoginPageComponent },
-  { path: 'program/:id', component: ProgramPageComponent },
-  { path: 'student/:id', component: StudentPageComponent, canActivate: [IsLoggedInGuardService] 
-},
-  { path: 'admin', component: AdminPageComponent },
-]
+  { path: 'course/:id', component: CoursePageComponent },
+  { path: 'student/:id', component: StudentPageComponent,
+    children: [
+      {path: '', pathMatch: 'full', redirectTo: 'portfolio'},
+      { path:'portfolio', component: PortfolioComponent},
+      { path:'course', component: CourseComponent},
+    ] 
+  },
+
+];
 
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forRoot(ROUTES),
+    RouterModule.forRoot(ROUTES)
   ],
-  exports: [RouterModule],
-  declarations: [],
+  exports: [RouterModule]
 })
 export class AppRoutingModule { }

@@ -1,10 +1,4 @@
-import { AuthenticationService } from './../../shared/authentication/authentication.service';
 import { Component, OnInit } from '@angular/core';
-
-export interface User {
-  email?: string;
-  password?: string;
-}
 
 @Component({
   selector: 'app-login-page',
@@ -13,20 +7,14 @@ export interface User {
 })
 export class LoginPageComponent implements OnInit {
 
-  constructor(private _authService: AuthenticationService) { }
+  constructor() { }
 
   ngOnInit() {
   }
 
-  user : User = {
-     email: "",
-     password: ""
-  }
- 
-  login() {
-    this._authService.login(this.user.email, this.user.password);
-  }
+  flexSettings = {
+    xs: '90%',
+    sm: '400px'
+  };
 
 }
-
-

@@ -1,1 +1,10 @@
-@import url('./styles/indigo-pink.css')
+
+//@import url('./styles/themes/indigo-pink.css');
+//@import url('./styles/themes/default-theme.scss');
+// - - 1. VARIABLES - - //
+@import url('./styles/variables.scss');
+
+
+// - - 2. IMPORTS - - //
+@import url('./styles/layout.scss');
+@import url('./styles/forms.scss');
