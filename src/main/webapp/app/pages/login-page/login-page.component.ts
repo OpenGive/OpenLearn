@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-login-page',
@@ -7,7 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginPageComponent implements OnInit {
 
-  constructor() { }
+  username:string;
+  password:string;
+
+  constructor(private _userService:UserService) { }
 
   ngOnInit() {
   }
@@ -17,4 +21,10 @@ export class LoginPageComponent implements OnInit {
     sm: '400px'
   };
 
+  login() {
+    this._userService.authenticate(this.username, this.password)
+      .subscribe(bearerToken => {
+
+    });
+  }
 }

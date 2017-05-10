@@ -1,18 +1,18 @@
-import { Http } from "@angular/http";
-import { Injectable } from "@angular/core";
+import {Injectable} from "@angular/core";
+import {Http} from "@angular/http";
+import {Observable} from "rxjs";
 
 @Injectable()
 export class UserService {
+  constructor(private _http: Http) {
+  }
 
-    constructor(private _http: Http) {
-        
-    }
+  authenticate(username: string, password: string): Observable<string> {
+    let body = {
+      username: username,
+      password: password
+    };
 
-    authenticate() {
-        let body = {
-            username: 'test',
-            password: 'testPass'
-        };
-        return this._http.post('https://heroduksite/api/authenticate', body).map(x => x.json());
-    }
+    return this._http.post("/api/authenticate", body).map(s => s.json().bearerToken);
+  }
 }

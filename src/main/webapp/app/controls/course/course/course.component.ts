@@ -12,4 +12,10 @@ export class CourseComponent implements OnInit {
   ngOnInit() {
   }
 
+  myPets = [
+    {name: "charles", breed: "Lab"},
+    {name: "gggg", breed: "Lab"},
+    {name: "hhhh", breed: "Lab"},
+    {name: "jjjjj", breed: "Lab"}
+  ]
 }

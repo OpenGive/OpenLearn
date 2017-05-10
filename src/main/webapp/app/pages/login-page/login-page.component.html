@@ -1,31 +1,33 @@
 <div class="margin-md-top">
-<div fxLayout="row" fxLayoutAlign="center center" >
+  <div fxLayout="row" fxLayoutAlign="center center">
 
-  LOGO HERE
+    LOGO HERE
 
-</div>
-<div fxLayout="row" fxLayoutAlign="center center">
-<!--[fxFlex.md]="flexSettings.md" [fxFlex.lg]="flexSettings.lg"-->
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <!--[fxFlex.md]="flexSettings.md" [fxFlex.lg]="flexSettings.lg"-->
     <md-input-container [fxFlex.xs]="flexSettings.xs" [fxFlex.gt-xs]="flexSettings.sm" color="primary">
       <i mdPrefix class="fa fa-user fa-lg"></i>
-      <input mdInput placeholder="Username">
+      <input mdInput placeholder="Username" [(ngModel)]="username">
     </md-input-container>
 
 
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <md-input-container [fxFlex.xs]="flexSettings.xs" [fxFlex.gt-xs]="flexSettings.sm" color="primary">
+      <i mdPrefix class="fa fa-lock fa-lg"></i>
+      <input type="password" mdInput placeholder="Password" [(ngModel)]="password">
+    </md-input-container>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <button md-raised-button [fxFlex.xs]="flexSettings.xs" [fxFlex.gt-xs]="flexSettings.sm" color="primary"
+            (click)="login()">
+      SIGN IN
+    </button>
+  </div>
 </div>
-<div fxLayout="row" fxLayoutAlign="center center">
-<md-input-container [fxFlex.xs]="flexSettings.xs" [fxFlex.gt-xs]="flexSettings.sm" color="primary">
-    <i mdPrefix class="fa fa-lock fa-lg"></i>
-    <input type="password" mdInput placeholder="Password">
-  </md-input-container>
-</div>
-<div fxLayout="row" fxLayoutAlign="center center">
-  <button md-raised-button [fxFlex.xs]="flexSettings.xs" [fxFlex.gt-xs]="flexSettings.sm" color="primary">
-  SIGN IN
-  </button>
-</div>
-</div>
+
+<p>{{username}} : {{password}}</p>
 
 
 
-  
