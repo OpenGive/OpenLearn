@@ -36,7 +36,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Table(name = "course")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "course")
-@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property = "id")
+@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class)
 public class Course implements Serializable {
 
 	private static final long serialVersionUID = 1L;
