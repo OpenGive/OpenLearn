@@ -1,0 +1,66 @@
+<md-sidenav-container class="full-screen-side-nav">
+  <md-sidenav #sidenav class="example-sidenav">
+    <div fxLayout="column">
+      <button routerLink="/" (click)="sidenav.close()" md-button>Home</button>
+      <button routerLink="/login" (click)="sidenav.close()" md-button>Login</button>
+      <button routerLink="/student/1" (click)="sidenav.close()" md-button>Dashboard</button>
+      <button routerLink="/course/1" (click)="sidenav.close()" md-button>Courses</button>
+    </div>
+  </md-sidenav>
+  <div class="main-content">
+<md-toolbar color="primary">
+ 
+  <div fxLayout="row">
+    <div fxHide.lt-sm>
+      OG
+    </div>
+    
+    <div fxHide.gt-xs>
+      <button (click)="sidenav.open()" class="nav-button" md-button>
+        <md-icon>menu</md-icon>
+      </button>
+    </div>
+  </div>
+
+  <span class="toolbar-filler"></span>
+  <div fxLayout="row">
+    <div fxHide.lt-sm>
+      <button routerLink="/" md-button>Home</button>
+      <button routerLink="/login" md-button>Login</button>
+      <button routerLink="/student/1" md-button>Dashboard</button>
+      <button routerLink="/course/1" md-button>Courses</button>
+    </div>
+    <div>
+      <button class="profile-menu" md-button [mdMenuTriggerFor]="profileMenu">
+        <div class="circle">
+          <img height="32" width="32" src="https://material.angular.io/shiba1.d84e1a8ed94377452dbf.jpg" alt="Braden Hamm">
+        </div>
+        <span>
+        Levi Fuller
+        </span>
+      </button>
+      <md-menu #profileMenu="mdMenu" yPosition="above">
+        <button md-menu-item>
+          <md-icon><i mdPrefix class="fa fa-user fa-lg"></i></md-icon>
+          <span>Profile</span>
+        </button>
+        <button md-menu-item disabled>
+          <md-icon><i mdPrefix class="fa fa-cog fa-lg"></i></md-icon>
+          <span>Admin</span>
+        </button>
+        <button md-menu-item>
+          <md-icon><i mdPrefix class="fa fa-info fa-lg"></i></md-icon>
+          <span>About</span>
+        </button>
+        <button md-menu-item>
+          <md-icon>
+          <i mdPrefix class="fa fa-sign-out fa-lg"></i></md-icon>
+          <span>Logout</span>
+        </button>
+      </md-menu>
+    </div>
+  </div>
+</md-toolbar>
+<router-outlet></router-outlet>
+</div>
+</md-sidenav-container>

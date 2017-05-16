@@ -1,0 +1,22 @@
+<md-sidenav-container class="full-screen-side-nav">
+  <md-sidenav [fxHide.lt-sm]="!leftNavIsOpen" #sidenav mode="side" class="example-sidenav" [opened]="leftNavIsOpen">
+    <div fxLayout="column">
+      <button (click)="leftNavIsOpen = !leftNavIsOpen" md-button color="accent">
+        <md-icon>chevron_left</md-icon>
+      </button>
+     <button md-button [routerLink]="['portfolio']">Portfolio</button>
+      <button [routerLink]="['course']" md-button>Courses</button>
+    </div>
+  </md-sidenav>
+  <div fxLayout="row" style="position: absolute">
+    <button [fxHide.lt-sm]="leftNavIsOpen" color="accent" md-button (click)="leftNavIsOpen = !leftNavIsOpen">
+      <md-icon>chevron_right</md-icon>
+    </button>
+    
+  </div>
+  <div class="margin-sm-top" fxLayout="row" fxLayoutAlign="center center">
+    <router-outlet></router-outlet>
+    
+  </div>
+
+</md-sidenav-container>

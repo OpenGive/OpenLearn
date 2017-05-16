@@ -21,7 +21,7 @@ bootRun {
 }
 
 task webpackBuildDev(type: YarnTask) {
-    args = ["run", "webpack:build:dev"]
+    args = ["run", "build-dev"]
 }
 
 war {
@@ -45,4 +45,4 @@ processResources {
 }
 
 processResources.dependsOn webpackBuildDev
-webpackBuildDev.onlyIf { project.hasProperty('webpack') }
+//webpackBuildDev.onlyIf { project.hasProperty('webpack') }

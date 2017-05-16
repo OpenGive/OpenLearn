@@ -1,35 +1,40 @@
 import { Injectable } from '@angular/core';
-import { SessionStorageService } from 'ng2-webstorage';
+import { CookieService } from 'ngx-cookie';
 
 @Injectable()
 export class StateStorageService {
     constructor(
-        private $sessionStorage: SessionStorageService
+        private $sessionStorage: CookieService
     ) {}
 
     getPreviousState() {
-        return this.$sessionStorage.retrieve('previousState');
+        return this.$sessionStorage.getObject('previousState');
     }
 
     resetPreviousState() {
-        this.$sessionStorage.clear('previousState');
+        this.$sessionStorage.remove('previousState');
     }
 
     storePreviousState(previousStateName, previousStateParams) {
         const previousState = { 'name': previousStateName, 'params': previousStateParams };
-        this.$sessionStorage.store('previousState', previousState);
+        this.$sessionStorage.putObject('previousState', previousState);
     }
 
     getDestinationState() {
-        return this.$sessionStorage.retrieve('destinationState');
+        return this.$sessionStorage.getObject('destinationState');
     }
 
-    storeUrl(url: string) {
-        this.$sessionStorage.store('previousUrl', url);
+    storeToken(tokens: any) {
+        this.$sessionStorage.putObject('token', tokens);
     }
 
-    getUrl() {
-        return this.$sessionStorage.retrieve('previousUrl');
+    getToken() {
+        let bearerToken = (this.$sessionStorage.getObject('token') as any);
+        return bearerToken.bearerToken;
+    }
+
+    clearToken() {
+      this.$sessionStorage.remove('bearerToken');
     }
 
     storeDestinationState(destinationState, destinationStateParams, fromState) {
@@ -43,6 +48,6 @@ export class StateStorageService {
                 'name': fromState.name,
              }
         };
-        this.$sessionStorage.store('destinationState', destinationInfo);
+        this.$sessionStorage.putObject('destinationState', destinationInfo);
     }
 }

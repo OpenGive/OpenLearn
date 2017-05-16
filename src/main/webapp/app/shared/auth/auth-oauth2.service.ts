@@ -1,21 +1,18 @@
 import { Injectable, Inject } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
-import { LocalStorageService } from 'ng2-webstorage';
-
-import { Base64 } from 'ng-jhipster';
+import {StateStorageService} from "./state-storage.service";
 
 @Injectable()
 export class AuthServerProvider {
 
     constructor(
         private http: Http,
-        private base64: Base64,
-        private $localStorage: LocalStorageService
+        private $localStorage: StateStorageService
     ) {}
 
     getToken() {
-        return this.$localStorage.retrieve('authenticationToken');
+        return this.$localStorage.getToken();
     }
 
     login(credentials): Observable<any> {
@@ -25,7 +22,7 @@ export class AuthServerProvider {
         const headers = new Headers ({
             'Content-Type': 'application/x-www-form-urlencoded',
             'Accept': 'application/json',
-            'Authorization': 'Basic ' + this.base64.encode('opengiveapp' + ':' + 'my-secret-token-to-change-in-production')
+            'Authorization': 'Basic ' + btoa('opengiveapp' + ':' + 'my-secret-token-to-change-in-production')
         });
 
         return this.http.post('oauth/token', data, {
@@ -37,7 +34,8 @@ export class AuthServerProvider {
             const expiredAt = new Date();
             expiredAt.setSeconds(expiredAt.getSeconds() + response.expires_in);
             response.expires_at = expiredAt.getTime();
-            this.$localStorage.store('authenticationToken', response);
+            this.$localStorage.storeToken(response);
+            console.log(response);
             return response;
         }
     }
@@ -45,7 +43,7 @@ export class AuthServerProvider {
     logout(): Observable<any> {
         return new Observable((observer) => {
             this.http.post('api/logout', {});
-            this.$localStorage.clear('authenticationToken');
+            this.$localStorage.clearToken();
             observer.complete();
         });
     }

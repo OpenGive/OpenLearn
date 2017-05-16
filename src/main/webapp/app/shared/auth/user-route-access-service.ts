@@ -1,29 +1,25 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import {Injectable} from "@angular/core";
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from "@angular/router";
 
-import { AuthService } from '../';
-import { Principal } from '../';
-import { LoginModalService } from '../login/login-modal.service';
-import { StateStorageService } from './state-storage.service';
+import {Principal} from "../";
 
 @Injectable()
 export class UserRouteAccessService implements CanActivate {
 
     constructor(private router: Router,
-        private loginModalService: LoginModalService,
-        private principal: Principal,
-        private stateStorageService: StateStorageService) {
+        private principal: Principal/*,
+        private stateStorageService: StateStorageService*/) {
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Promise<boolean> {
 
         const authorities = route.data['authorities'];
-        if (!authorities || authorities.length === 0) {
-            if (route.data['authenticate'] == true) {
-                return this.principal.isAuthenticated();
-            }
-            return true;
-        }
+        // if (!authorities || authorities.length === 0) {
+        //     if (route.data['authenticate'] == true) {
+        //         return this.principal.isAuthenticated();
+        //     }
+        //     return true;
+        // }
 
         return this.checkLogin(authorities, state.url);
     }
@@ -38,8 +34,8 @@ export class UserRouteAccessService implements CanActivate {
                         return Promise.resolve(true);
                     }
 
-                    this.stateStorageService.storeUrl(url);
-                    this.router.navigate(['accessdenied']);
+//                    this.stateStorageService.storeUrl(url);
+                    this.router.navigate(['access-denied']);
 
                     return Promise.resolve(false);
                 });

@@ -1,6 +1,5 @@
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { JhiLanguageService } from 'ng-jhipster';
 
 import { Principal } from '../auth/principal.service';
 import { AuthServerProvider } from '../auth/auth-oauth2.service';
@@ -8,9 +7,7 @@ import { AuthServerProvider } from '../auth/auth-oauth2.service';
 @Injectable()
 export class LoginService {
 
-
     constructor(
-        private languageService: JhiLanguageService,
         private principal: Principal,
         private authServerProvider: AuthServerProvider,
         private router: Router
@@ -35,8 +32,8 @@ export class LoginService {
                 this.logout();
                 reject(err);
                 return cb(err);
-                
-                
+
+
             });
         });
     }
@@ -44,6 +41,6 @@ export class LoginService {
     logout() {
         this.authServerProvider.logout().subscribe();
         this.principal.authenticate(null);
-        
+
     }
 }

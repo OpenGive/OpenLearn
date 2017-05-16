@@ -1,57 +1,75 @@
-import './vendor.ts';
+import { CourseService } from './services/course.service';
+import { HttpWrapperService } from './shared/auth/http-wrapper.service';
+import {AppRoutingModule} from "./app-routing.module";
+import {BrowserModule} from "@angular/platform-browser";
+import {NgModule} from "@angular/core";
+import {FormsModule} from "@angular/forms";
+import {HttpModule} from "@angular/http";
 
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { Ng2Webstorage } from 'ng2-webstorage';
-
-import { OpengiveSharedModule, UserRouteAccessService } from './shared';
-import { OpengiveHomeModule } from './home/home.module';
-import { OpengiveAdminModule } from './admin/admin.module';
-import { OpengiveAccountModule } from './account/account.module';
-import { OpengiveEntityModule } from './entities/entity.module';
-
-import { LayoutRoutingModule } from './layouts';
-import { customHttpProvider } from './blocks/interceptor/http.provider';
-import { PaginationConfig } from './blocks/config/uib-pagination.config';
-
-import { OpengiveStudentModule } from './student/student.module';
-
-import {
-    JhiMainComponent,
-    NavbarComponent,
-    FooterComponent,
-    ProfileService,
-    PageRibbonComponent,
-    ActiveMenuDirective,
-    ErrorComponent
-} from './layouts';
+import {AppComponent} from "./app.component";
+import {LandingPageComponent} from "./pages/landing-page/landing-page.component";
+import {LoginPageComponent} from "./pages/login-page/login-page.component";
+import {StudentPageComponent} from "./pages/student-page/student-page.component";
+import {CoursePageComponent} from "./pages/course-page/course-page.component";
+import {NavigationMenuComponent} from "./controls/navigation-menu/navigation-menu.component";
+import {MaterialModule} from "@angular/material";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {FlexLayoutModule} from "@angular/flex-layout";
+import "hammerjs";
+import {PortfolioComponent} from "./controls/portfolio/portfolio/portfolio.component";
+import {PortfolioCardComponent} from "./controls/portfolio/portfolio-card/portfolio-card.component";
+import {CourseCardComponent} from "./controls/course/course-card/course-card.component";
+import {ParallaxHeaderComponent} from "./controls/layout/parallax-header/parallax-header.component";
+import {UserService} from "./services/user.service";
+import {UserRouteAccessService} from "./shared/auth/user-route-access-service";
+import {Principal} from "./shared/auth/principal.service";
+import {AccountService} from "./shared/auth/account.service";
+import {LoginService} from "./shared/login/login.service";
+import {CookieModule} from "ngx-cookie";
+import {AuthServerProvider} from "./shared/auth/auth-oauth2.service";
+import {StateStorageService} from "./shared/auth/state-storage.service";
+import { AccessDeniedPageComponent } from './pages/access-denied-page/access-denied-page.component';
+import { CourseListComponent } from './controls/course/course-list/course-list.component';
+import { StudentCoursesComponent } from './student-courses/student-courses.component';
 
 @NgModule({
-    imports: [
-        BrowserModule,
-        LayoutRoutingModule,
-        Ng2Webstorage.forRoot({ prefix: 'jhi', separator: '-'}),
-        OpengiveSharedModule,
-        OpengiveHomeModule,
-        OpengiveAdminModule,
-        OpengiveStudentModule,
-        OpengiveAccountModule,
-        OpengiveEntityModule
-    ],
-    declarations: [
-        JhiMainComponent,
-        NavbarComponent,
-        ErrorComponent,
-        PageRibbonComponent,
-        ActiveMenuDirective,
-        FooterComponent
-    ],
-    providers: [
-        ProfileService,
-        customHttpProvider(),
-        PaginationConfig,
-        UserRouteAccessService
-    ],
-    bootstrap: [ JhiMainComponent ]
+  declarations: [
+    AppComponent,
+    LandingPageComponent,
+    LoginPageComponent,
+    StudentPageComponent,
+    CoursePageComponent,
+    NavigationMenuComponent,
+    PortfolioComponent,
+    PortfolioCardComponent,
+    CourseCardComponent,
+    ParallaxHeaderComponent,
+    AccessDeniedPageComponent,
+    CourseListComponent,
+    StudentCoursesComponent
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    HttpModule,
+    AppRoutingModule,
+    MaterialModule,
+    BrowserAnimationsModule,
+    FlexLayoutModule,
+    CookieModule.forRoot()
+  ],
+  providers: [
+    UserService,
+    UserRouteAccessService,
+    Principal,
+    AccountService,
+    LoginService,
+    AuthServerProvider,
+    StateStorageService,
+    HttpWrapperService,
+    CourseService
+  ],
+  bootstrap: [AppComponent]
 })
-export class OpengiveAppModule {}
+export class AppModule {
+}

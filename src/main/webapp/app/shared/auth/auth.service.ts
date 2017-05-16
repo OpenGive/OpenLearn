@@ -1,9 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-
-import { LoginModalService } from '../login/login-modal.service';
-import { Principal } from './principal.service';
-import { StateStorageService } from './state-storage.service';
+import {Injectable} from "@angular/core";
+import {Router} from "@angular/router";
+import {Principal} from "./principal.service";
+import {StateStorageService} from "./state-storage.service";
 
 @Injectable()
 export class AuthService {
@@ -11,7 +9,6 @@ export class AuthService {
     constructor(
         private principal: Principal,
         private stateStorageService: StateStorageService,
-        private loginModalService: LoginModalService,
         private router: Router
     ) {}
 
@@ -52,7 +49,8 @@ export class AuthService {
                             this.stateStorageService.storePreviousState(toStateInfo.name, toStateParamsInfo);
                             // now, send them to the signin state so they can log in
                             this.router.navigate(['accessdenied']).then(() => {
-                                this.loginModalService.open();
+//                                this.loginModalService.open();
+                                console.log("fix me: would have attempted to open modal login dialog")
                             });
                         }
                     }
