@@ -22,6 +22,9 @@ export class Principal {
     }
 
     hasAnyAuthority(authorities: string[]): Promise<boolean> {
+        if (authorities.length == 0) {
+            return Promise.resolve(true);
+        }
         if (!this.authenticated || !this.userIdentity || !this.userIdentity.authorities) {
             return Promise.resolve(false);
         }
@@ -87,6 +90,7 @@ export class Principal {
 
         // retrieve the userIdentity data from the server, update the identity object, and then resolve.
         return this.account.get().toPromise().then((account) => {
+            console.log(account);
             if (account) {
                 this.userIdentity = account;
                 this.authenticated = true;

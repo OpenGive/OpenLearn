@@ -1,3 +1,5 @@
+import { Course } from './../../models/course';
+import { CourseService } from './../../services/course.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CoursePageComponent implements OnInit {
 
-  constructor() { }
-
+  constructor(private _courseService: CourseService) { }
+  courses: Course[] = [];
   ngOnInit() {
+    this._courseService.getAllCourses().subscribe(courses => {
+      console.log(courses);
+      this.courses = courses;
+    });
   }
 
 }

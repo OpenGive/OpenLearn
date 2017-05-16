@@ -1,3 +1,5 @@
+import { AccessDeniedPageComponent } from './pages/access-denied-page/access-denied-page.component';
+import { Role } from './app.constants';
 import {CourseComponent} from "./controls/course/course/course.component";
 import {PortfolioComponent} from "./controls/portfolio/portfolio/portfolio.component";
 import {StudentPageComponent} from "./pages/student-page/student-page.component";
@@ -14,23 +16,28 @@ const ROUTES: Routes = [
     path: '',
     component: LandingPageComponent,
     data: {
-      authenticate: true
+      authorities: []
     },
-    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: 'access-denied',
+    component: AccessDeniedPageComponent,
+    data: {
+      authorities: []
+    },
   },
   {
     path: 'login',
     component: LoginPageComponent,
     data: {
-      authenticate: false
+      authorities: []
     },
-    canActivate: [UserRouteAccessService]
   },
   {
     path: 'course/:id',
     component: CoursePageComponent,
     data: {
-      authenticate: true
+      authorities: [Role.Instructor]
     },
     canActivate: [UserRouteAccessService]
   },
@@ -38,7 +45,7 @@ const ROUTES: Routes = [
     path: 'student/:id',
     component: StudentPageComponent,
     data: {
-      authenticate: true
+       authorities: [Role.Student]
     },
     canActivate: [UserRouteAccessService],
     children: [

@@ -1,3 +1,4 @@
+import { Course } from './../../../models/course';
 import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
@@ -7,7 +8,7 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class CourseCardComponent implements OnInit {
 
-  @Input() petName:string;
+  @Input() course:Course;
 
   constructor() {
   }

@@ -25,11 +25,11 @@ export class StateStorageService {
     }
 
     storeToken(tokens: any) {
-        this.$sessionStorage.putObject('tokens', tokens);
+        this.$sessionStorage.putObject('token', tokens);
     }
 
     getToken() {
-        let bearerToken = (this.$sessionStorage.getObject('tokens') as any);
+        let bearerToken = (this.$sessionStorage.getObject('token') as any);
         return bearerToken.bearerToken;
     }
 

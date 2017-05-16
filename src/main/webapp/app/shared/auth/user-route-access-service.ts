@@ -14,12 +14,12 @@ export class UserRouteAccessService implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Promise<boolean> {
 
         const authorities = route.data['authorities'];
-        if (!authorities || authorities.length === 0) {
-            if (route.data['authenticate'] == true) {
-                return this.principal.isAuthenticated();
-            }
-            return true;
-        }
+        // if (!authorities || authorities.length === 0) {
+        //     if (route.data['authenticate'] == true) {
+        //         return this.principal.isAuthenticated();
+        //     }
+        //     return true;
+        // }
 
         return this.checkLogin(authorities, state.url);
     }
@@ -35,7 +35,7 @@ export class UserRouteAccessService implements CanActivate {
                     }
 
 //                    this.stateStorageService.storeUrl(url);
-                    this.router.navigate(['accessdenied']);
+                    this.router.navigate(['access-denied']);
 
                     return Promise.resolve(false);
                 });

@@ -1,3 +1,5 @@
+import { CourseService } from './services/course.service';
+import { HttpWrapperService } from './shared/auth/http-wrapper.service';
 import {AppRoutingModule} from "./app-routing.module";
 import {BrowserModule} from "@angular/platform-browser";
 import {NgModule} from "@angular/core";
@@ -27,6 +29,7 @@ import {LoginService} from "./shared/login/login.service";
 import {CookieModule} from "ngx-cookie";
 import {AuthServerProvider} from "./shared/auth/auth-oauth2.service";
 import {StateStorageService} from "./shared/auth/state-storage.service";
+import { AccessDeniedPageComponent } from './pages/access-denied-page/access-denied-page.component';
 
 @NgModule({
   declarations: [
@@ -40,14 +43,15 @@ import {StateStorageService} from "./shared/auth/state-storage.service";
     PortfolioCardComponent,
     CourseCardComponent,
     CourseComponent,
-    ParallaxHeaderComponent
+    ParallaxHeaderComponent,
+    AccessDeniedPageComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
     AppRoutingModule,
-    MaterialModule.forRoot(),
+    MaterialModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
     CookieModule.forRoot()
@@ -59,7 +63,9 @@ import {StateStorageService} from "./shared/auth/state-storage.service";
     AccountService,
     LoginService,
     AuthServerProvider,
-    StateStorageService
+    StateStorageService,
+    HttpWrapperService,
+    CourseService
   ],
   bootstrap: [AppComponent]
 })
