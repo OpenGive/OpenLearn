@@ -1,5 +1,3 @@
-<div fxLayout="row" fxLayoutWrap="wrap">
-<app-course-card 
-  fxFlex="25" fxFlex.sm="40" fxFlex.xs="100"
-  *ngFor="let course of courses" [course]="course"></app-course-card>
+<div fxLayout="row" fxLayoutWrap="wrap" class="container" fxLayoutAlign="center center">
+  <app-course-card fxFlex.xs="100" fxFlex.sm="31" fxFlex.md="25" *ngFor="let course of courses" [course]="course"></app-course-card>
 </div>

@@ -17,7 +17,7 @@ body {
   /*width: 500px;
   height: 300px;
   border: 1px solid rgba(0, 0, 0, 0.5);*/
-  overflow-y: hidden !important;
+//   overflow-y: hidden !important;
   position: absolute !important;
   height: 100% !important;
   width: 100% !important;
@@ -37,5 +37,5 @@ body {
 }
 
 .mat-sidenav-content {
-    overflow: hidden !important;
+    // overflow: hidden !important;
 }
