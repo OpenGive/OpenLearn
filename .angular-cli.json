@@ -45,7 +45,7 @@
       "project": "src/main/webapp/tsconfig.spec.json"
     },
     {
-      "project": "e2e/tsconfig.e2e.json"
+      "project": "src/test/javascript/e2e/tsconfig.e2e.json"
     }
   ],
   "test": {
