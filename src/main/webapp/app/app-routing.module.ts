@@ -1,6 +1,6 @@
+import { StudentCoursesComponent } from './student-courses/student-courses.component';
 import { AccessDeniedPageComponent } from './pages/access-denied-page/access-denied-page.component';
 import { Role } from './app.constants';
-import {CourseComponent} from "./controls/course/course/course.component";
 import {PortfolioComponent} from "./controls/portfolio/portfolio/portfolio.component";
 import {StudentPageComponent} from "./pages/student-page/student-page.component";
 import {LoginPageComponent} from "./pages/login-page/login-page.component";
@@ -51,7 +51,7 @@ const ROUTES: Routes = [
     children: [
       {path: '', pathMatch: 'full', redirectTo: 'portfolio'},
       {path: 'portfolio', component: PortfolioComponent},
-      {path: 'course', component: CourseComponent},
+      {path: 'course', component: StudentCoursesComponent},
     ]
   },
 

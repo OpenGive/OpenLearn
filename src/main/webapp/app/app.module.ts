@@ -19,7 +19,6 @@ import "hammerjs";
 import {PortfolioComponent} from "./controls/portfolio/portfolio/portfolio.component";
 import {PortfolioCardComponent} from "./controls/portfolio/portfolio-card/portfolio-card.component";
 import {CourseCardComponent} from "./controls/course/course-card/course-card.component";
-import {CourseComponent} from "./controls/course/course/course.component";
 import {ParallaxHeaderComponent} from "./controls/layout/parallax-header/parallax-header.component";
 import {UserService} from "./services/user.service";
 import {UserRouteAccessService} from "./shared/auth/user-route-access-service";
@@ -30,6 +29,8 @@ import {CookieModule} from "ngx-cookie";
 import {AuthServerProvider} from "./shared/auth/auth-oauth2.service";
 import {StateStorageService} from "./shared/auth/state-storage.service";
 import { AccessDeniedPageComponent } from './pages/access-denied-page/access-denied-page.component';
+import { CourseListComponent } from './controls/course/course-list/course-list.component';
+import { StudentCoursesComponent } from './student-courses/student-courses.component';
 
 @NgModule({
   declarations: [
@@ -42,9 +43,10 @@ import { AccessDeniedPageComponent } from './pages/access-denied-page/access-den
     PortfolioComponent,
     PortfolioCardComponent,
     CourseCardComponent,
-    CourseComponent,
     ParallaxHeaderComponent,
-    AccessDeniedPageComponent
+    AccessDeniedPageComponent,
+    CourseListComponent,
+    StudentCoursesComponent
   ],
   imports: [
     BrowserModule,
