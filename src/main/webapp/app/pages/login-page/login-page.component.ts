@@ -1,7 +1,9 @@
 import {Component, OnInit} from "@angular/core";
+import {MdDialog} from "@angular/material";
 import {Router} from "@angular/router";
 
 import {LoginService} from "../../shared/login/login.service";
+import {ForgotPasswordDialogComponent} from "../../controls/forgot-password-dialog/forgot-password-dialog.component";
 
 @Component({
   selector: 'app-login-page',
@@ -19,7 +21,8 @@ export class LoginPageComponent implements OnInit /*, AfterViewInit*/ {
 
   constructor(private loginService: LoginService,
 //              private stateStorageService: StateStorageService,
-              private router: Router) {
+              private router: Router,
+              private dialog: MdDialog) {
     this.credentials = {};
   }
 
@@ -30,6 +33,11 @@ export class LoginPageComponent implements OnInit /*, AfterViewInit*/ {
     xs: '90%',
     sm: '400px'
   };
+
+  forgotPassword() {
+    let dialogRef = this.dialog.open(ForgotPasswordDialogComponent);
+    console.log(dialogRef);
+  }
 
   login() {
     this.loginService.login({

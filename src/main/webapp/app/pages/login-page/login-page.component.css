@@ -1,4 +1,17 @@
-.login-container {
-    height: 100%;
+.login-logo {
+  background: url('/assets/login-logo.png') no-repeat;
+  background-size: 80px 80px;
+  height: 80px;
+  width: 80px;
+  margin-bottom: 50px;
 }
 
+.forgot-password-container {
+  width: 100%;
+}
+
+.forgot-password {
+  text-align: right;
+  color: rgba(0, 0, 0, 0.38);
+  cursor: pointer;
+}
