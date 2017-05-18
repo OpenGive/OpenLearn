@@ -9,6 +9,7 @@ import {LandingPageComponent} from "./pages/landing-page/landing-page.component"
 import {NgModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {RouterModule, Routes} from "@angular/router";
+import {UserRouteAccessService} from "./shared/auth/user-route-access-service";
 
 const ROUTES: Routes = [
   {
@@ -23,21 +24,22 @@ const ROUTES: Routes = [
     component: AccessDeniedPageComponent,
     data: {
       authorities: []
-    }
+    },
   },
   {
     path: 'login',
     component: LoginPageComponent,
     data: {
       authorities: []
-    }
+    },
   },
   {
     path: 'course/:id',
     component: CoursePageComponent,
     data: {
       authorities: [Role.Instructor]
-    }
+    },
+    canActivate: [UserRouteAccessService]
   },
   {
     path: 'student/:id',
@@ -45,6 +47,7 @@ const ROUTES: Routes = [
     data: {
        authorities: [Role.Student]
     },
+    canActivate: [UserRouteAccessService],
     children: [
       {path: '', pathMatch: 'full', redirectTo: 'portfolio'},
       {path: 'portfolio', component: PortfolioComponent},
