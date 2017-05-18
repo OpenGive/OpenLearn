@@ -21,12 +21,12 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /**
  * A Course.
@@ -36,6 +36,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "course")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "course")
+@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class)
 public class Course implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -61,18 +62,15 @@ public class Course implements Serializable {
 
 	@NotNull
 	@ManyToOne(optional = false)
-    @JsonIgnore
 	private Organization organization;
 
 	@NotNull
 	@ManyToOne(optional = false)
-    @JsonIgnore
 	private Program program;
 
 	@NotNull
 	@OneToOne(optional = false)
 	@JoinColumn(unique = true)
-    @JsonIgnore
 	private User instructor;
 
 	@ManyToMany
@@ -80,7 +78,6 @@ public class Course implements Serializable {
 			name="course_link",
 			joinColumns=@JoinColumn(name="course_id", referencedColumnName="id"),
 			inverseJoinColumns=@JoinColumn(name="link_id", referencedColumnName="id"))
-	@JsonIgnore
 	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 	private Set<ItemLink> resources = new HashSet<>();
 
@@ -90,12 +87,10 @@ public class Course implements Serializable {
 			joinColumns = {	@JoinColumn(name = "user_id", referencedColumnName = "id") },
 			inverseJoinColumns = { @JoinColumn(name = "course_id", referencedColumnName = "id") }
 			)
-	@JsonIgnore
 	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 	private Set<User> students = new HashSet<>();
 
 	@OneToMany(mappedBy = "course")
-	@JsonIgnore
 	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 	private Set<Activity> activities = new HashSet<>();
 
