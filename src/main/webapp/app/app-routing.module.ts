@@ -10,6 +10,7 @@ import {NgModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {RouterModule, Routes} from "@angular/router";
 import {UserRouteAccessService} from "./shared/auth/user-route-access-service";
+import {AdminPageComponent} from "./pages/admin-page/admin-page.component";
 
 const ROUTES: Routes = [
   {
@@ -31,6 +32,13 @@ const ROUTES: Routes = [
     component: LoginPageComponent,
     data: {
       authorities: []
+    },
+  },
+  {
+    path: 'admin',
+    component: AdminPageComponent,
+    data: {
+      authorities: [Role.Admin]
     },
   },
   {

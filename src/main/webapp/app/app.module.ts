@@ -32,6 +32,7 @@ import { AccessDeniedPageComponent } from './pages/access-denied-page/access-den
 import { CourseListComponent } from './controls/course/course-list/course-list.component';
 import { StudentCoursesComponent } from './student-courses/student-courses.component';
 import {ForgotPasswordDialogComponent} from "./controls/forgot-password-dialog/forgot-password-dialog.component";
+import {AdminPageComponent} from "./pages/admin-page/admin-page.component";
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import {ForgotPasswordDialogComponent} from "./controls/forgot-password-dialog/f
     LandingPageComponent,
     LoginPageComponent,
     ForgotPasswordDialogComponent,
+    AdminPageComponent,
     StudentPageComponent,
     CoursePageComponent,
     NavigationMenuComponent,
