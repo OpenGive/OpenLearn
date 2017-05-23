@@ -1,0 +1,60 @@
+#admin-page {
+  margin-top: 40px;
+}
+
+#admin-tabs {
+  padding-right: 20px;
+}
+
+#admin-tab-list {
+  padding-top: 0;
+  padding-bottom: 5px;
+}
+
+.admin-tab-option {
+  width: 220px;
+}
+
+.admin-tab-option.active {
+  font-weight: bolder;
+  border: 2px solid #FF5252;
+  border-radius: 4px;
+  box-shadow: 0 2px 2px rgba(0,0,0,.24), 0 0 2px rgba(0,0,0,.12);
+}
+
+.admin-tab-text {
+  font-family: Rubik, sans-serif;
+  font-size: 14px;
+  color: #4D5A70;
+  letter-spacing: -0.22px;
+}
+
+#admin-header {
+  width: 700px;
+  height: 70px;
+  padding: 22px;
+  border: 2px solid #FF5252;
+  border-radius: 4px;
+  box-shadow: 0 2px 2px rgba(0,0,0,.24), 0 0 2px rgba(0,0,0,.12);
+}
+
+.admin-header-text {
+  font-family: Rubik, sans-serif;
+  font-size: 24px;
+  font-weight: bolder;
+  color: #4D5A70;
+  letter-spacing: -0.38px;
+}
+
+.admin-add-button {
+  background: #FF5252;
+  border-radius: 4px;
+  min-width: 60px;
+  height: 36px;
+  font-family: OpenSans, sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  color: #FFFFFF;
+  letter-spacing: 0;
+  line-height: 20px;
+}

@@ -31,12 +31,16 @@ import {StateStorageService} from "./shared/auth/state-storage.service";
 import { AccessDeniedPageComponent } from './pages/access-denied-page/access-denied-page.component';
 import { CourseListComponent } from './controls/course/course-list/course-list.component';
 import { StudentCoursesComponent } from './student-courses/student-courses.component';
+import {ForgotPasswordDialogComponent} from "./controls/forgot-password-dialog/forgot-password-dialog.component";
+import {AdminPageComponent} from "./pages/admin-page/admin-page.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     LandingPageComponent,
     LoginPageComponent,
+    ForgotPasswordDialogComponent,
+    AdminPageComponent,
     StudentPageComponent,
     CoursePageComponent,
     NavigationMenuComponent,
@@ -69,7 +73,8 @@ import { StudentCoursesComponent } from './student-courses/student-courses.compo
     HttpWrapperService,
     CourseService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ForgotPasswordDialogComponent]
 })
 export class AppModule {
 }

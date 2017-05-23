@@ -3,18 +3,16 @@
     <div fxLayout="column">
       <button routerLink="/" (click)="sidenav.close()" md-button>Home</button>
       <button routerLink="/login" (click)="sidenav.close()" md-button>Login</button>
+      <button routerLink="/admin" (click)="sidenav.close()" md-button>Admin</button>
       <button routerLink="/student/1" (click)="sidenav.close()" md-button>Dashboard</button>
       <button routerLink="/course/1" (click)="sidenav.close()" md-button>Courses</button>
     </div>
   </md-sidenav>
   <div class="main-content">
 <md-toolbar color="primary">
- 
+
   <div fxLayout="row">
-    <div fxHide.lt-sm>
-      OG
-    </div>
-    
+    <div class="nav-logo" fxHide.lt-sm></div>
     <div fxHide.gt-xs>
       <button (click)="sidenav.open()" class="nav-button" md-button>
         <md-icon>menu</md-icon>
@@ -27,6 +25,7 @@
     <div fxHide.lt-sm>
       <button routerLink="/" md-button>Home</button>
       <button routerLink="/login" md-button>Login</button>
+      <button routerLink="/admin" md-button>Admin</button>
       <button routerLink="/student/1" md-button>Dashboard</button>
       <button routerLink="/course/1" md-button>Courses</button>
     </div>
