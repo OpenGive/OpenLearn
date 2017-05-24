@@ -11,6 +11,7 @@ import {CommonModule} from "@angular/common";
 import {RouterModule, Routes} from "@angular/router";
 import {UserRouteAccessService} from "./shared/auth/user-route-access-service";
 import {AdminPageComponent} from "./pages/admin-page/admin-page.component";
+import {AdminUsersComponent} from "./controls/admin/admin-users/admin-users.component";
 
 const ROUTES: Routes = [
   {
@@ -40,6 +41,11 @@ const ROUTES: Routes = [
     data: {
       authorities: [Role.Admin]
     },
+    canActivate: [UserRouteAccessService],
+    children: [
+      {path: '', pathMatch: 'full', redirectTo: 'admin-users'},
+      {path: 'admin-users', component: AdminUsersComponent}
+    ]
   },
   {
     path: 'course/:id',

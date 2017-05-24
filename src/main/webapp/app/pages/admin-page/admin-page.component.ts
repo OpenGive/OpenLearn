@@ -9,10 +9,10 @@ export class AdminPageComponent implements OnInit {
 
   tabs = [
     { name: 'Admin Users', active: true },
-    { name: 'Teachers', active: false },
-    { name: 'Students', active: false },
-    { name: 'Sessions', active: false },
-    { name: 'Courses', active: false }
+    // { name: 'Teachers', active: false },
+    // { name: 'Students', active: false },
+    // { name: 'Sessions', active: false },
+    // { name: 'Courses', active: false }
   ];
   activeTab = this.tabs[0];
 

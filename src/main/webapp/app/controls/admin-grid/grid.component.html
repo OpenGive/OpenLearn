@@ -1,0 +1,12 @@
+<table>
+  <thead>
+    <tr>
+      <th *ngFor="let field of grid.fields">{{field.display}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let entry of grid.entries">
+      <td *ngFor="let field of grid.fields">{{entry[field.key]}}</td>
+    </tr>
+  </tbody>
+</table>

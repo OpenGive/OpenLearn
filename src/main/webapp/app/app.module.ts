@@ -33,6 +33,8 @@ import { CourseListComponent } from './controls/course/course-list/course-list.c
 import { StudentCoursesComponent } from './student-courses/student-courses.component';
 import {ForgotPasswordDialogComponent} from "./controls/forgot-password-dialog/forgot-password-dialog.component";
 import {AdminPageComponent} from "./pages/admin-page/admin-page.component";
+import {AdminUsersComponent} from "./controls/admin/admin-users/admin-users.component";
+import {GridComponent} from "./controls/admin-grid/grid.component";
 
 @NgModule({
   declarations: [
@@ -41,6 +43,8 @@ import {AdminPageComponent} from "./pages/admin-page/admin-page.component";
     LoginPageComponent,
     ForgotPasswordDialogComponent,
     AdminPageComponent,
+    GridComponent,
+    AdminUsersComponent,
     StudentPageComponent,
     CoursePageComponent,
     NavigationMenuComponent,
