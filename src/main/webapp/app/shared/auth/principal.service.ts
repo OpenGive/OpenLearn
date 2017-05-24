@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { AccountService } from './account.service';
-import { Role } from "../../app.constants";
+import { AppConstants } from "../../app.constants";
 import { AccountModel } from "../index";
 
 @Injectable()
@@ -39,18 +39,18 @@ export class Principal {
     }
 
     collectionHasAtLeastAuthority(authorities: string[], authToCheck: string): boolean {
-        
+
         var isAuth = false;
 
         switch (authToCheck) {
-            case Role.Student:
-                isAuth = isAuth || authorities.some(a => a === Role.Student);
-            case Role.Instructor:
-                isAuth = isAuth || authorities.some(a => a === Role.Instructor);
-            case Role.OrgAdmin:
-                isAuth = isAuth || authorities.some(a => a === Role.OrgAdmin);
-            case Role.Admin:
-                isAuth = isAuth || authorities.some(a => a === Role.Admin);
+            case AppConstants.Role.Student:
+                isAuth = isAuth || authorities.some(a => a === AppConstants.Role.Student);
+            case AppConstants.Role.Instructor:
+                isAuth = isAuth || authorities.some(a => a === AppConstants.Role.Instructor);
+            case AppConstants.Role.OrgAdmin:
+                isAuth = isAuth || authorities.some(a => a === AppConstants.Role.OrgAdmin);
+            case AppConstants.Role.Admin:
+                isAuth = isAuth || authorities.some(a => a === AppConstants.Role.Admin);
         }
 
         return isAuth;

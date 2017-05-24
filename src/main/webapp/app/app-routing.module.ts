@@ -1,6 +1,6 @@
 import { StudentCoursesComponent } from './student-courses/student-courses.component';
 import { AccessDeniedPageComponent } from './pages/access-denied-page/access-denied-page.component';
-import { Role } from './app.constants';
+import { AppConstants } from './app.constants';
 import {PortfolioComponent} from "./controls/portfolio/portfolio/portfolio.component";
 import {StudentPageComponent} from "./pages/student-page/student-page.component";
 import {LoginPageComponent} from "./pages/login-page/login-page.component";
@@ -38,14 +38,14 @@ const ROUTES: Routes = [
     path: 'admin',
     component: AdminPageComponent,
     data: {
-      authorities: [Role.Admin]
+      authorities: [AppConstants.Role.Admin]
     },
   },
   {
     path: 'course/:id',
     component: CoursePageComponent,
     data: {
-      authorities: [Role.Instructor]
+      authorities: [AppConstants.Role.Instructor]
     },
     canActivate: [UserRouteAccessService]
   },
@@ -53,7 +53,7 @@ const ROUTES: Routes = [
     path: 'student/:id',
     component: StudentPageComponent,
     data: {
-       authorities: [Role.Student]
+       authorities: [AppConstants.Role.Student]
     },
     canActivate: [UserRouteAccessService],
     children: [

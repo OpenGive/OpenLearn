@@ -3,7 +3,7 @@ import { Http, Response, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
 import { User } from './user.model';
-import { Role } from "../../app.constants";
+import { AppConstants } from "../../app.constants";
 
 @Injectable()
 export class UserService {
@@ -13,13 +13,13 @@ export class UserService {
 
     static translateRole(roleKey: string) : string {
         switch (roleKey) {
-            case Role.Admin:
+            case AppConstants.Role.Admin:
                 return 'Administrator'
-            case Role.OrgAdmin:
+            case AppConstants.Role.OrgAdmin:
                 return 'Org Admin'
-            case Role.Instructor:
+            case AppConstants.Role.Instructor:
                 return 'Instructor'
-            case Role.Student:
+            case AppConstants.Role.Student:
                 return 'Student'
             default:
                 return 'None'
