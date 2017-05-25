@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {GridModel} from "../../../models/grid.model";
-import {AdminModel} from "../admin.constants";
-import {UserService} from "../../../services/user.service";
+import {AdminGridModel} from "../../../../models/admin-grid.model";
+import {AdminModel} from "../../admin.constants";
+import {UserService} from "../../../../services/user.service";
 
 @Component({
   selector: 'app-admin-users',
@@ -10,7 +10,7 @@ import {UserService} from "../../../services/user.service";
 })
 export class AdminUsersComponent implements OnInit {
 
-  userGrid: GridModel;
+  userGrid: AdminGridModel;
 
   constructor(
     public userService: UserService
@@ -22,7 +22,7 @@ export class AdminUsersComponent implements OnInit {
 
   ngOnInit() {
     this.getUsers();
-    this.userGrid = new GridModel(AdminModel.User.title, AdminModel.User.columns, AdminModel.User.details, []);
+    this.userGrid = new AdminGridModel(AdminModel.User.title, AdminModel.User.columns, AdminModel.User.details, []);
   }
 
 }

@@ -33,8 +33,9 @@ import { CourseListComponent } from './controls/course/course-list/course-list.c
 import { StudentCoursesComponent } from './student-courses/student-courses.component';
 import {ForgotPasswordDialogComponent} from "./controls/forgot-password-dialog/forgot-password-dialog.component";
 import {AdminPageComponent} from "./pages/admin-page/admin-page.component";
-import {AdminUsersComponent} from "./controls/admin/admin-users/admin-users.component";
-import {GridComponent} from "./controls/grid/grid.component";
+import {AdminUsersComponent} from "./controls/admin/admin-tabs/admin-users/admin-users.component";
+import {AdminGridComponent} from "./controls/admin/admin-grid/admin-grid.component";
+import {AdminUsersDialogComponent} from "./controls/admin/admin-dialogs/admin-users-dialog/admin-users-dialog.component";
 
 @NgModule({
   declarations: [
@@ -43,8 +44,9 @@ import {GridComponent} from "./controls/grid/grid.component";
     LoginPageComponent,
     ForgotPasswordDialogComponent,
     AdminPageComponent,
-    GridComponent,
+    AdminGridComponent,
     AdminUsersComponent,
+    AdminUsersDialogComponent,
     StudentPageComponent,
     CoursePageComponent,
     NavigationMenuComponent,
@@ -78,7 +80,10 @@ import {GridComponent} from "./controls/grid/grid.component";
     CourseService
   ],
   bootstrap: [AppComponent],
-  entryComponents: [ForgotPasswordDialogComponent]
+  entryComponents: [
+    AdminUsersDialogComponent,
+    ForgotPasswordDialogComponent
+  ]
 })
 export class AppModule {
 }

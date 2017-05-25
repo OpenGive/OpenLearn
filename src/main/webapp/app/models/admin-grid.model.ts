@@ -1,4 +1,4 @@
-export class GridModel {
+export class AdminGridModel {
   constructor(
     public title: string,
     public columns: any[],
