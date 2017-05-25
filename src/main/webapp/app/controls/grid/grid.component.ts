@@ -16,4 +16,14 @@ export class GridComponent implements OnInit {
   ngOnInit() {
   }
 
+  displayCell(row, column) {
+    if (column.property === 'authorities') {
+      return '[authorities]';
+    } else if (column.property === 'imageUrl') {
+      return '[image]';
+    } else {
+      return row[column.property];
+    }
+  }
+
 }

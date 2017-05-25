@@ -13,7 +13,7 @@
       </thead>
       <tbody>
       <tr *ngFor="let row of grid.rows">
-        <td *ngFor="let column of grid.columns">{{row[column.property]}}</td>
+        <td *ngFor="let column of grid.columns">{{displayCell(row, column)}}</td>
         <td class="icon-cell">
           <button md-button class="icon-button" [mdMenuTriggerFor]="gridMenu">
             <md-icon class="grid-action-icon">more_vert</md-icon>
