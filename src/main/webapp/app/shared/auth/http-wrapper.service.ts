@@ -19,6 +19,10 @@ export class HttpWrapperService {
         return this._http.put(endpoint, body, this.getAuthHeader());
     }
 
+    delete(endpoint: string) : Observable<any> {
+        return this._http.delete(endpoint, this.getAuthHeader());
+    }
+
     private getAuthHeader(): RequestOptionsArgs {
         let toReturn: RequestOptionsArgs = { headers: new Headers() };
         let tokenObject = this._cookieService.getObject('token') as any;

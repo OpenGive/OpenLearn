@@ -30,7 +30,7 @@ public class ProgramResource {
     private final Logger log = LoggerFactory.getLogger(ProgramResource.class);
 
     private static final String ENTITY_NAME = "program";
-        
+
     private final ProgramService programService;
 
     public ProgramResource(ProgramService programService) {
@@ -41,7 +41,7 @@ public class ProgramResource {
      * POST  /programs : Create a new program.
      *
      * @param program the program to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new program, or with status 400 (Bad Request) if the program has already an ID
+     * @return the ResponseEntity with status 201 (Created) and with body of the new program, or with status 400 (Bad Request) if the program has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/programs")
@@ -63,7 +63,7 @@ public class ProgramResource {
      * @param program the program to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated program,
      * or with status 400 (Bad Request) if the program is not valid,
-     * or with status 500 (Internal Server Error) if the program couldnt be updated
+     * or with status 500 (Internal Server Error) if the program could not be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/programs")
@@ -123,7 +123,7 @@ public class ProgramResource {
      * SEARCH  /_search/programs?query=:query : search for the program corresponding
      * to the query.
      *
-     * @param query the query of the program search 
+     * @param query the query of the program search
      * @return the result of the search
      */
     @GetMapping("/_search/programs")
