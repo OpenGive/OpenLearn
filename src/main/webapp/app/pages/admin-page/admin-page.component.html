@@ -6,13 +6,5 @@
       </a>
     </md-nav-list>
   </div>
-  <div>
-    <div id="admin-header" fxLayout="row" fxLayoutAlign="space-between center">
-      <span class="admin-header-text">{{activeTab.name}}</span>
-      <button md-raised-button class="admin-add-button">ADD</button>
-    </div>
-    <div id="admin-table" fxLayout="column">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
+  <router-outlet></router-outlet>
 </div>

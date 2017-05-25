@@ -34,7 +34,7 @@ import { StudentCoursesComponent } from './student-courses/student-courses.compo
 import {ForgotPasswordDialogComponent} from "./controls/forgot-password-dialog/forgot-password-dialog.component";
 import {AdminPageComponent} from "./pages/admin-page/admin-page.component";
 import {AdminUsersComponent} from "./controls/admin/admin-users/admin-users.component";
-import {GridComponent} from "./controls/admin-grid/grid.component";
+import {GridComponent} from "./controls/grid/grid.component";
 
 @NgModule({
   declarations: [

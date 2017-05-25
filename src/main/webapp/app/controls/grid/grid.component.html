@@ -1,0 +1,41 @@
+<div>
+  <div id="grid-header" fxLayout="row" fxLayoutAlign="space-between center">
+    <span class="grid-header-text">{{grid.title}}</span>
+    <button md-raised-button class="grid-add-button">ADD</button>
+  </div>
+  <div id="grid-table" fxLayout="column">
+    <table>
+      <thead>
+      <tr>
+        <th *ngFor="let column of grid.columns">{{column.display}}</th>
+        <th></th><!-- to extend border over icon -->
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let row of grid.rows">
+        <td *ngFor="let column of grid.columns">{{row[column.property]}}</td>
+        <td class="icon-cell">
+          <button md-button class="icon-button" [mdMenuTriggerFor]="gridMenu">
+            <md-icon class="grid-action-icon">more_vert</md-icon>
+          </button>
+          <md-menu #gridMenu="mdMenu">
+            <button md-menu-item>
+              <md-icon>create</md-icon>
+              <span>Edit</span>
+            </button>
+            <button md-menu-item>
+              <md-icon>info</md-icon>
+              <span>View Details</span>
+            </button>
+            <md-divider></md-divider>
+            <button md-menu-item>
+              <md-icon>delete</md-icon>
+              <span>Remove</span>
+            </button>
+          </md-menu>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

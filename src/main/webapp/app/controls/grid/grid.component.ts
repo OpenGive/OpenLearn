@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from "@angular/core";
-import {GridModel} from "../../shared/grid/grid.model";
+import {GridModel} from "../../models/grid.model";
 
 @Component({
   selector: 'app-grid',
