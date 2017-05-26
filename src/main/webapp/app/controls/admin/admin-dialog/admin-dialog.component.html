@@ -9,5 +9,7 @@
       <button md-raised-button (click)="save()" class="admin-dialog-button save-button">SAVE</button>
     </div>
   </div>
-  <div class="admin-dialog-content"></div>
+  <div class="admin-dialog-content" [ngSwitch]="data.tab">
+    <span *ngSwitchCase="'Admin Users'">ADMIN USERS</span>
+  </div>
 </div>

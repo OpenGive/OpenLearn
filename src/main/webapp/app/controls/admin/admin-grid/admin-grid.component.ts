@@ -29,16 +29,21 @@ export class AdminGridComponent implements OnInit {
     this.dialog.open(AdminDialogComponent);
   }
 
-  edit(): void {
+  edit(row): void {
     console.log('edit');
-    this.dialog.open(AdminDialogComponent);
+    this.dialog.open(AdminDialogComponent, {
+      data: {
+        tab: this.grid.title,
+        item: row
+      }
+    });
   }
 
-  remove(): void {
+  remove(row): void {
     console.log('remove');
   }
 
-  viewDetails(): void {
+  viewDetails(row): void {
     console.log('viewDetails');
   }
 
