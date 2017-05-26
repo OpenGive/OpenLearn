@@ -1,0 +1,48 @@
+.admin-dialog {
+  padding: 0;
+  min-width: 600px;
+}
+
+.admin-dialog-header {
+  height: 60px;
+  padding: 11px 20px;
+  border-bottom: 1px solid #E5E5E5;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.05);
+}
+
+.admin-dialog-title {
+  font-family: Rubik, sans-serif;
+  font-size: 18px;
+  color: #4D5A70;
+  letter-spacing: -0.6px;
+}
+
+.admin-dialog-subtitle {
+  font-family: Rubik, sans-serif;
+  font-size: 12px;
+  color: #999999;
+  letter-spacing: -0.19px;
+}
+
+.admin-dialog-button {
+  border-radius: 4px;
+  height: 36px;
+  font-family: OpenSans, sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 0;
+  line-height: 20px;
+  margin-left: 10px;
+}
+
+.discard-button {
+  background: #E5E5E5;
+  min-width: 91px;
+  color: #4D5A70;
+}
+
+.save-button {
+  background: #FF5252;
+  min-width: 65px;
+  color: #FFFFFF;
+}

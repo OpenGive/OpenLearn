@@ -3,11 +3,15 @@ import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
 import {Observable} from "rxjs";
 import {log} from "util";
+import {User} from "../shared/user/user.model";
 
 @Injectable()
 export class UserService {
-  constructor(private _http: HttpWrapperService) {
-  }
+
+  private endpoint = '/api/users';
+
+  constructor(private _http: HttpWrapperService) {}
+
   getAllUsers() {
     return this._http.get('/api/users').map(resp => {
       let json = resp.json();
@@ -15,6 +19,15 @@ export class UserService {
       return json;
     });
   }
+
+  create(user: User): Observable<Response> {
+    return this._http.post(this.endpoint, user).map(resp => resp.json());
+  }
+
+  update(user: User): Observable<Response> {
+    return this._http.put(this.endpoint, user).map(resp => resp.json());
+  }
+
   // authenticate(username: string, password: string): Observable<string> {
   //   let body = {
   //     username: username,

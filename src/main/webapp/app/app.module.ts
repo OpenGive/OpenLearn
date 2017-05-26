@@ -35,7 +35,8 @@ import {ForgotPasswordDialogComponent} from "./controls/forgot-password-dialog/f
 import {AdminPageComponent} from "./pages/admin-page/admin-page.component";
 import {AdminUsersComponent} from "./controls/admin/admin-tabs/admin-users/admin-users.component";
 import {AdminGridComponent} from "./controls/admin/admin-grid/admin-grid.component";
-import {AdminUsersDialogComponent} from "./controls/admin/admin-dialogs/admin-users-dialog/admin-users-dialog.component";
+import {AdminDialogComponent} from "./controls/admin/admin-dialog/admin-dialog.component";
+import {AdminGridService} from "./services/admin-grid.service";
 
 @NgModule({
   declarations: [
@@ -44,9 +45,9 @@ import {AdminUsersDialogComponent} from "./controls/admin/admin-dialogs/admin-us
     LoginPageComponent,
     ForgotPasswordDialogComponent,
     AdminPageComponent,
+    AdminDialogComponent,
     AdminGridComponent,
     AdminUsersComponent,
-    AdminUsersDialogComponent,
     StudentPageComponent,
     CoursePageComponent,
     NavigationMenuComponent,
@@ -77,11 +78,12 @@ import {AdminUsersDialogComponent} from "./controls/admin/admin-dialogs/admin-us
     AuthServerProvider,
     StateStorageService,
     HttpWrapperService,
-    CourseService
+    CourseService,
+    AdminGridService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
-    AdminUsersDialogComponent,
+    AdminDialogComponent,
     ForgotPasswordDialogComponent
   ]
 })

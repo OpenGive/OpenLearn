@@ -1,7 +1,7 @@
 <div>
   <div id="grid-header" fxLayout="row" fxLayoutAlign="space-between center">
     <span class="grid-header-text">{{grid.title}}</span>
-    <button md-raised-button class="grid-add-button">ADD</button>
+    <button md-raised-button (click)="add()" class="grid-add-button">ADD</button>
   </div>
   <div id="grid-table" fxLayout="column">
     <table>
@@ -19,16 +19,16 @@
             <md-icon class="grid-action-icon">more_vert</md-icon>
           </button>
           <md-menu #gridMenu="mdMenu">
-            <button md-menu-item>
+            <button md-menu-item (click)="edit()">
               <md-icon>create</md-icon>
               <span>Edit</span>
             </button>
-            <button md-menu-item>
+            <button md-menu-item (click)="viewDetails()">
               <md-icon>info</md-icon>
               <span>View Details</span>
             </button>
             <md-divider></md-divider>
-            <button md-menu-item>
+            <button md-menu-item (click)="remove()">
               <md-icon>delete</md-icon>
               <span>Remove</span>
             </button>
