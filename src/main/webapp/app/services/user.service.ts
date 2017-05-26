@@ -4,6 +4,7 @@ import {Http} from "@angular/http";
 import {Observable} from "rxjs";
 import {log} from "util";
 import {User} from "../shared/user/user.model";
+import {Role} from "../app.constants";
 
 @Injectable()
 export class UserService {
@@ -13,11 +14,11 @@ export class UserService {
   constructor(private _http: HttpWrapperService) {}
 
   getAllUsers() {
-    return this._http.get('/api/users').map(resp => {
-      let json = resp.json();
-      console.log(json);
-      return json;
-    });
+    return this._http.get(this.endpoint).map(resp => resp.json());
+  }
+
+  getAdminUsers() {
+    return this._http.get(this.endpoint).map(resp => resp.json().filter(user => user.authorities.includes(Role.Admin)));
   }
 
   create(user: User): Observable<Response> {

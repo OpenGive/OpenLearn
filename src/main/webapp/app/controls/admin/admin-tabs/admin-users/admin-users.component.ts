@@ -8,5 +8,9 @@ import {AdminModel} from "../../admin.constants";
   styleUrls: ['./admin-users.component.css']
 })
 export class AdminUsersComponent {
-  userGrid = new AdminGridModel(AdminModel.User.title, AdminModel.User.columns, AdminModel.User.details, []);;
+  adminUserGrid = new AdminGridModel(
+    AdminModel.AdminUser.title,
+    AdminModel.AdminUser.columns,
+    AdminModel.AdminUser.details,
+    []);
 }

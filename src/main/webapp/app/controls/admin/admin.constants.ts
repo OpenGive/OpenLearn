@@ -1,6 +1,6 @@
 export const AdminModel = {
-  User: {
-    title: 'Users',
+  AdminUser: {
+    title: 'Admin Users',
     columns: [
       {property: 'firstName', display: 'First Name'},
       {property: 'lastName', display: 'Last Name'},

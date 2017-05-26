@@ -1,4 +1,5 @@
 import {Component, OnInit} from "@angular/core";
+import {AdminModel} from "../../controls/admin/admin.constants";
 
 @Component({
   selector: 'app-admin-page',
@@ -8,7 +9,7 @@ import {Component, OnInit} from "@angular/core";
 export class AdminPageComponent implements OnInit {
 
   tabs = [
-    { name: 'Users', active: true },
+    { name: AdminModel.AdminUser.title, active: true },
     // { name: 'Teachers', active: false },
     // { name: 'Students', active: false },
     // { name: 'Sessions', active: false },

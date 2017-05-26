@@ -10,21 +10,21 @@ export class AdminGridService {
 
   query(type: string): Observable<any> {
     switch (type) {
-      case AdminModel.User.title:
-        return this.userService.getAllUsers();
+      case AdminModel.AdminUser.title:
+        return this.userService.getAdminUsers();
     }
   }
 
   create(toCreate: any, type: string): Observable<any> {
     switch (type) {
-      case AdminModel.User.title:
+      case AdminModel.AdminUser.title:
         return this.userService.create(toCreate);
     }
   }
 
   update(toUpdate: any, type: string): any {
     switch (type) {
-      case AdminModel.User.title:
+      case AdminModel.AdminUser.title:
         return this.userService.create(toUpdate);
     }
   }
