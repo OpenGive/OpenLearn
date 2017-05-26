@@ -1,0 +1,22 @@
+<form #adminUsersForm="ngForm">
+  <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap>
+    <md-input-container fxFlex="30%">
+      <input mdInput type="text" name="firstName" [(ngModel)]="formAdminUser.firstName" placeholder="First Name"/>
+    </md-input-container>
+    <md-input-container fxFlex="30%">
+      <input mdInput type="text" name="lastName" [(ngModel)]="formAdminUser.lastName" placeholder="Last Name"/>
+    </md-input-container>
+    <md-input-container fxFlex="30%">
+      <input mdInput type="text" name="login" [(ngModel)]="formAdminUser.login" placeholder="Username"/>
+    </md-input-container>
+    <md-input-container fxFlex="30%">
+      <input mdInput type="email" name="email" [(ngModel)]="formAdminUser.email" placeholder="Email"/>
+    </md-input-container>
+    <md-input-container fxFlex="30%">
+      <input mdInput type="tel" name="phoneNumber" [(ngModel)]="formAdminUser.phoneNumber" placeholder="Phone"/>
+    </md-input-container>
+    <md-select name="authorities" [(ngModel)]="formAdminUser.authorities" placeholder="Roles" multiple fxFlex="30%">
+      <md-option *ngFor="let role of roles" value="{{role}}">{{role}}</md-option>
+    </md-select>
+  </div>
+</form>

@@ -10,6 +10,6 @@
     </div>
   </div>
   <div class="admin-dialog-content" [ngSwitch]="data.tab">
-    <span *ngSwitchCase="'Admin Users'">ADMIN USERS</span>
+    <admin-users-form *ngSwitchCase="'Admin Users'" [item]="data.item"></admin-users-form>
   </div>
 </div>

@@ -1,6 +1,5 @@
 .admin-dialog {
   padding: 0;
-  min-width: 600px;
 }
 
 .admin-dialog-header {
@@ -45,4 +44,8 @@
   background: #FF5252;
   min-width: 65px;
   color: #FFFFFF;
+}
+
+.admin-dialog-content {
+  padding: 20px 40px;
 }

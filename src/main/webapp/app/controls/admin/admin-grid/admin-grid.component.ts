@@ -25,26 +25,23 @@ export class AdminGridComponent implements OnInit {
   }
 
   add(): void {
-    console.log('add');
     this.dialog.open(AdminDialogComponent);
   }
 
   edit(row): void {
-    console.log('edit');
     this.dialog.open(AdminDialogComponent, {
       data: {
         tab: this.grid.title,
         item: row
-      }
+      },
+      disableClose: true
     });
   }
 
   remove(row): void {
-    console.log('remove');
   }
 
   viewDetails(row): void {
-    console.log('viewDetails');
   }
 
   displayCell(row, column): string {
@@ -52,7 +49,7 @@ export class AdminGridComponent implements OnInit {
       // Parse array of roles to create friendly list (ROLE_BLAH => Blah)
       return row[column.property].map(role => {
         return role.charAt(5) + role.slice(6).toLowerCase()
-      }).reverse().join(', ');
+      }).sort().join(', ');
     } else {
       return row[column.property];
     }

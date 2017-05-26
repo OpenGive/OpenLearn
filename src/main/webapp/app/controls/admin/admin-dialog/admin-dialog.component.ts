@@ -12,16 +12,13 @@ export class AdminDialogComponent implements OnInit {
               public dialogRef: MdDialogRef<AdminDialogComponent>) {}
 
   ngOnInit() {
-    console.log(this.data);
   }
 
   discard() {
-    console.log('discard');
     this.dialogRef.close();
   }
 
   save() {
-    console.log('save');
     this.dialogRef.close();
   }
 }

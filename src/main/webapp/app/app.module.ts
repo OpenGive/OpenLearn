@@ -37,6 +37,7 @@ import {AdminUsersComponent} from "./controls/admin/admin-tabs/admin-users/admin
 import {AdminGridComponent} from "./controls/admin/admin-grid/admin-grid.component";
 import {AdminDialogComponent} from "./controls/admin/admin-dialog/admin-dialog.component";
 import {AdminGridService} from "./services/admin-grid.service";
+import {AdminUsersFormComponent} from "./controls/admin/admin-tabs/admin-users/admin-users-form/admin-users-form.component";
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import {AdminGridService} from "./services/admin-grid.service";
     AdminDialogComponent,
     AdminGridComponent,
     AdminUsersComponent,
+    AdminUsersFormComponent,
     StudentPageComponent,
     CoursePageComponent,
     NavigationMenuComponent,
