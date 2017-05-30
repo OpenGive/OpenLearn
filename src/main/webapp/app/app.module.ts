@@ -33,6 +33,7 @@ import { CourseListComponent } from './controls/course/course-list/course-list.c
 import { StudentCoursesComponent } from './student-courses/student-courses.component';
 import {ForgotPasswordDialogComponent} from "./controls/forgot-password-dialog/forgot-password-dialog.component";
 import {AdminPageComponent} from "./pages/admin-page/admin-page.component";
+import { PortfolioService } from './services/portfolio.service'
 
 @NgModule({
   declarations: [
@@ -71,7 +72,8 @@ import {AdminPageComponent} from "./pages/admin-page/admin-page.component";
     AuthServerProvider,
     StateStorageService,
     HttpWrapperService,
-    CourseService
+    CourseService,
+    PortfolioService
   ],
   bootstrap: [AppComponent],
   entryComponents: [ForgotPasswordDialogComponent]
