@@ -71,7 +71,8 @@ import {AdminPageComponent} from "./pages/admin-page/admin-page.component";
     AuthServerProvider,
     StateStorageService,
     HttpWrapperService,
-    CourseService
+    CourseService,
+    ProgramService
   ],
   bootstrap: [AppComponent],
   entryComponents: [ForgotPasswordDialogComponent]
