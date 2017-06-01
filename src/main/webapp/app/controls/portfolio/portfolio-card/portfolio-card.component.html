@@ -1,3 +1,17 @@
-<p>
-  portfolio-card works!
-</p>
+<md-card class="example-card">
+  <md-card-header>
+    <div md-card-avatar class="example-header-image"></div>
+    <md-card-title>{{portfolioItem.name}}</md-card-title>
+    <md-card-subtitle>{{portfolioItem.filename}}</md-card-subtitle>
+  </md-card-header>
+  <img md-card-image src="http://image.prntscr.com/image/8d081d23bd584342ba119fb562510f37.png">
+  <md-card-content>
+    <p>
+      Portfolio Item
+    </p>
+  </md-card-content>
+  <md-card-actions>
+    <button md-button>LIKE</button>
+    <button md-button>SHARE</button>
+  </md-card-actions>
+</md-card>

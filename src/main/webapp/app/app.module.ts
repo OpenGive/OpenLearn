@@ -11,12 +11,12 @@ import {LandingPageComponent} from "./pages/landing-page/landing-page.component"
 import {LoginPageComponent} from "./pages/login-page/login-page.component";
 import {StudentPageComponent} from "./pages/student-page/student-page.component";
 import {CoursePageComponent} from "./pages/course-page/course-page.component";
+import {PortfolioPageComponent} from "./pages/portfolio-page/portfolio-page.component";
 import {NavigationMenuComponent} from "./controls/navigation-menu/navigation-menu.component";
 import {MaterialModule} from "@angular/material";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import "hammerjs";
-import {PortfolioComponent} from "./controls/portfolio/portfolio/portfolio.component";
 import {PortfolioCardComponent} from "./controls/portfolio/portfolio-card/portfolio-card.component";
 import {CourseCardComponent} from "./controls/course/course-card/course-card.component";
 import {ParallaxHeaderComponent} from "./controls/layout/parallax-header/parallax-header.component";
@@ -33,7 +33,8 @@ import { CourseListComponent } from './controls/course/course-list/course-list.c
 import { StudentCoursesComponent } from './student-courses/student-courses.component';
 import {ForgotPasswordDialogComponent} from "./controls/forgot-password-dialog/forgot-password-dialog.component";
 import {AdminPageComponent} from "./pages/admin-page/admin-page.component";
-import { PortfolioService } from './services/portfolio.service'
+import { PortfolioService } from './services/portfolio.service';
+import { PortfolioListComponent } from './controls/portfolio/portfolio-list/portfolio-list.component'
 
 @NgModule({
   declarations: [
@@ -45,13 +46,14 @@ import { PortfolioService } from './services/portfolio.service'
     StudentPageComponent,
     CoursePageComponent,
     NavigationMenuComponent,
-    PortfolioComponent,
     PortfolioCardComponent,
     CourseCardComponent,
     ParallaxHeaderComponent,
     AccessDeniedPageComponent,
     CourseListComponent,
-    StudentCoursesComponent
+    StudentCoursesComponent,
+    PortfolioPageComponent,
+    PortfolioListComponent
   ],
   imports: [
     BrowserModule,

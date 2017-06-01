@@ -1,4 +1,4 @@
-export interface PortfolioItem {
+export class PortfolioItem {
   name?: string;
-  id?: number;
+  filename?: string;
 }
