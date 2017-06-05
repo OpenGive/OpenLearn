@@ -1,8 +1,6 @@
-import { HttpWrapperService } from './../shared/auth/http-wrapper.service';
+import {HttpWrapperService} from '../shared/auth/http-wrapper.service';
 import {Injectable} from "@angular/core";
-import {Http} from "@angular/http";
 import {Observable} from "rxjs";
-import {log} from "util";
 import {User} from "../shared/user/user.model";
 import {Role} from "../app.constants";
 
@@ -13,41 +11,56 @@ export class UserService {
 
   constructor(private _http: HttpWrapperService) {}
 
-  getAllUsers() {
-    return this._http.get(this.endpoint).map(resp => resp.json());
+  getAll(): Observable<User[]> {
+    return this._http.get(this.endpoint)
+      .map(resp => resp.json())
+      .catch(this.handleError);
   }
 
-  getAdminUsers() {
-    return this._http.get(this.endpoint).map(resp => resp.json().filter(user => user.authorities.includes(Role.Admin)));
+  create(user: User): Observable<User> {
+    return this._http.post(this.endpoint, user)
+      .map(resp => resp.json())
+      .catch(this.handleError);
   }
 
-  getInstructors() {
-    return this._http.get(this.endpoint).map(resp => resp.json().filter(user => user.authorities.includes(Role.Instructor)));
+  update(user: User): Observable<User> {
+    return this._http.put(this.endpoint, user)
+      .map(resp => resp.json())
+      .catch(this.handleError);
   }
 
-  getStudents() {
-    return this._http.get(this.endpoint).map(resp => resp.json().filter(user => user.authorities.includes(Role.Student)));
+  delete(id: Number) {
+    return this._http.delete(this.endpoint + '/' + id)
+      .map(resp => resp.json())
+      .catch(this.handleError);
   }
 
-  create(user: User): Observable<Response> {
-    return this._http.post(this.endpoint, user).map(resp => resp.json());
+  get(id: Number): Observable<User> {
+    return this._http.get(this.endpoint + '/' + id)
+      .map(resp => resp.json())
+      .catch(this.handleError);
   }
 
-  update(user: User): Observable<Response> {
-    return this._http.put(this.endpoint, user).map(resp => resp.json());
+  getAdministrators(): Observable<User[]> {
+    return this._http.get(this.endpoint)
+      .map(resp => resp.json().filter(user => user.authorities.includes(Role.Admin)))
+      .catch(this.handleError);
   }
 
-  // authenticate(username: string, password: string): Observable<string> {
-  //   let body = {
-  //     username: username,
-  //     password: password
-  //   };
+  getInstructors(): Observable<User[]> {
+    return this._http.get(this.endpoint)
+      .map(resp => resp.json().filter(user => user.authorities.includes(Role.Instructor)))
+      .catch(this.handleError);
+  }
 
-  //   return this._http.post("http://localhost:8080/oauth/authorize", body).map(s => {
-  //     console.log(s.status);
-  //     console.log(s.json());
-  //     return s.json().bearerToken;
-  //   }
-  // );
-  // }
+  getStudents(): Observable<User[]> {
+    return this._http.get(this.endpoint)
+      .map(resp => resp.json().filter(user => user.authorities.includes(Role.Student)))
+      .catch(this.handleError);
+  }
+
+  private handleError(error: Response) {
+    console.error(error);
+    return Observable.throw(error.json() || 'Server Error');
+  }
 }

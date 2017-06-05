@@ -10,8 +10,12 @@
     </div>
   </div>
   <div class="admin-dialog-content" [ngSwitch]="data.tab">
+    <admin-organizations-form *ngSwitchCase="'Organizations'" [item]="data.item"></admin-organizations-form>
     <admin-administrators-form *ngSwitchCase="'Administrators'" [item]="data.item"></admin-administrators-form>
     <admin-instructors-form *ngSwitchCase="'Instructors'" [item]="data.item"></admin-instructors-form>
     <admin-students-form *ngSwitchCase="'Students'" [item]="data.item"></admin-students-form>
+    <admin-sessions-form *ngSwitchCase="'Sessions'" [item]="data.item"></admin-sessions-form>
+    <admin-programs-form *ngSwitchCase="'Programs'" [item]="data.item"></admin-programs-form>
+    <admin-courses-form *ngSwitchCase="'Courses'" [item]="data.item"></admin-courses-form>
   </div>
 </div>

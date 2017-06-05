@@ -21,7 +21,7 @@ export class AdminGridComponent implements OnInit {
   }
 
   getRows(): void {
-    this.adminGridService.query(this.grid.title).subscribe(resp => this.grid.rows = resp);
+    this.adminGridService.query(this.grid.route).subscribe(resp => this.grid.rows = resp);
   }
 
   add(): void {
@@ -31,7 +31,7 @@ export class AdminGridComponent implements OnInit {
   edit(row): void {
     this.dialog.open(AdminDialogComponent, {
       data: {
-        tab: this.grid.title,
+        tab: this.grid.route,
         item: row
       },
       disableClose: true

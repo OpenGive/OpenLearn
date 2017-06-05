@@ -45,8 +45,7 @@ md-dialog-container {
   border-radius: 8px !important;
 }
 
-app-admin-administrators,
-app-admin-instructors,
-app-admin-students {
+app-admin-organizations, app-admin-administrators, app-admin-instructors, app-admin-students, app-admin-sessions,
+app-admin-programs, app-admin-courses {
   width: 100% !important;
 }

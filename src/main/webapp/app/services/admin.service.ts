@@ -1,41 +1,40 @@
 import {HttpWrapperService} from '../shared/auth/http-wrapper.service';
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
-import {Course} from "../models/course";
 
 @Injectable()
-export class CourseService {
+export class AdminService {
 
-  private endpoint = '/api/courses';
+  private endpoint = '/api/';
 
   constructor(private _http: HttpWrapperService) {}
 
-  getAll(): Observable<Course[]> {
-    return this._http.get(this.endpoint)
+  getAll(type: string): Observable<any[]> {
+    return this._http.get(this.endpoint + type)
       .map(resp => resp.json())
       .catch(this.handleError);
   }
 
-  create(course: Course): Observable<Course> {
-    return this._http.post(this.endpoint, course)
+  create(type: string, object: any): Observable<any> {
+    return this._http.post(this.endpoint + type, object)
       .map(resp => resp.json())
       .catch(this.handleError);
   }
 
-  update(course: Course): Observable<Course> {
-    return this._http.put(this.endpoint, course)
+  update(type: string, object: any): Observable<any> {
+    return this._http.put(this.endpoint + type, object)
       .map(resp => resp.json())
       .catch(this.handleError);
   }
 
-  delete(id: Number) {
-    return this._http.delete(this.endpoint + '/' + id)
+  delete(type: string, id: Number) {
+    return this._http.delete(this.endpoint + type + '/' +  id)
       .map(resp => resp.json())
       .catch(this.handleError);
   }
 
-  get(id: Number): Observable<Course> {
-    return this._http.get(this.endpoint + '/' + id)
+  get(type: string, id: Number): Observable<any> {
+    return this._http.get(this.endpoint + type + '/' + id)
       .map(resp => resp.json())
       .catch(this.handleError);
   }
