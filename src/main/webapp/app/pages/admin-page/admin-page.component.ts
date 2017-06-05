@@ -1,5 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {AdminModel} from "../../controls/admin/admin.constants";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-admin-page',
@@ -9,8 +10,8 @@ import {AdminModel} from "../../controls/admin/admin.constants";
 export class AdminPageComponent implements OnInit {
 
   tabs = [
-    { name: AdminModel.AdminUser.title, active: true },
-    // { name: 'Teachers', active: false },
+    { name: AdminModel.Administrator.title, route: AdminModel.Administrator.route, active: true },
+    { name: AdminModel.Instructor.title, route: AdminModel.Instructor.route, active: false },
     // { name: 'Students', active: false },
     // { name: 'Sessions', active: false },
     // { name: 'Courses', active: false }

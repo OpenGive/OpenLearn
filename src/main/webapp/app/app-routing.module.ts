@@ -11,7 +11,8 @@ import {CommonModule} from "@angular/common";
 import {RouterModule, Routes} from "@angular/router";
 import {UserRouteAccessService} from "./shared/auth/user-route-access-service";
 import {AdminPageComponent} from "./pages/admin-page/admin-page.component";
-import {AdminUsersComponent} from "./controls/admin/admin-tabs/admin-users/admin-users.component";
+import {AdminAdministratorsComponent} from "./controls/admin/admin-tabs/admin-administrators/admin-administrators.component";
+import {AdminInstructorsComponent} from "./controls/admin/admin-tabs/admin-instructors/admin-instructors.component";
 
 const ROUTES: Routes = [
   {
@@ -43,8 +44,9 @@ const ROUTES: Routes = [
     },
     canActivate: [UserRouteAccessService],
     children: [
-      {path: '', pathMatch: 'full', redirectTo: 'admin-users'},
-      {path: 'admin-users', component: AdminUsersComponent}
+      {path: '', pathMatch: 'full', redirectTo: 'administrators'},
+      {path: 'administrators', component: AdminAdministratorsComponent},
+      {path: 'instructors', component: AdminInstructorsComponent}
     ]
   },
   {

@@ -21,6 +21,14 @@ export class UserService {
     return this._http.get(this.endpoint).map(resp => resp.json().filter(user => user.authorities.includes(Role.Admin)));
   }
 
+  getInstructors() {
+    return this._http.get(this.endpoint).map(resp => resp.json().filter(user => user.authorities.includes(Role.Instructor)));
+  }
+
+  getStudents() {
+    return this._http.get(this.endpoint).map(resp => resp.json().filter(user => user.authorities.includes(Role.Student)));
+  }
+
   create(user: User): Observable<Response> {
     return this._http.post(this.endpoint, user).map(resp => resp.json());
   }

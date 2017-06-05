@@ -45,6 +45,6 @@ md-dialog-container {
   border-radius: 8px !important;
 }
 
-app-admin-users {
-  width: 100%;
+app-admin-administrators, app-admin-instructors {
+  width: 100% !important;
 }

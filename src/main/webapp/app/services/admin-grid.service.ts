@@ -10,21 +10,26 @@ export class AdminGridService {
 
   query(type: string): Observable<any> {
     switch (type) {
-      case AdminModel.AdminUser.title:
+      case AdminModel.Administrator.title:
         return this.userService.getAdminUsers();
+      case AdminModel.Instructor.title:
+        return this.userService.getInstructors();
+      case AdminModel.Student.title:
+        return this.userService.getStudents();
     }
   }
 
   create(toCreate: any, type: string): Observable<any> {
     switch (type) {
-      case AdminModel.AdminUser.title:
+      case AdminModel.Administrator.title || AdminModel.Instructor.title || AdminModel.Student.title:
         return this.userService.create(toCreate);
+
     }
   }
 
   update(toUpdate: any, type: string): any {
     switch (type) {
-      case AdminModel.AdminUser.title:
+      case AdminModel.Administrator.title || AdminModel.Instructor.title || AdminModel.Student.title:
         return this.userService.create(toUpdate);
     }
   }

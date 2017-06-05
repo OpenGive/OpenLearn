@@ -33,11 +33,13 @@ import { CourseListComponent } from './controls/course/course-list/course-list.c
 import { StudentCoursesComponent } from './student-courses/student-courses.component';
 import {ForgotPasswordDialogComponent} from "./controls/forgot-password-dialog/forgot-password-dialog.component";
 import {AdminPageComponent} from "./pages/admin-page/admin-page.component";
-import {AdminUsersComponent} from "./controls/admin/admin-tabs/admin-users/admin-users.component";
 import {AdminGridComponent} from "./controls/admin/admin-grid/admin-grid.component";
 import {AdminDialogComponent} from "./controls/admin/admin-dialog/admin-dialog.component";
 import {AdminGridService} from "./services/admin-grid.service";
-import {AdminUsersFormComponent} from "./controls/admin/admin-tabs/admin-users/admin-users-form/admin-users-form.component";
+import {AdminAdministratorsComponent} from "./controls/admin/admin-tabs/admin-administrators/admin-administrators.component";
+import {AdminAdministratorsFormComponent} from "./controls/admin/admin-tabs/admin-administrators/admin-administrators-form/admin-administrators-form.component";
+import {AdminInstructorsComponent} from "./controls/admin/admin-tabs/admin-instructors/admin-instructors.component";
+import {AdminInstructorsFormComponent} from "./controls/admin/admin-tabs/admin-instructors/admin-instructors-form/admin-instructors-form.component";
 
 @NgModule({
   declarations: [
@@ -48,8 +50,10 @@ import {AdminUsersFormComponent} from "./controls/admin/admin-tabs/admin-users/a
     AdminPageComponent,
     AdminDialogComponent,
     AdminGridComponent,
-    AdminUsersComponent,
-    AdminUsersFormComponent,
+    AdminAdministratorsComponent,
+    AdminAdministratorsFormComponent,
+    AdminInstructorsComponent,
+    AdminInstructorsFormComponent,
     StudentPageComponent,
     CoursePageComponent,
     NavigationMenuComponent,
