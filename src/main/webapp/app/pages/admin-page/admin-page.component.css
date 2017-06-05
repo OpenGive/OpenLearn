@@ -14,12 +14,13 @@
 
 .admin-tab-option {
   width: 100%;
+  border-radius: 4px;
+  border: 2px solid transparent;
 }
 
 .admin-tab-option.active {
   font-weight: bolder;
-  border: 2px solid #FF5252;
-  border-radius: 4px;
+  border-color: #FF5252;
   box-shadow: 0 2px 2px rgba(0,0,0,.24), 0 0 2px rgba(0,0,0,.12);
 }
 
