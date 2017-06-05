@@ -40,6 +40,8 @@ import {AdminAdministratorsComponent} from "./controls/admin/admin-tabs/admin-ad
 import {AdminAdministratorsFormComponent} from "./controls/admin/admin-tabs/admin-administrators/admin-administrators-form/admin-administrators-form.component";
 import {AdminInstructorsComponent} from "./controls/admin/admin-tabs/admin-instructors/admin-instructors.component";
 import {AdminInstructorsFormComponent} from "./controls/admin/admin-tabs/admin-instructors/admin-instructors-form/admin-instructors-form.component";
+import {AdminStudentsComponent} from "./controls/admin/admin-tabs/admin-students/admin-students.component";
+import {AdminStudentsFormComponent} from "./controls/admin/admin-tabs/admin-students/admin-students-form/admin-students-form.component";
 
 @NgModule({
   declarations: [
@@ -51,9 +53,11 @@ import {AdminInstructorsFormComponent} from "./controls/admin/admin-tabs/admin-i
     AdminDialogComponent,
     AdminGridComponent,
     AdminAdministratorsComponent,
-    AdminAdministratorsFormComponent,
     AdminInstructorsComponent,
+    AdminStudentsComponent,
+    AdminAdministratorsFormComponent,
     AdminInstructorsFormComponent,
+    AdminStudentsFormComponent,
     StudentPageComponent,
     CoursePageComponent,
     NavigationMenuComponent,

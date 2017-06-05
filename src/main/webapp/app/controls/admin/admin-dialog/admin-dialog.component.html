@@ -12,5 +12,6 @@
   <div class="admin-dialog-content" [ngSwitch]="data.tab">
     <admin-administrators-form *ngSwitchCase="'Administrators'" [item]="data.item"></admin-administrators-form>
     <admin-instructors-form *ngSwitchCase="'Instructors'" [item]="data.item"></admin-instructors-form>
+    <admin-students-form *ngSwitchCase="'Students'" [item]="data.item"></admin-students-form>
   </div>
 </div>

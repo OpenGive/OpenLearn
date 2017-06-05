@@ -13,6 +13,7 @@ import {UserRouteAccessService} from "./shared/auth/user-route-access-service";
 import {AdminPageComponent} from "./pages/admin-page/admin-page.component";
 import {AdminAdministratorsComponent} from "./controls/admin/admin-tabs/admin-administrators/admin-administrators.component";
 import {AdminInstructorsComponent} from "./controls/admin/admin-tabs/admin-instructors/admin-instructors.component";
+import {AdminStudentsComponent} from "./controls/admin/admin-tabs/admin-students/admin-students.component";
 
 const ROUTES: Routes = [
   {
@@ -46,7 +47,8 @@ const ROUTES: Routes = [
     children: [
       {path: '', pathMatch: 'full', redirectTo: 'administrators'},
       {path: 'administrators', component: AdminAdministratorsComponent},
-      {path: 'instructors', component: AdminInstructorsComponent}
+      {path: 'instructors', component: AdminInstructorsComponent},
+      {path: 'students', component: AdminStudentsComponent}
     ]
   },
   {

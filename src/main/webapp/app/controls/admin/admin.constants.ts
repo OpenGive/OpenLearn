@@ -18,13 +18,23 @@ export const AdminModel = {
   Instructor: {
     title: 'Instructors',
     route: 'instructors',
-    columns: []
-  },
+    columns: [
+      {property: 'firstName', display: 'First Name'},
+      {property: 'lastName', display: 'Last Name'},
+      {property: 'login', display: 'Username'},
+      {property: 'authorities', display: 'Roles'},
+      {property: 'activated', display: 'Active'}
+    ]  },
   Student: {
     title: 'Students',
     route: 'students',
-    columns: []
-  },
+    columns: [
+      {property: 'firstName', display: 'First Name'},
+      {property: 'lastName', display: 'Last Name'},
+      {property: 'login', display: 'Username'},
+      {property: 'authorities', display: 'Roles'},
+      {property: 'activated', display: 'Active'}
+    ]  },
   Session: {
     title: 'Sessions',
     route: 'sessions',
