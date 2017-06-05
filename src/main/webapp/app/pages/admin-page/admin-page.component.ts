@@ -17,6 +17,11 @@ export class AdminPageComponent implements OnInit {
   ];
   activeTab = this.tabs[0];
 
+  adminPageFlex = {
+    lg: '1280px',
+    xs: '100%'
+  };
+
   constructor() {
   }
 

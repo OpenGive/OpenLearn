@@ -1,9 +1,10 @@
 #admin-page {
   margin-top: 40px;
+  width: 100%;
 }
 
 #admin-tabs {
-  padding-right: 20px;
+  padding-left: 20px;
 }
 
 #admin-tab-list {
@@ -12,7 +13,7 @@
 }
 
 .admin-tab-option {
-  width: 220px;
+  width: 100%;
 }
 
 .admin-tab-option.active {
