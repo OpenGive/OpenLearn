@@ -46,13 +46,33 @@ export class AdminGridComponent implements OnInit {
 
   displayCell(row, column): string {
     if (column.property === 'authorities') {
-      // Parse array of roles to create friendly list (ROLE_BLAH => Blah)
-      return row[column.property].map(role => {
-        return role.charAt(5) + role.slice(6).toLowerCase()
-      }).sort().join(', ');
+      return this.displayAuthorities(row[column.property]);
+    } else if (column.property === 'startDate' || column.property === 'endDate') {
+      return this.displayDate(row[column.property]);
+    } else if (column.property === 'organization' || column.property === 'program' || column.property === 'school' || column.property === 'session') {
+      return this.displayObject(row[column.property]);
+    } else if (column.property === 'instructor') {
+      return this.displayUser(row[column.property]);
     } else {
       return row[column.property];
     }
   }
 
+  displayAuthorities(authorities): string { // Parse array of roles to create friendly list (ROLE_BLAH => Blah)
+    return authorities.map(role => {
+      return role.charAt(5) + role.slice(6).toLowerCase()
+    }).sort().join(', ');
+  }
+
+  displayDate(date): string {
+    return date ? new Date(date).toLocaleDateString() : '';
+  }
+
+  displayObject(object): string {
+    return object.name;
+  }
+
+  displayUser(user): string {
+    return user.lastName + ', ' + user.firstName;
+  }
 }
