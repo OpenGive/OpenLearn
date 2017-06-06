@@ -10,10 +10,10 @@ import {Role} from "../../../../../app.constants";
 export class AdminOrganizationsFormComponent implements OnInit {
 
   @Input('item') formOrganization: any;
+  @Input() editing: boolean;
 
   constructor(public dialogRef: MdDialogRef<AdminOrganizationsFormComponent>) {}
 
   ngOnInit() {
-    console.log(this.formOrganization);
   }
 }

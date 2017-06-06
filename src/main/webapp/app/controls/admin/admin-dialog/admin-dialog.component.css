@@ -56,6 +56,10 @@
   color: #FFFFFF;
 }
 
+.alert-editing-bar {
+  background: #FF5252;
+}
+
 .admin-dialog-content {
   padding: 20px 40px;
   overflow-y: scroll;

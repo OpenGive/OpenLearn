@@ -13,7 +13,6 @@ export class CoursePageComponent implements OnInit {
   courses: Course[] = [];
   ngOnInit() {
     this._courseService.getAll().subscribe(courses => {
-      console.log(courses);
       this.courses = courses;
     });
   }

@@ -10,6 +10,7 @@ import {Role} from "../../../../../app.constants";
 export class AdminAdministratorsFormComponent implements OnInit {
 
   @Input('item') formAdministrator: any;
+  @Input() editing: boolean;
 
   roles: string[];
 
@@ -17,7 +18,6 @@ export class AdminAdministratorsFormComponent implements OnInit {
 
   ngOnInit() {
     this.getRoles();
-    console.log(this.formAdministrator);
   }
 
   getRoles(): void {

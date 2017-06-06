@@ -1,22 +1,22 @@
 <div class="admin-dialog">
   <div class="admin-dialog-header" fxLayout="row" fxLayoutAlign="space-between center">
     <div fxLayout="row" fxLayoutAlign="start center">
-      <div><button md-button md-dialog-close><i class="fa fa-times fa-lg"></i></button></div>
+      <div><button md-button (click)="discard(true)"><i class="fa fa-times fa-lg"></i></button></div>
       <span class="admin-dialog-title">{{data.title}} Details</span>
     </div>
     <div fxLayout="row">
-      <button md-raised-button *ngIf="!data.item.editing" (click)="edit()" class="admin-dialog-button edit-button">EDIT</button>
-      <button md-raised-button *ngIf="data.item.editing" (click)="discard()" class="admin-dialog-button discard-button">DISCARD</button>
-      <button md-raised-button *ngIf="data.item.editing" (click)="save()" class="admin-dialog-button save-button">SAVE</button>
+      <button md-raised-button *ngIf="!editing" (click)="edit()" class="admin-dialog-button edit-button">EDIT</button>
+      <button md-raised-button *ngIf="editing" (click)="discard()" class="admin-dialog-button discard-button">DISCARD</button>
+      <button md-raised-button *ngIf="editing" (click)="save()" class="admin-dialog-button save-button">SAVE</button>
     </div>
   </div>
-  <div class="admin-dialog-content" [ngSwitch]="data.tab">
-    <admin-organizations-form *ngSwitchCase="'organizations'" [item]="data.item"></admin-organizations-form>
-    <admin-administrators-form *ngSwitchCase="'administrators'" [item]="data.item"></admin-administrators-form>
-    <admin-instructors-form *ngSwitchCase="'instructors'" [item]="data.item"></admin-instructors-form>
-    <admin-students-form *ngSwitchCase="'students'" [item]="data.item"></admin-students-form>
-    <admin-sessions-form *ngSwitchCase="'sessions'" [item]="data.item"></admin-sessions-form>
-    <admin-programs-form *ngSwitchCase="'programs'" [item]="data.item"></admin-programs-form>
-    <admin-courses-form *ngSwitchCase="'courses'" [item]="data.item"></admin-courses-form>
+  <div class="admin-dialog-content" [ngSwitch]="tab">
+    <admin-organizations-form *ngSwitchCase="'organizations'" [item]="copy" [editing]="editing"></admin-organizations-form>
+    <admin-administrators-form *ngSwitchCase="'administrators'" [item]="copy" [editing]="editing"></admin-administrators-form>
+    <admin-instructors-form *ngSwitchCase="'instructors'" [item]="copy" [editing]="editing"></admin-instructors-form>
+    <admin-students-form *ngSwitchCase="'students'" [item]="copy" [editing]="editing"></admin-students-form>
+    <admin-sessions-form *ngSwitchCase="'sessions'" [item]="copy" [editing]="editing"></admin-sessions-form>
+    <admin-programs-form *ngSwitchCase="'programs'" [item]="copy" [editing]="editing"></admin-programs-form>
+    <admin-courses-form *ngSwitchCase="'courses'" [item]="copy" [editing]="editing"></admin-courses-form>
   </div>
 </div>

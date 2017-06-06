@@ -3,6 +3,7 @@ import {AdminGridModel} from "../../../models/admin-grid.model";
 import {AdminDialogComponent} from "../admin-dialog/admin-dialog.component";
 import {MdDialog} from "@angular/material";
 import {AdminGridService} from "../../../services/admin-grid.service";
+import {each} from "lodash";
 
 @Component({
   selector: 'app-admin-grid',
@@ -29,22 +30,27 @@ export class AdminGridComponent implements OnInit {
       data: {
         title: this.grid.title.slice(0, -1),
         tab: this.grid.route,
-        item: {editing: true}
+        item: {},
+        adding: true
       },
       disableClose: true
     });
   }
 
   viewDetails(row): void {
-    row.editing = false;
     this.dialog.open(AdminDialogComponent, {
       data: {
         title: this.grid.title.slice(0, -1),
         tab: this.grid.route,
-        item: row
+        item: row,
+        adding: false
       },
       disableClose: true
-    });
+    }).afterClosed().subscribe(resp => this.handleDialogResponse(resp, row));
+  }
+
+  handleDialogResponse(resp, row) {
+    each(resp, (value, key) => row[key] = value);
   }
 
   displayCell(row, column): string {
