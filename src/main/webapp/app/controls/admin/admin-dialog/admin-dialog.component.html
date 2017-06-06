@@ -1,5 +1,5 @@
 <div class="admin-dialog">
-  <div class="admin-dialog-header" fxLayout="row" fxLayoutAlign="space-between center">
+  <div class="admin-dialog-header" [ngClass]="{edit: editing}" fxLayout="row" fxLayoutAlign="space-between center">
     <div fxLayout="row" fxLayoutAlign="start center">
       <div><button md-button (click)="discard(true)"><i class="fa fa-times fa-lg"></i></button></div>
       <span class="admin-dialog-title">{{data.title}} Details</span>
