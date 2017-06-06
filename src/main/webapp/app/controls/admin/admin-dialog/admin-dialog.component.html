@@ -1,8 +1,7 @@
 <div class="admin-dialog">
   <div class="admin-dialog-header" fxLayout="row" fxLayoutAlign="space-between center">
     <div fxLayout="column">
-      <span class="admin-dialog-title">Title</span>
-      <span class="admin-dialog-subtitle">Subtitle</span>
+      <span class="admin-dialog-title">{{data.title}} Details</span>
     </div>
     <div fxLayout="row">
       <button md-raised-button (click)="discard()" class="admin-dialog-button discard-button">DISCARD</button>
@@ -10,12 +9,12 @@
     </div>
   </div>
   <div class="admin-dialog-content" [ngSwitch]="data.tab">
-    <admin-organizations-form *ngSwitchCase="'Organizations'" [item]="data.item"></admin-organizations-form>
-    <admin-administrators-form *ngSwitchCase="'Administrators'" [item]="data.item"></admin-administrators-form>
-    <admin-instructors-form *ngSwitchCase="'Instructors'" [item]="data.item"></admin-instructors-form>
-    <admin-students-form *ngSwitchCase="'Students'" [item]="data.item"></admin-students-form>
-    <admin-sessions-form *ngSwitchCase="'Sessions'" [item]="data.item"></admin-sessions-form>
-    <admin-programs-form *ngSwitchCase="'Programs'" [item]="data.item"></admin-programs-form>
-    <admin-courses-form *ngSwitchCase="'Courses'" [item]="data.item"></admin-courses-form>
+    <admin-organizations-form *ngSwitchCase="'organizations'" [item]="data.item"></admin-organizations-form>
+    <admin-administrators-form *ngSwitchCase="'administrators'" [item]="data.item"></admin-administrators-form>
+    <admin-instructors-form *ngSwitchCase="'instructors'" [item]="data.item"></admin-instructors-form>
+    <admin-students-form *ngSwitchCase="'students'" [item]="data.item"></admin-students-form>
+    <admin-sessions-form *ngSwitchCase="'sessions'" [item]="data.item"></admin-sessions-form>
+    <admin-programs-form *ngSwitchCase="'programs'" [item]="data.item"></admin-programs-form>
+    <admin-courses-form *ngSwitchCase="'courses'" [item]="data.item"></admin-courses-form>
   </div>
 </div>

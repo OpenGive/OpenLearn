@@ -27,8 +27,9 @@ export class AdminGridComponent implements OnInit {
   add(): void {
     this.dialog.open(AdminDialogComponent, {
       data: {
+        title: this.grid.title.slice(0, -1),
         tab: this.grid.route,
-        item: null
+        item: {}
       },
       disableClose: true
     });
@@ -37,6 +38,7 @@ export class AdminGridComponent implements OnInit {
   viewDetails(row): void {
     this.dialog.open(AdminDialogComponent, {
       data: {
+        title: this.grid.title.slice(0, -1),
         tab: this.grid.route,
         item: row
       },
