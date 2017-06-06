@@ -11,16 +11,9 @@ export class AdminSessionsFormComponent implements OnInit {
 
   @Input('item') formSession: any;
 
-  roles: string[];
-
   constructor(public dialogRef: MdDialogRef<AdminSessionsFormComponent>) {}
 
   ngOnInit() {
-    this.getRoles();
     console.log(this.formSession);
-  }
-
-  getRoles(): void {
-    this.roles = Object.keys(Role).map(key => Role[key]);
   }
 }

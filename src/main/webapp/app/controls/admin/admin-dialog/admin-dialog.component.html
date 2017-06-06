@@ -1,11 +1,13 @@
 <div class="admin-dialog">
   <div class="admin-dialog-header" fxLayout="row" fxLayoutAlign="space-between center">
-    <div fxLayout="column">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <div><button md-button md-dialog-close><i class="fa fa-times fa-lg"></i></button></div>
       <span class="admin-dialog-title">{{data.title}} Details</span>
     </div>
     <div fxLayout="row">
-      <button md-raised-button (click)="discard()" class="admin-dialog-button discard-button">DISCARD</button>
-      <button md-raised-button (click)="save()" class="admin-dialog-button save-button">SAVE</button>
+      <button md-raised-button *ngIf="!editing" (click)="edit()" class="admin-dialog-button edit-button">EDIT</button>
+      <button md-raised-button *ngIf="editing" (click)="discard()" class="admin-dialog-button discard-button">DISCARD</button>
+      <button md-raised-button *ngIf="editing" (click)="save()" class="admin-dialog-button save-button">SAVE</button>
     </div>
   </div>
   <div class="admin-dialog-content" [ngSwitch]="data.tab">

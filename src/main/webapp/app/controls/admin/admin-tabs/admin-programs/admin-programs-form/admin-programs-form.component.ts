@@ -11,16 +11,9 @@ export class AdminProgramsFormComponent implements OnInit {
 
   @Input('item') formProgram: any;
 
-  roles: string[];
-
   constructor(public dialogRef: MdDialogRef<AdminProgramsFormComponent>) {}
 
   ngOnInit() {
-    this.getRoles();
     console.log(this.formProgram);
-  }
-
-  getRoles(): void {
-    this.roles = Object.keys(Role).map(key => Role[key]);
   }
 }
