@@ -25,10 +25,16 @@ export class AdminGridComponent implements OnInit {
   }
 
   add(): void {
-    this.dialog.open(AdminDialogComponent);
+    this.dialog.open(AdminDialogComponent, {
+      data: {
+        tab: this.grid.route,
+        item: null
+      },
+      disableClose: true
+    });
   }
 
-  edit(row): void {
+  viewDetails(row): void {
     this.dialog.open(AdminDialogComponent, {
       data: {
         tab: this.grid.route,
@@ -36,12 +42,6 @@ export class AdminGridComponent implements OnInit {
       },
       disableClose: true
     });
-  }
-
-  remove(row): void {
-  }
-
-  viewDetails(row): void {
   }
 
   displayCell(row, column): string {

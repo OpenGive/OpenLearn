@@ -16,24 +16,9 @@
         <tr *ngFor="let row of grid.rows">
           <td *ngFor="let column of grid.columns">{{displayCell(row, column)}}</td>
           <td class="icon-cell">
-            <button md-button class="icon-button" [mdMenuTriggerFor]="gridMenu">
+            <button md-button class="icon-button" (click)="viewDetails(row)" mdTooltip="Details" mdTooltipPosition="left">
               <md-icon class="grid-action-icon">more_vert</md-icon>
             </button>
-            <md-menu #gridMenu="mdMenu">
-              <button md-menu-item (click)="edit(row)">
-                <md-icon>create</md-icon>
-                <span>Edit</span>
-              </button>
-              <button md-menu-item (click)="viewDetails(row)">
-                <md-icon>info</md-icon>
-                <span>View Details</span>
-              </button>
-              <md-divider></md-divider>
-              <button md-menu-item (click)="remove(row)">
-                <md-icon>delete</md-icon>
-                <span>Remove</span>
-              </button>
-            </md-menu>
           </td>
         </tr>
         </tbody>
