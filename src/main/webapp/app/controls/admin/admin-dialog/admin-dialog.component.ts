@@ -8,8 +8,6 @@ import {MdDialogRef, MD_DIALOG_DATA} from "@angular/material";
 })
 export class AdminDialogComponent implements OnInit {
 
-  editing: boolean;
-
   constructor(@Inject(MD_DIALOG_DATA) public data: any,
               public dialogRef: MdDialogRef<AdminDialogComponent>) {}
 
@@ -17,14 +15,14 @@ export class AdminDialogComponent implements OnInit {
   }
 
   edit() {
-    this.editing = true;
+    this.data.item.editing = true;
   }
 
   discard() {
-    this.editing = false;
+    this.data.item.editing = false;
   }
 
   save() {
-    this.editing = false;
+    this.data.item.editing = false;
   }
 }

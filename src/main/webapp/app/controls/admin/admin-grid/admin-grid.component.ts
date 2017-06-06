@@ -29,13 +29,14 @@ export class AdminGridComponent implements OnInit {
       data: {
         title: this.grid.title.slice(0, -1),
         tab: this.grid.route,
-        item: {}
+        item: {editing: true}
       },
       disableClose: true
     });
   }
 
   viewDetails(row): void {
+    row.editing = false;
     this.dialog.open(AdminDialogComponent, {
       data: {
         title: this.grid.title.slice(0, -1),

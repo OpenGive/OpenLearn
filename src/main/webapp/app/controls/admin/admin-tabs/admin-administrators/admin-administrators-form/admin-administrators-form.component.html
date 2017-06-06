@@ -2,39 +2,40 @@
   <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap>
     <h5 fxFlex="100%">Image [TBD]</h5>
     <md-input-container fxFlex="100%">
-      <input mdInput type="text" name="firstName" [(ngModel)]="formAdministrator.firstName" placeholder="First Name"/>
+      <input mdInput [disabled]="!formAdministrator.editing" type="text" name="firstName"
+             [(ngModel)]="formAdministrator.firstName" placeholder="First Name"/>
     </md-input-container>
     <md-input-container fxFlex="100%">
-      <input mdInput type="text" name="lastName" [(ngModel)]="formAdministrator.lastName" placeholder="Last Name"/>
+      <input mdInput [disabled]="!formAdministrator.editing" type="text" name="lastName" [(ngModel)]="formAdministrator.lastName" placeholder="Last Name"/>
     </md-input-container>
     <md-input-container fxFlex="100%">
-      <input mdInput type="text" name="login" [(ngModel)]="formAdministrator.login" placeholder="Username"/>
+      <input mdInput [disabled]="!formAdministrator.editing" type="text" name="login" [(ngModel)]="formAdministrator.login" placeholder="Username"/>
     </md-input-container>
     <md-input-container fxFlex="100%">
-      <input mdInput type="email" name="email" [(ngModel)]="formAdministrator.email" placeholder="Email"/>
+      <input mdInput [disabled]="!formAdministrator.editing" type="email" name="email" [(ngModel)]="formAdministrator.email" placeholder="Email"/>
     </md-input-container>
     <md-input-container fxFlex="100%">
-      <input mdInput type="tel" name="phoneNumber" [(ngModel)]="formAdministrator.phoneNumber" placeholder="Phone"/>
+      <input mdInput [disabled]="!formAdministrator.editing" type="tel" name="phoneNumber" [(ngModel)]="formAdministrator.phoneNumber" placeholder="Phone"/>
     </md-input-container>
     <md-input-container fxFlex="100%">
-      <input mdInput type="text" name="streetAddress1" [(ngModel)]="formAdministrator.streetAddress1" placeholder="Address Line 1"/>
+      <input mdInput [disabled]="!formAdministrator.editing" type="text" name="streetAddress1" [(ngModel)]="formAdministrator.streetAddress1" placeholder="Address Line 1"/>
     </md-input-container>
     <md-input-container fxFlex="100%">
-      <input mdInput type="text" name="streetAddress2" [(ngModel)]="formAdministrator.streetAddress2" placeholder="Address Line 2"/>
+      <input mdInput [disabled]="!formAdministrator.editing" type="text" name="streetAddress2" [(ngModel)]="formAdministrator.streetAddress2" placeholder="Address Line 2"/>
     </md-input-container>
     <md-input-container fxFlex="100%">
-      <input mdInput type="text" name="city" [(ngModel)]="formAdministrator.city" placeholder="City"/>
+      <input mdInput [disabled]="!formAdministrator.editing" type="text" name="city" [(ngModel)]="formAdministrator.city" placeholder="City"/>
     </md-input-container>
     <md-input-container fxFlex="100%">
-      <input mdInput type="text" name="state" [(ngModel)]="formAdministrator.state" placeholder="State"/>
+      <input mdInput [disabled]="!formAdministrator.editing" type="text" name="state" [(ngModel)]="formAdministrator.state" placeholder="State"/>
     </md-input-container>
     <md-input-container fxFlex="100%">
-      <input mdInput type="number" name="postalCode" [(ngModel)]="formAdministrator.postalCode" placeholder="Postal Code"/>
+      <input mdInput [disabled]="!formAdministrator.editing" type="number" name="postalCode" [(ngModel)]="formAdministrator.postalCode" placeholder="Postal Code"/>
     </md-input-container>
-    <md-select name="authorities" [(ngModel)]="formAdministrator.authorities" placeholder="Roles" multiple fxFlex="100%">
+    <md-select [disabled]="!formAdministrator.editing" name="authorities" [(ngModel)]="formAdministrator.authorities" placeholder="Roles" multiple fxFlex="100%">
       <md-option *ngFor="let role of roles" value="{{role}}">{{role}}</md-option>
     </md-select>
-    <md-checkbox name="is14Plus" [(ngModel)]="formAdministrator.is14Plus" fxFlex="100%">14+</md-checkbox>
-    <md-checkbox name="activated" [(ngModel)]="formAdministrator.activated" fxFlex="100%">Active</md-checkbox>
+    <md-checkbox [disabled]="!formAdministrator.editing" name="is14Plus" [(ngModel)]="formAdministrator.is14Plus" fxFlex="100%">14+</md-checkbox>
+    <md-checkbox [disabled]="!formAdministrator.editing" name="activated" [(ngModel)]="formAdministrator.activated" fxFlex="100%">Active</md-checkbox>
   </div>
 </form>

@@ -5,9 +5,9 @@
       <span class="admin-dialog-title">{{data.title}} Details</span>
     </div>
     <div fxLayout="row">
-      <button md-raised-button *ngIf="!editing" (click)="edit()" class="admin-dialog-button edit-button">EDIT</button>
-      <button md-raised-button *ngIf="editing" (click)="discard()" class="admin-dialog-button discard-button">DISCARD</button>
-      <button md-raised-button *ngIf="editing" (click)="save()" class="admin-dialog-button save-button">SAVE</button>
+      <button md-raised-button *ngIf="!data.item.editing" (click)="edit()" class="admin-dialog-button edit-button">EDIT</button>
+      <button md-raised-button *ngIf="data.item.editing" (click)="discard()" class="admin-dialog-button discard-button">DISCARD</button>
+      <button md-raised-button *ngIf="data.item.editing" (click)="save()" class="admin-dialog-button save-button">SAVE</button>
     </div>
   </div>
   <div class="admin-dialog-content" [ngSwitch]="data.tab">

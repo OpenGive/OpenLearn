@@ -5,7 +5,7 @@ import {Role} from "../../../../../app.constants";
 @Component({
   selector: 'admin-administrators-form',
   templateUrl: './admin-administrators-form.component.html',
-  styleUrls: ['./admin-administrators-form.component.css']
+  styleUrls: ['./admin-administrators-form.component.css', '../../admin-forms.css']
 })
 export class AdminAdministratorsFormComponent implements OnInit {
 
