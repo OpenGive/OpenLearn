@@ -8,8 +8,8 @@
   box-shadow: 0 2px 2px 0 rgba(0,0,0,.2);
 }
 
-.edit {
-  background: rgba(255, 82, 82, 0.5);
+.admin-dialog-header.edit {
+  background: rgba(255, 82, 82, 0.9);
 }
 
 .mat-button {
@@ -31,6 +31,10 @@
   padding-left: 15px;
 }
 
+.admin-dialog-title.edit {
+  color: white !important;
+}
+
 .admin-dialog-button {
   border-radius: 4px;
   height: 36px;
@@ -40,17 +44,23 @@
   letter-spacing: 0;
   line-height: 20px;
   margin-left: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  min-width: 36px;
 }
 
-.discard-button {
+.grey-button {
   background: #E5E5E5;
-  min-width: 91px;
   color: #4D5A70;
 }
 
-.save-button, .edit-button {
+.navy-button {
+  background: #4D5A70;
+  color: #E5E5E5;
+}
+
+.pink-button {
   background: #FF5252;
-  min-width: 65px;
   color: #FFFFFF;
 }
 

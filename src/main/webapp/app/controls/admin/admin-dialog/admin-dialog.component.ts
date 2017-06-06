@@ -46,7 +46,7 @@ export class AdminDialogComponent implements OnInit {
     this.editing = true;
   }
 
-  discard(exit: boolean) {
+  cancel(exit: boolean) {
     if (this.adding || exit) {
       this.dialogRef.close();
     } else {
@@ -73,21 +73,17 @@ export class AdminDialogComponent implements OnInit {
 
   update() {
     if (this.userTabs.includes(this.tab)) {
-      this.userService.update(this.copy).subscribe(resp => this.handleUpdateResponse(resp));
+      this.userService.update(this.copy).subscribe(resp => this.dialogRef.close(resp));
     } else {
-      this.adminService.update(this.tab, this.copy).subscribe(resp => this.handleUpdateResponse(resp));
+      this.adminService.update(this.tab, this.copy).subscribe(resp => this.dialogRef.close(resp));
     }
-  }
-
-  handleUpdateResponse(resp) {
-    this.dialogRef.close(resp);
   }
 
   delete() {
     if (this.userTabs.includes(this.tab)) {
-      this.userService.delete(this.copy.id).subscribe(resp => console.log(resp));
+      this.userService.delete(this.copy.id).subscribe(resp => this.dialogRef.close(resp));
     } else {
-      this.adminService.delete(this.tab, this.copy.id).subscribe(resp => console.log(resp));
+      this.adminService.delete(this.tab, this.copy.id).subscribe(resp => this.dialogRef.close(resp));
     }
   }
 }

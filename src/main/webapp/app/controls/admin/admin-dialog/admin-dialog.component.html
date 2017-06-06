@@ -1,13 +1,22 @@
 <div class="admin-dialog">
   <div class="admin-dialog-header" [ngClass]="{edit: editing}" fxLayout="row" fxLayoutAlign="space-between center">
     <div fxLayout="row" fxLayoutAlign="start center">
-      <div><button md-button (click)="discard(true)"><i class="fa fa-times fa-lg"></i></button></div>
-      <span class="admin-dialog-title">{{data.title}} Details</span>
+      <div><button md-button (click)="cancel(true)"><i class="fa fa-times fa-lg"></i></button></div>
+      <span class="admin-dialog-title" [ngClass]="{edit: editing}">{{data.title}} Details</span>
     </div>
     <div fxLayout="row">
-      <button md-raised-button *ngIf="!editing" (click)="edit()" class="admin-dialog-button edit-button">EDIT</button>
-      <button md-raised-button *ngIf="editing" (click)="discard()" class="admin-dialog-button discard-button">DISCARD</button>
-      <button md-raised-button *ngIf="editing" (click)="save()" class="admin-dialog-button save-button">SAVE</button>
+      <button md-raised-button *ngIf="!editing" (click)="edit()" class="admin-dialog-button grey-button" mdTooltip="Edit">
+        <md-icon>create</md-icon>
+      </button>
+      <button md-raised-button *ngIf="!editing" (click)="delete()" class="admin-dialog-button pink-button" mdTooltip="Delete">
+        <md-icon>delete</md-icon>
+      </button>
+      <button md-raised-button *ngIf="editing" (click)="save()" class="admin-dialog-button grey-button" mdTooltip="Save">
+        <md-icon>save</md-icon>
+      </button>
+      <button md-raised-button *ngIf="editing && !adding" (click)="cancel()" class="admin-dialog-button navy-button" mdTooltip="Cancel">
+        <md-icon>clear</md-icon>
+      </button>
     </div>
   </div>
   <div class="admin-dialog-content" [ngSwitch]="tab">

@@ -1,25 +1,21 @@
 <div>
   <div id="grid-header" fxLayout="row" fxLayoutAlign="space-between center">
     <span class="grid-header-text">{{grid.title}}</span>
-    <button md-raised-button fxHide.xs (click)="add()" class="grid-add-button">ADD</button>
+    <button md-raised-button fxHide.xs (click)="add()" class="grid-add-button" mdTooltip="Add">
+      <md-icon>add</md-icon>
+    </button>
   </div>
   <div id="grid-table" fxLayout="row">
     <div class="table-wrapper">
       <table>
         <thead>
-        <tr>
+        <tr class="header-row">
           <th *ngFor="let column of grid.columns">{{column.display}}</th>
-          <th fxHide.xs></th><!-- to extend border over icon -->
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let row of grid.rows">
+        <tr *ngFor="let row of grid.rows" (click)="viewDetails(row)">
           <td *ngFor="let column of grid.columns">{{displayCell(row, column)}}</td>
-          <td class="icon-cell" fxHide.xs>
-            <button md-button class="icon-button" (click)="viewDetails(row)" mdTooltip="Details" mdTooltipPosition="left">
-              <md-icon class="grid-action-icon">more_vert</md-icon>
-            </button>
-          </td>
         </tr>
         </tbody>
       </table>
