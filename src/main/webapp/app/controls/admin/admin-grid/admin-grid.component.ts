@@ -50,7 +50,9 @@ export class AdminGridComponent implements OnInit {
   }
 
   handleDialogResponse(resp, row) {
-    each(resp, (value, key) => row[key] = value);
+    if (resp) {
+      each(resp, (value, key) => row[key] = value);
+    }
   }
 
   displayCell(row, column): string {

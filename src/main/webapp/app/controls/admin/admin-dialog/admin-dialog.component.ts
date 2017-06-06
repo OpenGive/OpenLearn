@@ -65,25 +65,37 @@ export class AdminDialogComponent implements OnInit {
 
   create() {
     if (this.userTabs.includes(this.tab)) {
-      this.userService.create(this.copy).subscribe(resp => console.log(resp));
+      this.userService.create(this.copy).subscribe(resp => this.handleCreateResponse(resp));
     } else {
-      this.adminService.create(this.tab, this.copy).subscribe(resp => console.log(resp));
+      this.adminService.create(this.tab, this.copy).subscribe(resp => this.handleCreateResponse(resp));
     }
+  }
+
+  handleCreateResponse(resp): void {
+    console.log('Create');
   }
 
   update() {
     if (this.userTabs.includes(this.tab)) {
-      this.userService.update(this.copy).subscribe(resp => this.dialogRef.close(resp));
+      this.userService.update(this.copy).subscribe(resp => this.handleUpdateResponse(resp));
     } else {
-      this.adminService.update(this.tab, this.copy).subscribe(resp => this.dialogRef.close(resp));
+      this.adminService.update(this.tab, this.copy).subscribe(resp => this.handleUpdateResponse(resp));
     }
+  }
+
+  handleUpdateResponse(resp): void {
+    this.dialogRef.close(resp);
   }
 
   delete() {
     if (this.userTabs.includes(this.tab)) {
-      this.userService.delete(this.copy.id).subscribe(resp => this.dialogRef.close(resp));
+      this.userService.delete(this.copy.id).subscribe(resp => this.handleDeleteResponse(resp));
     } else {
-      this.adminService.delete(this.tab, this.copy.id).subscribe(resp => this.dialogRef.close(resp));
+      this.adminService.delete(this.tab, this.copy.id).subscribe(resp => this.handleDeleteResponse(resp));
     }
+  }
+
+  handleDeleteResponse(resp) {
+    console.log('Delete');
   }
 }
