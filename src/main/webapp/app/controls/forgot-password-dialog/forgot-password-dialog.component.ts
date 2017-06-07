@@ -1,5 +1,6 @@
 import {Component} from "@angular/core";
 import {MdDialogRef} from "@angular/material";
+import {AppConstants} from  "../../app.constants";
 
 @Component({
   selector: 'forgot-password-dialog',
@@ -7,5 +8,8 @@ import {MdDialogRef} from "@angular/material";
   styleUrls: ['./forgot-password-dialog.component.css']
 })
 export class ForgotPasswordDialogComponent {
-  constructor(public dialogRef: MdDialogRef<ForgotPasswordDialogComponent>) {}
+  public forgotPasswordEmail : string;
+  constructor(public dialogRef: MdDialogRef<ForgotPasswordDialogComponent>) {
+    this.forgotPasswordEmail = AppConstants.ForgotPasswordEmail;
+  }
 }
