@@ -1,0 +1,4 @@
+jhipster:
+    swagger:
+        contactName: org.opengive.denver.stem
+        contactEmail: org.opengive.denver.stem@example.org
