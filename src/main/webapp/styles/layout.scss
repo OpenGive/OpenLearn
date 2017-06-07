@@ -39,3 +39,13 @@ body {
 .mat-sidenav-content {
     // overflow: hidden !important;
 }
+
+md-dialog-container {
+  padding: 0 !important;
+  border-radius: 8px !important;
+}
+
+app-admin-organizations, app-admin-administrators, app-admin-instructors, app-admin-students, app-admin-sessions,
+app-admin-programs, app-admin-courses {
+  width: 100% !important;
+}

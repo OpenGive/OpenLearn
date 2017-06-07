@@ -1,0 +1,10 @@
+<form #administratorForm="ngForm">
+  <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap>
+    <md-input-container fxFlex="45%">
+      <input mdInput [disabled]="!editing" type="text" name="firstName" [(ngModel)]="formAdministrator.firstName" placeholder="First Name"/>
+    </md-input-container>
+    <md-input-container fxFlex="45%">
+      <input mdInput [disabled]="!editing" type="text" name="lastName" [(ngModel)]="formAdministrator.lastName" placeholder="Last Name"/>
+    </md-input-container>
+  </div>
+</form>
