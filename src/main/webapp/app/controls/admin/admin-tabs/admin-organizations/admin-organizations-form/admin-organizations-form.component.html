@@ -1,1 +1,10 @@
-<form #organizationForm="ngForm">Organization Form</form>
+<form #organizationForm="ngForm">
+  <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap>
+    <md-input-container>
+      <input mdInput [disabled]="!editing" name="name" [(ngModel)]="formOrganization.name" placeholder="Name"/>
+    </md-input-container>
+    <md-input-container>
+      <input mdInput [disabled]="!editing" name="description" [(ngModel)]="formOrganization.description" placeholder="Description"/>
+    </md-input-container>
+  </div>
+</form>

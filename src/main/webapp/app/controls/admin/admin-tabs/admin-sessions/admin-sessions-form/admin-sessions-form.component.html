@@ -1,1 +1,24 @@
-<form #sessionForm="ngForm">Session Form</form>
+<form #sessionForm="ngForm">
+  <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap>
+    <md-input-container>
+      <input mdInput [disabled]="!editing" type="text" name="name" [(ngModel)]="formSession.name" placeholder="Name"/>
+    </md-input-container>
+    <md-input-container>
+      <input mdInput [disabled]="!editing" type="text" name="description" [(ngModel)]="formSession.description" placeholder="Description"/>
+    </md-input-container>
+    <md-input-container>
+      <input mdInput [disabled]="!editing" type="text" name="description" [(ngModel)]="formSession.description" placeholder="Description"/>
+    </md-input-container>
+    <md-input-container>
+      <input mdInput [disabled]="!editing" [mdDatepicker]="startDate" name="startDate" [(ngModel)]="formSession.startDate" placeholder="Start Date">
+      <button mdSuffix *ngIf="editing" [mdDatepickerToggle]="startDate"></button>
+    </md-input-container>
+    <md-datepicker #startDate *ngIf="editing"></md-datepicker>
+    <md-input-container>
+      <input mdInput [disabled]="!editing" [mdDatepicker]="endDate" name="endDate" [(ngModel)]="formSession.endDate" placeholder="End Date">
+      <button mdSuffix *ngIf="editing" [mdDatepickerToggle]="endDate"></button>
+    </md-input-container>
+    <md-datepicker #endDate *ngIf="editing"></md-datepicker>
+    <md-checkbox [disabled]="!editing" name="active" [(ngModel)]="formSession.active">Active</md-checkbox>
+  </div>
+</form>

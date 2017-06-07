@@ -31,7 +31,7 @@ export class UserService {
 
   delete(id: Number) {
     return this._http.delete(this.endpoint + '/' + id)
-      .map(resp => resp.json())
+      .map(resp => resp)
       .catch(this.handleError);
   }
 

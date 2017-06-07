@@ -1,1 +1,20 @@
-<form #courseForm="ngForm">Course Form</form>
+<form #courseForm="ngForm">
+  <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap>
+    <md-input-container>
+      <input mdInput [disabled]="!editing" name="name" [(ngModel)]="formCourse.name" placeholder="Name"/>
+    </md-input-container>
+    <md-input-container>
+      <input mdInput [disabled]="!editing" name="description" [(ngModel)]="formCourse.description" placeholder="Description"/>
+    </md-input-container>
+    <md-input-container>
+      <input mdInput [disabled]="!editing" [mdDatepicker]="startDate" name="startDate" [(ngModel)]="formCourse.startDate" placeholder="Start Date">
+      <button mdSuffix *ngIf="editing" [mdDatepickerToggle]="startDate"></button>
+    </md-input-container>
+    <md-datepicker #startDate *ngIf="editing"></md-datepicker>
+    <md-input-container>
+      <input mdInput [disabled]="!editing" [mdDatepicker]="endDate" name="endDate" [(ngModel)]="formCourse.endDate" placeholder="End Date">
+      <button mdSuffix *ngIf="editing" [mdDatepickerToggle]="endDate"></button>
+    </md-input-container>
+    <md-datepicker #endDate *ngIf="editing"></md-datepicker>
+  </div>
+</form>
