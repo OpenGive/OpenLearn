@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {MdDialogRef} from "@angular/material";
-import {Role} from "../../../../../app.constants";
 
 @Component({
   selector: 'admin-programs-form',
