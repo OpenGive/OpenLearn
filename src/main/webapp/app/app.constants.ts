@@ -5,6 +5,6 @@ export class AppConstants {
     Instructor: 'ROLE_INSTRUCTOR',
     Student: 'ROLE_STUDENT',
     User: 'ROLE_USER'
-  }
-  public static ForgotPasswordEmail = "passwordrequest@opengive.com"
+  };
+  public static ForgotPasswordEmail = "passwordrequest@opengive.com";
 }

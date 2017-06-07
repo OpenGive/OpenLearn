@@ -2,7 +2,7 @@ import {HttpWrapperService} from '../shared/auth/http-wrapper.service';
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {User} from "../shared/user/user.model";
-import {Role} from "../app.constants";
+import {AppConstants} from "../app.constants";
 
 @Injectable()
 export class UserService {
@@ -43,19 +43,19 @@ export class UserService {
 
   getAdministrators(): Observable<User[]> {
     return this._http.get(this.endpoint)
-      .map(resp => resp.json().filter(user => user.authorities.includes(Role.Admin)))
+      .map(resp => resp.json().filter(user => user.authorities.includes(AppConstants.Role.Admin)))
       .catch(this.handleError);
   }
 
   getInstructors(): Observable<User[]> {
     return this._http.get(this.endpoint)
-      .map(resp => resp.json().filter(user => user.authorities.includes(Role.Instructor)))
+      .map(resp => resp.json().filter(user => user.authorities.includes(AppConstants.Role.Instructor)))
       .catch(this.handleError);
   }
 
   getStudents(): Observable<User[]> {
     return this._http.get(this.endpoint)
-      .map(resp => resp.json().filter(user => user.authorities.includes(Role.Student)))
+      .map(resp => resp.json().filter(user => user.authorities.includes(AppConstants.Role.Student)))
       .catch(this.handleError);
   }
 

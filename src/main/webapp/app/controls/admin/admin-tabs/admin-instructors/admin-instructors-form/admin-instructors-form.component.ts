@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {MdDialogRef} from "@angular/material";
-import {Role} from "../../../../../app.constants";
+import {AppConstants} from "../../../../../app.constants";
 
 @Component({
   selector: 'admin-instructors-form',
@@ -21,6 +21,6 @@ export class AdminInstructorsFormComponent implements OnInit {
   }
 
   getRoles(): void {
-    this.roles = Object.keys(Role).map(key => Role[key]);
+    this.roles = Object.keys(AppConstants.Role).map(key => AppConstants.Role[key]);
   }
 }
