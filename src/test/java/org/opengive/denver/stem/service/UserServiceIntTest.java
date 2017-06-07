@@ -52,8 +52,8 @@ public class UserServiceIntTest {
 
 	@Test
 	public void assertThatOnlyActivatedUserCanRequestPasswordReset() {
-		final User user = userService.createUser("johndoe", "johndoe", "John", "Doe", "john.doe@localhost",
-				"http://placehold.it/50x50");
+		final User user = userService.createUser("johndoe", "johndoe", "John", "Doe", "john.doe@localhost", "8888675309",
+      null, "http://placehold.it/50x50");
 		final Optional<User> maybeUser = userService.requestPasswordReset("johndoe");
 		assertThat(maybeUser.isPresent()).isFalse();
 		userRepository.delete(user);
@@ -61,8 +61,8 @@ public class UserServiceIntTest {
 
 	@Test
 	public void assertThatResetKeyMustNotBeOlderThan24Hours() {
-		final User user = userService.createUser("johndoe", "johndoe", "John", "Doe", "john.doe@localhost",
-				"http://placehold.it/50x50");
+    final User user = userService.createUser("johndoe", "johndoe", "John", "Doe", "john.doe@localhost", "8888675309",
+      null, "http://placehold.it/50x50");
 
 		final ZonedDateTime daysAgo = ZonedDateTime.now().minusHours(25);
 		final String resetKey = RandomUtil.generateResetKey();
@@ -81,8 +81,8 @@ public class UserServiceIntTest {
 
 	@Test
 	public void assertThatResetKeyMustBeValid() {
-		final User user = userService.createUser("johndoe", "johndoe", "John", "Doe", "john.doe@localhost",
-				"http://placehold.it/50x50");
+    final User user = userService.createUser("johndoe", "johndoe", "John", "Doe", "john.doe@localhost", "8888675309",
+      null, "http://placehold.it/50x50");
 
 		final ZonedDateTime daysAgo = ZonedDateTime.now().minusHours(25);
 		user.setActivated(true);
@@ -96,8 +96,8 @@ public class UserServiceIntTest {
 
 	@Test
 	public void assertThatUserCanResetPassword() {
-		final User user = userService.createUser("johndoe", "johndoe", "John", "Doe", "john.doe@localhost",
-				"http://placehold.it/50x50");
+    final User user = userService.createUser("johndoe", "johndoe", "John", "Doe", "john.doe@localhost", "8888675309",
+      null, "http://placehold.it/50x50");
 		final String oldPassword = user.getPassword();
 		final ZonedDateTime daysAgo = ZonedDateTime.now().minusHours(2);
 		final String resetKey = RandomUtil.generateResetKey();
