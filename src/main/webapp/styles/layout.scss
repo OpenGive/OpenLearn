@@ -40,6 +40,10 @@ body {
     // overflow: hidden !important;
 }
 
+.cdk-overlay-pane {
+  width: initial !important;
+}
+
 md-dialog-container {
   padding: 0 !important;
   border-radius: 8px !important;

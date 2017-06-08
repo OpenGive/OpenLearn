@@ -71,5 +71,8 @@ export const AdminModel = {
       {property: 'startDate', display: 'Start Date'},
       {property: 'endDate', display: 'End Date'}
     ]
+  },
+  School: {
+    route: 'schools'
   }
 };

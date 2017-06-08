@@ -12,7 +12,7 @@ import {LoginPageComponent} from "./pages/login-page/login-page.component";
 import {StudentPageComponent} from "./pages/student-page/student-page.component";
 import {CoursePageComponent} from "./pages/course-page/course-page.component";
 import {NavigationMenuComponent} from "./controls/navigation-menu/navigation-menu.component";
-import {MaterialModule} from "@angular/material";
+import {MaterialModule, MdNativeDateModule} from "@angular/material";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import "hammerjs";
@@ -92,6 +92,7 @@ import {AdminService} from "./services/admin.service";
     HttpModule,
     AppRoutingModule,
     MaterialModule,
+    MdNativeDateModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
     CookieModule.forRoot()

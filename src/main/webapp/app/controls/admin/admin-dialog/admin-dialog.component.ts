@@ -30,7 +30,7 @@ export class AdminDialogComponent implements OnInit {
     this.transferData();
   }
 
-  transferData() {
+  transferData(): void {
     this.adding = this.data.adding;
     this.editing = this.data.adding;
     this.tab = this.data.tab;
@@ -38,15 +38,15 @@ export class AdminDialogComponent implements OnInit {
     this.cloneItem();
   }
 
-  cloneItem() {
+  cloneItem(): void {
     this.copy = cloneDeep(this.data.item);
   }
 
-  edit() {
+  edit(): void {
     this.editing = true;
   }
 
-  cancel(exit: boolean) {
+  cancel(exit: boolean): void {
     if (this.adding || exit) {
       this.dialogRef.close();
     } else {
@@ -55,7 +55,7 @@ export class AdminDialogComponent implements OnInit {
     }
   }
 
-  save() {
+  save(): void {
     if (this.adding) {
       this.create();
     } else {
@@ -63,7 +63,7 @@ export class AdminDialogComponent implements OnInit {
     }
   }
 
-  create() {
+  create(): void {
     if (this.userTabs.includes(this.tab)) {
       this.userService.create(this.copy).subscribe(resp => this.handleCreateResponse(resp));
     } else {
@@ -72,10 +72,13 @@ export class AdminDialogComponent implements OnInit {
   }
 
   handleCreateResponse(resp): void {
-    console.log('Create');
+    this.dialogRef.close({
+      type: 'add',
+      data: resp
+    });
   }
 
-  update() {
+  update(): void {
     if (this.userTabs.includes(this.tab)) {
       this.userService.update(this.copy).subscribe(resp => this.handleUpdateResponse(resp));
     } else {
@@ -84,18 +87,24 @@ export class AdminDialogComponent implements OnInit {
   }
 
   handleUpdateResponse(resp): void {
-    this.dialogRef.close(resp);
+    this.dialogRef.close({
+      type: 'update',
+      data: resp
+    });
   }
 
   delete() {
     if (this.userTabs.includes(this.tab)) {
-      this.userService.delete(this.copy.id).subscribe(resp => this.handleDeleteResponse(resp));
+      this.userService.delete(this.copy.id).subscribe(resp => this.handleDeleteResponse(resp, this.copy.id));
     } else {
-      this.adminService.delete(this.tab, this.copy.id).subscribe(resp => this.handleDeleteResponse(resp));
+      this.adminService.delete(this.tab, this.copy.id).subscribe(resp => this.handleDeleteResponse(resp, this.copy.id));
     }
   }
 
-  handleDeleteResponse(resp) {
-    console.log('Delete');
+  handleDeleteResponse(resp, id): void {
+    this.dialogRef.close({
+      type: 'delete',
+      data: id
+    });
   }
 }

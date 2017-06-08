@@ -80,6 +80,8 @@ public class UserDTO
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
+		this.phoneNumber = phoneNumber;
+		this.address = address;
 		this.activated = activated;
 		this.imageUrl = imageUrl;
 		this.createdBy = createdBy;
@@ -169,6 +171,8 @@ public class UserDTO
 				", firstName='" + firstName + '\'' +
 				", lastName='" + lastName + '\'' +
 				", email='" + email + '\'' +
+        ", phoneNumber='" + phoneNumber + '\'' +
+        ", address='" + address + '\'' +
 				", imageUrl='" + imageUrl + '\'' +
 				", activated=" + activated +
 				", createdBy=" + createdBy +
