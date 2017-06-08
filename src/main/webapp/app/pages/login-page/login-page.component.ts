@@ -35,8 +35,7 @@ export class LoginPageComponent implements OnInit /*, AfterViewInit*/ {
   };
 
   forgotPassword() {
-    let dialogRef = this.dialog.open(ForgotPasswordDialogComponent);
-    console.log(dialogRef);
+    this.dialog.open(ForgotPasswordDialogComponent);
   }
 
   login() {
