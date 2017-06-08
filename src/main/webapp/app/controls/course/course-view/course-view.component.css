@@ -1,6 +1,5 @@
 .course-view-header {
   border-bottom: 2px solid rgba(229,229,229,1);
-  margin: -24px -24px 24px -24px;
   padding: 10px 24px 10px 0px;
 }
 
@@ -41,4 +40,8 @@
   height: 40px;
   width: 40px;
   border-radius: 50%;
+}
+
+.course-view-activities {
+  margin: 0px;
 }
