@@ -78,6 +78,14 @@
                   separator=","
                   tableName="user_org">
         </loadData>
-        
+
+    </changeSet>
+    <changeSet id="99999999999999-2" author="sstevenson">
+      <loadUpdateData encoding="UTF-8"
+                file="config/liquibase/activity_descriptions_and_points.csv"
+                separator=","
+                primaryKey="id"
+                tableName="activity">
+      </loadUpdateData>
     </changeSet>
 </databaseChangeLog>
