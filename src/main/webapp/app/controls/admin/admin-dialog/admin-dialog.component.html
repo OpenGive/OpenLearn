@@ -2,7 +2,9 @@
   <div class="admin-dialog-header" [ngClass]="{edit: editing}" fxLayout="row" fxLayoutAlign="space-between center">
     <div fxLayout="row" fxLayoutAlign="start center">
       <div><button md-button (click)="cancel(true)"><i class="fa fa-times fa-lg"></i></button></div>
-      <span class="admin-dialog-title" [ngClass]="{edit: editing}">{{data.title}} Details</span>
+      <span class="admin-dialog-title" *ngIf="!editing">{{data.title}} Details</span>
+      <span class="admin-dialog-title edit" *ngIf="adding">New {{data.title}}</span>
+      <span class="admin-dialog-title edit" *ngIf="editing && !adding">Edit {{data.title}}</span>
     </div>
     <div fxLayout="row">
       <button md-raised-button *ngIf="editing" (click)="save()" class="admin-dialog-button grey-button" mdTooltip="Save">

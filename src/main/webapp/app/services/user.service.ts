@@ -60,9 +60,9 @@ export class UserService {
 
   getStudents(): Observable<User[]> {
     return this._http.get(this.endpoint)
-      .map(resp => console.log(resp.json()
+      .map(resp => resp.json()
         .filter(user => user.authorities.includes(AppConstants.Role.Student))
-        .map(user => this.flattenAddress(user))))
+        .map(user => this.flattenAddress(user)))
       .catch(this.handleError);
   }
 
