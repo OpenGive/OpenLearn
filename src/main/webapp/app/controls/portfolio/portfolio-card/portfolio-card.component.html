@@ -1,4 +1,13 @@
 <div class="card">
-  <img src={{portfolioItem.photoUrl}}>
-  <button md-button>{{portfolioItem.filename}}</button>
+  <div class="card-image">
+    <img src={{portfolioItem.photoUrl}}>
+  </div>
+  <div class="card-actions">
+    <div class="shareButton">
+      <button md-button>SHARE</button>
+    </div>
+    <div class="fileName">
+      {{portfolioItem.filename}}
+    </div>
+  </div>
 </div>
