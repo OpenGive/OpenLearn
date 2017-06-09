@@ -6,6 +6,7 @@ import {StudentPageComponent} from "./pages/student-page/student-page.component"
 import {LoginPageComponent} from "./pages/login-page/login-page.component";
 import {CoursePageComponent} from "./pages/course-page/course-page.component";
 import {LandingPageComponent} from "./pages/landing-page/landing-page.component";
+import {ProfilePageComponent} from "./pages/profile-page/profile-page.component"
 import {NgModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {RouterModule, Routes} from "@angular/router";
@@ -80,7 +81,15 @@ const ROUTES: Routes = [
       {path: 'course', component: StudentCoursesComponent},
     ]
   },
-
+  {
+    path: 'profile',
+    component: ProfilePageComponent,
+    data: {
+       authorities: [AppConstants.Role.Student,AppConstants.Role.Instructor]
+    },
+    canActivate: [UserRouteAccessService],
+    children: []
+  },
 ];
 
 @NgModule({
