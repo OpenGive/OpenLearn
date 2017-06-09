@@ -1,16 +1,4 @@
-<md-card class="card">
-  <md-card-header>
-    <div md-card-avatar class="example-header-image"></div>
-    <md-card-title>{{portfolioItem.name}}</md-card-title>
-    <md-card-subtitle>{{portfolioItem.filename}}</md-card-subtitle>
-  </md-card-header>
-  <md-card-content>
-    <p>
-      {{portfolioItem.name}}
-    </p>
-  </md-card-content>
-  <md-card-actions>
-    <button md-button>LIKE</button>
-    <button md-button>SHARE</button>
-  </md-card-actions>
-</md-card>
+<div class="card">
+  <img src={{portfolioItem.photoUrl}}>
+  <button md-button>{{portfolioItem.filename}}</button>
+</div>

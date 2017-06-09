@@ -18,6 +18,7 @@ export class PortfolioPageComponent implements OnInit {
       var item = new PortfolioItem();
       item.name = "testname" + i;
       item.filename = "testfilename" + i;
+      item.photoUrl = "http://image.prntscr.com/image/8d081d23bd584342ba119fb562510f37.png";
       this.portfolios.push(item);
     }
   }
