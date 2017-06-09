@@ -2,7 +2,8 @@
   <md-card-header>
     <div md-card-avatar class="example-header-image"></div>
     <md-card-title>{{course.name}}</md-card-title>
-    <md-card-subtitle>{{course.startDate | date: 'MM/dd/yy'}} to {{course.endDate | date: 'MM/dd/yy'}}</md-card-subtitle>
+    <md-card-subtitle *ngIf="!studentView">{{course.startDate | date: 'MM/dd/yy'}} to {{course.endDate | date: 'MM/dd/yy'}}</md-card-subtitle>
+    <md-card-subtitle *ngIf="studentView">{{course.instructor.firstName}} {{course.instructor.lastName}}</md-card-subtitle>
   </md-card-header>
   <img md-card-image src="http://image.prntscr.com/image/8d081d23bd584342ba119fb562510f37.png">
   <md-card-content>
@@ -11,7 +12,8 @@
     </p>
   </md-card-content>
   <md-card-actions>
-    <button md-button>LIKE</button>
-    <button md-button>SHARE</button>
+    <button md-button *ngIf="!studentView">LIKE</button>
+    <button md-button *ngIf="!studentView">SHARE</button>
+    <button md-button *ngIf="studentView" (click)="viewCourse()">View Class</button>
   </md-card-actions>
 </md-card>

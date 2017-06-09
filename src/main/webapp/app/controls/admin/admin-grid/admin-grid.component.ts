@@ -3,7 +3,7 @@ import {AdminGridModel} from "../../../models/admin-grid.model";
 import {AdminDialogComponent} from "../admin-dialog/admin-dialog.component";
 import {MdDialog} from "@angular/material";
 import {AdminGridService} from "../../../services/admin-grid.service";
-import {each} from "lodash";
+import * as _ from "lodash";
 
 @Component({
   selector: 'app-admin-grid',
@@ -34,7 +34,7 @@ export class AdminGridComponent implements OnInit {
         adding: true
       },
       disableClose: true
-    });
+    }).afterClosed().subscribe(resp => this.handleDialogResponse(resp));
   }
 
   viewDetails(row): void {
@@ -46,12 +46,19 @@ export class AdminGridComponent implements OnInit {
         adding: false
       },
       disableClose: true
-    }).afterClosed().subscribe(resp => this.handleDialogResponse(resp, row));
+    }).afterClosed().subscribe(resp => this.handleDialogResponse(resp));
   }
 
-  handleDialogResponse(resp, row) {
+  handleDialogResponse(resp): void {
     if (resp) {
-      each(resp, (value, key) => row[key] = value);
+      if (resp.type === 'update') {
+        let ndx = _.findIndex(this.grid.rows, {id: resp.data.id});
+        _.each(resp.data, (value, key) => this.grid.rows[ndx][key] = value);
+      } else if (resp.type === 'add') {
+        this.grid.rows.push(resp.data);
+      } else if (resp.type === 'delete') {
+        _.remove(this.grid.rows, row => row.id === resp.data);
+      }
     }
   }
 

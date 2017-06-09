@@ -86,6 +86,32 @@ public class Activity implements Serializable {
 		this.name = name;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
+	public Activity description(final String description) {
+		this.description = description;
+		return this;
+	}
+
+	public void setDescription(final String description) {
+		this.description = description;
+	}
+
+	public Integer getPoints() {
+		return points;
+	}
+
+	public Activity points(final Integer points) {
+		this.points = points;
+		return this;
+	}
+
+	public void setPoints(final Integer points) {
+		this.points = points;
+	}
+
 	public Course getCourse() {
 		return course;
 	}
