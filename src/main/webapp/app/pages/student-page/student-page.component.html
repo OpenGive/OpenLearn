@@ -1,5 +1,5 @@
 <md-sidenav-container class="full-screen-side-nav">
-  <md-sidenav [fxHide.lt-sm]="!leftNavIsOpen" #sidenav mode="side" class="example-sidenav" [opened]="leftNavIsOpen">
+  <md-sidenav [fxHide.sm]="!leftNavIsOpen" #sidenav mode="side" class="example-sidenav" [opened]="leftNavIsOpen">
     <div fxLayout="column">
       <button (click)="leftNavIsOpen = !leftNavIsOpen" md-button color="accent">
         <md-icon>chevron_left</md-icon>
@@ -9,7 +9,7 @@
     </div>
   </md-sidenav>
   <div fxLayout="row" style="position: absolute">
-    <button [fxHide.lt-sm]="leftNavIsOpen" color="accent" md-button (click)="leftNavIsOpen = !leftNavIsOpen">
+    <button [fxHide.sm]="leftNavIsOpen" color="accent" md-button (click)="leftNavIsOpen = !leftNavIsOpen">
       <md-icon>chevron_right</md-icon>
     </button>
 
