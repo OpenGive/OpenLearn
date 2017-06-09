@@ -14,7 +14,7 @@ export class PortfolioPageComponent implements OnInit {
   portfolios: PortfolioItem[] = [];
 
   loadFakePortfolios() {
-    for(var i = 0; i < 10; i++){
+    for(var i = 1; i <= 10; i++){
       var item = new PortfolioItem();
       item.name = "testname" + i;
       item.filename = "testfilename" + i;
