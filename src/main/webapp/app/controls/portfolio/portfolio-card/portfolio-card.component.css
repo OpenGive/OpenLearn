@@ -1,12 +1,15 @@
 .card {
   margin: 10px;
   width: 220px;
-  height: 165px;
 }
 
 .card-image {
   width: 220px;
   height: 143px;
+}
+
+.card-actions {
+  height: 24px;
 }
 
 .card img {
