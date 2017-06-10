@@ -3,10 +3,12 @@
     <img src={{portfolioItem.photoUrl}}>
   </div>
   <div class="card-actions">
-    <div class="shareButton">
-      <button md-button>SHARE</button>
+    <div class="share-button-container">
+      <button md-raised-button (click)="share(portfolioItem)" class="share-button" mdTooltip="Share">
+        <md-icon>share</md-icon>
+      </button>
     </div>
-    <div class="fileName">
+    <div class="file-name">
       {{portfolioItem.filename}}
     </div>
   </div>
