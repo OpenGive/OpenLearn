@@ -1,10 +1,12 @@
-<form #organizationForm="ngForm">
+<form [formGroup]="organizationForm" novalidate>
   <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap>
     <md-input-container fxFlex="47%">
-      <input mdInput [disabled]="!editing" name="name" [(ngModel)]="formOrganization.name" placeholder="Name"/>
+      <input mdInput formControlName="name" placeholder="Name"/>
+      <md-error *ngIf="formErrors.name">{{formErrors.name}}</md-error>
     </md-input-container>
     <md-input-container fxFlex="47%">
-      <input mdInput [disabled]="!editing" name="description" [(ngModel)]="formOrganization.description" placeholder="Description"/>
+      <input mdInput formControlName="description" placeholder="Description"/>
+      <md-error *ngIf="formErrors.name">{{formErrors.name}}</md-error>
     </md-input-container>
   </div>
 </form>

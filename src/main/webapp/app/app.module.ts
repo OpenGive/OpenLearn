@@ -3,7 +3,7 @@ import { HttpWrapperService } from './shared/auth/http-wrapper.service';
 import {AppRoutingModule} from "./app-routing.module";
 import {BrowserModule} from "@angular/platform-browser";
 import {NgModule} from "@angular/core";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpModule} from "@angular/http";
 
 import {AppComponent} from "./app.component";
@@ -93,6 +93,7 @@ import {CourseActivityListComponent } from './controls/course/course-activity-li
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpModule,
     AppRoutingModule,
     MaterialModule,
