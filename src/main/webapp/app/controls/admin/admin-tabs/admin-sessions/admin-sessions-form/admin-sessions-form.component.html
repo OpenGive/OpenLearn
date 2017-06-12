@@ -1,27 +1,32 @@
-<form #sessionForm="ngForm">
+<form [formGroup]="sessionForm" novalidate>
   <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap>
     <md-input-container fxFlex="30%">
-      <input mdInput [disabled]="!editing" type="text" name="name" [(ngModel)]="formSession.name" placeholder="Name"/>
+      <input mdInput type="text" formControlName="name" placeholder="Name"/>
+      <md-error *ngIf="formErrors.name">{{formErrors.name}}</md-error>
     </md-input-container>
     <md-input-container fxFlex="30%">
-      <input mdInput [disabled]="!editing" type="text" name="description" [(ngModel)]="formSession.description" placeholder="Description"/>
+      <input mdInput type="text" formControlName="description" placeholder="Description"/>
+      <md-error *ngIf="formErrors.description">{{formErrors.description}}</md-error>
     </md-input-container>
     <md-input-container fxFlex="30%">
-      <input mdInput [disabled]="!editing" type="text" [mdAutocomplete]="organization" name="organization" [(ngModel)]="formSession.organization" placeholder="Organization">
+      <input mdInput type="text" [mdAutocomplete]="organization" formControlName="organization" placeholder="Organization"/>
+      <md-error *ngIf="formErrors.organization">{{formErrors.organization}}</md-error>
       <md-autocomplete #organization="mdAutocomplete" [displayWith]="displayOrganization">
         <md-option *ngFor="let organization of organizations" [value]="organization">{{organization.name}}</md-option>
       </md-autocomplete>
     </md-input-container>
     <md-input-container fxFlex="30%">
-      <input mdInput [disabled]="!editing" [mdDatepicker]="startDate" name="startDate" [(ngModel)]="formSession.startDate" placeholder="Start Date">
+      <input mdInput [mdDatepicker]="startDate" formControlName="startDate" placeholder="Start Date"/>
+      <md-error *ngIf="formErrors.startDate">{{formErrors.startDate}}</md-error>
       <button mdSuffix *ngIf="editing" [mdDatepickerToggle]="startDate"></button>
     </md-input-container>
     <md-datepicker #startDate></md-datepicker>
     <md-input-container fxFlex="30%">
-      <input mdInput [disabled]="!editing" [mdDatepicker]="endDate" name="endDate" [(ngModel)]="formSession.endDate" placeholder="End Date">
+      <input mdInput [mdDatepicker]="endDate" formControlName="endDate" placeholder="End Date"/>
+      <md-error *ngIf="formErrors.endDate">{{formErrors.endDate}}</md-error>
       <button mdSuffix *ngIf="editing" [mdDatepickerToggle]="endDate"></button>
     </md-input-container>
     <md-datepicker #endDate></md-datepicker>
-    <md-checkbox fxFlex="30%" [disabled]="!editing" name="active" [(ngModel)]="formSession.active">Active</md-checkbox>
+    <md-checkbox fxFlex="30%" formControlName="active">Active</md-checkbox>
   </div>
 </form>

@@ -1,7 +1,6 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from "@angular/core";
 import {MdDialogRef} from "@angular/material";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import * as _ from "lodash";
 
 @Component({
   selector: 'admin-organizations-form',
@@ -10,13 +9,31 @@ import * as _ from "lodash";
 })
 export class AdminOrganizationsFormComponent implements OnInit, OnChanges {
 
-  organizationForm: FormGroup;
-
   @Input('item') formOrganization: any;
   @Input() editing: boolean;
 
+  organizationForm: FormGroup;
+
+  formErrors = {
+    name: '',
+    description: ''
+  };
+
+  validationMessages = {
+    name: {
+      required: 'Name is required',
+      minlength: 'Name must be at least 3 characters long',
+      maxlength: 'Name cannot be more than 100 characters long'
+    },
+    description: {
+      minlength: 'Description must be at least 10 characters long',
+      maxlength: 'Description cannot be more than 800 characters long'
+    }
+  };
+
   constructor(public dialogRef: MdDialogRef<AdminOrganizationsFormComponent>,
-              private fb: FormBuilder) { }
+              private fb: FormBuilder) {
+  }
 
   ngOnInit(): void {
     this.buildForm();
@@ -42,16 +59,14 @@ export class AdminOrganizationsFormComponent implements OnInit, OnChanges {
   buildForm(): void {
     this.organizationForm = this.fb.group({
       name: [this.formOrganization.name, [
-          Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(100)
-        ]
-      ],
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(100)
+      ]],
       description: [this.formOrganization.description, [
-          Validators.minLength(10),
-          Validators.maxLength(800)
-        ]
-      ]
+        Validators.minLength(10),
+        Validators.maxLength(800)
+      ]]
     });
     this.organizationForm.valueChanges.subscribe(data => this.onValueChanged(data));
     this.onValueChanged();
@@ -72,21 +87,4 @@ export class AdminOrganizationsFormComponent implements OnInit, OnChanges {
       }
     }
   }
-
-  formErrors = {
-    name: '',
-    description: ''
-  };
-
-  validationMessages = {
-    name: {
-      required: 'Name is required',
-      minlength: 'Name must be at least 3 characters long',
-      maxlength: 'Name cannot be more than 100 characters long'
-    },
-    description: {
-      minlength: 'Description must be at least 10 characters long',
-      maxlength: 'Description cannot be more than 800 characters long'
-    }
-  };
 }
