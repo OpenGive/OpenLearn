@@ -10,6 +10,7 @@ export class AdminAdministratorsComponent {
   administratorGrid = new AdminGridModel(
     AdminModel.Administrator.title,
     AdminModel.Administrator.route,
+    AdminModel.Administrator.defaultSort,
     AdminModel.Administrator.columns,
     []);
 }
