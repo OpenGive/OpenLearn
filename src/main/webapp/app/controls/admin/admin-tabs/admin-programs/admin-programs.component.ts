@@ -10,6 +10,7 @@ export class AdminProgramsComponent {
   programGrid = new AdminGridModel(
     AdminModel.Program.title,
     AdminModel.Program.route,
+    AdminModel.Program.defaultSort,
     AdminModel.Program.columns,
     []);
 }

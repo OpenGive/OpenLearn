@@ -10,6 +10,7 @@ export class AdminSessionsComponent {
   sessionGrid = new AdminGridModel(
     AdminModel.Session.title,
     AdminModel.Session.route,
+    AdminModel.Session.defaultSort,
     AdminModel.Session.columns,
     []);
 }

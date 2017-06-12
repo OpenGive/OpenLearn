@@ -180,7 +180,7 @@ public class AccountResource {
                         mailService.sendPasswordResetMail(user);
                         return new ResponseEntity<>("email was sent", HttpStatus.OK);
                     } else {
-				        return new ResponseEntity<String>("No email; contact an administrator", HttpStatus.OK);
+				        return new ResponseEntity<>("No email; contact an administrator", HttpStatus.OK);
                     }
 				}).orElse(new ResponseEntity<>("login not registered", HttpStatus.BAD_REQUEST));
 	}

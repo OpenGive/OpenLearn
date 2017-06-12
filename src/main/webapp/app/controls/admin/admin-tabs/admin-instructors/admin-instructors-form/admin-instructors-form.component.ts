@@ -11,6 +11,7 @@ export class AdminInstructorsFormComponent implements OnInit {
 
   @Input('item') formInstructor: any;
   @Input() editing: boolean;
+  @Input() adding: boolean;
 
   roles: string[];
 
