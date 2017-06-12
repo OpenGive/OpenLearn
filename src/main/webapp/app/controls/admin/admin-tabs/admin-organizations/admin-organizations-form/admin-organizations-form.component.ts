@@ -65,7 +65,9 @@ export class AdminOrganizationsFormComponent implements OnInit, OnChanges {
         const control = form.get(field);
         if (control && control.dirty && !control.valid) {
           const messages = this.validationMessages[field];
-          this.formErrors[field] = _.map(control.errors, key => messages[key]).join(' ');
+          for (const key in control.errors) {
+            this.formErrors[field] += messages[key] + ' ';
+          }
         }
       }
     }
