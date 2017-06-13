@@ -59,7 +59,7 @@ export class AdminGridComponent implements OnInit {
     if (resp) {
       if (resp.type === 'UPDATE') {
         let ndx = _.findIndex(this.grid.rows, {id: resp.data.id});
-        _.each(resp.data, (value, key) => this.grid.rows[ndx][key] = value);
+        this.grid.rows[ndx] = resp.data;
       } else if (resp.type === 'ADD') {
         this.grid.rows.push(resp.data);
       } else if (resp.type === 'DELETE') {
