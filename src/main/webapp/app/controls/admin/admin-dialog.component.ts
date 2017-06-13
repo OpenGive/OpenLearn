@@ -10,8 +10,8 @@ import {MD_DIALOG_DATA} from "@angular/material";
       <!--<admin-instructors-form *ngSwitchCase="'instructors'" [item]="copy" [editing]="editing" [adding]="adding"></admin-instructors-form>-->
       <!--<admin-students-form *ngSwitchCase="'students'" [item]="copy" [editing]="editing" [adding]="adding"></admin-students-form>-->
       <admin-sessions-form *ngSwitchCase="'sessions'" [item]="data.item" [adding]="data.adding"></admin-sessions-form>
-      <!--<admin-programs-form *ngSwitchCase="'programs'" [item]="copy" [editing]="editing"></admin-programs-form>-->
-      <!--<admin-courses-form *ngSwitchCase="'courses'" [item]="copy" [editing]="editing"></admin-courses-form>-->
+      <admin-programs-form *ngSwitchCase="'programs'" [item]="data.item" [adding]="data.adding"></admin-programs-form>
+      <admin-courses-form *ngSwitchCase="'courses'" [item]="data.item" [adding]="data.adding"></admin-courses-form>
     </div>`
 })
 export class AdminDialogComponent implements OnInit {

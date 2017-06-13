@@ -1,8 +1,9 @@
 import {Component, Input, OnInit} from "@angular/core";
-import {MdDialogRef} from "@angular/material";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {AdminService} from "../../../../../services/admin.service";
+import {MdDialogRef} from "@angular/material";
+
 import {AdminModel} from "../../../admin.constants";
+import {AdminService} from "../../../../../services/admin.service";
 
 @Component({
   selector: 'admin-sessions-form',
@@ -135,7 +136,6 @@ export class AdminSessionsFormComponent implements OnInit {
 
   private update(): void {
     const toUpdate = this.prepareToUpdate();
-    console.log(toUpdate);
     this.adminService.update(AdminModel.Session.route, toUpdate).subscribe(resp => {
       this.dialogRef.close({
         type: 'UPDATE',
@@ -152,7 +152,7 @@ export class AdminSessionsFormComponent implements OnInit {
       organization: this.sessionForm.get('organization').value,
       startDate: this.sessionForm.get('startDate').value,
       endDate: this.sessionForm.get('endDate').value,
-      active: this.sessionForm.get('active').value,
+      active: this.sessionForm.get('active').value
     };
   }
 
@@ -178,7 +178,7 @@ export class AdminSessionsFormComponent implements OnInit {
       organization: this.formSession.organization,
       startDate: this.formSession.startDate,
       endDate: this.formSession.endDate,
-      active: this.formSession.active,
+      active: this.formSession.active
     });
     this.setEditing(false);
   }

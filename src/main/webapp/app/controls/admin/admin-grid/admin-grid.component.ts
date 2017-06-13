@@ -94,7 +94,7 @@ export class AdminGridComponent implements OnInit {
   }
 
   displayObject(object): string {
-    return object.name;
+    return _.isNil(object) ? '' : object.name;
   }
 
   displayUser(user): string {

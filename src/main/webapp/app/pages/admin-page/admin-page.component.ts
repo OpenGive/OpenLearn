@@ -15,8 +15,8 @@ export class AdminPageComponent implements OnInit {
     // { name: AdminModel.Instructor.title, route: AdminModel.Instructor.route, active: false },
     // { name: AdminModel.Student.title, route: AdminModel.Student.route, active: false },
     { name: AdminModel.Session.title, route: AdminModel.Session.route, active: false },
-    // { name: AdminModel.Program.title, route: AdminModel.Program.route, active: false },
-    // { name: AdminModel.Course.title, route: AdminModel.Course.route, active: false },
+    { name: AdminModel.Program.title, route: AdminModel.Program.route, active: false },
+    { name: AdminModel.Course.title, route: AdminModel.Course.route, active: false }
   ];
   activeTab = this.tabs[0];
 
