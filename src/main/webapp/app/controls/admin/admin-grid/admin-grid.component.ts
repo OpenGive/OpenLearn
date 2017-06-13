@@ -13,6 +13,10 @@ import * as _ from "lodash";
 export class AdminGridComponent implements OnInit {
 
   @Input() grid: AdminGridModel;
+  filteredRows: any[];
+
+  sortColumn: any;
+  reverse: boolean;
 
   constructor(private dialog: MdDialog,
               private adminGridService: AdminGridService) {}
@@ -22,7 +26,11 @@ export class AdminGridComponent implements OnInit {
   }
 
   getRows(): void {
-    this.adminGridService.query(this.grid.route).subscribe(resp => this.grid.rows = resp);
+    this.adminGridService.query(this.grid.route)
+      .subscribe(resp => {
+        this.grid.rows = resp;
+        this.sort(_.find(this.grid.columns, {'property': this.grid.defaultSort}));
+      });
   }
 
   add(): void {
@@ -92,5 +100,31 @@ export class AdminGridComponent implements OnInit {
 
   displayUser(user): string {
     return user.lastName + ', ' + user.firstName;
+  }
+
+  sort(column: any): void {
+    this.reverse = (this.sortColumn === column.property ? !this.reverse : false); // Reverse always false for new column
+    this.sortColumn = column.property;
+    if (column.property === 'authorities') {
+      this.filteredRows = _.sortBy(this.grid.rows, [row => this.displayAuthorities(row[column.property])]);
+    } else if (column.property === 'organization' || column.property === 'program' || column.property === 'school' || column.property === 'session') {
+      this.filteredRows = _.sortBy(this.grid.rows, [row => this.displayObject(row[column.property])]);
+    } else if (column.property === 'instructor') {
+      this.filteredRows = _.sortBy(this.grid.rows, [row => this.displayUser(row[column.property])]);
+    } else {
+      this.filteredRows = _.sortBy(this.grid.rows, [row => row[column.property]]);
+    }
+    if (this.reverse) {
+      this.filteredRows.reverse();
+    }
+    this.updateSortIcon();
+  }
+
+  updateSortIcon(): void {
+    _.forEach(this.grid.columns, column => {
+      column.sortIcon = 'sort';
+    });
+    let ndx = _.findIndex(this.grid.columns, {'property': this.sortColumn});
+    this.grid.columns[ndx].sortIcon = (this.reverse ? 'keyboard_arrow_up' : 'keyboard_arrow_down');
   }
 }

@@ -70,6 +70,19 @@ th {
   color: #999999;
   letter-spacing: -0.18px;
   padding-bottom: 5px;
+  cursor: pointer;
+}
+
+th > md-icon {
+  font-size: 11px;
+  height: 11px;
+  width: 11px;
+  color: #999999;
+  padding-left: 5px;
+}
+
+th:hover {
+  background: #eeeeee;
 }
 
 td {

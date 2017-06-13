@@ -53,6 +53,8 @@ import {AdminSessionsFormComponent} from "./controls/admin/admin-tabs/admin-sess
 import {AdminProgramsFormComponent} from "./controls/admin/admin-tabs/admin-programs/admin-programs-form/admin-programs-form.component";
 import {AdminCoursesFormComponent} from "./controls/admin/admin-tabs/admin-courses/admin-courses-form/admin-courses-form.component";
 import {AdminService} from "./services/admin.service";
+import {CourseViewComponent} from "./controls/course/course-view/course-view.component"
+import {CourseActivityListComponent } from './controls/course/course-activity-list/course-activity-list.component';
 
 @NgModule({
   declarations: [
@@ -87,7 +89,9 @@ import {AdminService} from "./services/admin.service";
     CourseListComponent,
     StudentCoursesComponent,
     PortfolioPageComponent,
-    PortfolioListComponent
+    PortfolioListComponent,
+    CourseViewComponent,
+    CourseActivityListComponent
   ],
   imports: [
     BrowserModule,
@@ -117,7 +121,8 @@ import {AdminService} from "./services/admin.service";
   bootstrap: [AppComponent],
   entryComponents: [
     AdminDialogComponent,
-    ForgotPasswordDialogComponent
+    ForgotPasswordDialogComponent,
+    CourseViewComponent
   ]
 })
 export class AppModule {

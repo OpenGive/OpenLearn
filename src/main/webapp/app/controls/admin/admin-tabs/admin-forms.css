@@ -1,3 +1,8 @@
 input[disabled] {
   color: black;
 }
+
+.reset-password {
+  background-color: #FF5252;
+  color: white;
+}

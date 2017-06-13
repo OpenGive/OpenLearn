@@ -2,6 +2,7 @@ export const AdminModel = {
   Organization: {
     title: 'Organizations',
     route: 'organizations',
+    defaultSort: 'name',
     columns: [
       {property: 'name', display: 'Name'}
     ]
@@ -9,6 +10,7 @@ export const AdminModel = {
   Administrator: {
     title: 'Administrators',
     route: 'administrators',
+    defaultSort: 'login',
     columns: [
       {property: 'firstName', display: 'First Name'},
       {property: 'lastName', display: 'Last Name'},
@@ -20,6 +22,7 @@ export const AdminModel = {
   Instructor: {
     title: 'Instructors',
     route: 'instructors',
+    defaultSort: 'login',
     columns: [
       {property: 'firstName', display: 'First Name'},
       {property: 'lastName', display: 'Last Name'},
@@ -31,6 +34,7 @@ export const AdminModel = {
   Student: {
     title: 'Students',
     route: 'students',
+    defaultSort: 'login',
     columns: [
       {property: 'firstName', display: 'First Name'},
       {property: 'lastName', display: 'Last Name'},
@@ -42,6 +46,7 @@ export const AdminModel = {
   Session: {
     title: 'Sessions',
     route: 'sessions',
+    defaultSort: 'name',
     columns: [
       {property: 'name', display: 'Name'},
       {property: 'organization', display: 'Organization'},
@@ -53,6 +58,7 @@ export const AdminModel = {
   Program: {
     title: 'Programs',
     route: 'programs',
+    defaultSort: 'name',
     columns: [
       {property: 'name', display: 'Name'},
       {property: 'session', display: 'Session'},
@@ -63,6 +69,7 @@ export const AdminModel = {
   Course: {
     title: 'Courses',
     route: 'courses',
+    defaultSort: 'name',
     columns: [
       {property: 'name', display: 'Name'},
       {property: 'organization', display: 'Organization'},

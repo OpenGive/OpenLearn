@@ -10,6 +10,7 @@ export class CourseListComponent implements OnInit {
 
   constructor() { }
   @Input() courses: Course[] = [];
+  @Input() studentView: boolean = false;
   ngOnInit() {
   }
 

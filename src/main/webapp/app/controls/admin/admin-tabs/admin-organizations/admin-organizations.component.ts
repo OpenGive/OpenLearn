@@ -10,6 +10,7 @@ export class AdminOrganizationsComponent {
   organizationGrid = new AdminGridModel(
     AdminModel.Organization.title,
     AdminModel.Organization.route,
+    AdminModel.Organization.defaultSort,
     AdminModel.Organization.columns,
     []);
 }
