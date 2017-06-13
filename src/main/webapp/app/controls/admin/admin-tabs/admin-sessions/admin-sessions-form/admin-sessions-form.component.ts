@@ -1,19 +1,23 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from "@angular/core";
+import {Component, Input, OnInit} from "@angular/core";
 import {MdDialogRef} from "@angular/material";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AdminService} from "../../../../../services/admin.service";
+import {AdminModel} from "../../../admin.constants";
 
 @Component({
   selector: 'admin-sessions-form',
   templateUrl: './admin-sessions-form.component.html',
   styleUrls: ['./admin-sessions-form.component.css', '../../admin-forms.css']
 })
-export class AdminSessionsFormComponent implements OnInit, OnChanges {
+export class AdminSessionsFormComponent implements OnInit {
 
   @Input('item') formSession: any;
-  @Input() editing: boolean;
+  @Input() adding: boolean;
+  editing: boolean;
+
+  organizations: any[];
 
   sessionForm: FormGroup;
-
   formErrors = {
     name: '',
     description: '',
@@ -21,16 +25,15 @@ export class AdminSessionsFormComponent implements OnInit, OnChanges {
     startDate: '',
     endDate: ''
   };
-
   validationMessages = {
     name: {
       required: 'Name is required',
-      minlength: 'Name must be at least 3 characters long',
+      minlength: 'Name must be at least 5 characters long',
       maxlength: 'Name cannot be more than 100 characters long'
     },
     description: {
-      minlength: 'Description must be at least 10 characters long',
-      maxlength: 'Description cannot be more than 800 characters long'
+      minlength: 'Description must be at least 5 characters long',
+      maxlength: 'Description cannot be more than 200 characters long'
     },
     organization: {
       required: 'Organization is required'
@@ -44,30 +47,16 @@ export class AdminSessionsFormComponent implements OnInit, OnChanges {
   };
 
   constructor(public dialogRef: MdDialogRef<AdminSessionsFormComponent>,
-              private fb: FormBuilder) { }
+              private fb: FormBuilder,
+              private adminService: AdminService) {}
 
   ngOnInit(): void {
     this.buildForm();
-    this.changeFormState();
+    this.setEditing(this.adding);
+    this.getOrganizations();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.editing) {
-      this.changeFormState();
-    }
-  }
-
-  changeFormState(): void {
-    if (this.sessionForm) {
-      if (this.editing) {
-        this.sessionForm.enable();
-      } else {
-        this.sessionForm.disable();
-      }
-    }
-  }
-
-  buildForm(): void {
+  private buildForm(): void {
     this.sessionForm = this.fb.group({
       name: [this.formSession.name, [
         Validators.required,
@@ -83,7 +72,7 @@ export class AdminSessionsFormComponent implements OnInit, OnChanges {
       ]],
       startDate: [this.formSession.startDate],
       endDate: [this.formSession.endDate],
-      active: [this.formSession.active]
+      active: [this.formSession.active || false]
     });
     this.sessionForm.valueChanges.subscribe(data => this.onValueChanged(data));
     this.onValueChanged();
@@ -103,6 +92,99 @@ export class AdminSessionsFormComponent implements OnInit, OnChanges {
         }
       }
     }
+  }
+
+  private setEditing(editing): void {
+    if (this.sessionForm) {
+      if (editing) {
+        this.sessionForm.enable();
+        this.editing = true;
+      } else {
+        this.sessionForm.disable();
+        this.editing = false;
+      }
+    }
+  }
+
+  private getOrganizations(): void {
+    this.adminService.getAll(AdminModel.Organization.route).subscribe(resp => {
+      this.organizations = resp;
+    });
+  }
+
+  save(): void {
+    if (this.sessionForm.valid) {
+      if (this.adding) {
+        this.add();
+      } else {
+        this.update();
+      }
+    } else {
+      this.sessionForm.markAsTouched();
+    }
+  }
+
+  private add(): void {
+    this.adminService.update(AdminModel.Session.route, this.sessionForm.value).subscribe(resp => {
+      this.dialogRef.close({
+        type: 'ADD',
+        data: resp
+      });
+    });
+  }
+
+  private update(): void {
+    const toUpdate = this.prepareToUpdate();
+    console.log(toUpdate);
+    this.adminService.update(AdminModel.Session.route, toUpdate).subscribe(resp => {
+      this.dialogRef.close({
+        type: 'UPDATE',
+        data: resp
+      });
+    });
+  }
+
+  private prepareToUpdate() {
+    return {
+      id: this.formSession.id,
+      name: this.sessionForm.get('name').value,
+      description: this.sessionForm.get('description').value,
+      organization: this.sessionForm.get('organization').value,
+      startDate: this.sessionForm.get('startDate').value,
+      endDate: this.sessionForm.get('endDate').value,
+      active: this.sessionForm.get('active').value,
+    };
+  }
+
+  delete(): void {
+    this.adminService.delete(AdminModel.Session.route, this.formSession.id).subscribe(resp => {
+      this.dialogRef.close({
+        type: 'DELETE',
+        data: {
+          id: this.formSession.id
+        }
+      });
+    });
+  }
+
+  edit(): void {
+    this.setEditing(true);
+  }
+
+  cancel(): void {
+    this.sessionForm.setValue({
+      name: this.formSession.name,
+      description: this.formSession.description,
+      organization: this.formSession.organization,
+      startDate: this.formSession.startDate,
+      endDate: this.formSession.endDate,
+      active: this.formSession.active,
+    });
+    this.setEditing(false);
+  }
+
+  close(): void {
+    this.dialogRef.close();
   }
 
   displayOrganization(organization): string {

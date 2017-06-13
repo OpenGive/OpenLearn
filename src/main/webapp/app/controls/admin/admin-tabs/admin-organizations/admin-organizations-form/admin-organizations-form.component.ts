@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from "@angular/core";
+import {Component, Input, OnInit} from "@angular/core";
 import {MdDialogRef} from "@angular/material";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AdminService} from "../../../../../services/admin.service";
@@ -17,12 +17,10 @@ export class AdminOrganizationsFormComponent implements OnInit {
   editing: boolean;
 
   organizationForm: FormGroup;
-
   formErrors = {
     name: '',
     description: ''
   };
-
   validationMessages = {
     name: {
       required: 'Name is required',
@@ -37,34 +35,11 @@ export class AdminOrganizationsFormComponent implements OnInit {
 
   constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
               private fb: FormBuilder,
-              private adminService: AdminService) {
-  }
+              private adminService: AdminService) {}
 
   ngOnInit(): void {
-    if (this.adding) {
-      this.insertBlanks();
-    }
     this.buildForm();
     this.setEditing(this.adding);
-  }
-
-  private insertBlanks(): void {
-    this.formOrganization = {
-      name: null,
-      description: null
-    }
-  }
-
-  private setEditing(editing): void {
-    if (this.organizationForm) {
-      if (editing) {
-        this.organizationForm.enable();
-        this.editing = true;
-      } else {
-        this.organizationForm.disable();
-        this.editing = false;
-      }
-    }
   }
 
   private buildForm(): void {
@@ -95,6 +70,18 @@ export class AdminOrganizationsFormComponent implements OnInit {
             this.formErrors[field] += messages[key] + ' ';
           }
         }
+      }
+    }
+  }
+
+  private setEditing(editing): void {
+    if (this.organizationForm) {
+      if (editing) {
+        this.organizationForm.enable();
+        this.editing = true;
+      } else {
+        this.organizationForm.disable();
+        this.editing = false;
       }
     }
   }
@@ -141,7 +128,6 @@ export class AdminOrganizationsFormComponent implements OnInit {
 
   delete(): void {
     this.adminService.delete(AdminModel.Organization.route, this.formOrganization.id).subscribe(resp => {
-      console.log(resp);
       this.dialogRef.close({
         type: 'DELETE',
         data: {
