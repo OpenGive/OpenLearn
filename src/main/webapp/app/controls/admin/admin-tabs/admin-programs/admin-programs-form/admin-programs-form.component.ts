@@ -117,7 +117,7 @@ export class AdminProgramsFormComponent implements OnInit {
   }
 
   private add(): void {
-    this.adminService.update(AdminModel.Program.route, this.programForm.value).subscribe(resp => {
+    this.adminService.create(AdminModel.Program.route, this.programForm.value).subscribe(resp => {
       this.dialogRef.close({
         type: 'ADD',
         data: resp

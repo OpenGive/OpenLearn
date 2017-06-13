@@ -99,7 +99,7 @@ export class AdminOrganizationsFormComponent implements OnInit {
   }
 
   private add(): void {
-    this.adminService.update(AdminModel.Organization.route, this.organizationForm.value).subscribe(resp => {
+    this.adminService.create(AdminModel.Organization.route, this.organizationForm.value).subscribe(resp => {
       this.dialogRef.close({
         type: 'ADD',
         data: resp

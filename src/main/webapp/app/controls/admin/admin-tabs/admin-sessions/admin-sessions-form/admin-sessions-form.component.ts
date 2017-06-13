@@ -126,7 +126,7 @@ export class AdminSessionsFormComponent implements OnInit {
   }
 
   private add(): void {
-    this.adminService.update(AdminModel.Session.route, this.sessionForm.value).subscribe(resp => {
+    this.adminService.create(AdminModel.Session.route, this.sessionForm.value).subscribe(resp => {
       this.dialogRef.close({
         type: 'ADD',
         data: resp
