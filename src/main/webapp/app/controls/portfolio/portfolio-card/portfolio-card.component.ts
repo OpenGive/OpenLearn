@@ -16,8 +16,8 @@ export class PortfolioCardComponent implements OnInit {
   ngOnInit() {
   }
 
-  share(portfolioItem) {
-    alert(portfolioItem.filename);
+  share() {
+    alert(this.portfolioItem.filename);
   }
 
 }
