@@ -2,13 +2,14 @@ import {Component, Input, OnInit} from "@angular/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MdDialogRef} from "@angular/material";
 
+import {AdminDialogComponent} from "../../../admin-dialog.component";
 import {AdminModel} from "../../../admin.constants";
 import {AdminService} from "../../../../../services/admin.service";
 
 @Component({
   selector: 'admin-programs-form',
   templateUrl: './admin-programs-form.component.html',
-  styleUrls: ['./admin-programs-form.component.css', '../../admin-forms.css']
+  styleUrls: ['../../admin-forms.css']
 })
 export class AdminProgramsFormComponent implements OnInit {
 
@@ -35,7 +36,7 @@ export class AdminProgramsFormComponent implements OnInit {
     }
   };
 
-  constructor(public dialogRef: MdDialogRef<AdminProgramsFormComponent>,
+  constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
               private fb: FormBuilder,
               private adminService: AdminService) {}
 
@@ -60,11 +61,11 @@ export class AdminProgramsFormComponent implements OnInit {
       school: [this.formProgram.school],
       active: [this.formProgram.active || false]
     });
-    this.programForm.valueChanges.subscribe(data => this.onValueChanged(data));
+    this.programForm.valueChanges.subscribe(data => this.onValueChanged());
     this.onValueChanged();
   }
 
-  onValueChanged(data?: any): void {
+  private onValueChanged(): void {
     if (this.programForm) {
       const form = this.programForm;
       for (const field in this.formErrors) {
@@ -80,7 +81,7 @@ export class AdminProgramsFormComponent implements OnInit {
     }
   }
 
-  private setEditing(editing): void {
+  private setEditing(editing: boolean): void {
     if (this.programForm) {
       if (editing) {
         this.programForm.enable();
@@ -135,7 +136,7 @@ export class AdminProgramsFormComponent implements OnInit {
     });
   }
 
-  private prepareToUpdate() {
+  private prepareToUpdate(): any {
     return {
       id: this.formProgram.id,
       name: this.programForm.get('name').value,
@@ -176,11 +177,11 @@ export class AdminProgramsFormComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  displaySchool(school): string {
+  displaySchool(school: any): string {
     return school ? school.name : '';
   }
 
-  displaySession(session): string {
+  displaySession(session: any): string {
     return session ? session.name : '';
   }
 }

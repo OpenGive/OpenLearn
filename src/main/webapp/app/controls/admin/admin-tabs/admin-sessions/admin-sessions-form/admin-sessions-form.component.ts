@@ -2,13 +2,14 @@ import {Component, Input, OnInit} from "@angular/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MdDialogRef} from "@angular/material";
 
+import {AdminDialogComponent} from "../../../admin-dialog.component";
 import {AdminModel} from "../../../admin.constants";
 import {AdminService} from "../../../../../services/admin.service";
 
 @Component({
   selector: 'admin-sessions-form',
   templateUrl: './admin-sessions-form.component.html',
-  styleUrls: ['./admin-sessions-form.component.css', '../../admin-forms.css']
+  styleUrls: ['../../admin-forms.css']
 })
 export class AdminSessionsFormComponent implements OnInit {
 
@@ -47,7 +48,7 @@ export class AdminSessionsFormComponent implements OnInit {
     }
   };
 
-  constructor(public dialogRef: MdDialogRef<AdminSessionsFormComponent>,
+  constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
               private fb: FormBuilder,
               private adminService: AdminService) {}
 
@@ -75,11 +76,11 @@ export class AdminSessionsFormComponent implements OnInit {
       endDate: [this.formSession.endDate],
       active: [this.formSession.active || false]
     });
-    this.sessionForm.valueChanges.subscribe(data => this.onValueChanged(data));
+    this.sessionForm.valueChanges.subscribe(data => this.onValueChanged());
     this.onValueChanged();
   }
 
-  onValueChanged(data?: any): void {
+  private onValueChanged(): void {
     if (this.sessionForm) {
       const form = this.sessionForm;
       for (const field in this.formErrors) {
@@ -95,7 +96,7 @@ export class AdminSessionsFormComponent implements OnInit {
     }
   }
 
-  private setEditing(editing): void {
+  private setEditing(editing: boolean): void {
     if (this.sessionForm) {
       if (editing) {
         this.sessionForm.enable();
@@ -144,7 +145,7 @@ export class AdminSessionsFormComponent implements OnInit {
     });
   }
 
-  private prepareToUpdate() {
+  private prepareToUpdate(): any {
     return {
       id: this.formSession.id,
       name: this.sessionForm.get('name').value,
@@ -187,7 +188,7 @@ export class AdminSessionsFormComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  displayOrganization(organization): string {
+  displayOrganization(organization: any): string {
     return organization ? organization.name : '';
   }
 }

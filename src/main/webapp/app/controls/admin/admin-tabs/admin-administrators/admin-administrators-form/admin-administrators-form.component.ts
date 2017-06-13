@@ -1,11 +1,12 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {MdDialogRef} from "@angular/material";
 import {AppConstants} from "../../../../../app.constants";
+import {AdminDialogComponent} from "../../../admin-dialog.component";
 
 @Component({
   selector: 'admin-administrators-form',
   templateUrl: './admin-administrators-form.component.html',
-  styleUrls: ['./admin-administrators-form.component.css', '../../admin-forms.css']
+  styleUrls: ['../../admin-forms.css']
 })
 export class AdminAdministratorsFormComponent implements OnInit {
 
@@ -15,7 +16,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
 
   roles: string[];
 
-  constructor(public dialogRef: MdDialogRef<AdminAdministratorsFormComponent>) {}
+  constructor(public dialogRef: MdDialogRef<AdminDialogComponent>) {}
 
   ngOnInit() {
     this.getRoles();

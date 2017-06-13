@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from "@angular/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MdDialogRef} from "@angular/material";
 
+import {AdminDialogComponent} from "../../../admin-dialog.component";
 import {AdminModel} from "../../../admin.constants";
 import {AdminService} from "../../../../../services/admin.service";
 import {UserService} from "../../../../../services/user.service";
@@ -9,7 +10,7 @@ import {UserService} from "../../../../../services/user.service";
 @Component({
   selector: 'admin-courses-form',
   templateUrl: './admin-courses-form.component.html',
-  styleUrls: ['./admin-courses-form.component.css', '../../admin-forms.css']
+  styleUrls: ['../../admin-forms.css']
 })
 export class AdminCoursesFormComponent implements OnInit {
 
@@ -58,12 +59,12 @@ export class AdminCoursesFormComponent implements OnInit {
     }
   };
 
-  constructor(public dialogRef: MdDialogRef<AdminCoursesFormComponent>,
+  constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
               private fb: FormBuilder,
               private adminService: AdminService,
               private userService: UserService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.buildForm();
     this.setEditing(this.adding);
     this.getInstructors();
@@ -94,11 +95,11 @@ export class AdminCoursesFormComponent implements OnInit {
       startDate: [this.formCourse.startDate],
       endDate: [this.formCourse.endDate]
     });
-    this.courseForm.valueChanges.subscribe(data => this.onValueChanged(data));
+    this.courseForm.valueChanges.subscribe(data => this.onValueChanged());
     this.onValueChanged();
   }
 
-  onValueChanged(data?: any): void {
+  private onValueChanged(): void {
     if (this.courseForm) {
       const form = this.courseForm;
       for (const field in this.formErrors) {
@@ -114,7 +115,7 @@ export class AdminCoursesFormComponent implements OnInit {
     }
   }
 
-  private setEditing(editing): void {
+  private setEditing(editing: boolean): void {
     if (this.courseForm) {
       if (editing) {
         this.courseForm.enable();
@@ -175,7 +176,7 @@ export class AdminCoursesFormComponent implements OnInit {
     });
   }
 
-  private prepareToUpdate() {
+  private prepareToUpdate(): any {
     return {
       id: this.formCourse.id,
       name: this.courseForm.get('name').value,
@@ -220,15 +221,15 @@ export class AdminCoursesFormComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  displayInstructor(instructor): string {
+  displayInstructor(instructor: any): string {
     return instructor ? instructor.lastName + ', ' + instructor.firstName : '';
   }
 
-  displayOrganization(organization): string {
+  displayOrganization(organization: any): string {
     return organization ? organization.name : '';
   }
 
-  displayProgram(program): string {
+  displayProgram(program: any): string {
     return program ? program.name : '';
   }
 }

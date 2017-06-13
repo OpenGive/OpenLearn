@@ -1,6 +1,7 @@
 import {Component, OnInit} from "@angular/core";
-import {AdminModel} from "../../controls/admin/admin.constants";
 import {Router} from "@angular/router";
+
+import {AdminModel} from "../../controls/admin/admin.constants";
 
 @Component({
   selector: 'app-admin-page',
@@ -27,11 +28,11 @@ export class AdminPageComponent implements OnInit {
 
   constructor(private router: Router) {}
 
-  ngOnInit() { // Highlight the correct tab using the url
+  ngOnInit(): void { // Highlight the correct tab using the url
     this.selectTab(this.tabs.find(tab => tab.route === this.router.url.split('/').pop()));
   }
 
-  selectTab(tab) {
+  private selectTab(tab: any): void {
     this.tabs.forEach(tab => tab.active = false);
     tab.active = true;
     this.activeTab = tab;

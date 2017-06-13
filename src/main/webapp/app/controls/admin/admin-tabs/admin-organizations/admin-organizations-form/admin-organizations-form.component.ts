@@ -1,14 +1,15 @@
 import {Component, Input, OnInit} from "@angular/core";
-import {MdDialogRef} from "@angular/material";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {AdminService} from "../../../../../services/admin.service";
+import {MdDialogRef} from "@angular/material";
+
 import {AdminDialogComponent} from "../../../admin-dialog.component";
 import {AdminModel} from "../../../admin.constants";
+import {AdminService} from "../../../../../services/admin.service";
 
 @Component({
   selector: 'admin-organizations-form',
   templateUrl: './admin-organizations-form.component.html',
-  styleUrls: ['./admin-organizations-form.component.css', '../../admin-forms.css']
+  styleUrls: ['../../admin-forms.css']
 })
 export class AdminOrganizationsFormComponent implements OnInit {
 
@@ -54,11 +55,11 @@ export class AdminOrganizationsFormComponent implements OnInit {
         Validators.maxLength(800)
       ]]
     });
-    this.organizationForm.valueChanges.subscribe(data => this.onValueChanged(data));
+    this.organizationForm.valueChanges.subscribe(data => this.onValueChanged());
     this.onValueChanged();
   }
 
-  private onValueChanged(data?: any): void {
+  private onValueChanged(): void {
     if (this.organizationForm) {
       const form = this.organizationForm;
       for (const field in this.formErrors) {
@@ -74,7 +75,7 @@ export class AdminOrganizationsFormComponent implements OnInit {
     }
   }
 
-  private setEditing(editing): void {
+  private setEditing(editing: boolean): void {
     if (this.organizationForm) {
       if (editing) {
         this.organizationForm.enable();
@@ -117,7 +118,7 @@ export class AdminOrganizationsFormComponent implements OnInit {
     });
   }
 
-  private prepareToUpdate() {
+  private prepareToUpdate(): any {
     return {
       id: this.formOrganization.id,
       name: this.organizationForm.get('name').value,

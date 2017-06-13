@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from "@angular/core";
+import {Component, Inject} from "@angular/core";
 import {MD_DIALOG_DATA} from "@angular/material";
 
 @Component({
@@ -14,9 +14,7 @@ import {MD_DIALOG_DATA} from "@angular/material";
       <admin-courses-form *ngSwitchCase="'courses'" [item]="data.item" [adding]="data.adding"></admin-courses-form>
     </div>`
 })
-export class AdminDialogComponent implements OnInit {
+export class AdminDialogComponent {
 
   constructor(@Inject(MD_DIALOG_DATA) public data: any) {}
-
-  ngOnInit(): void {}
 }
