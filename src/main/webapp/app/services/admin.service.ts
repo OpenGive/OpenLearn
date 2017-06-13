@@ -1,6 +1,7 @@
 import {HttpWrapperService} from '../shared/auth/http-wrapper.service';
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
+import * as _ from "lodash";
 
 @Injectable()
 export class AdminService {
@@ -16,13 +17,13 @@ export class AdminService {
   }
 
   create(type: string, object: any): Observable<any> {
-    return this._http.post(this.endpoint + type, object)
+    return this._http.post(this.endpoint + type, this.nullifyBlanks(object))
       .map(resp => resp.json())
       .catch(this.handleError);
   }
 
   update(type: string, object: any): Observable<any> {
-    return this._http.put(this.endpoint + type, object)
+    return this._http.put(this.endpoint + type, this.nullifyBlanks(object))
       .map(resp => resp.json())
       .catch(this.handleError);
   }
@@ -42,5 +43,15 @@ export class AdminService {
   private handleError(error: Response) {
     console.error(error.json());
     return Observable.throw(error.json() || 'Server Error');
+  }
+
+  // Converts empty strings to nulls to pass validation
+  private nullifyBlanks(object: any) {
+    return _.mapValues(object, field => {
+      if (field === '') {
+        field = null;
+      }
+      return field;
+    });
   }
 }

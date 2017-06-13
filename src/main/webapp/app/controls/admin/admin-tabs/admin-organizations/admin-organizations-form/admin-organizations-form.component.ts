@@ -3,6 +3,7 @@ import {MdDialogRef} from "@angular/material";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AdminService} from "../../../../../services/admin.service";
 import {AdminDialogComponent} from "../../../admin-dialog.component";
+import {AdminModel} from "../../../admin.constants";
 
 @Component({
   selector: 'admin-organizations-form',
@@ -49,8 +50,8 @@ export class AdminOrganizationsFormComponent implements OnInit {
 
   private insertBlanks(): void {
     this.formOrganization = {
-      name: '',
-      description: ''
+      name: null,
+      description: null
     }
   }
 
@@ -99,38 +100,70 @@ export class AdminOrganizationsFormComponent implements OnInit {
   }
 
   save(): void {
-    if (this.adding) {
-      this.add();
+    if (this.organizationForm.valid) {
+      if (this.adding) {
+        this.add();
+      } else {
+        this.update();
+      }
     } else {
-      this.update();
+      this.organizationForm.markAsTouched();
     }
   }
 
   private add(): void {
-    console.log('ADD');
+    this.adminService.update(AdminModel.Organization.route, this.organizationForm.value).subscribe(resp => {
+      console.log(resp);
+      this.dialogRef.close({
+        type: 'ADD',
+        data: resp
+      });
+    });
   }
 
   private update(): void {
-    console.log('UPDATE');
+    const toUpdate = this.prepareToUpdate();
+    this.adminService.update(AdminModel.Organization.route, toUpdate).subscribe(resp => {
+      this.dialogRef.close({
+        type: 'UPDATE',
+        data: resp
+      });
+    });
   }
 
-  cancel(close?: boolean): void {
-    this.organizationForm.setValue({
-      name: this.formOrganization.name,
-      description: this.formOrganization.description,
+  private prepareToUpdate() {
+    return {
+      id: this.formOrganization.id,
+      name: this.organizationForm.get('name').value,
+      description: this.organizationForm.get('description').value
+    };
+  }
+
+  delete(): void {
+    this.adminService.delete(AdminModel.Organization.route, this.formOrganization.id).subscribe(resp => {
+      console.log(resp);
+      this.dialogRef.close({
+        type: 'DELETE',
+        data: {
+          id: this.formOrganization.id
+        }
+      });
     });
-    if (this.adding || close) {
-      this.dialogRef.close();
-    } else {
-      this.setEditing(false);
-    }
   }
 
   edit(): void {
     this.setEditing(true);
   }
 
-  delete(): void {
-    console.log('DELETE');
+  cancel(): void {
+    this.organizationForm.setValue({
+      name: this.formOrganization.name,
+      description: this.formOrganization.description,
+    });
+    this.setEditing(false);
+  }
+
+  close(): void {
+    this.dialogRef.close();
   }
 }

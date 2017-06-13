@@ -1,7 +1,7 @@
 <form [formGroup]="organizationForm" (ngSubmit)="save()" novalidate>
   <div class="admin-dialog-header" [ngClass]="{edit: editing}" fxLayout="row" fxLayoutAlign="space-between center">
     <div fxLayout="row" fxLayoutAlign="start center">
-      <div><button md-button type="reset" (click)="cancel(true)"><i class="fa fa-times fa-lg"></i></button></div>
+      <div><button md-button type="reset" (click)="close()"><i class="fa fa-times fa-lg"></i></button></div>
       <span class="admin-dialog-title" *ngIf="!editing">Organization Details</span>
       <span class="admin-dialog-title edit" *ngIf="adding">New Organization</span>
       <span class="admin-dialog-title edit" *ngIf="editing && !adding">Edit Organization</span>

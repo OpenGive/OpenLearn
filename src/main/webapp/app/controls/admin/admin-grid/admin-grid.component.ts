@@ -29,7 +29,7 @@ export class AdminGridComponent implements OnInit {
     this.adminGridService.query(this.grid.route)
       .subscribe(resp => {
         this.grid.rows = resp;
-        this.sort(_.find(this.grid.columns, {'property': this.grid.defaultSort}));
+        this.sort(_.find(this.grid.columns, {'property': this.grid.defaultSort}), false);
       });
   }
 
@@ -57,14 +57,15 @@ export class AdminGridComponent implements OnInit {
 
   handleDialogResponse(resp): void {
     if (resp) {
-      if (resp.type === 'update') {
+      if (resp.type === 'UPDATE') {
         let ndx = _.findIndex(this.grid.rows, {id: resp.data.id});
         _.each(resp.data, (value, key) => this.grid.rows[ndx][key] = value);
-      } else if (resp.type === 'add') {
+      } else if (resp.type === 'ADD') {
         this.grid.rows.push(resp.data);
-      } else if (resp.type === 'delete') {
-        _.remove(this.grid.rows, row => row.id === resp.data);
+      } else if (resp.type === 'DELETE') {
+        _.remove(this.grid.rows, row => row.id === resp.data.id);
       }
+      this.sort(_.find(this.grid.columns, {'property': this.sortColumn}), this.reverse);
     }
   }
 
@@ -100,8 +101,12 @@ export class AdminGridComponent implements OnInit {
     return user.lastName + ', ' + user.firstName;
   }
 
-  sort(column: any): void {
-    this.reverse = (this.sortColumn === column.property ? !this.reverse : false); // Reverse always false for new column
+  sort(column: any, reverse?: boolean): void {
+    if (!_.isNil(reverse)) { // use reverse parameter if available
+      this.reverse = reverse;
+    } else {
+      this.reverse = (this.sortColumn === column.property ? !this.reverse : false);
+    }
     this.sortColumn = column.property;
     if (column.property === 'authorities') {
       this.filteredRows = _.sortBy(this.grid.rows, [row => this.displayAuthorities(row[column.property])]);
