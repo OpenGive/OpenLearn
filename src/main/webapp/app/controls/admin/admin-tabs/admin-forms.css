@@ -6,3 +6,74 @@ input[disabled] {
   background-color: #FF5252;
   color: white;
 }
+
+.admin-dialog {
+  padding: 0;
+}
+
+.admin-dialog-header {
+  height: 60px;
+  padding: 11px 20px;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,.2);
+}
+
+.admin-dialog-header.edit {
+  background: rgba(255, 82, 82, 0.9);
+}
+
+.mat-button {
+  margin-left: -40px;
+  min-width: 0;
+  width: 60px;
+  padding: 0;
+  border-radius: 18px;
+  text-align: right;
+  background: #D8D8D8;
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+}
+
+.admin-dialog-title {
+  font-family: Rubik, sans-serif;
+  font-size: 22px;
+  color: #4D5A70;
+  letter-spacing: -0.6px;
+  padding-left: 15px;
+}
+
+.admin-dialog-title.edit {
+  color: white !important;
+}
+
+.admin-dialog-button {
+  border-radius: 4px;
+  height: 36px;
+  font-family: OpenSans, sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 0;
+  line-height: 20px;
+  margin-left: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  min-width: 36px;
+}
+
+.grey-button {
+  background: #E5E5E5;
+  color: #4D5A70;
+}
+
+.navy-button {
+  background: #4D5A70;
+  color: #E5E5E5;
+}
+
+.pink-button {
+  background: #FF5252;
+  color: #FFFFFF;
+}
+
+.admin-dialog-content {
+  padding: 20px 40px;
+  overflow-y: scroll;
+}

@@ -51,12 +51,12 @@ const ROUTES: Routes = [
     children: [
       {path: '', pathMatch: 'full', redirectTo: 'organizations'},
       {path: 'organizations', component: AdminOrganizationsComponent},
-      {path: 'administrators', component: AdminAdministratorsComponent},
-      {path: 'instructors', component: AdminInstructorsComponent},
-      {path: 'students', component: AdminStudentsComponent},
-      {path: 'sessions', component: AdminSessionsComponent},
-      {path: 'programs', component: AdminProgramsComponent},
-      {path: 'courses', component: AdminCoursesComponent}
+      // {path: 'administrators', component: AdminAdministratorsComponent},
+      // {path: 'instructors', component: AdminInstructorsComponent},
+      // {path: 'students', component: AdminStudentsComponent},
+      // {path: 'sessions', component: AdminSessionsComponent},
+      // {path: 'programs', component: AdminProgramsComponent},
+      // {path: 'courses', component: AdminCoursesComponent}
     ]
   },
   {

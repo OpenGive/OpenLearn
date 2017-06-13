@@ -1,16 +1,19 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from "@angular/core";
 import {MdDialogRef} from "@angular/material";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AdminService} from "../../../../../services/admin.service";
+import {AdminDialogComponent} from "../../../admin-dialog.component";
 
 @Component({
   selector: 'admin-organizations-form',
   templateUrl: './admin-organizations-form.component.html',
   styleUrls: ['./admin-organizations-form.component.css', '../../admin-forms.css']
 })
-export class AdminOrganizationsFormComponent implements OnInit, OnChanges {
+export class AdminOrganizationsFormComponent implements OnInit {
 
   @Input('item') formOrganization: any;
-  @Input() editing: boolean;
+  @Input() adding: boolean;
+  editing: boolean;
 
   organizationForm: FormGroup;
 
@@ -31,32 +34,39 @@ export class AdminOrganizationsFormComponent implements OnInit, OnChanges {
     }
   };
 
-  constructor(public dialogRef: MdDialogRef<AdminOrganizationsFormComponent>,
-              private fb: FormBuilder) {
+  constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
+              private fb: FormBuilder,
+              private adminService: AdminService) {
   }
 
   ngOnInit(): void {
+    if (this.adding) {
+      this.insertBlanks();
+    }
     this.buildForm();
-    this.changeFormState();
+    this.setEditing(this.adding);
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.editing) {
-      this.changeFormState();
+  private insertBlanks(): void {
+    this.formOrganization = {
+      name: '',
+      description: ''
     }
   }
 
-  changeFormState(): void {
+  private setEditing(editing): void {
     if (this.organizationForm) {
-      if (this.editing) {
+      if (editing) {
         this.organizationForm.enable();
+        this.editing = true;
       } else {
         this.organizationForm.disable();
+        this.editing = false;
       }
     }
   }
 
-  buildForm(): void {
+  private buildForm(): void {
     this.organizationForm = this.fb.group({
       name: [this.formOrganization.name, [
         Validators.required,
@@ -72,7 +82,7 @@ export class AdminOrganizationsFormComponent implements OnInit, OnChanges {
     this.onValueChanged();
   }
 
-  onValueChanged(data?: any): void {
+  private onValueChanged(data?: any): void {
     if (this.organizationForm) {
       const form = this.organizationForm;
       for (const field in this.formErrors) {
@@ -86,5 +96,41 @@ export class AdminOrganizationsFormComponent implements OnInit, OnChanges {
         }
       }
     }
+  }
+
+  save(): void {
+    if (this.adding) {
+      this.add();
+    } else {
+      this.update();
+    }
+  }
+
+  private add(): void {
+    console.log('ADD');
+  }
+
+  private update(): void {
+    console.log('UPDATE');
+  }
+
+  cancel(close?: boolean): void {
+    this.organizationForm.setValue({
+      name: this.formOrganization.name,
+      description: this.formOrganization.description,
+    });
+    if (this.adding || close) {
+      this.dialogRef.close();
+    } else {
+      this.setEditing(false);
+    }
+  }
+
+  edit(): void {
+    this.setEditing(true);
+  }
+
+  delete(): void {
+    console.log('DELETE');
   }
 }

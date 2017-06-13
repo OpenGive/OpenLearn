@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {AdminGridModel} from "../../../models/admin-grid.model";
-import {AdminDialogComponent} from "../admin-dialog/admin-dialog.component";
+import {AdminDialogComponent} from "../admin-dialog.component";
 import {MdDialog} from "@angular/material";
 import {AdminGridService} from "../../../services/admin-grid.service";
 import * as _ from "lodash";
@@ -36,7 +36,6 @@ export class AdminGridComponent implements OnInit {
   add(): void {
     this.dialog.open(AdminDialogComponent, {
       data: {
-        title: this.grid.title.slice(0, -1),
         tab: this.grid.route,
         item: {},
         adding: true
@@ -48,7 +47,6 @@ export class AdminGridComponent implements OnInit {
   viewDetails(row): void {
     this.dialog.open(AdminDialogComponent, {
       data: {
-        title: this.grid.title.slice(0, -1),
         tab: this.grid.route,
         item: row,
         adding: false

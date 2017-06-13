@@ -34,7 +34,7 @@ import { StudentCoursesComponent } from './student-courses/student-courses.compo
 import {ForgotPasswordDialogComponent} from "./controls/forgot-password-dialog/forgot-password-dialog.component";
 import {AdminPageComponent} from "./pages/admin-page/admin-page.component";
 import {AdminGridComponent} from "./controls/admin/admin-grid/admin-grid.component";
-import {AdminDialogComponent} from "./controls/admin/admin-dialog/admin-dialog.component";
+import {AdminDialogComponent} from "./controls/admin/admin-dialog.component";
 import {AdminGridService} from "./services/admin-grid.service";
 import {AdminOrganizationsComponent} from "./controls/admin/admin-tabs/admin-organizations/admin-organizations.component";
 import {AdminAdministratorsComponent} from "./controls/admin/admin-tabs/admin-administrators/admin-administrators.component";
