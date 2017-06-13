@@ -55,6 +55,7 @@ import {AdminCoursesFormComponent} from "./controls/admin/admin-tabs/admin-cours
 import {AdminService} from "./services/admin.service";
 import {CourseViewComponent} from "./controls/course/course-view/course-view.component"
 import {CourseActivityListComponent } from './controls/course/course-activity-list/course-activity-list.component';
+import {ProfilePageComponent} from "./pages/profile-page/profile-page.component";
 
 @NgModule({
   declarations: [
@@ -91,7 +92,8 @@ import {CourseActivityListComponent } from './controls/course/course-activity-li
     PortfolioPageComponent,
     PortfolioListComponent,
     CourseViewComponent,
-    CourseActivityListComponent
+    CourseActivityListComponent,
+    ProfilePageComponent
   ],
   imports: [
     BrowserModule,
@@ -122,7 +124,8 @@ import {CourseActivityListComponent } from './controls/course/course-activity-li
   entryComponents: [
     AdminDialogComponent,
     ForgotPasswordDialogComponent,
-    CourseViewComponent
+    CourseViewComponent,
+    ProfilePageComponent
   ]
 })
 export class AppModule {

@@ -57,6 +57,8 @@ public class UserDTO
 
 	private boolean is14Plus;
 
+	private String biography;
+
 	public UserDTO() {
 		// Empty constructor needed for MapStruct.
 	}
@@ -66,14 +68,14 @@ public class UserDTO
 				user.getEmail(), user.getPhoneNumber(), user.getAddress(), user.getActivated(), user.getImageUrl(),
 				user.getCreatedBy(), user.getCreatedDate(), user.getLastModifiedBy(),
 				user.getLastModifiedDate(),
-				user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet()), user.getIs14Plus());
+				user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet()), user.getIs14Plus(), user.getBiography());
 	}
 
 	public UserDTO(final Long id, final String login, final String firstName, final String lastName,
 			final String email, final String phoneNumber, final Address address, final boolean activated,
 			final String imageUrl, final String createdBy, final ZonedDateTime createdDate,
 			final String lastModifiedBy, final ZonedDateTime lastModifiedDate, final Set<String> authorities,
-			final boolean is14Plus) {
+			final boolean is14Plus, final String biography) {
 
 		this.id = id;
 		this.login = login;
@@ -90,6 +92,7 @@ public class UserDTO
 		this.lastModifiedDate = lastModifiedDate;
 		this.authorities = authorities;
 		this.is14Plus = is14Plus;
+		this.biography = biography;
 	}
 
 	public Long getId() {
@@ -164,6 +167,10 @@ public class UserDTO
 		return is14Plus;
 	}
 
+	public String getBiography() {
+		return biography;
+	}
+
 	@Override
 	public String toString() {
 		return "UserDTO{" +
@@ -180,6 +187,7 @@ public class UserDTO
 				", lastModifiedBy='" + lastModifiedBy + '\'' +
 				", lastModifiedDate=" + lastModifiedDate +
 				", authorities=" + authorities +
+				", biography=" + biography +
 				"}";
 	}
 }

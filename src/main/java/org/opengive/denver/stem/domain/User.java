@@ -70,7 +70,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	@Column(length = 100, unique = true)
 	private String email;
 
-	@Size(min = 10, max = 15)
+	@Size(max = 15)
 	@Column(name = "phone_num", length = 15, unique = false)
 	private String phoneNumber;
 
@@ -101,6 +101,10 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	@NotNull
 	@Column(name = "is_14_plus", nullable = false)
 	private boolean is14Plus;
+
+	@Size(max = 2000)
+	@Column(name = "biography", length = 2000)
+	private String biography;
 
 	@JsonIgnore
 	@ManyToMany
@@ -243,6 +247,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	public void setIs14Plus(final boolean is14Plus)
 	{
 		this.is14Plus = is14Plus;
+	}
+
+	public String getBiography() {
+		return biography;
+	}
+
+	public void setBiography(final String biography) {
+		this.biography = biography;
 	}
 
 	@Override
