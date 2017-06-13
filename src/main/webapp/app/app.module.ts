@@ -11,12 +11,12 @@ import {LandingPageComponent} from "./pages/landing-page/landing-page.component"
 import {LoginPageComponent} from "./pages/login-page/login-page.component";
 import {StudentPageComponent} from "./pages/student-page/student-page.component";
 import {CoursePageComponent} from "./pages/course-page/course-page.component";
+import {PortfolioPageComponent} from "./pages/portfolio-page/portfolio-page.component";
 import {NavigationMenuComponent} from "./controls/navigation-menu/navigation-menu.component";
 import {MaterialModule, MdNativeDateModule} from "@angular/material";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import "hammerjs";
-import {PortfolioComponent} from "./controls/portfolio/portfolio/portfolio.component";
 import {PortfolioCardComponent} from "./controls/portfolio/portfolio-card/portfolio-card.component";
 import {CourseCardComponent} from "./controls/course/course-card/course-card.component";
 import {ParallaxHeaderComponent} from "./controls/layout/parallax-header/parallax-header.component";
@@ -33,6 +33,8 @@ import { CourseListComponent } from './controls/course/course-list/course-list.c
 import { StudentCoursesComponent } from './student-courses/student-courses.component';
 import {ForgotPasswordDialogComponent} from "./controls/forgot-password-dialog/forgot-password-dialog.component";
 import {AdminPageComponent} from "./pages/admin-page/admin-page.component";
+import { PortfolioService } from './services/portfolio.service';
+import { PortfolioListComponent } from './controls/portfolio/portfolio-list/portfolio-list.component'
 import {AdminGridComponent} from "./controls/admin/admin-grid/admin-grid.component";
 import {AdminDialogComponent} from "./controls/admin/admin-dialog.component";
 import {AdminGridService} from "./services/admin-grid.service";
@@ -53,6 +55,7 @@ import {AdminCoursesFormComponent} from "./controls/admin/admin-tabs/admin-cours
 import {AdminService} from "./services/admin.service";
 import {CourseViewComponent} from "./controls/course/course-view/course-view.component"
 import {CourseActivityListComponent } from './controls/course/course-activity-list/course-activity-list.component';
+import {ProfilePageComponent} from "./pages/profile-page/profile-page.component";
 
 @NgModule({
   declarations: [
@@ -80,15 +83,17 @@ import {CourseActivityListComponent } from './controls/course/course-activity-li
     StudentPageComponent,
     CoursePageComponent,
     NavigationMenuComponent,
-    PortfolioComponent,
     PortfolioCardComponent,
     CourseCardComponent,
     ParallaxHeaderComponent,
     AccessDeniedPageComponent,
     CourseListComponent,
     StudentCoursesComponent,
+    PortfolioPageComponent,
+    PortfolioListComponent,
     CourseViewComponent,
-    CourseActivityListComponent
+    CourseActivityListComponent,
+    ProfilePageComponent
   ],
   imports: [
     BrowserModule,
@@ -112,6 +117,7 @@ import {CourseActivityListComponent } from './controls/course/course-activity-li
     StateStorageService,
     HttpWrapperService,
     CourseService,
+    PortfolioService,
     AdminService,
     AdminGridService
   ],
@@ -119,7 +125,8 @@ import {CourseActivityListComponent } from './controls/course/course-activity-li
   entryComponents: [
     AdminDialogComponent,
     ForgotPasswordDialogComponent,
-    CourseViewComponent
+    CourseViewComponent,
+    ProfilePageComponent
   ]
 })
 export class AppModule {

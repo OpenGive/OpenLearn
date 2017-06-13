@@ -74,6 +74,9 @@ public class UserResourceIntTest {
 	private static final String DEFAULT_IMAGEURL = "http://placehold.it/50x50";
 	private static final String UPDATED_IMAGEURL = "http://placehold.it/40x40";
 
+	private static final String DEFAULT_BIOGRAPHY = "biography";
+	private static final String UPDATED_BIOGRAPHY = "updated bio";
+
 	@Autowired
 	private UserRepository userRepository;
 
@@ -149,6 +152,7 @@ public class UserResourceIntTest {
 		user.setLastName(DEFAULT_LASTNAME);
 		user.setImageUrl(DEFAULT_IMAGEURL);
 		user.setIs14Plus(true);
+		user.setBiography("biography");
 		return user;
 	}
 
@@ -342,7 +346,8 @@ public class UserResourceIntTest {
 		.andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRSTNAME)))
 		.andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LASTNAME)))
 		.andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
-		.andExpect(jsonPath("$.[*].imageUrl").value(hasItem(DEFAULT_IMAGEURL)));
+		.andExpect(jsonPath("$.[*].imageUrl").value(hasItem(DEFAULT_IMAGEURL)))
+		.andExpect(jsonPath("$.[*].biography").value(hasItem(DEFAULT_BIOGRAPHY)));
 	}
 
 	@Test
@@ -360,7 +365,9 @@ public class UserResourceIntTest {
 		.andExpect(jsonPath("$.firstName").value(DEFAULT_FIRSTNAME))
 		.andExpect(jsonPath("$.lastName").value(DEFAULT_LASTNAME))
 		.andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
-		.andExpect(jsonPath("$.imageUrl").value(DEFAULT_IMAGEURL));
+		.andExpect(jsonPath("$.imageUrl").value(DEFAULT_IMAGEURL))
+		.andExpect(jsonPath("$.imageUrl").value(DEFAULT_IMAGEURL))
+		.andExpect(jsonPath("$.biography").value(DEFAULT_BIOGRAPHY));
 	}
 
 	@Test
@@ -399,7 +406,8 @@ public class UserResourceIntTest {
 				updatedUser.getLastModifiedBy(),
 				updatedUser.getLastModifiedDate(),
 				authorities,
-				true);
+				true,
+				UPDATED_BIOGRAPHY);
 
 		restUserMockMvc.perform(put("/api/users")
 				.contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -414,6 +422,7 @@ public class UserResourceIntTest {
 		assertThat(testUser.getLastName()).isEqualTo(UPDATED_LASTNAME);
 		assertThat(testUser.getEmail()).isEqualTo(UPDATED_EMAIL);
 		assertThat(testUser.getImageUrl()).isEqualTo(UPDATED_IMAGEURL);
+		assertThat(testUser.getBiography()).isEqualTo(UPDATED_BIOGRAPHY);
 	}
 
 	@Test
@@ -445,7 +454,8 @@ public class UserResourceIntTest {
 				updatedUser.getLastModifiedBy(),
 				updatedUser.getLastModifiedDate(),
 				authorities,
-				true);
+				true,
+				UPDATED_BIOGRAPHY);
 
 		restUserMockMvc.perform(put("/api/users")
 				.contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -461,6 +471,7 @@ public class UserResourceIntTest {
 		assertThat(testUser.getLastName()).isEqualTo(UPDATED_LASTNAME);
 		assertThat(testUser.getEmail()).isEqualTo(UPDATED_EMAIL);
 		assertThat(testUser.getImageUrl()).isEqualTo(UPDATED_IMAGEURL);
+		assertThat(testUser.getBiography()).isEqualTo(UPDATED_BIOGRAPHY);
 	}
 
 	@Test
@@ -478,6 +489,7 @@ public class UserResourceIntTest {
 		anotherUser.setFirstName("java");
 		anotherUser.setLastName("hipster");
 		anotherUser.setImageUrl("");
+		anotherUser.setBiography("other bio");
 		userRepository.saveAndFlush(anotherUser);
 		userSearchRepository.save(anotherUser);
 
@@ -502,7 +514,8 @@ public class UserResourceIntTest {
 				updatedUser.getLastModifiedBy(),
 				updatedUser.getLastModifiedDate(),
 				authorities,
-				true);
+				true,
+				updatedUser.getBiography());
 
 		restUserMockMvc.perform(put("/api/users")
 				.contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -525,6 +538,7 @@ public class UserResourceIntTest {
 		anotherUser.setFirstName("java");
 		anotherUser.setLastName("hipster");
 		anotherUser.setImageUrl("");
+		anotherUser.setBiography("bio");
 		userRepository.saveAndFlush(anotherUser);
 		userSearchRepository.save(anotherUser);
 
@@ -549,7 +563,8 @@ public class UserResourceIntTest {
 				updatedUser.getLastModifiedBy(),
 				updatedUser.getLastModifiedDate(),
 				authorities,
-				true);
+				true,
+				updatedUser.getBiography());
 
 		restUserMockMvc.perform(put("/api/users")
 				.contentType(TestUtil.APPLICATION_JSON_UTF8)

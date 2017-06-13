@@ -137,6 +137,7 @@ public class UserService {
         user.setPhoneNumber(userDTO.getPhoneNumber());
         user.setAddress(userDTO.getAddress());
         user.setImageUrl(userDTO.getImageUrl());
+        user.setBiography(userDTO.getBiography());
         if (userDTO.getAuthorities() != null) {
 
             Set<Authority> authorities = new HashSet<>();
@@ -171,7 +172,7 @@ public class UserService {
      * @param email email id of user
      * @param imageUrl image URL of user
      */
-	public void updateUser(final String firstName, final String lastName, final String email, final String phoneNumber, final Address address, final String imageUrl) {
+	public void updateUser(final String firstName, final String lastName, final String email, final String phoneNumber, final Address address, final String imageUrl, final String biography) {
         userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).ifPresent(user -> {
             user.setFirstName(firstName);
             user.setLastName(lastName);
@@ -179,6 +180,7 @@ public class UserService {
             user.setPhoneNumber(phoneNumber);
             user.setAddress(address);
             user.setImageUrl(imageUrl);
+            user.setBiography(biography);
             userSearchRepository.save(user);
             log.debug("Changed Information for User: {}", user);
         });
@@ -202,6 +204,7 @@ public class UserService {
                 user.setAddress(userDTO.getAddress());
                 user.setImageUrl(userDTO.getImageUrl());
                 user.setActivated(userDTO.isActivated());
+                user.setBiography(userDTO.getBiography());
 					final Set<Authority> managedAuthorities = user.getAuthorities();
                 managedAuthorities.clear();
                 userDTO.getAuthorities().stream()

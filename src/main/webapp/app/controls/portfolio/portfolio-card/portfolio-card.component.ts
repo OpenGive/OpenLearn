@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { PortfolioItem } from '../../../models/portfolio-item'
 
 @Component({
   selector: 'app-portfolio-card',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PortfolioCardComponent implements OnInit {
 
-  constructor() { }
+  @Input() portfolioItem: PortfolioItem;
+
+  constructor() {
+  }
 
   ngOnInit() {
+  }
+
+  share() {
+    alert(this.portfolioItem.filename);
   }
 
 }
