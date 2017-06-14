@@ -76,8 +76,7 @@
           <md-error *ngIf="formErrors.address.city">{{formErrors.address.city}}</md-error>
         </md-input-container>
         <md-input-container fxFlex="20%">
-          <input mdInput formControlName="state" placeholder="State" [mdAutocomplete]="state">
-          <md-error *ngIf="formErrors.address.state">{{formErrors.address.state}}</md-error>
+          <input mdInput formControlName="state" placeholder="State" [mdAutocomplete]="state"/>
           <md-autocomplete #state="mdAutocomplete" [displayWith]="displayState">
             <md-option *ngFor="let state of states" [value]="state.code">{{state.name}}</md-option>
           </md-autocomplete>

@@ -31,6 +31,7 @@ export class AdminInstructorsFormComponent implements OnInit {
     authorities: '',
     biography: '',
     email: '',
+    phoneNumber: '',
     address: {
       streetAddress1: '',
       streetAddress2: '',
