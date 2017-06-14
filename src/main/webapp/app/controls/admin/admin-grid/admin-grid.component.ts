@@ -5,6 +5,7 @@ import * as _ from "lodash";
 import {AdminDialogComponent} from "../admin-dialog.component";
 import {AdminGridModel} from "../../../models/admin-grid.model";
 import {AdminGridService} from "../../../services/admin-grid.service";
+import {NotifyService} from "../../../services/notify.service";
 
 @Component({
   selector: 'app-admin-grid',
@@ -20,7 +21,7 @@ export class AdminGridComponent implements OnInit {
   reverse: boolean;
 
   constructor(private dialog: MdDialog,
-              private snackBar: MdSnackBar,
+              private notify: NotifyService,
               private adminGridService: AdminGridService) {}
 
   ngOnInit(): void {
@@ -66,13 +67,13 @@ export class AdminGridComponent implements OnInit {
       if (resp.type === 'UPDATE') {
         let ndx = _.findIndex(this.grid.rows, {id: resp.data.id});
         this.grid.rows[ndx] = resp.data;
-        this.snackBar.open('Update successful', 'OK', {duration: 3000, extraClasses: ['success-snack']});
+        this.notify.success('Update successful');
       } else if (resp.type === 'ADD') {
         this.grid.rows.push(resp.data);
-        this.snackBar.open('Add successful', 'OK', {duration: 3000, extraClasses: ['success-snack']});
+        this.notify.success('Add successful');
       } else if (resp.type === 'DELETE') {
         _.remove(this.grid.rows, row => row.id === resp.data.id);
-        this.snackBar.open('Delete successful', 'OK', {duration: 3000, extraClasses: ['success-snack']});
+        this.notify.success('Delete successful');
       }
       this.sort(_.find(this.grid.columns, {'property': this.sortColumn}), this.reverse);
     }

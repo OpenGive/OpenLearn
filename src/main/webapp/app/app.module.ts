@@ -56,6 +56,7 @@ import {AdminService} from "./services/admin.service";
 import {CourseViewComponent} from "./controls/course/course-view/course-view.component"
 import {CourseActivityListComponent } from './controls/course/course-activity-list/course-activity-list.component';
 import {ProfilePageComponent} from "./pages/profile-page/profile-page.component";
+import {NotifyService} from "./services/notify.service";
 
 @NgModule({
   declarations: [
@@ -119,7 +120,8 @@ import {ProfilePageComponent} from "./pages/profile-page/profile-page.component"
     CourseService,
     PortfolioService,
     AdminService,
-    AdminGridService
+    AdminGridService,
+    NotifyService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
