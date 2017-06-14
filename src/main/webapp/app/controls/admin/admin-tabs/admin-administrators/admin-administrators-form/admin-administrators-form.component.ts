@@ -61,7 +61,8 @@ export class AdminAdministratorsFormComponent implements OnInit {
       maxlength: 'Biography cannot be more than 2000 characters long'
     },
     email: {
-      email: 'Email is not formatted correctly',
+      // email: 'Email is not formatted correctly', TODO: See comment in buildForm()
+      pattern: 'Email is not formatted correctly',
       minlength: 'Email must be at least 5 characters long',
       maxlength: 'Email cannot be more than 100 characters long'
     },
@@ -124,7 +125,8 @@ export class AdminAdministratorsFormComponent implements OnInit {
         Validators.maxLength(2000)
       ]],
       email: [this.formAdministrator.email, [
-        Validators.email,
+        // Validators.email, TODO: This forces email to be required, https://github.com/angular/angular/pull/16902 is the fix, pattern below is the workaround
+        Validators.pattern("^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*$"),
         Validators.minLength(5),
         Validators.maxLength(100)
       ]],
