@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from "@angular/core";
-import {MdDialog} from "@angular/material";
+import {MdDialog, MdSnackBar} from "@angular/material";
 import * as _ from "lodash";
 
 import {AdminDialogComponent} from "../admin-dialog.component";
@@ -20,6 +20,7 @@ export class AdminGridComponent implements OnInit {
   reverse: boolean;
 
   constructor(private dialog: MdDialog,
+              private snackBar: MdSnackBar,
               private adminGridService: AdminGridService) {}
 
   ngOnInit(): void {
@@ -65,10 +66,13 @@ export class AdminGridComponent implements OnInit {
       if (resp.type === 'UPDATE') {
         let ndx = _.findIndex(this.grid.rows, {id: resp.data.id});
         this.grid.rows[ndx] = resp.data;
+        this.snackBar.open('Update successful', 'OK', {duration: 3000, extraClasses: ['success-snack']});
       } else if (resp.type === 'ADD') {
         this.grid.rows.push(resp.data);
+        this.snackBar.open('Add successful', 'OK', {duration: 3000, extraClasses: ['success-snack']});
       } else if (resp.type === 'DELETE') {
         _.remove(this.grid.rows, row => row.id === resp.data.id);
+        this.snackBar.open('Delete successful', 'OK', {duration: 3000, extraClasses: ['success-snack']});
       }
       this.sort(_.find(this.grid.columns, {'property': this.sortColumn}), this.reverse);
     }
