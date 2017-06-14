@@ -68,7 +68,7 @@ export class UserService {
 
   private handleError(error: Response) {
     console.error(error);
-    return Observable.throw(error.json() || 'Server Error');
+    return Observable.throw(error.json() || {message: 'Server Error'});
   }
 
   // Converts empty strings and empty address to nulls

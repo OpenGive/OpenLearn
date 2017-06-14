@@ -19,7 +19,6 @@ export class AdminPageComponent implements OnInit {
     { name: AdminModel.Program.title, route: AdminModel.Program.route, active: false },
     { name: AdminModel.Course.title, route: AdminModel.Course.route, active: false }
   ];
-  activeTab = this.tabs[0];
 
   adminPageFlex = {
     lg: '1280px',
@@ -39,7 +38,5 @@ export class AdminPageComponent implements OnInit {
   selectTab(tab: any): void {
     this.tabs.forEach(tab => tab.active = false);
     tab.active = true;
-    this.activeTab = tab;
   }
-
 }

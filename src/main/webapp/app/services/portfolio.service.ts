@@ -21,4 +21,9 @@ export class PortfolioService {
       return json;
     });
   }
+
+  private handleError(error: Response) {
+    console.error(error);
+    return Observable.throw(error.json() || {message: 'Server Error'});
+  }
 }

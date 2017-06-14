@@ -31,7 +31,6 @@ export class AdminService {
 
   delete(type: string, id: Number) {
     return this._http.delete(this.endpoint + type + '/' +  id)
-      .map(resp => resp)
       .catch(this.handleError);
   }
 
@@ -42,8 +41,8 @@ export class AdminService {
   }
 
   private handleError(error: Response) {
-    console.error(error.json());
-    return Observable.throw(error.json() || 'Server Error');
+    console.error(error);
+    return Observable.throw(error.json() || {message: 'Server Error'});
   }
 
   // Converts empty strings to nulls

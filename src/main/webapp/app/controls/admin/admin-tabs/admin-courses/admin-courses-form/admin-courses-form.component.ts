@@ -5,6 +5,7 @@ import {MdDialogRef} from "@angular/material";
 import {AdminDialogComponent} from "../../../admin-dialog.component";
 import {AdminModel} from "../../../admin.constants";
 import {AdminService} from "../../../../../services/admin.service";
+import {NotifyService} from "../../../../../services/notify.service";
 import {UserService} from "../../../../../services/user.service";
 
 @Component({
@@ -62,7 +63,8 @@ export class AdminCoursesFormComponent implements OnInit {
   constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
               private fb: FormBuilder,
               private adminService: AdminService,
-              private userService: UserService) {}
+              private userService: UserService,
+              private notify: NotifyService) {}
 
   ngOnInit(): void {
     this.buildForm();
@@ -163,6 +165,9 @@ export class AdminCoursesFormComponent implements OnInit {
         type: 'ADD',
         data: resp
       });
+      this.notify.success('Successfully added course');
+    }, error => {
+      this.notify.error('Failed to add course');
     });
   }
 
@@ -173,6 +178,9 @@ export class AdminCoursesFormComponent implements OnInit {
         type: 'UPDATE',
         data: resp
       });
+      this.notify.success('Successfully updated course');
+    }, error => {
+      this.notify.error('Failed to update course');
     });
   }
 
@@ -197,6 +205,9 @@ export class AdminCoursesFormComponent implements OnInit {
           id: this.formCourse.id
         }
       });
+      this.notify.success('Successfully deleted course');
+    }, error => {
+      this.notify.error('Failed to delete course');
     });
   }
 

@@ -5,6 +5,7 @@ import {MdDialogRef} from "@angular/material";
 import {AdminDialogComponent} from "../../../admin-dialog.component";
 import {AdminModel} from "../../../admin.constants";
 import {AdminService} from "../../../../../services/admin.service";
+import {NotifyService} from "../../../../../services/notify.service";
 
 @Component({
   selector: 'admin-sessions-form',
@@ -50,7 +51,8 @@ export class AdminSessionsFormComponent implements OnInit {
 
   constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
               private fb: FormBuilder,
-              private adminService: AdminService) {}
+              private adminService: AdminService,
+              private notify: NotifyService) {}
 
   ngOnInit(): void {
     this.buildForm();
@@ -132,6 +134,9 @@ export class AdminSessionsFormComponent implements OnInit {
         type: 'ADD',
         data: resp
       });
+      this.notify.success('Successfully added session');
+    }, error => {
+      this.notify.error('Failed to add session');
     });
   }
 
@@ -142,6 +147,9 @@ export class AdminSessionsFormComponent implements OnInit {
         type: 'UPDATE',
         data: resp
       });
+      this.notify.success('Successfully updated session');
+    }, error => {
+      this.notify.error('Failed to update session');
     });
   }
 
@@ -165,6 +173,9 @@ export class AdminSessionsFormComponent implements OnInit {
           id: this.formSession.id
         }
       });
+      this.notify.success('Successfully deleted session');
+    }, error => {
+      this.notify.error('Failed to delete session');
     });
   }
 

@@ -5,6 +5,7 @@ import * as _ from "lodash";
 
 import {AdminDialogComponent} from "../../../admin-dialog.component";
 import {AppConstants} from "../../../../../app.constants";
+import {NotifyService} from "../../../../../services/notify.service";
 import {UserService} from "../../../../../services/user.service";
 
 @Component({
@@ -91,7 +92,8 @@ export class AdminStudentsFormComponent implements OnInit {
 
   constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
               private fb: FormBuilder,
-              private userService: UserService) {}
+              private userService: UserService,
+              private notify: NotifyService) {}
 
   ngOnInit(): void {
     this.buildForm();
@@ -223,6 +225,9 @@ export class AdminStudentsFormComponent implements OnInit {
         type: 'ADD',
         data: resp
       });
+      this.notify.success('Successfully added student');
+    }, error => {
+      this.notify.error('Failed to add student');
     });
   }
 
@@ -233,6 +238,9 @@ export class AdminStudentsFormComponent implements OnInit {
         type: 'UPDATE',
         data: resp
       });
+      this.notify.success('Successfully updated student');
+    }, error => {
+      this.notify.error('Failed to update student');
     });
   }
 
@@ -268,6 +276,9 @@ export class AdminStudentsFormComponent implements OnInit {
           id: this.formStudent.id
         }
       });
+      this.notify.success('Successfully deleted student');
+    }, error => {
+      this.notify.error('Failed to delete student');
     });
   }
 

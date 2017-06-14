@@ -5,6 +5,7 @@ import {MdDialogRef} from "@angular/material";
 import {AdminDialogComponent} from "../../../admin-dialog.component";
 import {AdminModel} from "../../../admin.constants";
 import {AdminService} from "../../../../../services/admin.service";
+import {NotifyService} from "../../../../../services/notify.service";
 
 @Component({
   selector: 'admin-organizations-form',
@@ -36,7 +37,8 @@ export class AdminOrganizationsFormComponent implements OnInit {
 
   constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
               private fb: FormBuilder,
-              private adminService: AdminService) {}
+              private adminService: AdminService,
+              private notify: NotifyService) {}
 
   ngOnInit(): void {
     this.buildForm();
@@ -105,6 +107,9 @@ export class AdminOrganizationsFormComponent implements OnInit {
         type: 'ADD',
         data: resp
       });
+      this.notify.success('Successfully added organization');
+    }, error => {
+      this.notify.error('Failed to add organization');
     });
   }
 
@@ -115,6 +120,9 @@ export class AdminOrganizationsFormComponent implements OnInit {
         type: 'UPDATE',
         data: resp
       });
+      this.notify.success('Successfully updated organization');
+    }, error => {
+      this.notify.error('Failed to update organization');
     });
   }
 
@@ -134,6 +142,9 @@ export class AdminOrganizationsFormComponent implements OnInit {
           id: this.formOrganization.id
         }
       });
+      this.notify.success('Successfully deleted organization');
+    }, error => {
+      this.notify.error('Failed to delete organization');
     });
   }
 

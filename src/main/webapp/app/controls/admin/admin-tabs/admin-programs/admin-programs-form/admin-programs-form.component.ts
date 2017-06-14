@@ -5,6 +5,7 @@ import {MdDialogRef} from "@angular/material";
 import {AdminDialogComponent} from "../../../admin-dialog.component";
 import {AdminModel} from "../../../admin.constants";
 import {AdminService} from "../../../../../services/admin.service";
+import {NotifyService} from "../../../../../services/notify.service";
 
 @Component({
   selector: 'admin-programs-form',
@@ -38,7 +39,8 @@ export class AdminProgramsFormComponent implements OnInit {
 
   constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
               private fb: FormBuilder,
-              private adminService: AdminService) {}
+              private adminService: AdminService,
+              private notify: NotifyService) {}
 
   ngOnInit(): void {
     this.buildForm();
@@ -123,6 +125,9 @@ export class AdminProgramsFormComponent implements OnInit {
         type: 'ADD',
         data: resp
       });
+      this.notify.success('Successfully added program');
+    }, error => {
+      this.notify.error('Failed to add program');
     });
   }
 
@@ -133,6 +138,9 @@ export class AdminProgramsFormComponent implements OnInit {
         type: 'UPDATE',
         data: resp
       });
+      this.notify.success('Successfully updated program');
+    }, error => {
+      this.notify.error('Failed to update program');
     });
   }
 
@@ -155,6 +163,9 @@ export class AdminProgramsFormComponent implements OnInit {
           id: this.formProgram.id
         }
       });
+      this.notify.success('Successfully deleted program');
+    }, error => {
+      this.notify.error('Failed to delete program');
     });
   }
 
