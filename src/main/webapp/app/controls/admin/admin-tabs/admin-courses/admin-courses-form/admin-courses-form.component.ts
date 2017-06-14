@@ -205,16 +205,7 @@ export class AdminCoursesFormComponent implements OnInit {
   }
 
   cancel(): void {
-    this.courseForm.setValue({
-      name: this.formCourse.name,
-      description: this.formCourse.description,
-      organization: this.formCourse.organization,
-      program: this.formCourse.program,
-      instructor: this.formCourse.instructor,
-      startDate: this.formCourse.startDate,
-      endDate: this.formCourse.endDate
-    });
-    this.setEditing(false);
+    this.ngOnInit();
   }
 
   close(): void {

@@ -46,7 +46,7 @@ export class AdminService {
     return Observable.throw(error.json() || 'Server Error');
   }
 
-  // Converts empty strings to nulls to pass validation
+  // Converts empty strings to nulls
   private nullifyBlanks(object: any) {
     return _.mapValues(object, field => {
       if (field === '') {

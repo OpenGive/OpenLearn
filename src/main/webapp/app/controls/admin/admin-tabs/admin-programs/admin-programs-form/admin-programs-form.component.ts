@@ -163,14 +163,7 @@ export class AdminProgramsFormComponent implements OnInit {
   }
 
   cancel(): void {
-    this.programForm.setValue({
-      name: this.formProgram.name,
-      description: this.formProgram.description,
-      session: this.formProgram.session,
-      school: this.formProgram.school,
-      active: this.formProgram.active
-    });
-    this.setEditing(false);
+    this.ngOnInit();
   }
 
   close(): void {

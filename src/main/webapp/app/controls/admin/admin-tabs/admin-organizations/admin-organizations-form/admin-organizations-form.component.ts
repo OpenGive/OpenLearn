@@ -142,11 +142,7 @@ export class AdminOrganizationsFormComponent implements OnInit {
   }
 
   cancel(): void {
-    this.organizationForm.setValue({
-      name: this.formOrganization.name,
-      description: this.formOrganization.description,
-    });
-    this.setEditing(false);
+    this.ngOnInit();
   }
 
   close(): void {

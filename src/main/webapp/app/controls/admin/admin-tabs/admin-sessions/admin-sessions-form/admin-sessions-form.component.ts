@@ -173,15 +173,7 @@ export class AdminSessionsFormComponent implements OnInit {
   }
 
   cancel(): void {
-    this.sessionForm.setValue({
-      name: this.formSession.name,
-      description: this.formSession.description,
-      organization: this.formSession.organization,
-      startDate: this.formSession.startDate,
-      endDate: this.formSession.endDate,
-      active: this.formSession.active
-    });
-    this.setEditing(false);
+    this.ngOnInit();
   }
 
   close(): void {

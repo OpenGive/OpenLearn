@@ -12,7 +12,7 @@ export class AdminPageComponent implements OnInit {
 
   tabs = [
     { name: AdminModel.Organization.title, route: AdminModel.Organization.route, active: false },
-    // { name: AdminModel.Administrator.title, route: AdminModel.Administrator.route, active: false },
+    { name: AdminModel.Administrator.title, route: AdminModel.Administrator.route, active: false },
     // { name: AdminModel.Instructor.title, route: AdminModel.Instructor.route, active: false },
     // { name: AdminModel.Student.title, route: AdminModel.Student.route, active: false },
     { name: AdminModel.Session.title, route: AdminModel.Session.route, active: false },
@@ -28,11 +28,15 @@ export class AdminPageComponent implements OnInit {
 
   constructor(private router: Router) {}
 
-  ngOnInit(): void { // Highlight the correct tab using the url
+  ngOnInit(): void {
+    this.readTabFromUrl();
+  }
+
+  private readTabFromUrl(): void {
     this.selectTab(this.tabs.find(tab => tab.route === this.router.url.split('/').pop()));
   }
 
-  private selectTab(tab: any): void {
+  selectTab(tab: any): void {
     this.tabs.forEach(tab => tab.active = false);
     tab.active = true;
     this.activeTab = tab;
