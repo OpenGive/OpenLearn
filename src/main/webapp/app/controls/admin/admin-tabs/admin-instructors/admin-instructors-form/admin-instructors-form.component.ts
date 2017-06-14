@@ -50,7 +50,9 @@ export class AdminInstructorsFormComponent implements OnInit {
       maxlength: 'Username cannot be more than 100 characters long'
     },
     password: {
-      required: 'Password is required'
+      required: 'Password is required',
+      minlength: 'Password must be at least 6 characters long',
+      maxlength: 'Password cannot be more than 50 characters long'
     },
     authorities: {
       required: 'Instructor must have at least 1 role'
@@ -111,7 +113,9 @@ export class AdminInstructorsFormComponent implements OnInit {
         Validators.maxLength(50)
       ]],
       password: [this.formInstructor.password, this.adding ? [
-        Validators.required
+        Validators.required,
+        Validators.minLength(6),
+        Validators.maxLength(50)
       ] : []],
       authorities: [this.formInstructor.authorities, [
         Validators.required
@@ -143,7 +147,7 @@ export class AdminInstructorsFormComponent implements OnInit {
         ]],
         state: [this.formInstructor.state],
         postalCode: [this.formInstructor.postalCode, [
-          // TODO: Pattern
+          Validators.pattern("^[0-9]{5}(-[0-9]{4})?$")
         ]]
       }),
       imageUrl: [this.formInstructor.imageUrl],
