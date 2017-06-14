@@ -30,43 +30,61 @@
     <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap>
       <md-input-container fxFlex="30%">
         <input mdInput formControlName="firstName" placeholder="First Name"/>
+        <md-error *ngIf="formErrors.firstName">{{formErrors.firstName}}</md-error>
       </md-input-container>
       <md-input-container fxFlex="30%">
         <input mdInput formControlName="lastName" placeholder="Last Name"/>
+        <md-error *ngIf="formErrors.lastName">{{formErrors.lastName}}</md-error>
       </md-input-container>
       <md-input-container fxFlex="30%">
         <input mdInput formControlName="login" placeholder="Username"/>
+        <md-error *ngIf="formErrors.login">{{formErrors.login}}</md-error>
       </md-input-container>
       <md-input-container fxFlex="30%" *ngIf="adding">
         <input mdInput formControlName="password" placeholder="Password"/>
+        <md-error *ngIf="formErrors.password">{{formErrors.password}}</md-error>
       </md-input-container>
-      <md-input-container fxFlex="30%">
-        <input mdInput formControlName="authorities" placeholder="Roles"/>
-      </md-input-container>
+      <div fxLayout="column" fxFlex="30%">
+        <md-select formControlName="authorities" placeholder="Roles" multiple>
+          <md-option *ngFor="let role of roles" [value]="role">{{displayRole(role)}}</md-option>
+        </md-select>
+        <md-error *ngIf="formErrors.authorities">{{formErrors.authorities}}</md-error>
+      </div>
       <md-input-container fxFlex="30%">
         <input mdInput formControlName="biography" placeholder="Biography"/>
+        <md-error *ngIf="formErrors.biography">{{formErrors.biography}}</md-error>
       </md-input-container>
       <md-input-container fxFlex="30%">
         <input mdInput formControlName="email" placeholder="Email"/>
+        <md-error *ngIf="formErrors.email">{{formErrors.email}}</md-error>
       </md-input-container>
       <md-input-container fxFlex="25%">
         <input mdInput formControlName="phoneNumber" placeholder="Phone"/>
+        <md-error *ngIf="formErrors.phoneNumber">{{formErrors.phoneNumber}}</md-error>
       </md-input-container>
       <div formGroupName="address" fxLayout="row" fxFlex="70%">
         <md-input-container fxFlex="20%">
           <input mdInput formControlName="streetAddress1" placeholder="Address 1"/>
+          <md-error *ngIf="formErrors.address.streetAddress1">{{formErrors.address.streetAddress1}}</md-error>
         </md-input-container>
         <md-input-container fxFlex="20%">
           <input mdInput formControlName="streetAddress2" placeholder="Address 2"/>
+          <md-error *ngIf="formErrors.address.streetAddress2">{{formErrors.address.streetAddress2}}</md-error>
         </md-input-container>
         <md-input-container fxFlex="20%">
           <input mdInput formControlName="city" placeholder="City"/>
+          <md-error *ngIf="formErrors.address.city">{{formErrors.address.city}}</md-error>
         </md-input-container>
         <md-input-container fxFlex="20%">
-          <input mdInput formControlName="state" placeholder="State"/>
+          <input mdInput formControlName="state" placeholder="State" [mdAutocomplete]="state">
+          <md-error *ngIf="formErrors.address.state">{{formErrors.address.state}}</md-error>
+          <md-autocomplete #state="mdAutocomplete" [displayWith]="displayState">
+            <md-option *ngFor="let state of states" [value]="state.code">{{state.name}}</md-option>
+          </md-autocomplete>
         </md-input-container>
         <md-input-container fxFlex="20%">
           <input mdInput formControlName="postalCode" placeholder="Postal Code"/>
+          <md-error *ngIf="formErrors.address.postalCode">{{formErrors.address.postalCode}}</md-error>
         </md-input-container>
       </div>
       <md-input-container fxFlex="30%">

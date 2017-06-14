@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MdDialogRef} from "@angular/material";
+import * as _ from "lodash";
 
 import {AdminDialogComponent} from "../../../admin-dialog.component";
 import {AppConstants} from "../../../../../app.constants";
@@ -18,6 +19,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
   editing: boolean;
 
   roles: string[];
+  states: any[];
 
   administratorForm: FormGroup;
   formErrors = {
@@ -28,10 +30,12 @@ export class AdminAdministratorsFormComponent implements OnInit {
     authorities: '',
     biography: '',
     email: '',
-    streetAddress1: '',
-    streetAddress2: '',
-    city: '',
-    postalCode: ''
+    address: {
+      streetAddress1: '',
+      streetAddress2: '',
+      city: '',
+      postalCode: ''
+    }
   };
   validationMessages = {
     firstName: {
@@ -87,10 +91,10 @@ export class AdminAdministratorsFormComponent implements OnInit {
               private userService: UserService) {}
 
   ngOnInit(): void {
-    console.log(this.formAdministrator);
     this.buildForm();
     this.setEditing(this.adding);
     this.getRoles();
+    this.getStates();
   }
 
   private buildForm(): void {
@@ -153,13 +157,22 @@ export class AdminAdministratorsFormComponent implements OnInit {
   private onValueChanged(): void {
     if (this.administratorForm) {
       const form = this.administratorForm;
-      for (const field in this.formErrors) {
-        this.formErrors[field] = '';
-        const control = form.get(field);
+      this.updateFormErrors(form, this.formErrors, this.validationMessages);
+    }
+  }
+
+  // Recursive method to account for nested FormGroups
+  private updateFormErrors(form: FormGroup, formErrors: any, validationMessages: any): void {
+    for (const field in formErrors) {
+      const control = form.get(field);
+      if (control instanceof FormGroup) {
+        this.updateFormErrors(control, formErrors[field], validationMessages[field]);
+      } else {
+        formErrors[field] = '';
         if (control && control.dirty && !control.valid) {
-          const messages = this.validationMessages[field];
+          const messages = validationMessages[field];
           for (const key in control.errors) {
-            this.formErrors[field] += messages[key] + ' ';
+            formErrors[field] += messages[key] + ' ';
           }
         }
       }
@@ -176,6 +189,14 @@ export class AdminAdministratorsFormComponent implements OnInit {
         this.editing = false;
       }
     }
+  }
+
+  getRoles(): void {
+    this.roles = Object.keys(AppConstants.Role).map(key => AppConstants.Role[key]);
+  }
+
+  getStates(): void {
+    this.states = AppConstants.States;
   }
 
   save(): void {
@@ -256,7 +277,11 @@ export class AdminAdministratorsFormComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  getRoles(): void {
-    this.roles = Object.keys(AppConstants.Role).map(key => AppConstants.Role[key]);
+  displayRole(role: string): string { // Convert "ROLE_ONE_TWO" to "One Two"
+    return role.split('_').slice(1).map(str => str.charAt(0) + str.slice(1).toLowerCase()).join(' ');
+  }
+
+  displayState(stateCode: string): string {
+    return stateCode ? _.filter(AppConstants.States, {code: stateCode})[0].name : '';
   }
 }

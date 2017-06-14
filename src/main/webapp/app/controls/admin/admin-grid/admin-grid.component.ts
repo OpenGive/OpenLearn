@@ -88,9 +88,9 @@ export class AdminGridComponent implements OnInit {
     }
   }
 
-  private displayAuthorities(authorities): string { // Parse array of roles to create friendly list (ROLE_BLAH => Blah)
+  private displayAuthorities(authorities): string { // Convert "ROLE_ONE_TWO" to "One Two"
     return authorities.map(role => {
-      return role.charAt(5) + role.slice(6).toLowerCase()
+      return role.split('_').slice(1).map(str => str.charAt(0) + str.slice(1).toLowerCase()).join(' ');
     }).sort().join(', ');
   }
 
