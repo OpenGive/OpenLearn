@@ -33,7 +33,7 @@
         <md-error *ngIf="formErrors.name">{{formErrors.name}}</md-error>
       </md-input-container>
       <md-input-container fxFlex="30%">
-        <input mdInput formControlName="description" placeholder="Description"/>
+        <textarea mdInput formControlName="description" placeholder="Description"></textarea>
         <md-error *ngIf="formErrors.description">{{formErrors.description}}</md-error>
       </md-input-container>
       <md-input-container fxFlex="30%">

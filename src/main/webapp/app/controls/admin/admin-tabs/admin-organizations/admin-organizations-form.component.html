@@ -1,10 +1,10 @@
-<form [formGroup]="programForm" (ngSubmit)="save()" novalidate>
+<form [formGroup]="organizationForm" (ngSubmit)="save()" novalidate>
   <div class="admin-dialog-header" [ngClass]="{edit: editing}" fxLayout="row" fxLayoutAlign="space-between center">
     <div fxLayout="row" fxLayoutAlign="start center">
       <div><button md-button type="reset" (click)="close()"><i class="fa fa-times fa-lg"></i></button></div>
-      <span class="admin-dialog-title" *ngIf="!editing">Program Details</span>
-      <span class="admin-dialog-title edit" *ngIf="adding">New Program</span>
-      <span class="admin-dialog-title edit" *ngIf="editing && !adding">Edit Program</span>
+      <span class="admin-dialog-title" *ngIf="!editing">Organization Details</span>
+      <span class="admin-dialog-title edit" *ngIf="adding">New Organization</span>
+      <span class="admin-dialog-title edit" *ngIf="editing && !adding">Edit Organization</span>
     </div>
     <div fxLayout="row">
       <button md-raised-button type="submit" *ngIf="editing" class="admin-dialog-button grey-button" mdTooltip="Save">
@@ -28,27 +28,14 @@
   </div>
   <div class="admin-dialog-content">
     <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap>
-      <md-input-container fxFlex="30%">
+      <md-input-container fxFlex="47%">
         <input mdInput formControlName="name" placeholder="Name"/>
         <md-error *ngIf="formErrors.name">{{formErrors.name}}</md-error>
       </md-input-container>
-      <md-input-container fxFlex="30%">
-        <input mdInput formControlName="description" placeholder="Description"/>
+      <md-input-container fxFlex="47%">
+        <textarea mdInput formControlName="description" placeholder="Description"></textarea>
+        <md-error *ngIf="formErrors.description">{{formErrors.description}}</md-error>
       </md-input-container>
-      <md-input-container fxFlex="30%">
-        <input mdInput formControlName="session" placeholder="Session" [mdAutocomplete]="session">
-        <md-error *ngIf="formErrors.session">{{formErrors.session}}</md-error>
-        <md-autocomplete #session="mdAutocomplete" [displayWith]="displaySession">
-          <md-option *ngFor="let session of sessions" [value]="session">{{session.name}}</md-option>
-        </md-autocomplete>
-      </md-input-container>
-      <md-input-container fxFlex="30%">
-        <input mdInput formControlName="school" placeholder="School" [mdAutocomplete]="school">
-        <md-autocomplete #school="mdAutocomplete" [displayWith]="displaySchool">
-          <md-option *ngFor="let school of schools" [value]="school">{{school.name}}</md-option>
-        </md-autocomplete>
-      </md-input-container>
-      <md-checkbox fxFlex="30%" formControlName="active">Active</md-checkbox>
     </div>
   </div>
 </form>

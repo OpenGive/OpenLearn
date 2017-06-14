@@ -45,13 +45,13 @@ import {AdminStudentsComponent} from "./controls/admin/admin-tabs/admin-students
 import {AdminSessionsComponent} from "./controls/admin/admin-tabs/admin-sessions/admin-sessions.component";
 import {AdminProgramsComponent} from "./controls/admin/admin-tabs/admin-programs/admin-programs.component";
 import {AdminCoursesComponent} from "./controls/admin/admin-tabs/admin-courses/admin-courses.component";
-import {AdminOrganizationsFormComponent} from "./controls/admin/admin-tabs/admin-organizations/admin-organizations-form/admin-organizations-form.component";
-import {AdminAdministratorsFormComponent} from "./controls/admin/admin-tabs/admin-administrators/admin-administrators-form/admin-administrators-form.component";
-import {AdminInstructorsFormComponent} from "./controls/admin/admin-tabs/admin-instructors/admin-instructors-form/admin-instructors-form.component";
-import {AdminStudentsFormComponent} from "./controls/admin/admin-tabs/admin-students/admin-students-form/admin-students-form.component";
-import {AdminSessionsFormComponent} from "./controls/admin/admin-tabs/admin-sessions/admin-sessions-form/admin-sessions-form.component";
-import {AdminProgramsFormComponent} from "./controls/admin/admin-tabs/admin-programs/admin-programs-form/admin-programs-form.component";
-import {AdminCoursesFormComponent} from "./controls/admin/admin-tabs/admin-courses/admin-courses-form/admin-courses-form.component";
+import {AdminOrganizationsFormComponent} from "./controls/admin/admin-tabs/admin-organizations/admin-organizations-form.component";
+import {AdminAdministratorsFormComponent} from "./controls/admin/admin-tabs/admin-administrators/admin-administrators-form.component";
+import {AdminInstructorsFormComponent} from "./controls/admin/admin-tabs/admin-instructors/admin-instructors-form.component";
+import {AdminStudentsFormComponent} from "./controls/admin/admin-tabs/admin-students/admin-students-form.component";
+import {AdminSessionsFormComponent} from "./controls/admin/admin-tabs/admin-sessions/admin-sessions-form.component";
+import {AdminProgramsFormComponent} from "./controls/admin/admin-tabs/admin-programs/admin-programs-form.component";
+import {AdminCoursesFormComponent} from "./controls/admin/admin-tabs/admin-courses/admin-courses-form.component";
 import {AdminService} from "./services/admin.service";
 import {CourseViewComponent} from "./controls/course/course-view/course-view.component"
 import {CourseActivityListComponent } from './controls/course/course-activity-list/course-activity-list.component';

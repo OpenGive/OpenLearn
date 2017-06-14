@@ -1,10 +1,10 @@
-<form [formGroup]="administratorForm" (ngSubmit)="save()" novalidate>
+<form [formGroup]="studentForm" (ngSubmit)="save()" novalidate>
   <div class="admin-dialog-header" [ngClass]="{edit: editing}" fxLayout="row" fxLayoutAlign="space-between center">
     <div fxLayout="row" fxLayoutAlign="start center">
       <div><button md-button type="reset" (click)="close()"><i class="fa fa-times fa-lg"></i></button></div>
-      <span class="admin-dialog-title" *ngIf="!editing">Administrator Details</span>
-      <span class="admin-dialog-title edit" *ngIf="adding">New Administrator</span>
-      <span class="admin-dialog-title edit" *ngIf="editing && !adding">Edit Administrator</span>
+      <span class="admin-dialog-title" *ngIf="!editing">Student Details</span>
+      <span class="admin-dialog-title edit" *ngIf="adding">New Student</span>
+      <span class="admin-dialog-title edit" *ngIf="editing && !adding">Edit Student</span>
     </div>
     <div fxLayout="row">
       <button md-raised-button type="submit" *ngIf="editing" class="admin-dialog-button grey-button" mdTooltip="Save">
@@ -51,7 +51,7 @@
         <md-error *ngIf="formErrors.authorities">{{formErrors.authorities}}</md-error>
       </div>
       <md-input-container fxFlex="30%">
-        <input mdInput formControlName="biography" placeholder="Biography"/>
+        <textarea mdInput formControlName="biography" placeholder="Biography"></textarea>
         <md-error *ngIf="formErrors.biography">{{formErrors.biography}}</md-error>
       </md-input-container>
       <md-input-container fxFlex="30%">

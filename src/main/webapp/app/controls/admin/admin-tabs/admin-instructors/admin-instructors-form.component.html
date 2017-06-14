@@ -51,7 +51,7 @@
         <md-error *ngIf="formErrors.authorities">{{formErrors.authorities}}</md-error>
       </div>
       <md-input-container fxFlex="30%">
-        <input mdInput formControlName="biography" placeholder="Biography"/>
+        <textarea mdInput formControlName="biography" placeholder="Biography"></textarea>
         <md-error *ngIf="formErrors.biography">{{formErrors.biography}}</md-error>
       </md-input-container>
       <md-input-container fxFlex="30%">

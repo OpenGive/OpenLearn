@@ -2,16 +2,16 @@ import {Component, Input, OnInit} from "@angular/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MdDialogRef} from "@angular/material";
 
-import {AdminDialogComponent} from "../../../admin-dialog.component";
-import {AdminModel} from "../../../admin.constants";
-import {AdminService} from "../../../../../services/admin.service";
-import {NotifyService} from "../../../../../services/notify.service";
-import {UserService} from "../../../../../services/user.service";
+import {AdminDialogComponent} from "../../admin-dialog.component";
+import {AdminModel} from "../../admin.constants";
+import {AdminService} from "../../../../services/admin.service";
+import {NotifyService} from "../../../../services/notify.service";
+import {UserService} from "../../../../services/user.service";
 
 @Component({
   selector: 'admin-courses-form',
   templateUrl: './admin-courses-form.component.html',
-  styleUrls: ['../../admin-forms.css']
+  styleUrls: ['../admin-forms.css']
 })
 export class AdminCoursesFormComponent implements OnInit {
 

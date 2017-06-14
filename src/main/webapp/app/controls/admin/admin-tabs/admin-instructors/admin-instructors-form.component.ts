@@ -3,26 +3,26 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MdDialogRef} from "@angular/material";
 import * as _ from "lodash";
 
-import {AdminDialogComponent} from "../../../admin-dialog.component";
-import {AppConstants} from "../../../../../app.constants";
-import {NotifyService} from "../../../../../services/notify.service";
-import {UserService} from "../../../../../services/user.service";
+import {AdminDialogComponent} from "../../admin-dialog.component";
+import {AppConstants} from "../../../../app.constants";
+import {NotifyService} from "../../../../services/notify.service";
+import {UserService} from "../../../../services/user.service";
 
 @Component({
-  selector: 'admin-administrators-form',
-  templateUrl: './admin-administrators-form.component.html',
-  styleUrls: ['../../admin-forms.css']
+  selector: 'admin-instructors-form',
+  templateUrl: './admin-instructors-form.component.html',
+  styleUrls: ['../admin-forms.css']
 })
-export class AdminAdministratorsFormComponent implements OnInit {
+export class AdminInstructorsFormComponent implements OnInit {
 
-  @Input('item') formAdministrator: any;
+  @Input('item') formInstructor: any;
   @Input() adding: boolean;
   editing: boolean;
 
   roles: string[];
   states: any[];
 
-  administratorForm: FormGroup;
+  instructorForm: FormGroup;
   formErrors = {
     firstName: '',
     lastName: '',
@@ -56,7 +56,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
       maxlength: 'Password cannot be more than 50 characters long'
     },
     authorities: {
-      required: 'Administrator must have at least 1 role'
+      required: 'Instructor must have at least 1 role'
     },
     biography: {
       maxlength: 'Biography cannot be more than 2000 characters long'
@@ -103,68 +103,68 @@ export class AdminAdministratorsFormComponent implements OnInit {
   }
 
   private buildForm(): void {
-    this.administratorForm = this.fb.group({
-      firstName: [this.formAdministrator.firstName, [
+    this.instructorForm = this.fb.group({
+      firstName: [this.formInstructor.firstName, [
         Validators.maxLength(50)
       ]],
-      lastName: [this.formAdministrator.lastName, [
+      lastName: [this.formInstructor.lastName, [
         Validators.maxLength(50)
       ]],
-      login: [this.formAdministrator.login, [
+      login: [this.formInstructor.login, [
         Validators.required,
         Validators.pattern("^[_'.@A-Za-z0-9-]*$"),
         Validators.maxLength(50)
       ]],
-      password: [this.formAdministrator.password, this.adding ? [
+      password: [this.formInstructor.password, this.adding ? [
         Validators.required,
         Validators.minLength(6),
         Validators.maxLength(50)
       ] : []],
-      authorities: [this.formAdministrator.authorities, [
+      authorities: [this.formInstructor.authorities, [
         Validators.required
       ]],
-      biography: [this.formAdministrator.biography, [
+      biography: [this.formInstructor.biography, [
         Validators.maxLength(2000)
       ]],
-      email: [this.formAdministrator.email, [
+      email: [this.formInstructor.email, [
         // Validators.email, TODO: This forces email to be required, https://github.com/angular/angular/pull/16902 is the fix, pattern below is the workaround
         Validators.pattern("^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*$"),
         Validators.minLength(5),
         Validators.maxLength(100)
       ]],
-      phoneNumber: [this.formAdministrator.phoneNumber, [
+      phoneNumber: [this.formInstructor.phoneNumber, [
         // TODO: Pattern
         Validators.maxLength(15)
       ]],
       address: this.fb.group({
-        streetAddress1: [this.formAdministrator.streetAddress1, [
+        streetAddress1: [this.formInstructor.streetAddress1, [
           Validators.minLength(5),
           Validators.maxLength(50)
         ]],
-        streetAddress2: [this.formAdministrator.streetAddress2, [
+        streetAddress2: [this.formInstructor.streetAddress2, [
           Validators.minLength(5),
           Validators.maxLength(50)
         ]],
-        city: [this.formAdministrator.city, [
+        city: [this.formInstructor.city, [
           Validators.minLength(5),
           Validators.maxLength(50)
         ]],
-        state: [this.formAdministrator.state],
-        postalCode: [this.formAdministrator.postalCode, [
+        state: [this.formInstructor.state],
+        postalCode: [this.formInstructor.postalCode, [
           Validators.pattern("^[0-9]{5}(-[0-9]{4})?$")
         ]]
       }),
-      imageUrl: [this.formAdministrator.imageUrl],
-      activated: [this.formAdministrator.activated || false],
-      is14Plus: [this.formAdministrator.is14Plus || false]
+      imageUrl: [this.formInstructor.imageUrl],
+      activated: [this.formInstructor.activated || false],
+      is14Plus: [this.formInstructor.is14Plus || false]
     });
-    this.administratorForm.valueChanges.subscribe(data => this.onValueChanged());
+    this.instructorForm.valueChanges.subscribe(data => this.onValueChanged());
     this.onValueChanged();
   }
 
   private onValueChanged(): void {
-    if (this.administratorForm) {
-      const form = this.administratorForm;
+    if (this.instructorForm) {
+      const form = this.instructorForm;
       this.updateFormErrors(form, this.formErrors, this.validationMessages);
     }
   }
@@ -188,12 +188,12 @@ export class AdminAdministratorsFormComponent implements OnInit {
   }
 
   private setEditing(editing: boolean): void {
-    if (this.administratorForm) {
+    if (this.instructorForm) {
       if (editing) {
-        this.administratorForm.enable();
+        this.instructorForm.enable();
         this.editing = true;
       } else {
-        this.administratorForm.disable();
+        this.instructorForm.disable();
         this.editing = false;
       }
     }
@@ -208,26 +208,26 @@ export class AdminAdministratorsFormComponent implements OnInit {
   }
 
   save(): void {
-    if (this.administratorForm.valid) {
+    if (this.instructorForm.valid) {
       if (this.adding) {
         this.add();
       } else {
         this.update();
       }
     } else {
-      this.administratorForm.markAsTouched();
+      this.instructorForm.markAsTouched();
     }
   }
 
   private add(): void {
-    this.userService.create(this.administratorForm.value).subscribe(resp => {
+    this.userService.create(this.instructorForm.value).subscribe(resp => {
       this.dialogRef.close({
         type: 'ADD',
         data: resp
       });
-      this.notify.success('Successfully added administrator');
+      this.notify.success('Successfully added instructor');
     }, error => {
-      this.notify.error('Failed to add administrator');
+      this.notify.error('Failed to add instructor');
     });
   }
 
@@ -238,47 +238,47 @@ export class AdminAdministratorsFormComponent implements OnInit {
         type: 'UPDATE',
         data: resp
       });
-      this.notify.success('Successfully updated administrator');
+      this.notify.success('Successfully updated instructor');
     }, error => {
-      this.notify.error('Failed to update administrator');
+      this.notify.error('Failed to update instructor');
     });
   }
 
   private prepareToUpdate(): any {
     return {
-      id: this.formAdministrator.id,
-      firstName: this.administratorForm.get('firstName').value,
-      lastName: this.administratorForm.get('lastName').value,
-      login: this.administratorForm.get('login').value,
-      password: this.administratorForm.get('password').value,
-      authorities: this.administratorForm.get('authorities').value,
-      biography: this.administratorForm.get('biography').value,
-      email: this.administratorForm.get('email').value,
-      phoneNumber: this.administratorForm.get('phoneNumber').value,
+      id: this.formInstructor.id,
+      firstName: this.instructorForm.get('firstName').value,
+      lastName: this.instructorForm.get('lastName').value,
+      login: this.instructorForm.get('login').value,
+      password: this.instructorForm.get('password').value,
+      authorities: this.instructorForm.get('authorities').value,
+      biography: this.instructorForm.get('biography').value,
+      email: this.instructorForm.get('email').value,
+      phoneNumber: this.instructorForm.get('phoneNumber').value,
       address: {
-        streetAddress1: this.administratorForm.get('address').get('streetAddress1').value,
-        streetAddress2: this.administratorForm.get('address').get('streetAddress2').value,
-        city: this.administratorForm.get('address').get('city').value,
-        state: this.administratorForm.get('address').get('state').value,
-        postalCode: this.administratorForm.get('address').get('postalCode').value
+        streetAddress1: this.instructorForm.get('address').get('streetAddress1').value,
+        streetAddress2: this.instructorForm.get('address').get('streetAddress2').value,
+        city: this.instructorForm.get('address').get('city').value,
+        state: this.instructorForm.get('address').get('state').value,
+        postalCode: this.instructorForm.get('address').get('postalCode').value
       },
-      imageUrl: this.administratorForm.get('imageUrl').value,
-      activated: this.administratorForm.get('activated').value,
-      is14Plus: this.administratorForm.get('is14Plus').value
+      imageUrl: this.instructorForm.get('imageUrl').value,
+      activated: this.instructorForm.get('activated').value,
+      is14Plus: this.instructorForm.get('is14Plus').value
     };
   }
 
   delete(): void {
-    this.userService.delete(this.formAdministrator.id).subscribe(resp => {
+    this.userService.delete(this.formInstructor.id).subscribe(resp => {
       this.dialogRef.close({
         type: 'DELETE',
         data: {
-          id: this.formAdministrator.id
+          id: this.formInstructor.id
         }
       });
-      this.notify.success('Successfully deleted administrator');
+      this.notify.success('Successfully deleted instructor');
     }, error => {
-      this.notify.error('Failed to delete administrator');
+      this.notify.error('Failed to delete instructor');
     });
   }
 

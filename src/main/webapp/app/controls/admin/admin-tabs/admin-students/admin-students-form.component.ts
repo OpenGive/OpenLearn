@@ -3,26 +3,26 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MdDialogRef} from "@angular/material";
 import * as _ from "lodash";
 
-import {AdminDialogComponent} from "../../../admin-dialog.component";
-import {AppConstants} from "../../../../../app.constants";
-import {NotifyService} from "../../../../../services/notify.service";
-import {UserService} from "../../../../../services/user.service";
+import {AdminDialogComponent} from "../../admin-dialog.component";
+import {AppConstants} from "../../../../app.constants";
+import {NotifyService} from "../../../../services/notify.service";
+import {UserService} from "../../../../services/user.service";
 
 @Component({
-  selector: 'admin-instructors-form',
-  templateUrl: './admin-instructors-form.component.html',
-  styleUrls: ['../../admin-forms.css']
+  selector: 'admin-students-form',
+  templateUrl: './admin-students-form.component.html',
+  styleUrls: ['../admin-forms.css']
 })
-export class AdminInstructorsFormComponent implements OnInit {
+export class AdminStudentsFormComponent implements OnInit {
 
-  @Input('item') formInstructor: any;
+  @Input('item') formStudent: any;
   @Input() adding: boolean;
   editing: boolean;
 
   roles: string[];
   states: any[];
 
-  instructorForm: FormGroup;
+  studentForm: FormGroup;
   formErrors = {
     firstName: '',
     lastName: '',
@@ -56,7 +56,7 @@ export class AdminInstructorsFormComponent implements OnInit {
       maxlength: 'Password cannot be more than 50 characters long'
     },
     authorities: {
-      required: 'Instructor must have at least 1 role'
+      required: 'Student must have at least 1 role'
     },
     biography: {
       maxlength: 'Biography cannot be more than 2000 characters long'
@@ -103,68 +103,68 @@ export class AdminInstructorsFormComponent implements OnInit {
   }
 
   private buildForm(): void {
-    this.instructorForm = this.fb.group({
-      firstName: [this.formInstructor.firstName, [
+    this.studentForm = this.fb.group({
+      firstName: [this.formStudent.firstName, [
         Validators.maxLength(50)
       ]],
-      lastName: [this.formInstructor.lastName, [
+      lastName: [this.formStudent.lastName, [
         Validators.maxLength(50)
       ]],
-      login: [this.formInstructor.login, [
+      login: [this.formStudent.login, [
         Validators.required,
         Validators.pattern("^[_'.@A-Za-z0-9-]*$"),
         Validators.maxLength(50)
       ]],
-      password: [this.formInstructor.password, this.adding ? [
+      password: [this.formStudent.password, this.adding ? [
         Validators.required,
         Validators.minLength(6),
         Validators.maxLength(50)
       ] : []],
-      authorities: [this.formInstructor.authorities, [
+      authorities: [this.formStudent.authorities, [
         Validators.required
       ]],
-      biography: [this.formInstructor.biography, [
+      biography: [this.formStudent.biography, [
         Validators.maxLength(2000)
       ]],
-      email: [this.formInstructor.email, [
+      email: [this.formStudent.email, [
         // Validators.email, TODO: This forces email to be required, https://github.com/angular/angular/pull/16902 is the fix, pattern below is the workaround
         Validators.pattern("^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*$"),
         Validators.minLength(5),
         Validators.maxLength(100)
       ]],
-      phoneNumber: [this.formInstructor.phoneNumber, [
+      phoneNumber: [this.formStudent.phoneNumber, [
         // TODO: Pattern
         Validators.maxLength(15)
       ]],
       address: this.fb.group({
-        streetAddress1: [this.formInstructor.streetAddress1, [
+        streetAddress1: [this.formStudent.streetAddress1, [
           Validators.minLength(5),
           Validators.maxLength(50)
         ]],
-        streetAddress2: [this.formInstructor.streetAddress2, [
+        streetAddress2: [this.formStudent.streetAddress2, [
           Validators.minLength(5),
           Validators.maxLength(50)
         ]],
-        city: [this.formInstructor.city, [
+        city: [this.formStudent.city, [
           Validators.minLength(5),
           Validators.maxLength(50)
         ]],
-        state: [this.formInstructor.state],
-        postalCode: [this.formInstructor.postalCode, [
+        state: [this.formStudent.state],
+        postalCode: [this.formStudent.postalCode, [
           Validators.pattern("^[0-9]{5}(-[0-9]{4})?$")
         ]]
       }),
-      imageUrl: [this.formInstructor.imageUrl],
-      activated: [this.formInstructor.activated || false],
-      is14Plus: [this.formInstructor.is14Plus || false]
+      imageUrl: [this.formStudent.imageUrl],
+      activated: [this.formStudent.activated || false],
+      is14Plus: [this.formStudent.is14Plus || false]
     });
-    this.instructorForm.valueChanges.subscribe(data => this.onValueChanged());
+    this.studentForm.valueChanges.subscribe(data => this.onValueChanged());
     this.onValueChanged();
   }
 
   private onValueChanged(): void {
-    if (this.instructorForm) {
-      const form = this.instructorForm;
+    if (this.studentForm) {
+      const form = this.studentForm;
       this.updateFormErrors(form, this.formErrors, this.validationMessages);
     }
   }
@@ -188,12 +188,12 @@ export class AdminInstructorsFormComponent implements OnInit {
   }
 
   private setEditing(editing: boolean): void {
-    if (this.instructorForm) {
+    if (this.studentForm) {
       if (editing) {
-        this.instructorForm.enable();
+        this.studentForm.enable();
         this.editing = true;
       } else {
-        this.instructorForm.disable();
+        this.studentForm.disable();
         this.editing = false;
       }
     }
@@ -208,26 +208,26 @@ export class AdminInstructorsFormComponent implements OnInit {
   }
 
   save(): void {
-    if (this.instructorForm.valid) {
+    if (this.studentForm.valid) {
       if (this.adding) {
         this.add();
       } else {
         this.update();
       }
     } else {
-      this.instructorForm.markAsTouched();
+      this.studentForm.markAsTouched();
     }
   }
 
   private add(): void {
-    this.userService.create(this.instructorForm.value).subscribe(resp => {
+    this.userService.create(this.studentForm.value).subscribe(resp => {
       this.dialogRef.close({
         type: 'ADD',
         data: resp
       });
-      this.notify.success('Successfully added instructor');
+      this.notify.success('Successfully added student');
     }, error => {
-      this.notify.error('Failed to add instructor');
+      this.notify.error('Failed to add student');
     });
   }
 
@@ -238,47 +238,47 @@ export class AdminInstructorsFormComponent implements OnInit {
         type: 'UPDATE',
         data: resp
       });
-      this.notify.success('Successfully updated instructor');
+      this.notify.success('Successfully updated student');
     }, error => {
-      this.notify.error('Failed to update instructor');
+      this.notify.error('Failed to update student');
     });
   }
 
   private prepareToUpdate(): any {
     return {
-      id: this.formInstructor.id,
-      firstName: this.instructorForm.get('firstName').value,
-      lastName: this.instructorForm.get('lastName').value,
-      login: this.instructorForm.get('login').value,
-      password: this.instructorForm.get('password').value,
-      authorities: this.instructorForm.get('authorities').value,
-      biography: this.instructorForm.get('biography').value,
-      email: this.instructorForm.get('email').value,
-      phoneNumber: this.instructorForm.get('phoneNumber').value,
+      id: this.formStudent.id,
+      firstName: this.studentForm.get('firstName').value,
+      lastName: this.studentForm.get('lastName').value,
+      login: this.studentForm.get('login').value,
+      password: this.studentForm.get('password').value,
+      authorities: this.studentForm.get('authorities').value,
+      biography: this.studentForm.get('biography').value,
+      email: this.studentForm.get('email').value,
+      phoneNumber: this.studentForm.get('phoneNumber').value,
       address: {
-        streetAddress1: this.instructorForm.get('address').get('streetAddress1').value,
-        streetAddress2: this.instructorForm.get('address').get('streetAddress2').value,
-        city: this.instructorForm.get('address').get('city').value,
-        state: this.instructorForm.get('address').get('state').value,
-        postalCode: this.instructorForm.get('address').get('postalCode').value
+        streetAddress1: this.studentForm.get('address').get('streetAddress1').value,
+        streetAddress2: this.studentForm.get('address').get('streetAddress2').value,
+        city: this.studentForm.get('address').get('city').value,
+        state: this.studentForm.get('address').get('state').value,
+        postalCode: this.studentForm.get('address').get('postalCode').value
       },
-      imageUrl: this.instructorForm.get('imageUrl').value,
-      activated: this.instructorForm.get('activated').value,
-      is14Plus: this.instructorForm.get('is14Plus').value
+      imageUrl: this.studentForm.get('imageUrl').value,
+      activated: this.studentForm.get('activated').value,
+      is14Plus: this.studentForm.get('is14Plus').value
     };
   }
 
   delete(): void {
-    this.userService.delete(this.formInstructor.id).subscribe(resp => {
+    this.userService.delete(this.formStudent.id).subscribe(resp => {
       this.dialogRef.close({
         type: 'DELETE',
         data: {
-          id: this.formInstructor.id
+          id: this.formStudent.id
         }
       });
-      this.notify.success('Successfully deleted instructor');
+      this.notify.success('Successfully deleted student');
     }, error => {
-      this.notify.error('Failed to delete instructor');
+      this.notify.error('Failed to delete student');
     });
   }
 
