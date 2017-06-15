@@ -1,6 +1,7 @@
 import {Component, OnInit} from "@angular/core";
-import {AdminModel} from "../../controls/admin/admin.constants";
 import {Router} from "@angular/router";
+
+import {AdminModel} from "../../controls/admin/admin.constants";
 
 @Component({
   selector: 'app-admin-page',
@@ -16,9 +17,8 @@ export class AdminPageComponent implements OnInit {
     { name: AdminModel.Student.title, route: AdminModel.Student.route, active: false },
     { name: AdminModel.Session.title, route: AdminModel.Session.route, active: false },
     { name: AdminModel.Program.title, route: AdminModel.Program.route, active: false },
-    { name: AdminModel.Course.title, route: AdminModel.Course.route, active: false },
+    { name: AdminModel.Course.title, route: AdminModel.Course.route, active: false }
   ];
-  activeTab = this.tabs[0];
 
   adminPageFlex = {
     lg: '1280px',
@@ -27,14 +27,16 @@ export class AdminPageComponent implements OnInit {
 
   constructor(private router: Router) {}
 
-  ngOnInit() { // Highlight the correct tab using the url
+  ngOnInit(): void {
+    this.readTabFromUrl();
+  }
+
+  private readTabFromUrl(): void {
     this.selectTab(this.tabs.find(tab => tab.route === this.router.url.split('/').pop()));
   }
 
-  selectTab(tab) {
+  selectTab(tab: any): void {
     this.tabs.forEach(tab => tab.active = false);
     tab.active = true;
-    this.activeTab = tab;
   }
-
 }

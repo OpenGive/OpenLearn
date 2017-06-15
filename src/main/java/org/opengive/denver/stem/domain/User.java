@@ -71,7 +71,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	private String email;
 
 	@Size(max = 15)
-	@Column(name = "phone_num", length = 15, unique = false)
+	@Column(name = "phone_num", length = 15)
 	private String phoneNumber;
 
 	@OneToOne(fetch = FetchType.LAZY)

@@ -5,5 +5,5 @@ export class AdminGridModel {
     public defaultSort: string,
     public columns: any[],
     public rows: any[]
-  ) { }
+  ) {}
 }
