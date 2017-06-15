@@ -55,6 +55,7 @@
         <md-error *ngIf="formErrors.endDate">{{formErrors.endDate}}</md-error>
       </md-input-container>
       <md-datepicker #endDate></md-datepicker>
+      <!-- [disabled] used as workaround for angular material bug -->
       <md-checkbox fxFlex="30%" formControlName="active" [disabled]="!editing">Active</md-checkbox>
     </div>
   </div>

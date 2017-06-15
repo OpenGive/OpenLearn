@@ -45,6 +45,7 @@
         <md-error *ngIf="formErrors.password">{{formErrors.password}}</md-error>
       </md-input-container>
       <div fxLayout="column" fxFlex="30%">
+        <!-- [disabled] used as workaround for angular material bug -->
         <md-select formControlName="authorities" placeholder="Roles" multiple [disabled]="!editing">
           <md-option *ngFor="let role of roles" [value]="role">{{displayRole(role)}}</md-option>
         </md-select>
@@ -90,7 +91,9 @@
         <input mdInput formControlName="imageUrl" placeholder="Image URL"/>
       </md-input-container>
       <div fxLayout="row" fxFlex="30%">
+        <!-- [disabled] used as workaround for angular material bug -->
         <md-checkbox fxFlex="50%" formControlName="activated" [disabled]="!editing">Activated</md-checkbox>
+        <!-- [disabled] used as workaround for angular material bug -->
         <md-checkbox fxFlex="50%" formControlName="is14Plus" [disabled]="!editing">is 14+</md-checkbox>
       </div>
       <div fxFlex="30%" *ngIf="!adding && editing">
