@@ -25,12 +25,12 @@ public class ManagedUserVM extends UserDTO {
 	}
 
 	public ManagedUserVM(final Long id, final String login, final String password, final String firstName, final String lastName,
-			final String email, final String phoneNum, final Address address, final boolean activated,
+			final String email, final String phoneNumber, final Address address, final boolean activated,
 			final String imageUrl, final String createdBy, final ZonedDateTime createdDate, final String lastModifiedBy,
-			final ZonedDateTime lastModifiedDate, final Set<String> authorities, final boolean is14Plus) {
+			final ZonedDateTime lastModifiedDate, final Set<String> authorities, final boolean is14Plus, final String biography) {
 
-		super(id, login, firstName, lastName, email, phoneNum, address, activated, imageUrl,
-				createdBy, createdDate, lastModifiedBy, lastModifiedDate, authorities, is14Plus);
+		super(id, login, firstName, lastName, email, phoneNumber, address, activated, imageUrl,
+				createdBy, createdDate, lastModifiedBy, lastModifiedDate, authorities, is14Plus, biography);
 
 		this.password = password;
 	}

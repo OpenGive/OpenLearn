@@ -1,15 +1,12 @@
-<div id="admin-page" fxLayout="row" fxLayoutAlign="center start">
-  <div id="admin-tabs">
-    <md-nav-list id="admin-tab-list" dense>
-      <a md-list-item class="admin-tab-option" [ngClass]="{active: tab.active}" *ngFor="let tab of tabs" (click)="selectTab(tab)">
-        <span class="admin-tab-text">{{tab.name}}</span>
-      </a>
-    </md-nav-list>
-  </div>
-  <div>
-    <div id="admin-header" fxLayout="row" fxLayoutAlign="space-between center">
-      <span class="admin-header-text">{{activeTab.name}}</span>
-      <button md-raised-button class="admin-add-button">ADD</button>
+<div fxLayout="row" fxLayoutAlign="center">
+  <div id="admin-page" fxLayout="row" fxLayoutAlign="center" fxFlex.lg="1280px">
+    <div id="admin-tabs" fxHide.lt-md fxFlex="18%">
+      <md-nav-list id="admin-tab-list" dense>
+        <a md-list-item [routerLink]="[tab.route]" class="admin-tab-option" [ngClass]="{active: tab.active}" *ngFor="let tab of filteredTabs" (click)="selectTab(tab)">
+          <span class="admin-tab-text">{{tab.name}}</span>
+        </a>
+      </md-nav-list>
     </div>
+    <router-outlet></router-outlet>
   </div>
 </div>

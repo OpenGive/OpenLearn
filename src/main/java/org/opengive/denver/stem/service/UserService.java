@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.opengive.denver.stem.config.Constants;
+import org.opengive.denver.stem.domain.Address;
 import org.opengive.denver.stem.domain.Authority;
 import org.opengive.denver.stem.domain.User;
 import org.opengive.denver.stem.repository.AuthorityRepository;
@@ -100,7 +101,7 @@ public class UserService {
     }
 
     public User createUser(String login, String password, String firstName, String lastName, String email,
-        String imageUrl) {
+                           String phoneNumber, Address address, String imageUrl) {
 
         final User newUser = new User();
         final Authority authority = authorityRepository.findOne(AuthoritiesConstants.STUDENT);
@@ -112,6 +113,8 @@ public class UserService {
         newUser.setFirstName(firstName);
         newUser.setLastName(lastName);
         newUser.setEmail(email);
+        newUser.setPhoneNumber(phoneNumber);
+        newUser.setAddress(address);
         newUser.setImageUrl(imageUrl);
         // new user is not active
         newUser.setActivated(false);
@@ -131,7 +134,10 @@ public class UserService {
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
+        user.setPhoneNumber(userDTO.getPhoneNumber());
+        user.setAddress(userDTO.getAddress());
         user.setImageUrl(userDTO.getImageUrl());
+        user.setBiography(userDTO.getBiography());
         if (userDTO.getAuthorities() != null) {
 
             Set<Authority> authorities = new HashSet<>();
@@ -166,12 +172,15 @@ public class UserService {
      * @param email email id of user
      * @param imageUrl image URL of user
      */
-	public void updateUser(final String firstName, final String lastName, final String email, final String imageUrl) {
+	public void updateUser(final String firstName, final String lastName, final String email, final String phoneNumber, final Address address, final String imageUrl, final String biography) {
         userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).ifPresent(user -> {
             user.setFirstName(firstName);
             user.setLastName(lastName);
             user.setEmail(email);
+            user.setPhoneNumber(phoneNumber);
+            user.setAddress(address);
             user.setImageUrl(imageUrl);
+            user.setBiography(biography);
             userSearchRepository.save(user);
             log.debug("Changed Information for User: {}", user);
         });
@@ -191,8 +200,11 @@ public class UserService {
                 user.setFirstName(userDTO.getFirstName());
                 user.setLastName(userDTO.getLastName());
                 user.setEmail(userDTO.getEmail());
+                user.setPhoneNumber(userDTO.getPhoneNumber());
+                user.setAddress(userDTO.getAddress());
                 user.setImageUrl(userDTO.getImageUrl());
                 user.setActivated(userDTO.isActivated());
+                user.setBiography(userDTO.getBiography());
 					final Set<Authority> managedAuthorities = user.getAuthorities();
                 managedAuthorities.clear();
                 userDTO.getAuthorities().stream()

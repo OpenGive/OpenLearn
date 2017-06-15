@@ -1,0 +1,20 @@
+<div fxLayout fxLayoutAlign="center center" class="course-view-header">
+  <div fxFlex>
+    <button md-button md-dialog-close class="course-view-header-close">X</button>
+  </div>
+  <div fxFlex="50px" fxFlexOffset="10px" class="course-view-header-icon">
+    <div class="example-header-image"></div>
+  </div>
+  <div fxFlex="grow" class="course-view-header-info">
+    <h3>{{this.course.name}} {{this.course.id}}</h3>
+    <h5>{{this.course.instructor.firstName}} {{this.course.instructor.lastName}}</h5>
+  </div>
+  <div fxFlex="grow" class="course-view-header-progress">
+    <h3>{{calculateTotalPoints()}}</h3> <h5>Points</h5> | <h3>0</h3> <h5>Badges</h5>
+  </div>
+
+</div>
+<md-dialog-content class="course-view-activities">
+  <app-course-activity-list [activities]="course.activities"></app-course-activity-list>
+
+</md-dialog-content>

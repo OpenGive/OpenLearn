@@ -1,0 +1,47 @@
+.course-view-header {
+  border-bottom: 2px solid rgba(229,229,229,1);
+  padding: 10px 24px 10px 0px;
+}
+
+.course-view-header-close {
+  background-color: rgba(216,216,216,1);
+  text-align: right;
+  border-radius: 0 15px 15px 0;
+  line-height: 30px;
+  font-size: 18px;
+  color: rgba(151,151,151,1);
+}
+
+.course-view-header-progress {
+  text-align: right;
+}
+
+.course-view-header-info h3, .course-view-header-info h5,
+.course-view-header-progress h3, .course-view-header-progress h5 {
+  margin: 0px;
+}
+
+.course-view-header-progress h3, .course-view-header-progress h5 {
+  display: inline;
+}
+
+.course-view-header-info h5, .course-view-header-progress h5 {
+  color: rgba(204,204,204,1);
+  font-weight: normal;
+}
+
+.course-view-header-icon {
+  text-align: center;
+}
+
+.example-header-image {
+  background-image: url('http://image.prntscr.com/image/d6b1bcdca61746c9b30d14db670a40df.png');
+  background-size: cover;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+
+.course-view-activities {
+  margin: 0px;
+}

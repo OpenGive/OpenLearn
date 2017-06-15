@@ -39,3 +39,32 @@ body {
 .mat-sidenav-content {
     // overflow: hidden !important;
 }
+
+.cdk-overlay-pane {
+  width: initial !important;
+}
+
+md-dialog-container {
+  padding: 0 !important;
+  border-radius: 8px !important;
+}
+
+app-admin-organizations, app-admin-administrators, app-admin-instructors, app-admin-students, app-admin-sessions,
+app-admin-programs, app-admin-courses {
+  width: 100% !important;
+}
+
+.success-snack {
+  font-family: Rubik, sans-serif;
+  background-color: #00D3A7 !important;
+}
+
+.warning-snack {
+  font-family: Rubik, sans-serif;
+  background-color: #FFC000 !important;
+}
+
+.error-snack {
+  font-family: Rubik, sans-serif;
+  background-color: #F6625E !important;
+}

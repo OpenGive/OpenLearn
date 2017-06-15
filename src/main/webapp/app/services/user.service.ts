@@ -1,31 +1,86 @@
-import { HttpWrapperService } from './../shared/auth/http-wrapper.service';
 import {Injectable} from "@angular/core";
-import {Http} from "@angular/http";
 import {Observable} from "rxjs";
-import {log} from "util";
+import * as _ from "lodash";
+
+import {AppConstants} from "../app.constants";
+import {HttpWrapperService} from '../shared/auth/http-wrapper.service';
+import {User} from "../shared/user/user.model";
+
 
 @Injectable()
 export class UserService {
-  constructor(private _http: HttpWrapperService) {
+
+  private endpoint = '/api/users';
+
+  constructor(private _http: HttpWrapperService) {}
+
+  getAll(): Observable<User[]> {
+    return this._http.get(this.endpoint)
+      .map(resp => resp.json()
+        .map(user => user))
+      .catch(this.handleError);
   }
-  getAllUsers() {
-    return this._http.get('/api/users').map(resp => {
-      let json = resp.json();
-      console.log(json);
-      return json;
+
+  create(user: User): Observable<User> {
+    return this._http.post(this.endpoint, this.nullifyBlanks(user))
+      .map(resp => resp.json())
+      .catch(this.handleError);
+  }
+
+  update(user: User): Observable<User> {
+    return this._http.put(this.endpoint, this.nullifyBlanks(user))
+      .map(resp => resp.json())
+      .catch(this.handleError);
+  }
+
+  delete(id: Number) {
+    return this._http.delete(this.endpoint + '/' + id)
+      .map(resp => resp)
+      .catch(this.handleError);
+  }
+
+  get(id: Number): Observable<User> {
+    return this._http.get(this.endpoint + '/' + id)
+      .map(resp => resp.json())
+      .catch(this.handleError);
+  }
+
+  getAdministrators(): Observable<User[]> { // TODO: Move to backend
+    return this._http.get(this.endpoint)
+      .map(resp => resp.json()
+        .filter(user => user.authorities.includes(AppConstants.Role.Admin) || user.authorities.includes(AppConstants.Role.OrgAdmin)))
+      .catch(this.handleError);
+  }
+
+  getInstructors(): Observable<User[]> { // TODO: Move to backend
+    return this._http.get(this.endpoint)
+      .map(resp => resp.json()
+        .filter(user => user.authorities.includes(AppConstants.Role.Instructor)))
+      .catch(this.handleError);
+  }
+
+  getStudents(): Observable<User[]> { // TODO: Move to backend
+    return this._http.get(this.endpoint)
+      .map(resp => resp.json()
+        .filter(user => user.authorities.includes(AppConstants.Role.Student)))
+      .catch(this.handleError);
+  }
+
+  private handleError(error: Response) {
+    console.error(error);
+    return Observable.throw(error.json() || {message: 'Server Error'});
+  }
+
+  // Converts empty strings and empty address to nulls
+  private nullifyBlanks(user: User) {
+    if (_.every(user.address, field => _.isNil(field))) {
+      user.address = null;
+    }
+    return _.mapValues(user, field => {
+      if (field === '') {
+        field = null;
+      }
+      return field;
     });
   }
-  // authenticate(username: string, password: string): Observable<string> {
-  //   let body = {
-  //     username: username,
-  //     password: password
-  //   };
-
-  //   return this._http.post("http://localhost:8080/oauth/authorize", body).map(s => {
-  //     console.log(s.status);
-  //     console.log(s.json());
-  //     return s.json().bearerToken;
-  //   }
-  // );
-  // }
 }

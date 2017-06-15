@@ -1,6 +1,7 @@
 <md-sidenav-container class="full-screen-side-nav">
   <md-sidenav #sidenav class="example-sidenav">
-    <div fxLayout="column">
+    <div fxLayout="column" fxLayoutAlign="center center">
+      <div class="side-logo"></div>
       <button routerLink="/" (click)="sidenav.close()" md-button>Home</button>
       <button routerLink="/login" (click)="sidenav.close()" md-button>Login</button>
       <button routerLink="/admin" (click)="sidenav.close()" md-button>Admin</button>
@@ -12,8 +13,8 @@
 <md-toolbar color="primary">
 
   <div fxLayout="row">
-    <div class="nav-logo" fxHide.lt-sm></div>
-    <div fxHide.gt-xs>
+    <div class="nav-logo" fxHide.lt-md></div>
+    <div fxHide.gt-sm>
       <button (click)="sidenav.open()" class="nav-button" md-button>
         <md-icon>menu</md-icon>
       </button>
@@ -22,7 +23,7 @@
 
   <span class="toolbar-filler"></span>
   <div fxLayout="row">
-    <div fxHide.lt-sm>
+    <div fxHide.lt-md>
       <button routerLink="/" md-button>Home</button>
       <button routerLink="/login" md-button>Login</button>
       <button routerLink="/admin" md-button>Admin</button>
@@ -39,7 +40,7 @@
         </span>
       </button>
       <md-menu #profileMenu="mdMenu" yPosition="above">
-        <button md-menu-item>
+        <button routerLink="/profile" md-menu-item>
           <md-icon><i mdPrefix class="fa fa-user fa-lg"></i></md-icon>
           <span>Profile</span>
         </button>
