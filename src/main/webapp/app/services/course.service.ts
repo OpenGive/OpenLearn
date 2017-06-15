@@ -42,7 +42,6 @@ export class CourseService {
 
   private handleError(error: Response) {
     console.error(error);
-    return Observable.throw(error.json() || 'Server Error');
+    return Observable.throw(error.json() || {message: 'Server Error'});
   }
-
 }

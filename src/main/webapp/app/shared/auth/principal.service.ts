@@ -22,7 +22,7 @@ export class Principal {
     }
 
     hasAnyAuthority(authorities: string[]): Promise<boolean> {
-        if (authorities.length == 0) {
+        if (authorities.length === 0) {
             return Promise.resolve(true);
         }
         if (!this.authenticated || !this.userIdentity || !this.userIdentity.authorities) {

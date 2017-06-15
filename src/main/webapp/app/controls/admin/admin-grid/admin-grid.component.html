@@ -10,11 +10,14 @@
       <table>
         <thead>
         <tr class="header-row">
-          <th *ngFor="let column of grid.columns">{{column.display}}</th>
+          <th *ngFor="let column of grid.columns" (click)="sort(column)">
+            {{column.display}}
+            <md-icon>{{column.sortIcon}}</md-icon>
+          </th>
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let row of grid.rows" (click)="viewDetails(row)">
+        <tr *ngFor="let row of filteredRows" (click)="viewDetails(row)">
           <td *ngFor="let column of grid.columns">{{displayCell(row, column)}}</td>
         </tr>
         </tbody>

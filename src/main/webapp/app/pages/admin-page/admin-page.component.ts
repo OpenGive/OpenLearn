@@ -1,6 +1,8 @@
 import {Component, OnInit} from "@angular/core";
-import {AdminModel} from "../../controls/admin/admin.constants";
 import {Router} from "@angular/router";
+
+import {AdminModel} from "../../controls/admin/admin.constants";
+import {Principal} from "../../shared/auth/principal.service";
 
 @Component({
   selector: 'app-admin-page',
@@ -10,31 +12,45 @@ import {Router} from "@angular/router";
 export class AdminPageComponent implements OnInit {
 
   tabs = [
-    { name: AdminModel.Organization.title, route: AdminModel.Organization.route, active: false },
-    { name: AdminModel.Administrator.title, route: AdminModel.Administrator.route, active: false },
-    { name: AdminModel.Instructor.title, route: AdminModel.Instructor.route, active: false },
-    { name: AdminModel.Student.title, route: AdminModel.Student.route, active: false },
-    { name: AdminModel.Session.title, route: AdminModel.Session.route, active: false },
-    { name: AdminModel.Program.title, route: AdminModel.Program.route, active: false },
-    { name: AdminModel.Course.title, route: AdminModel.Course.route, active: false },
+    { name: AdminModel.Organization.title, route: AdminModel.Organization.route, active: false, authorities: AdminModel.Organization.authorities },
+    { name: AdminModel.Administrator.title, route: AdminModel.Administrator.route, active: false, authorities: AdminModel.Administrator.authorities },
+    { name: AdminModel.Instructor.title, route: AdminModel.Instructor.route, active: false, authorities: AdminModel.Instructor.authorities },
+    { name: AdminModel.Student.title, route: AdminModel.Student.route, active: false, authorities: AdminModel.Student.authorities },
+    { name: AdminModel.Session.title, route: AdminModel.Session.route, active: false, authorities: AdminModel.Session.authorities },
+    { name: AdminModel.Program.title, route: AdminModel.Program.route, active: false, authorities: AdminModel.Program.authorities },
+    { name: AdminModel.Course.title, route: AdminModel.Course.route, active: false, authorities: AdminModel.Course.authorities }
   ];
-  activeTab = this.tabs[0];
+  filteredTabs: any[];
 
   adminPageFlex = {
     lg: '1280px',
     xs: '100%'
   };
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private principal: Principal) {}
 
-  ngOnInit() { // Highlight the correct tab using the url
+  ngOnInit(): void {
+    this.filterTabs();
+    this.readTabFromUrl();
+  }
+
+  private filterTabs(): void {
+    this.filteredTabs = [];
+    this.tabs.forEach(tab => {
+      this.principal.hasAnyAuthority(tab.authorities).then(resp => {
+        if (resp) {
+          this.filteredTabs.push(tab);
+        }
+      });
+    });
+  }
+
+  private readTabFromUrl(): void {
     this.selectTab(this.tabs.find(tab => tab.route === this.router.url.split('/').pop()));
   }
 
-  selectTab(tab) {
+  selectTab(tab: any): void {
     this.tabs.forEach(tab => tab.active = false);
     tab.active = true;
-    this.activeTab = tab;
   }
-
 }

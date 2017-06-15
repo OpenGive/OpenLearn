@@ -140,7 +140,7 @@ public class AccountResource {
 				.findOneByLogin(SecurityUtils.getCurrentUserLogin())
 				.map(u -> {
 					userService.updateUser(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
-              userDTO.getPhoneNumber(), userDTO.getAddress(), userDTO.getImageUrl());
+              userDTO.getPhoneNumber(), userDTO.getAddress(), userDTO.getImageUrl(), userDTO.getBiography());
 					return new ResponseEntity<>(HttpStatus.OK);
 				})
 				.orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
@@ -180,7 +180,7 @@ public class AccountResource {
                         mailService.sendPasswordResetMail(user);
                         return new ResponseEntity<>("email was sent", HttpStatus.OK);
                     } else {
-				        return new ResponseEntity<String>("No email; contact an administrator", HttpStatus.OK);
+				        return new ResponseEntity<>("No email; contact an administrator", HttpStatus.OK);
                     }
 				}).orElse(new ResponseEntity<>("login not registered", HttpStatus.BAD_REQUEST));
 	}

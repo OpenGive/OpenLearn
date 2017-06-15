@@ -10,6 +10,7 @@ export class AdminInstructorsComponent {
   instructorGrid = new AdminGridModel(
     AdminModel.Instructor.title,
     AdminModel.Instructor.route,
+    AdminModel.Instructor.defaultSort,
     AdminModel.Instructor.columns,
     []);
 }

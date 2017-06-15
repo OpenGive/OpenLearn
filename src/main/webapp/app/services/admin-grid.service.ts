@@ -2,12 +2,14 @@ import {Injectable} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 
 import {AdminModel} from "../controls/admin/admin.constants";
-import {UserService} from "./user.service";
 import {AdminService} from "./admin.service";
+import {UserService} from "./user.service";
 
 @Injectable()
 export class AdminGridService {
-  constructor(private userService: UserService, private adminService: AdminService) {}
+
+  constructor(private userService: UserService,
+              private adminService: AdminService) {}
 
   query(type: string): Observable<any> {
     switch (type) {
@@ -31,7 +33,7 @@ export class AdminGridService {
     }
   }
 
-  update(toUpdate: any, type: string): any {
+  update(toUpdate: any, type: string): Observable<any> {
     switch (type) {
       case AdminModel.Administrator.route || AdminModel.Instructor.route || AdminModel.Student.route:
         return this.userService.update(toUpdate);

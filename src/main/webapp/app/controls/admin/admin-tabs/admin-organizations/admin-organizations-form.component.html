@@ -1,0 +1,41 @@
+<form [formGroup]="organizationForm" (ngSubmit)="save()" novalidate>
+  <div class="admin-dialog-header" [ngClass]="{edit: editing}" fxLayout="row" fxLayoutAlign="space-between center">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <div><button md-button type="reset" (click)="close()"><i class="fa fa-times fa-lg"></i></button></div>
+      <span class="admin-dialog-title" *ngIf="!editing">Organization Details</span>
+      <span class="admin-dialog-title edit" *ngIf="adding">New Organization</span>
+      <span class="admin-dialog-title edit" *ngIf="editing && !adding">Edit Organization</span>
+    </div>
+    <div fxLayout="row">
+      <button md-raised-button type="submit" *ngIf="editing" class="admin-dialog-button grey-button" mdTooltip="Save">
+        <md-icon>save</md-icon>
+      </button>
+      <button md-raised-button type="reset" *ngIf="editing && !adding" (click)="cancel()" class="admin-dialog-button navy-button" mdTooltip="Cancel">
+        <md-icon>clear</md-icon>
+      </button>
+      <button md-raised-button type="button" *ngIf="!editing" (click)="edit()" class="admin-dialog-button grey-button" mdTooltip="Edit">
+        <md-icon>create</md-icon>
+      </button>
+      <button md-raised-button type="button" *ngIf="!editing" [mdMenuTriggerFor]="deleteMenu" class="admin-dialog-button pink-button" mdTooltip="Delete">
+        <md-icon>delete</md-icon>
+      </button>
+      <md-menu #deleteMenu="mdMenu">
+        <button md-menu-item type="button" disabled class="pink-button">Are you sure?</button>
+        <button md-menu-item type="button" (click)="delete()">Yes, delete it</button>
+        <button md-menu-item type="button">No, go back</button>
+      </md-menu>
+    </div>
+  </div>
+  <div class="admin-dialog-content">
+    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap>
+      <md-input-container fxFlex="47%">
+        <input mdInput formControlName="name" placeholder="Name"/>
+        <md-error *ngIf="formErrors.name">{{formErrors.name}}</md-error>
+      </md-input-container>
+      <md-input-container fxFlex="47%">
+        <textarea mdInput formControlName="description" placeholder="Description"></textarea>
+        <md-error *ngIf="formErrors.description">{{formErrors.description}}</md-error>
+      </md-input-container>
+    </div>
+  </div>
+</form>
