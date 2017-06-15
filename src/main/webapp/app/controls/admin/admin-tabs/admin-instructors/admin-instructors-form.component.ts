@@ -221,6 +221,7 @@ export class AdminInstructorsFormComponent implements OnInit {
   }
 
   private add(): void {
+    console.log(this.instructorForm.value);
     this.userService.create(this.instructorForm.value).subscribe(resp => {
       this.dialogRef.close({
         type: 'ADD',

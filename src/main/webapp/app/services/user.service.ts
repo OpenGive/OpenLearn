@@ -45,21 +45,21 @@ export class UserService {
       .catch(this.handleError);
   }
 
-  getAdministrators(): Observable<User[]> {
+  getAdministrators(): Observable<User[]> { // TODO: Move to backend
     return this._http.get(this.endpoint)
       .map(resp => resp.json()
-        .filter(user => user.authorities.includes(AppConstants.Role.Admin)))
+        .filter(user => user.authorities.includes(AppConstants.Role.Admin) || user.authorities.includes(AppConstants.Role.OrgAdmin)))
       .catch(this.handleError);
   }
 
-  getInstructors(): Observable<User[]> {
+  getInstructors(): Observable<User[]> { // TODO: Move to backend
     return this._http.get(this.endpoint)
       .map(resp => resp.json()
         .filter(user => user.authorities.includes(AppConstants.Role.Instructor)))
       .catch(this.handleError);
   }
 
-  getStudents(): Observable<User[]> {
+  getStudents(): Observable<User[]> { // TODO: Move to backend
     return this._http.get(this.endpoint)
       .map(resp => resp.json()
         .filter(user => user.authorities.includes(AppConstants.Role.Student)))
