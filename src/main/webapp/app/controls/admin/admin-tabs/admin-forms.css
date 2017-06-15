@@ -1,4 +1,4 @@
-input[disabled] {
+input[disabled], textarea[disabled] {
   color: black;
 }
 
