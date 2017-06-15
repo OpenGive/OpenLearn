@@ -45,7 +45,7 @@
         <md-error *ngIf="formErrors.password">{{formErrors.password}}</md-error>
       </md-input-container>
       <div fxLayout="column" fxFlex="30%">
-        <md-select formControlName="authorities" placeholder="Roles" multiple>
+        <md-select formControlName="authorities" placeholder="Roles" multiple [disabled]="!editing">
           <md-option *ngFor="let role of roles" [value]="role">{{displayRole(role)}}</md-option>
         </md-select>
         <md-error *ngIf="formErrors.authorities">{{formErrors.authorities}}</md-error>
@@ -90,8 +90,8 @@
         <input mdInput formControlName="imageUrl" placeholder="Image URL"/>
       </md-input-container>
       <div fxLayout="row" fxFlex="30%">
-        <md-checkbox fxFlex="50%" formControlName="activated">Activated</md-checkbox>
-        <md-checkbox fxFlex="50%" formControlName="is14Plus">is 14+</md-checkbox>
+        <md-checkbox fxFlex="50%" formControlName="activated" [disabled]="!editing">Activated</md-checkbox>
+        <md-checkbox fxFlex="50%" formControlName="is14Plus" [disabled]="!editing">is 14+</md-checkbox>
       </div>
       <div fxFlex="30%" *ngIf="!adding && editing">
         <button md-raised-button (click)="resetPassword()" class="reset-password">Reset Password</button>

@@ -48,7 +48,7 @@
           <md-option *ngFor="let school of schools" [value]="school">{{school.name}}</md-option>
         </md-autocomplete>
       </md-input-container>
-      <md-checkbox fxFlex="30%" formControlName="active">Active</md-checkbox>
+      <md-checkbox fxFlex="30%" formControlName="active" [disabled]="!editing">Active</md-checkbox>
     </div>
   </div>
 </form>

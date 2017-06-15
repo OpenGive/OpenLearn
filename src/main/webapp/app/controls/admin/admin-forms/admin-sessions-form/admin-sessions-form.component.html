@@ -55,7 +55,7 @@
         <md-error *ngIf="formErrors.endDate">{{formErrors.endDate}}</md-error>
       </md-input-container>
       <md-datepicker #endDate></md-datepicker>
-      <md-checkbox fxFlex="30%" formControlName="active">Active</md-checkbox>
+      <md-checkbox fxFlex="30%" formControlName="active" [disabled]="!editing">Active</md-checkbox>
     </div>
   </div>
 </form>
