@@ -1,3 +1,4 @@
+import {AppConstants} from "../../app.constants";
 export const AdminModel = {
   Organization: {
     title: 'Organizations',
@@ -5,7 +6,8 @@ export const AdminModel = {
     defaultSort: 'name',
     columns: [
       {property: 'name', display: 'Name'}
-    ]
+    ],
+    authorities: [AppConstants.Role.Admin]
   },
   Administrator: {
     title: 'Administrators',
@@ -17,7 +19,8 @@ export const AdminModel = {
       {property: 'login', display: 'Username'},
       {property: 'authorities', display: 'Roles'},
       {property: 'activated', display: 'Active'}
-    ]
+    ],
+    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin]
   },
   Instructor: {
     title: 'Instructors',
@@ -29,7 +32,8 @@ export const AdminModel = {
       {property: 'login', display: 'Username'},
       {property: 'authorities', display: 'Roles'},
       {property: 'activated', display: 'Active'}
-    ]
+    ],
+    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin]
   },
   Student: {
     title: 'Students',
@@ -41,7 +45,8 @@ export const AdminModel = {
       {property: 'login', display: 'Username'},
       {property: 'authorities', display: 'Roles'},
       {property: 'activated', display: 'Active'}
-    ]
+    ],
+    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor]
   },
   Session: {
     title: 'Sessions',
@@ -53,7 +58,8 @@ export const AdminModel = {
       {property: 'startDate', display: 'Start Date'},
       {property: 'endDate', display: 'End Date'},
       {property: 'active', display: 'Active'}
-    ]
+    ],
+    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin]
   },
   Program: {
     title: 'Programs',
@@ -64,7 +70,8 @@ export const AdminModel = {
       {property: 'session', display: 'Session'},
       {property: 'school', display: 'School'},
       {property: 'active', display: 'Active'}
-    ]
+    ],
+    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin]
   },
   Course: {
     title: 'Courses',
@@ -77,7 +84,8 @@ export const AdminModel = {
       {property: 'instructor', display: 'Instructor'},
       {property: 'startDate', display: 'Start Date'},
       {property: 'endDate', display: 'End Date'}
-    ]
+    ],
+    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor]
   },
   School: {
     route: 'schools'
