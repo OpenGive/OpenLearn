@@ -1,4 +1,5 @@
 import {AppConstants} from "../../app.constants";
+
 export const AdminModel = {
   Organization: {
     title: 'Organizations',

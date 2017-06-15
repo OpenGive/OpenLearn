@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 
-import {AdminGridModel} from "../../../../models/admin-grid.model";
-import {AdminModel} from "../../admin.constants";
+import {AdminGridModel} from "../../../models/admin-grid.model";
+import {AdminModel} from "../admin.constants";
 
 @Component({
   selector: 'app-admin-administrators',
