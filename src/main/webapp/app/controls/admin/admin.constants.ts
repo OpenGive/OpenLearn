@@ -93,7 +93,9 @@ export const AdminModel = {
     route: 'milestones',
     defaultSort: 'name',
     columns: [
-
+      {property: 'name', display: 'Name'},
+      {property: 'course', display: 'Course'},
+      {property: 'points', display: 'Points'}
     ],
     authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor]
   },

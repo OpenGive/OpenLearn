@@ -9,6 +9,7 @@ import {AdminCoursesComponent} from "./admin-tabs/admin-courses.component";
 import {AdminDialogComponent} from "./admin-dialog.component";
 import {AdminGridComponent} from "./admin-grid/admin-grid.component";
 import {AdminInstructorsComponent} from "./admin-tabs/admin-instructors.component";
+import {AdminMilestonesComponent} from "./admin-tabs/admin-milestones.component";
 import {AdminOrganizationsComponent} from "./admin-tabs/admin-organizations.component";
 import {AdminProgramsComponent} from "./admin-tabs/admin-programs.component";
 import {AdminSessionsComponent} from "./admin-tabs/admin-sessions.component";
@@ -23,6 +24,7 @@ import {OLAdminFormsModule} from "./admin-forms/admin-forms.module";
     AdminDialogComponent,
     AdminGridComponent,
     AdminInstructorsComponent,
+    AdminMilestonesComponent,
     AdminOrganizationsComponent,
     AdminProgramsComponent,
     AdminSessionsComponent,

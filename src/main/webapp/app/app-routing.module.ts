@@ -19,6 +19,7 @@ import {AdminOrganizationsComponent} from "./controls/admin/admin-tabs/admin-org
 import {AdminSessionsComponent} from "./controls/admin/admin-tabs/admin-sessions.component";
 import {AdminProgramsComponent} from "./controls/admin/admin-tabs/admin-programs.component";
 import {AdminCoursesComponent} from "./controls/admin/admin-tabs/admin-courses.component";
+import {AdminMilestonesComponent} from "./controls/admin/admin-tabs/admin-milestones.component";
 import {AdminAchievementsComponent} from "./controls/admin/admin-tabs/admin-achievements.component";
 import {AdminModel} from "./controls/admin/admin.constants";
 
@@ -105,6 +106,14 @@ const ROUTES: Routes = [
         component: AdminCoursesComponent,
         data: {
           authorities: AdminModel.Course.authorities
+        },
+        canActivate: [UserRouteAccessService]
+      },
+      {
+        path: AdminModel.Milestone.route,
+        component: AdminMilestonesComponent,
+        data: {
+          authorities: AdminModel.Milestone.authorities
         },
         canActivate: [UserRouteAccessService]
       },

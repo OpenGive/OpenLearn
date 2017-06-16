@@ -40,6 +40,7 @@ public class Milestone implements Serializable {
 	@Column(name = "description", length = 200)
 	private String description;
 
+	@NotNull
 	@ManyToOne
 	private Course course;
 
