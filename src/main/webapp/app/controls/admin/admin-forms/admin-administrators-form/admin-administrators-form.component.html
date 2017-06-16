@@ -1,10 +1,10 @@
-<form [formGroup]="instructorForm" (ngSubmit)="save()" novalidate>
+<form [formGroup]="administratorForm" (ngSubmit)="save()" novalidate>
   <div class="admin-dialog-header" [ngClass]="{edit: editing}" fxLayout="row" fxLayoutAlign="space-between center">
     <div fxLayout="row" fxLayoutAlign="start center">
       <div><button md-button type="reset" (click)="close()"><i class="fa fa-times fa-lg"></i></button></div>
-      <span class="admin-dialog-title" *ngIf="!editing">Instructor Details</span>
-      <span class="admin-dialog-title edit" *ngIf="adding">New Instructor</span>
-      <span class="admin-dialog-title edit" *ngIf="editing && !adding">Edit Instructor</span>
+      <span class="admin-dialog-title" *ngIf="!editing">Administrator Details</span>
+      <span class="admin-dialog-title edit" *ngIf="adding">New Administrator</span>
+      <span class="admin-dialog-title edit" *ngIf="editing && !adding">Edit Administrator</span>
     </div>
     <div fxLayout="row">
       <button md-raised-button type="submit" *ngIf="editing" class="admin-dialog-button grey-button" mdTooltip="Save">
@@ -45,7 +45,8 @@
         <md-error *ngIf="formErrors.password">{{formErrors.password}}</md-error>
       </md-input-container>
       <div fxLayout="column" fxFlex="30%">
-        <md-select formControlName="authorities" placeholder="Roles" multiple>
+        <!-- [disabled] used as workaround for angular material bug -->
+        <md-select formControlName="authorities" placeholder="Roles" multiple [disabled]="!editing">
           <md-option *ngFor="let role of roles" [value]="role">{{displayRole(role)}}</md-option>
         </md-select>
         <md-error *ngIf="formErrors.authorities">{{formErrors.authorities}}</md-error>
@@ -90,8 +91,10 @@
         <input mdInput formControlName="imageUrl" placeholder="Image URL"/>
       </md-input-container>
       <div fxLayout="row" fxFlex="30%">
-        <md-checkbox fxFlex="50%" formControlName="activated">Activated</md-checkbox>
-        <md-checkbox fxFlex="50%" formControlName="is14Plus">is 14+</md-checkbox>
+        <!-- [disabled] used as workaround for angular material bug -->
+        <md-checkbox fxFlex="50%" formControlName="activated" [disabled]="!editing">Activated</md-checkbox>
+        <!-- [disabled] used as workaround for angular material bug -->
+        <md-checkbox fxFlex="50%" formControlName="is14Plus" [disabled]="!editing">is 14+</md-checkbox>
       </div>
       <div fxFlex="30%" *ngIf="!adding && editing">
         <button md-raised-button (click)="resetPassword()" class="reset-password">Reset Password</button>

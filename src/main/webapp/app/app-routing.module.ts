@@ -12,13 +12,13 @@ import {CommonModule} from "@angular/common";
 import {RouterModule, Routes} from "@angular/router";
 import {UserRouteAccessService} from "./shared/auth/user-route-access-service";
 import {AdminPageComponent} from "./pages/admin-page/admin-page.component";
-import {AdminAdministratorsComponent} from "./controls/admin/admin-tabs/admin-administrators/admin-administrators.component";
-import {AdminInstructorsComponent} from "./controls/admin/admin-tabs/admin-instructors/admin-instructors.component";
-import {AdminStudentsComponent} from "./controls/admin/admin-tabs/admin-students/admin-students.component";
-import {AdminOrganizationsComponent} from "./controls/admin/admin-tabs/admin-organizations/admin-organizations.component";
-import {AdminSessionsComponent} from "./controls/admin/admin-tabs/admin-sessions/admin-sessions.component";
-import {AdminProgramsComponent} from "./controls/admin/admin-tabs/admin-programs/admin-programs.component";
-import {AdminCoursesComponent} from "./controls/admin/admin-tabs/admin-courses/admin-courses.component";
+import {AdminAdministratorsComponent} from "./controls/admin/admin-tabs/admin-administrators.component";
+import {AdminInstructorsComponent} from "./controls/admin/admin-tabs/admin-instructors.component";
+import {AdminStudentsComponent} from "./controls/admin/admin-tabs/admin-students.component";
+import {AdminOrganizationsComponent} from "./controls/admin/admin-tabs/admin-organizations.component";
+import {AdminSessionsComponent} from "./controls/admin/admin-tabs/admin-sessions.component";
+import {AdminProgramsComponent} from "./controls/admin/admin-tabs/admin-programs.component";
+import {AdminCoursesComponent} from "./controls/admin/admin-tabs/admin-courses.component";
 import {AdminModel} from "./controls/admin/admin.constants";
 
 const ROUTES: Routes = [

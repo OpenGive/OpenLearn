@@ -1,5 +1,5 @@
-import { CourseService } from './services/course.service';
-import { HttpWrapperService } from './shared/auth/http-wrapper.service';
+import {CourseService} from './services/course.service';
+import {HttpWrapperService} from './shared/auth/http-wrapper.service';
 import {AppRoutingModule} from "./app-routing.module";
 import {BrowserModule} from "@angular/platform-browser";
 import {NgModule} from "@angular/core";
@@ -35,29 +35,13 @@ import {ForgotPasswordDialogComponent} from "./controls/forgot-password-dialog/f
 import {AdminPageComponent} from "./pages/admin-page/admin-page.component";
 import {PortfolioService} from './services/portfolio.service';
 import {PortfolioListComponent} from './controls/portfolio/portfolio-list/portfolio-list.component'
-import {AdminGridComponent} from "./controls/admin/admin-grid/admin-grid.component";
-import {AdminDialogComponent} from "./controls/admin/admin-dialog.component";
 import {AdminGridService} from "./services/admin-grid.service";
-import {AdminOrganizationsComponent} from "./controls/admin/admin-tabs/admin-organizations/admin-organizations.component";
-import {AdminAdministratorsComponent} from "./controls/admin/admin-tabs/admin-administrators/admin-administrators.component";
-import {AdminInstructorsComponent} from "./controls/admin/admin-tabs/admin-instructors/admin-instructors.component";
-import {AdminStudentsComponent} from "./controls/admin/admin-tabs/admin-students/admin-students.component";
-import {AdminSessionsComponent} from "./controls/admin/admin-tabs/admin-sessions/admin-sessions.component";
-import {AdminProgramsComponent} from "./controls/admin/admin-tabs/admin-programs/admin-programs.component";
-import {AdminCoursesComponent} from "./controls/admin/admin-tabs/admin-courses/admin-courses.component";
-import {AdminOrganizationsFormComponent} from "./controls/admin/admin-tabs/admin-organizations/admin-organizations-form.component";
-import {AdminAdministratorsFormComponent} from "./controls/admin/admin-tabs/admin-administrators/admin-administrators-form.component";
-import {AdminInstructorsFormComponent} from "./controls/admin/admin-tabs/admin-instructors/admin-instructors-form.component";
-import {AdminStudentsFormComponent} from "./controls/admin/admin-tabs/admin-students/admin-students-form.component";
-import {AdminSessionsFormComponent} from "./controls/admin/admin-tabs/admin-sessions/admin-sessions-form.component";
-import {AdminProgramsFormComponent} from "./controls/admin/admin-tabs/admin-programs/admin-programs-form.component";
-import {AdminCoursesFormComponent} from "./controls/admin/admin-tabs/admin-courses/admin-courses-form.component";
-import {AdminAchievementsFormComponent} "./controls/admin/admin-tabs/admin-achievements/admin-achievements-form.component";
 import {AdminService} from "./services/admin.service";
 import {CourseViewComponent} from "./controls/course/course-view/course-view.component"
 import {CourseActivityListComponent } from './controls/course/course-activity-list/course-activity-list.component';
 import {ProfilePageComponent} from "./pages/profile-page/profile-page.component";
 import {NotifyService} from "./services/notify.service";
+import {OLControlsModule} from "./controls/controls.module";
 
 @NgModule({
   declarations: [
@@ -66,22 +50,6 @@ import {NotifyService} from "./services/notify.service";
     LoginPageComponent,
     ForgotPasswordDialogComponent,
     AdminPageComponent,
-    AdminDialogComponent,
-    AdminGridComponent,
-    AdminOrganizationsComponent,
-    AdminAdministratorsComponent,
-    AdminInstructorsComponent,
-    AdminStudentsComponent,
-    AdminSessionsComponent,
-    AdminProgramsComponent,
-    AdminCoursesComponent,
-    AdminOrganizationsFormComponent,
-    AdminAdministratorsFormComponent,
-    AdminInstructorsFormComponent,
-    AdminStudentsFormComponent,
-    AdminSessionsFormComponent,
-    AdminProgramsFormComponent,
-    AdminCoursesFormComponent,
     StudentPageComponent,
     CoursePageComponent,
     NavigationMenuComponent,
@@ -98,16 +66,17 @@ import {NotifyService} from "./services/notify.service";
     ProfilePageComponent
   ],
   imports: [
-    BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
+    BrowserModule,
+    CookieModule.forRoot(),
+    FlexLayoutModule,
+    FormsModule,
+    HttpModule,
     MaterialModule,
     MdNativeDateModule,
-    BrowserAnimationsModule,
-    FlexLayoutModule,
-    CookieModule.forRoot()
+    OLControlsModule,
+    ReactiveFormsModule
   ],
   providers: [
     UserService,
@@ -126,7 +95,6 @@ import {NotifyService} from "./services/notify.service";
   ],
   bootstrap: [AppComponent],
   entryComponents: [
-    AdminDialogComponent,
     ForgotPasswordDialogComponent,
     CourseViewComponent,
     ProfilePageComponent
