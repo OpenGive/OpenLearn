@@ -2,7 +2,7 @@
   <div id="admin-page" fxLayout="row" fxLayoutAlign="center" fxFlex.lg="1280px">
     <div id="admin-tabs" fxHide.lt-md fxFlex="18%">
       <md-nav-list id="admin-tab-list" dense>
-        <a md-list-item [routerLink]="[tab.route]" class="admin-tab-option" [ngClass]="{active: tab.active}" *ngFor="let tab of filteredTabs" (click)="selectTab(tab)">
+        <a md-list-item [routerLink]="[tab.route]" routerLinkActive="active" class="admin-tab-option" *ngFor="let tab of filteredTabs" (click)="selectTab(tab)">
           <span class="admin-tab-text">{{tab.name}}</span>
         </a>
       </md-nav-list>

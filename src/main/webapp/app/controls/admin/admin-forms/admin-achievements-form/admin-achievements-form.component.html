@@ -48,30 +48,11 @@
         </md-autocomplete>
       </md-input-container>
       <md-input-container fxFlex="30%">
-        <input mdInput formControlName="program" placeholder="Program" [mdAutocomplete]="program">
-        <md-error *ngIf="formErrors.program">{{formErrors.program}}</md-error>
-        <md-autocomplete #program="mdAutocomplete" [displayWith]="displayProgram">
-          <md-option *ngFor="let program of programs" [value]="program">{{program.name}}</md-option>
+        <input mdInput formControlName="achievedBy" placeholder="Achieved By" [mdAutocomplete]="achievedBy">
+        <md-error *ngIf="formErrors.achievedBy">{{formErrors.achievedBy}}</md-error>
+        <md-autocomplete #student="mdAutocomplete" [displayWith]="displayStudent">
+          <md-option *ngFor="let student of students" [value]="student">{{student.name}}</md-option>
         </md-autocomplete>
-      </md-input-container>
-      <md-input-container fxFlex="30%">
-        <input mdInput formControlName="instructor" placeholder="Instructor" [mdAutocomplete]="instructor">
-        <md-error *ngIf="formErrors.instructor">{{formErrors.instructor}}</md-error>
-        <md-autocomplete #instructor="mdAutocomplete" [displayWith]="displayInstructor">
-          <md-option *ngFor="let instructor of instructors" [value]="instructor">{{instructor.lastName}}, {{instructor.firstName}}</md-option>
-        </md-autocomplete>
-      </md-input-container>
-      <md-input-container fxFlex="30%">
-        <input mdInput formControlName="startDate" placeholder="Start Date" [mdDatepicker]="startDate">
-        <button mdSuffix *ngIf="editing" [mdDatepickerToggle]="startDate"></button>
-        <md-error *ngIf="formErrors.startDate">{{formErrors.startDate}}</md-error>
-        <md-datepicker #startDate></md-datepicker>
-      </md-input-container>
-      <md-input-container fxFlex="30%">
-        <input mdInput formControlName="endDate" placeholder="End Date" [mdDatepicker]="endDate">
-        <button mdSuffix *ngIf="editing" [mdDatepickerToggle]="endDate"></button>
-        <md-error *ngIf="formErrors.endDate">{{formErrors.endDate}}</md-error>
-        <md-datepicker #endDate></md-datepicker>
       </md-input-container>
     </div>
   </div>

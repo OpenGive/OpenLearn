@@ -209,7 +209,7 @@ export class AdminAchievementsFormComponent implements OnInit {
     return milestone ? milestone.name : '';
   }
 
-  displayAchievedBy(achievedBy: any): string {
-    return achievedBy ? achievedBy.lastName + ', ' + achievedBy.firstName : '';
+  displayStudent(student: any): string {
+    return student ? student.lastName + ', ' + student.firstName : '';
   }
 }
