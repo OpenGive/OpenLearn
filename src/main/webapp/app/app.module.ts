@@ -28,13 +28,13 @@ import {LoginService} from "./shared/login/login.service";
 import {CookieModule} from "ngx-cookie";
 import {AuthServerProvider} from "./shared/auth/auth-oauth2.service";
 import {StateStorageService} from "./shared/auth/state-storage.service";
-import { AccessDeniedPageComponent } from './pages/access-denied-page/access-denied-page.component';
-import { CourseListComponent } from './controls/course/course-list/course-list.component';
-import { StudentCoursesComponent } from './student-courses/student-courses.component';
+import {AccessDeniedPageComponent} from './pages/access-denied-page/access-denied-page.component';
+import {CourseListComponent} from './controls/course/course-list/course-list.component';
+import {StudentCoursesComponent} from './student-courses/student-courses.component';
 import {ForgotPasswordDialogComponent} from "./controls/forgot-password-dialog/forgot-password-dialog.component";
 import {AdminPageComponent} from "./pages/admin-page/admin-page.component";
-import { PortfolioService } from './services/portfolio.service';
-import { PortfolioListComponent } from './controls/portfolio/portfolio-list/portfolio-list.component'
+import {PortfolioService} from './services/portfolio.service';
+import {PortfolioListComponent} from './controls/portfolio/portfolio-list/portfolio-list.component'
 import {AdminGridComponent} from "./controls/admin/admin-grid/admin-grid.component";
 import {AdminDialogComponent} from "./controls/admin/admin-dialog.component";
 import {AdminGridService} from "./services/admin-grid.service";
@@ -52,6 +52,7 @@ import {AdminStudentsFormComponent} from "./controls/admin/admin-tabs/admin-stud
 import {AdminSessionsFormComponent} from "./controls/admin/admin-tabs/admin-sessions/admin-sessions-form.component";
 import {AdminProgramsFormComponent} from "./controls/admin/admin-tabs/admin-programs/admin-programs-form.component";
 import {AdminCoursesFormComponent} from "./controls/admin/admin-tabs/admin-courses/admin-courses-form.component";
+import {AdminAchievementsFormComponent} "./controls/admin/admin-tabs/admin-achievements/admin-achievements-form.component";
 import {AdminService} from "./services/admin.service";
 import {CourseViewComponent} from "./controls/course/course-view/course-view.component"
 import {CourseActivityListComponent } from './controls/course/course-activity-list/course-activity-list.component';

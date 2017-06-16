@@ -89,5 +89,16 @@ export const AdminModel = {
   },
   School: {
     route: 'schools'
+  },
+  Achievement: {
+    title: 'Achievements',
+    route: 'achievements',
+    defaultSort: 'name',
+    columns: [
+      {property: 'name', display: 'Name'},
+      {property: 'description', display: 'Description'},
+      {property: 'activity', display: 'Activity'},
+      {property: 'achievedBy', display: 'Achieved By'}
+    ]
   }
 };
