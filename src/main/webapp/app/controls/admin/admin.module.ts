@@ -3,6 +3,7 @@ import {NgModule} from "@angular/core";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {MdButtonModule, MdIconModule, MdTooltipModule} from "@angular/material";
 
+import {AdminAchievementsComponent} from "./admin-tabs/admin-achievements.component";
 import {AdminAdministratorsComponent} from "./admin-tabs/admin-administrators.component";
 import {AdminCoursesComponent} from "./admin-tabs/admin-courses.component";
 import {AdminDialogComponent} from "./admin-dialog.component";
@@ -16,6 +17,7 @@ import {OLAdminFormsModule} from "./admin-forms/admin-forms.module";
 
 @NgModule({
   declarations: [
+    AdminAchievementsComponent,
     AdminAdministratorsComponent,
     AdminCoursesComponent,
     AdminDialogComponent,

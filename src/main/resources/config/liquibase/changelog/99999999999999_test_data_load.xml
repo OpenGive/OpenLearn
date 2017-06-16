@@ -49,9 +49,9 @@
 	    		<column name="end_date" type="timestamp"/>
         </loadData>
         <loadData encoding="UTF-8"
-                  file="config/liquibase/activity.csv"
+                  file="config/liquibase/milestone.csv"
                   separator=","
-                  tableName="activity">
+                  tableName="milestone">
         </loadData>
         <loadData encoding="UTF-8"
                   file="config/liquibase/achievement.csv"
@@ -82,10 +82,10 @@
     </changeSet>
     <changeSet id="99999999999999-2" author="sstevenson">
       <loadUpdateData encoding="UTF-8"
-                file="config/liquibase/activity_descriptions_and_points.csv"
+                file="config/liquibase/milestone_descriptions_and_points.csv"
                 separator=","
                 primaryKey="id"
-                tableName="activity">
+                tableName="milestone">
       </loadUpdateData>
     </changeSet>
 </databaseChangeLog>

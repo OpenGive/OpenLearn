@@ -1,4 +1,4 @@
-.activity-completed {
+.milestone-completed {
   background-color: rgba(0,211,167,1);
   border-radius: 50%;
   display: inline-block;
@@ -9,7 +9,7 @@
   margin-right: 10px;
 }
 
-.activity-points {
+.milestone-points {
   text-align: right;
   color: rgba(204,204,204,1);
 }

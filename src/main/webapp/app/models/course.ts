@@ -1,12 +1,12 @@
 import { Instructor }   from './instructor';
-import { Activity } from './activity';
+import { Milestone } from './milestone';
 
 export interface Course {
-    name?: string;
-    description?: string;
-    startDate: Date;
-    endDate?: Date;
-    id?: number;
-    instructor?: Instructor;
-    activities?: Activity[];
+  name?: string;
+  description?: string;
+  startDate: Date;
+  endDate?: Date;
+  id?: number;
+  instructor?: Instructor;
+  milestones?: Milestone[];
 }

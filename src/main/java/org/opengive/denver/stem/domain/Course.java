@@ -92,7 +92,7 @@ public class Course implements Serializable {
 
 	@OneToMany(mappedBy = "course")
 	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	private Set<Activity> activities = new HashSet<>();
+	private Set<Milestone> milestones = new HashSet<>();
 
 	public Long getId() {
 		return id;
@@ -234,29 +234,29 @@ public class Course implements Serializable {
 		students = users;
 	}
 
-	public Set<Activity> getActivities() {
-		return activities;
+	public Set<Milestone> getMilestones() {
+		return milestones;
 	}
 
-	public Course activities(final Set<Activity> activities) {
-		this.activities = activities;
+	public Course milestones(final Set<Milestone> milestones) {
+		this.milestones = milestones;
 		return this;
 	}
 
-	public Course addActivities(final Activity activity) {
-		activities.add(activity);
-		activity.setCourse(this);
+	public Course addMilestones(final Milestone milestone) {
+		milestones.add(milestone);
+    milestone.setCourse(this);
 		return this;
 	}
 
-	public Course removeActivities(final Activity activity) {
-		activities.remove(activity);
-		activity.setCourse(null);
+	public Course removeMilestones(final Milestone milestone) {
+		milestones.remove(milestone);
+    milestone.setCourse(null);
 		return this;
 	}
 
-	public void setActivities(final Set<Activity> activities) {
-		this.activities = activities;
+	public void setMilestones(final Set<Milestone> milestones) {
+		this.milestones = milestones;
 	}
 
 	@Override
@@ -283,7 +283,7 @@ public class Course implements Serializable {
 		.append(description).append(", startDate=").append(startDate).append(", endDate=").append(endDate)
 		.append(", organization=").append(organization).append(", program=").append(program)
 		.append(", instructor=").append(instructor).append(", resources=").append(resources)
-		.append(", students=").append(students).append(", activities=").append(activities).append("]");
+		.append(", students=").append(students).append(", milestones=").append(milestones).append("]");
 		return builder.toString();
 	}
 }

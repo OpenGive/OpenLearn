@@ -5,6 +5,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {MdAutocompleteModule, MdButtonModule, MdCheckboxModule, MdDatepickerModule, MdIconModule, MdInputModule,
   MdMenuModule, MdNativeDateModule, MdSelectModule, MdTooltipModule} from "@angular/material";
 
+import {AdminAchievementsFormComponent} from "./admin-achievements-form/admin-achievements-form.component";
 import {AdminAdministratorsFormComponent} from "./admin-administrators-form/admin-administrators-form.component";
 import {AdminCoursesFormComponent} from "./admin-courses-form/admin-courses-form.component";
 import {AdminInstructorsFormComponent} from "./admin-instructors-form/admin-instructors-form.component";
@@ -15,6 +16,7 @@ import {AdminStudentsFormComponent} from "./admin-students-form/admin-students-f
 
 @NgModule({
   declarations: [
+    AdminAchievementsFormComponent,
     AdminAdministratorsFormComponent,
     AdminCoursesFormComponent,
     AdminInstructorsFormComponent,
@@ -39,6 +41,7 @@ import {AdminStudentsFormComponent} from "./admin-students-form/admin-students-f
     ReactiveFormsModule
   ],
   exports: [
+    AdminAchievementsFormComponent,
     AdminAdministratorsFormComponent,
     AdminCoursesFormComponent,
     AdminInstructorsFormComponent,

@@ -18,7 +18,8 @@ export class AdminPageComponent implements OnInit {
     { name: AdminModel.Student.title, route: AdminModel.Student.route, active: false, authorities: AdminModel.Student.authorities },
     { name: AdminModel.Session.title, route: AdminModel.Session.route, active: false, authorities: AdminModel.Session.authorities },
     { name: AdminModel.Program.title, route: AdminModel.Program.route, active: false, authorities: AdminModel.Program.authorities },
-    { name: AdminModel.Course.title, route: AdminModel.Course.route, active: false, authorities: AdminModel.Course.authorities }
+    { name: AdminModel.Course.title, route: AdminModel.Course.route, active: false, authorities: AdminModel.Course.authorities },
+    { name: AdminModel.Achievement.title, route: AdminModel.Achievement.route, active: false, authorities: AdminModel.Achievement.authorities }
   ];
   filteredTabs: any[];
 

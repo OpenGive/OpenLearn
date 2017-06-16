@@ -38,10 +38,10 @@ import {PortfolioListComponent} from './controls/portfolio/portfolio-list/portfo
 import {AdminGridService} from "./services/admin-grid.service";
 import {AdminService} from "./services/admin.service";
 import {CourseViewComponent} from "./controls/course/course-view/course-view.component"
-import {CourseActivityListComponent } from './controls/course/course-activity-list/course-activity-list.component';
+import {CourseMilestoneListComponent} from './controls/course/course-milestone-list/course-milestone-list.component';
 import {ProfilePageComponent} from "./pages/profile-page/profile-page.component";
 import {NotifyService} from "./services/notify.service";
-import {OLControlsModule} from "./controls/controls.module";
+import {OLAdminModule} from "./controls/admin/admin.module";
 
 @NgModule({
   declarations: [
@@ -62,7 +62,7 @@ import {OLControlsModule} from "./controls/controls.module";
     PortfolioPageComponent,
     PortfolioListComponent,
     CourseViewComponent,
-    CourseActivityListComponent,
+    CourseMilestoneListComponent,
     ProfilePageComponent
   ],
   imports: [
@@ -75,7 +75,7 @@ import {OLControlsModule} from "./controls/controls.module";
     HttpModule,
     MaterialModule,
     MdNativeDateModule,
-    OLControlsModule,
+    OLAdminModule,
     ReactiveFormsModule
   ],
   providers: [

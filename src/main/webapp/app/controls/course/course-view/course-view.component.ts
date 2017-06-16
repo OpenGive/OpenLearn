@@ -1,6 +1,6 @@
 import { Course } from './../../../models/course';
 import { CourseService } from './../../../services/course.service';
-import {Component, Input, OnInit, Inject} from '@angular/core';
+import {Component, OnInit, Inject} from '@angular/core';
 import {MD_DIALOG_DATA} from '@angular/material';
 
 @Component({
@@ -14,13 +14,13 @@ export class CourseViewComponent implements OnInit {
   }
 
   ngOnInit() {
-  //reload the course to retrieve the list of activities
+    //reload the course to retrieve the list of milestones
     this.courseService.get(this.course.id).subscribe(course => {this.course = course});
   }
 
   calculateTotalPoints(): Number {
-    if (!this.course.activities) return 0;
-    return this.course.activities.reduce(function(a,b) { return a + b.points; }, 0);
+    if (!this.course.milestones) return 0;
+    return this.course.milestones.reduce(function(a,b) { return a + b.points; }, 0);
   }
 
 }

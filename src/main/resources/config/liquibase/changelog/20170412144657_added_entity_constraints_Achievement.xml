@@ -7,13 +7,13 @@
         Added the constraints for entity Achievement.
     -->
     <changeSet id="20170412144657-2" author="jhipster">
-        
-        <addForeignKeyConstraint baseColumnNames="activity_id"
+
+        <addForeignKeyConstraint baseColumnNames="milestone_id"
                                  baseTableName="achievement"
-                                 constraintName="fk_achievement_activity_id"
+                                 constraintName="fk_achievement_milestone_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="activity"/>
-                                 
+                                 referencedTableName="milestone"/>
+
         <addForeignKeyConstraint baseColumnNames="student_id"
                                  baseTableName="achievement"
                                  constraintName="fk_achievement_student_id"

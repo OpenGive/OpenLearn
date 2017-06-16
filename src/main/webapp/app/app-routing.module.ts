@@ -19,6 +19,7 @@ import {AdminOrganizationsComponent} from "./controls/admin/admin-tabs/admin-org
 import {AdminSessionsComponent} from "./controls/admin/admin-tabs/admin-sessions.component";
 import {AdminProgramsComponent} from "./controls/admin/admin-tabs/admin-programs.component";
 import {AdminCoursesComponent} from "./controls/admin/admin-tabs/admin-courses.component";
+import {AdminAchievementsComponent} from "./controls/admin/admin-tabs/admin-achievements.component";
 import {AdminModel} from "./controls/admin/admin.constants";
 
 const ROUTES: Routes = [
@@ -52,7 +53,7 @@ const ROUTES: Routes = [
     canActivate: [UserRouteAccessService],
     children: [
       {
-        path: 'organizations',
+        path: AdminModel.Organization.route,
         component: AdminOrganizationsComponent,
         data: {
           authorities: AdminModel.Organization.authorities
@@ -60,7 +61,7 @@ const ROUTES: Routes = [
         canActivate: [UserRouteAccessService]
       },
       {
-        path: 'administrators',
+        path: AdminModel.Administrator.route,
         component: AdminAdministratorsComponent,
         data: {
           authorities: AdminModel.Administrator.authorities
@@ -68,7 +69,7 @@ const ROUTES: Routes = [
         canActivate: [UserRouteAccessService]
       },
       {
-        path: 'instructors',
+        path: AdminModel.Instructor.route,
         component: AdminInstructorsComponent,
         data: {
           authorities: AdminModel.Instructor.authorities
@@ -76,7 +77,7 @@ const ROUTES: Routes = [
         canActivate: [UserRouteAccessService]
       },
       {
-        path: 'students',
+        path: AdminModel.Student.route,
         component: AdminStudentsComponent,
         data: {
           authorities: AdminModel.Student.authorities
@@ -84,7 +85,7 @@ const ROUTES: Routes = [
         canActivate: [UserRouteAccessService]
       },
       {
-        path: 'sessions',
+        path: AdminModel.Session.route,
         component: AdminSessionsComponent,
         data: {
           authorities: AdminModel.Session.authorities
@@ -92,7 +93,7 @@ const ROUTES: Routes = [
         canActivate: [UserRouteAccessService]
       },
       {
-        path: 'programs',
+        path: AdminModel.Program.route,
         component: AdminProgramsComponent,
         data: {
           authorities: AdminModel.Program.authorities
@@ -100,7 +101,7 @@ const ROUTES: Routes = [
         canActivate: [UserRouteAccessService]
       },
       {
-        path: 'courses',
+        path: AdminModel.Course.route,
         component: AdminCoursesComponent,
         data: {
           authorities: AdminModel.Course.authorities
@@ -108,9 +109,17 @@ const ROUTES: Routes = [
         canActivate: [UserRouteAccessService]
       },
       {
+        path: AdminModel.Achievement.route,
+        component: AdminAchievementsComponent,
+        data: {
+          authorities: AdminModel.Achievement.authorities
+        },
+        canActivate: [UserRouteAccessService]
+      },
+      {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'students'
+        redirectTo: AdminModel.Student.route
       }
     ]
   },

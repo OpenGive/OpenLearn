@@ -34,16 +34,16 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="activity_id" type="bigint">
+            <column name="milestone_id" type="bigint">
                 <constraints nullable="true" />
             </column>
-            
+
             <column name="student_id" type="bigint">
                 <constraints unique="true" nullable="false" />
             </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
+
     </changeSet>
 </databaseChangeLog>

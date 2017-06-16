@@ -88,8 +88,14 @@ export const AdminModel = {
     ],
     authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor]
   },
-  School: {
-    route: 'schools'
+  Milestone: {
+    title: 'Milestones',
+    route: 'milestones',
+    defaultSort: 'name',
+    columns: [
+
+    ],
+    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor]
   },
   Achievement: {
     title: 'Achievements',
@@ -97,9 +103,12 @@ export const AdminModel = {
     defaultSort: 'name',
     columns: [
       {property: 'name', display: 'Name'},
-      {property: 'description', display: 'Description'},
-      {property: 'activity', display: 'Activity'},
+      {property: 'milestone', display: 'Milestone'},
       {property: 'achievedBy', display: 'Achieved By'}
-    ]
-  }
+    ],
+    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor]
+  },
+  School: {
+    route: 'schools'
+  },
 };

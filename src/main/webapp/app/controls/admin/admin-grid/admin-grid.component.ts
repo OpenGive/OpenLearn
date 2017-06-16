@@ -79,9 +79,9 @@ export class AdminGridComponent implements OnInit {
       return this.displayAuthorities(row[column.property]);
     } else if (['endDate', 'startDate'].includes(column.property)) {
       return this.displayDate(row[column.property]);
-    } else if (['organization', 'program', 'school', 'session'].includes(column.property)) {
+    } else if (['milestone', 'organization', 'program', 'school', 'session'].includes(column.property)) {
       return this.displayObject(row[column.property]);
-    } else if (['instructor'].includes(column.property)) {
+    } else if (['achievedBy', 'instructor'].includes(column.property)) {
       return this.displayUser(row[column.property]);
     } else {
       return row[column.property];

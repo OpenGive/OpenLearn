@@ -10,9 +10,9 @@ import org.slf4j.LoggerFactory
 import scala.concurrent.duration._
 
 /**
- * Performance test for the Activity entity.
+ * Performance test for the Milestone entity.
  */
-class ActivityGatlingTest extends Simulation {
+class MilestoneGatlingTest extends Simulation {
 
     val context: LoggerContext = LoggerFactory.getILoggerFactory.asInstanceOf[LoggerContext]
     // Log all HTTP requests
@@ -48,7 +48,7 @@ class ActivityGatlingTest extends Simulation {
         "Authorization" -> "Bearer ${access_token}"
     )
 
-    val scn = scenario("Test the Activity entity")
+    val scn = scenario("Test the Milestone entity")
         .exec(http("First unauthenticated request")
         .get("/api/account")
         .headers(headers_http)
@@ -72,26 +72,26 @@ class ActivityGatlingTest extends Simulation {
         .check(status.is(200)))
         .pause(10)
         .repeat(2) {
-            exec(http("Get all activities")
-            .get("/api/activities")
+            exec(http("Get all milestones")
+            .get("/api/milestones")
             .headers(headers_http_authenticated)
             .check(status.is(200)))
             .pause(10 seconds, 20 seconds)
-            .exec(http("Create new activity")
-            .post("/api/activities")
+            .exec(http("Create new milestone")
+            .post("/api/milestones")
             .headers(headers_http_authenticated)
             .body(StringBody("""{"id":null, "name":"SAMPLE_TEXT"}""")).asJSON
             .check(status.is(201))
-            .check(headerRegex("Location", "(.*)").saveAs("new_activity_url"))).exitHereIfFailed
+            .check(headerRegex("Location", "(.*)").saveAs("new_milestone_url"))).exitHereIfFailed
             .pause(10)
             .repeat(5) {
-                exec(http("Get created activity")
-                .get("${new_activity_url}")
+                exec(http("Get created milestone")
+                .get("${new_milestone_url}")
                 .headers(headers_http_authenticated))
                 .pause(10)
             }
-            .exec(http("Delete created activity")
-            .delete("${new_activity_url}")
+            .exec(http("Delete created milestone")
+            .delete("${new_milestone_url}")
             .headers(headers_http_authenticated))
             .pause(10)
         }

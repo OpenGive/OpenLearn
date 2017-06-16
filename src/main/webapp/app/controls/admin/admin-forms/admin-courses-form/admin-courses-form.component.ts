@@ -131,19 +131,19 @@ export class AdminCoursesFormComponent implements OnInit {
 
   private getInstructors(): void {
     this.userService.getInstructors().subscribe(resp => {
-      this.instructors = resp
+      this.instructors = resp;
     });
   }
 
   private getOrganizations(): void {
     this.adminService.getAll(AdminModel.Organization.route).subscribe(resp => {
-      this.organizations = resp
+      this.organizations = resp;
     });
   }
 
   private getPrograms(): void {
     this.adminService.getAll(AdminModel.Program.route).subscribe(resp => {
-      this.programs = resp
+      this.programs = resp;
     });
   }
 
