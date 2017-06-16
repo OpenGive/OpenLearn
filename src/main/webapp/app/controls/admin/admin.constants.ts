@@ -112,5 +112,5 @@ export const AdminModel = {
   },
   School: {
     route: 'schools'
-  },
+  }
 };
