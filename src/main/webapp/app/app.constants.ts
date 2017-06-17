@@ -25,4 +25,10 @@ export class AppConstants {
     {name: 'Virginia',        code: 'VA'}, {name: 'Washington',     code: 'WA'}, {name: 'West Virginia',  code: 'WV'},
     {name: 'Wisconsin',       code: 'WI'}, {name: 'Wyoming',        code: 'WY'}
   ];
+  public static OLValidators = {
+    Email: "^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*$",
+    Login: "^[_'.@A-Za-z0-9-]*$",
+    Points: "[0-9]+",
+    PostalCode: "^[0-9]{5}(-[0-9]{4})?$"
+  }
 }

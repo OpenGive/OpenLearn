@@ -113,7 +113,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
       ]],
       login: [this.formAdministrator.login, [
         Validators.required,
-        Validators.pattern("^[_'.@A-Za-z0-9-]*$"),
+        Validators.pattern(AppConstants.OLValidators.Login),
         Validators.maxLength(50)
       ]],
       password: [this.formAdministrator.password, this.adding ? [
@@ -129,7 +129,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
       ]],
       email: [this.formAdministrator.email, [
         // Validators.email, TODO: This forces email to be required, https://github.com/angular/angular/pull/16902 is the fix, pattern below is the workaround
-        Validators.pattern("^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*$"),
+        Validators.pattern(AppConstants.OLValidators.Email),
         Validators.minLength(5),
         Validators.maxLength(100)
       ]],
@@ -152,7 +152,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
         ]],
         state: [this.formAdministrator.state],
         postalCode: [this.formAdministrator.postalCode, [
-          Validators.pattern("^[0-9]{5}(-[0-9]{4})?$")
+          Validators.pattern(AppConstants.OLValidators.PostalCode)
         ]]
       }),
       imageUrl: [this.formAdministrator.imageUrl],

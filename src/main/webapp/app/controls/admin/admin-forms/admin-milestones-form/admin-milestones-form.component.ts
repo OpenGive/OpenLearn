@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from "@angular/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MdDialogRef} from "@angular/material";
 
+import {AppConstants} from "../../../../app.constants";
 import {AdminDialogComponent} from "../../admin-dialog.component";
 import {AdminModel} from "../../admin.constants";
 import {AdminService} from "../../../../services/admin.service";
@@ -68,7 +69,7 @@ export class AdminMilestonesFormComponent implements OnInit {
         Validators.required
       ]],
       points: [this.formMilestone.points, [
-        Validators.pattern("[0-9]+")
+        Validators.pattern(AppConstants.OLValidators.Points)
       ]]
     });
     this.milestoneForm.valueChanges.subscribe(data => this.onValueChanged());
