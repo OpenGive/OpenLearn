@@ -1,6 +1,6 @@
 import { browser, element, by } from 'protractor';
 
-export class OpenGiveScaffoldFinalPage {
+export class OpenLearn {
   navigateTo() {
     return browser.get('/');
   }
