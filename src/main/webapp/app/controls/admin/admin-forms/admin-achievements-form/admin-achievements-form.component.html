@@ -51,7 +51,7 @@
         <input mdInput formControlName="achievedBy" placeholder="Achieved By" [mdAutocomplete]="achievedBy">
         <md-error *ngIf="formErrors.achievedBy">{{formErrors.achievedBy}}</md-error>
         <md-autocomplete #achievedBy="mdAutocomplete" [displayWith]="displayStudent">
-          <md-option *ngFor="let student of students" [value]="student">{{student.name}}</md-option>
+          <md-option *ngFor="let student of students" [value]="student">{{student.lastName}}, {{student.firstName}}</md-option>
         </md-autocomplete>
       </md-input-container>
     </div>
