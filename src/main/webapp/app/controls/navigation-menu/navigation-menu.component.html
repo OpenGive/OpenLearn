@@ -30,14 +30,12 @@
       <button routerLink="/student/1" md-button>Dashboard</button>
       <button routerLink="/course/1" md-button>Courses</button>
     </div>
-    <div>
+    <div *ngIf="authenticated()">
       <button class="profile-menu" md-button [mdMenuTriggerFor]="profileMenu">
         <div class="circle">
-          <img height="32" width="32" src="https://material.angular.io/shiba1.d84e1a8ed94377452dbf.jpg" alt="Braden Hamm">
+          <img height="32" width="32" style="border-radius: 50%" src="https://media.licdn.com/mpr/mpr/shrinknp_200_200/AAEAAQAAAAAAAADYAAAAJGQ5NDE2NTkwLTM2YWQtNDAwMi05MTRmLTMxMGFkNWYwY2RhYg.jpg" alt="Vik">
         </div>
-        <span>
-        Levi Fuller
-        </span>
+        <span>{{name}}</span>
       </button>
       <md-menu #profileMenu="mdMenu" yPosition="above">
         <button routerLink="/profile" md-menu-item>

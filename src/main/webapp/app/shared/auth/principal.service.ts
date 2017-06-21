@@ -120,8 +120,11 @@ export class Principal {
         return this.authenticationState.asObservable();
     }
 
-    getImageUrl(): String {
+    getImageUrl(): string {
         return this.isIdentityResolved() ? this.userIdentity.imageUrl : null;
     }
 
+    getName(): string {
+        return this.isIdentityResolved() ? this.userIdentity.lastName + ', ' + this.userIdentity.firstName : null;
+    }
 }
