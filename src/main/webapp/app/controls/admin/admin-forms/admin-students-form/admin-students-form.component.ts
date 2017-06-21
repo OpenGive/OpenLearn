@@ -138,20 +138,20 @@ export class AdminStudentsFormComponent implements OnInit {
         Validators.maxLength(15)
       ]],
       address: this.fb.group({
-        streetAddress1: [this.formStudent.streetAddress1, [
+        streetAddress1: [this.formStudent.address ? this.formStudent.address.streetAddress1 : null, [
           Validators.minLength(5),
           Validators.maxLength(50)
         ]],
-        streetAddress2: [this.formStudent.streetAddress2, [
+        streetAddress2: [this.formStudent.address ? this.formStudent.address.streetAddress2 : null, [
           Validators.minLength(5),
           Validators.maxLength(50)
         ]],
-        city: [this.formStudent.city, [
+        city: [this.formStudent.address ? this.formStudent.address.city : null, [
           Validators.minLength(5),
           Validators.maxLength(50)
         ]],
-        state: [this.formStudent.state],
-        postalCode: [this.formStudent.postalCode, [
+        state: [this.formStudent.address ? this.formStudent.address.state : null],
+        postalCode: [this.formStudent.address ? this.formStudent.address.postalCode : null, [
           Validators.pattern(AppConstants.OLValidators.PostalCode)
         ]]
       }),
@@ -299,7 +299,7 @@ export class AdminStudentsFormComponent implements OnInit {
     return role.split('_').slice(1).map(str => str.charAt(0) + str.slice(1).toLowerCase()).join(' ');
   }
 
-  displayState(stateCode: string): string {
-    return stateCode ? _.filter(AppConstants.States, {code: stateCode})[0].name : '';
+  displayState(stateValue: string): string {
+    return stateValue ? _.filter(AppConstants.States, {value: stateValue})[0].name : '';
   }
 }

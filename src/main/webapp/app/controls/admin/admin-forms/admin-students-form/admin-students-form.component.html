@@ -79,7 +79,7 @@
         <md-input-container fxFlex="20%">
           <input mdInput formControlName="state" placeholder="State" [mdAutocomplete]="state"/>
           <md-autocomplete #state="mdAutocomplete" [displayWith]="displayState">
-            <md-option *ngFor="let state of states" [value]="state.code">{{state.name}}</md-option>
+            <md-option *ngFor="let state of states" [value]="state.value">{{state.name}}</md-option>
           </md-autocomplete>
         </md-input-container>
         <md-input-container fxFlex="20%">
