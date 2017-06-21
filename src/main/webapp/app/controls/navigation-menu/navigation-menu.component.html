@@ -25,10 +25,10 @@
   <div fxLayout="row">
     <div fxHide.lt-md>
       <button routerLink="/" md-button>Home</button>
-      <button routerLink="/login" md-button>Login</button>
-      <button routerLink="/admin" md-button>Admin</button>
-      <button routerLink="/student/1" md-button>Dashboard</button>
-      <button routerLink="/course/1" md-button>Courses</button>
+      <button routerLink="/login" md-button *ngIf="!authenticated()">Login</button>
+      <button routerLink="/admin" md-button *ngIf="authenticated()">Admin</button>
+      <button routerLink="/student/1" md-button *ngIf="authenticated()">Dashboard</button>
+      <button routerLink="/course/1" md-button *ngIf="authenticated()">Courses</button>
     </div>
     <div *ngIf="authenticated()">
       <button class="profile-menu" md-button [mdMenuTriggerFor]="profileMenu">
