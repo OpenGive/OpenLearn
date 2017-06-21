@@ -1,10 +1,10 @@
-import { OpenGiveScaffoldFinalPage } from './app.po';
+import { OpenLearn } from './app.po';
 
 describe('open-give-scaffold-final App', () => {
-  let page: OpenGiveScaffoldFinalPage;
+  let page: OpenLearn;
 
   beforeEach(() => {
-    page = new OpenGiveScaffoldFinalPage();
+    page = new OpenLearn();
   });
 
   // it('should display message saying app works', () => {
