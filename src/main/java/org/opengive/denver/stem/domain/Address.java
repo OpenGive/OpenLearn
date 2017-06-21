@@ -36,7 +36,7 @@ public class Address implements Serializable {
     private String streetAddress2;
 
     @NotNull
-    @Size(min = 5, max = 50)
+    @Size(max = 50)
     @Column(name = "city", length = 50, nullable = false)
     private String city;
 

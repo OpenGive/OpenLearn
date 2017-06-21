@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MdDialogRef} from "@angular/material";
+import {Observable} from "rxjs/Observable";
 import * as _ from "lodash";
 
 import {AdminDialogComponent} from "../../admin-dialog.component";
@@ -21,6 +22,7 @@ export class AdminStudentsFormComponent implements OnInit {
 
   roles: string[];
   states: any[];
+  filteredStates: Observable<any[]>;
 
   studentForm: FormGroup;
   formErrors = {
@@ -82,7 +84,6 @@ export class AdminStudentsFormComponent implements OnInit {
         maxlength: 'Street Address 2 cannot be more than 50 characters long'
       },
       city: {
-        minlength: 'City must be at least 5 characters long',
         maxlength: 'City cannot be more than 50 characters long'
       },
       postalCode: {
@@ -147,7 +148,6 @@ export class AdminStudentsFormComponent implements OnInit {
           Validators.maxLength(50)
         ]],
         city: [this.formStudent.address ? this.formStudent.address.city : null, [
-          Validators.minLength(5),
           Validators.maxLength(50)
         ]],
         state: [this.formStudent.address ? this.formStudent.address.state : null],
@@ -200,12 +200,20 @@ export class AdminStudentsFormComponent implements OnInit {
     }
   }
 
-  getRoles(): void {
+  private getRoles(): void {
     this.roles = Object.keys(AppConstants.Role).map(key => AppConstants.Role[key]);
   }
 
-  getStates(): void {
+  private getStates(): void {
     this.states = AppConstants.States;
+    this.filteredStates = this.studentForm.get('address').get('state')
+      .valueChanges
+      .startWith(null)
+      .map(val => val ? this.filterStates(val) : this.states.slice());
+  }
+
+  private filterStates(val: string): any[] {
+    return this.states.filter(state => new RegExp(`${val}`, 'gi').test(state.name));
   }
 
   save(): void {
