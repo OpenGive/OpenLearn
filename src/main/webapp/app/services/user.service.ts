@@ -16,8 +16,7 @@ export class UserService {
 
   getAll(): Observable<User[]> {
     return this._http.get(this.endpoint)
-      .map(resp => resp.json()
-        .map(user => user))
+      .map(resp => resp.json())
       .catch(this.handleError);
   }
 

@@ -6,17 +6,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -74,7 +64,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	@Column(name = "phone_num", length = 15)
 	private String phoneNumber;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "addr_id")
 	private Address address;
 
@@ -86,9 +76,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	@Column(name = "image_url", length = 256)
 	private String imageUrl;
 
-	@Size(max = 20)
+  @JsonIgnore
+  @Size(max = 20)
 	@Column(name = "activation_key", length = 20)
-	@JsonIgnore
 	private String activationKey;
 
 	@Size(max = 20)
@@ -116,13 +106,13 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	@BatchSize(size = 20)
 	private Set<Authority> authorities = new HashSet<>();
 
-	@ManyToMany
+  @JsonIgnore
+  @ManyToMany
 	@JoinTable(
 			name = "user_org",
 			joinColumns = {@JoinColumn(name = "org_id", referencedColumnName = "id") },
 			inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id") }
 			)
-	@JsonIgnore
 	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 	private final Set<User> organizations = new HashSet<>();
 
@@ -274,15 +264,24 @@ public class User extends AbstractAuditingEntity implements Serializable {
 		return login.hashCode();
 	}
 
-	@Override
-	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("User [id=").append(id).append(", login=").append(login).append(", password=").append(password)
-		.append(", firstName=").append(firstName).append(", lastName=").append(lastName).append(", email=")
-		.append(email).append(", phoneNumber=").append(phoneNumber).append(", address=").append(address)
-		.append(", activated=").append(activated).append(", imageUrl=").append(imageUrl)
-		.append(", authorities=").append(authorities).append("]");
-		return builder.toString();
-	}
-
+  @Override
+  public String toString() {
+    return "User{" +
+      "id=" + id +
+      ", login='" + login + '\'' +
+      ", firstName='" + firstName + '\'' +
+      ", lastName='" + lastName + '\'' +
+      ", email='" + email + '\'' +
+      ", phoneNumber='" + phoneNumber + '\'' +
+      ", address=" + address +
+      ", activated=" + activated +
+      ", imageUrl='" + imageUrl + '\'' +
+      ", activationKey='" + activationKey + '\'' +
+      ", resetKey='" + resetKey + '\'' +
+      ", resetDate=" + resetDate +
+      ", is14Plus=" + is14Plus +
+      ", biography='" + biography + '\'' +
+      ", organizations=" + organizations +
+      '}';
+  }
 }

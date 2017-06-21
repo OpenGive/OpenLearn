@@ -10,6 +10,7 @@ import org.opengive.denver.stem.config.Constants;
 import org.opengive.denver.stem.domain.Address;
 import org.opengive.denver.stem.domain.Authority;
 import org.opengive.denver.stem.domain.User;
+import org.opengive.denver.stem.repository.AddressRepository;
 import org.opengive.denver.stem.repository.AuthorityRepository;
 import org.opengive.denver.stem.repository.UserRepository;
 import org.opengive.denver.stem.repository.search.UserSearchRepository;
@@ -50,13 +51,16 @@ public class UserService {
 
     private final AuthorityRepository authorityRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, SocialService socialService, JdbcTokenStore jdbcTokenStore, UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository) {
+    private final AddressRepository addressRepository;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, SocialService socialService, JdbcTokenStore jdbcTokenStore, UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository, AddressRepository addressRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.socialService = socialService;
         this.jdbcTokenStore = jdbcTokenStore;
         this.userSearchRepository = userSearchRepository;
         this.authorityRepository = authorityRepository;
+        this.addressRepository = addressRepository;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -205,11 +209,11 @@ public class UserService {
                 user.setImageUrl(userDTO.getImageUrl());
                 user.setActivated(userDTO.isActivated());
                 user.setBiography(userDTO.getBiography());
-					final Set<Authority> managedAuthorities = user.getAuthorities();
+					      final Set<Authority> managedAuthorities = user.getAuthorities();
                 managedAuthorities.clear();
                 userDTO.getAuthorities().stream()
-                    .map(authorityRepository::findOne)
-                    .forEach(managedAuthorities::add);
+                  .map(authorityRepository::findOne)
+                  .forEach(managedAuthorities::add);
                 log.debug("Changed Information for User: {}", user);
                 return user;
             })
