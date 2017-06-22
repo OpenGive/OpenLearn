@@ -1,4 +1,6 @@
 import {Component, OnChanges, OnInit} from '@angular/core';
+import {LoginPageComponent} from "../../pages/login-page/login-page.component";
+import {LoginService} from "../../shared/login/login.service";
 
 import {Principal} from "../../shared/auth/principal.service";
 
@@ -11,7 +13,7 @@ export class NavigationMenuComponent implements OnChanges {
 
   name: string;
 
-  constructor(private principal: Principal) {}
+  constructor(private loginService: LoginService, private principal: Principal) {}
 
   ngOnChanges(): void {
     this.name = this.principal.getName();
@@ -21,5 +23,9 @@ export class NavigationMenuComponent implements OnChanges {
     let authenticated = this.principal.isIdentityResolved();
     this.ngOnChanges();
     return authenticated;
+  }
+
+  logout(): void {
+    this.loginService.logout();
   }
 }
