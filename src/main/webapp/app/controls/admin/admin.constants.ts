@@ -88,28 +88,28 @@ export const AdminModel = {
     ],
     authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor]
   },
-  // Milestone: {
-  //   title: 'Milestones',
-  //   route: 'milestones',
-  //   defaultSort: 'name',
-  //   columns: [
-  //     {property: 'name', display: 'Name'},
-  //     {property: 'course', display: 'Course'},
-  //     {property: 'points', display: 'Points'}
-  //   ],
-  //   authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor]
-  // },
-  // Achievement: {
-  //   title: 'Achievements',
-  //   route: 'achievements',
-  //   defaultSort: 'name',
-  //   columns: [
-  //     {property: 'name', display: 'Name'},
-  //     {property: 'milestone', display: 'Milestone'},
-  //     {property: 'achievedBy', display: 'Achieved By'}
-  //   ],
-  //   authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor]
-  // },
+  Milestone: {
+    title: 'Milestones',
+    route: 'milestones',
+    defaultSort: 'name',
+    columns: [
+      {property: 'name', display: 'Name'},
+      {property: 'course', display: 'Course'},
+      {property: 'points', display: 'Points'}
+    ],
+    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor]
+  },
+  Achievement: {
+    title: 'Achievements',
+    route: 'achievements',
+    defaultSort: 'name',
+    columns: [
+      {property: 'name', display: 'Name'},
+      {property: 'milestone', display: 'Milestone'},
+      {property: 'achievedBy', display: 'Achieved By'}
+    ],
+    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor]
+  },
   School: {
     route: 'schools'
   }
