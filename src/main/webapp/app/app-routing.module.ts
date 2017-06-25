@@ -109,22 +109,22 @@ const ROUTES: Routes = [
         },
         canActivate: [UserRouteAccessService]
       },
-      {
-        path: AdminModel.Milestone.route,
-        component: AdminMilestonesComponent,
-        data: {
-          authorities: AdminModel.Milestone.authorities
-        },
-        canActivate: [UserRouteAccessService]
-      },
-      {
-        path: AdminModel.Achievement.route,
-        component: AdminAchievementsComponent,
-        data: {
-          authorities: AdminModel.Achievement.authorities
-        },
-        canActivate: [UserRouteAccessService]
-      },
+      // {
+      //   path: AdminModel.Milestone.route,
+      //   component: AdminMilestonesComponent,
+      //   data: {
+      //     authorities: AdminModel.Milestone.authorities
+      //   },
+      //   canActivate: [UserRouteAccessService]
+      // },
+      // {
+      //   path: AdminModel.Achievement.route,
+      //   component: AdminAchievementsComponent,
+      //   data: {
+      //     authorities: AdminModel.Achievement.authorities
+      //   },
+      //   canActivate: [UserRouteAccessService]
+      // },
       {
         path: '',
         pathMatch: 'full',
