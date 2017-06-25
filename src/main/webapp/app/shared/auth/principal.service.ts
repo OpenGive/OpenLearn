@@ -113,7 +113,7 @@ export class Principal {
     }
 
     isIdentityResolved(): boolean {
-        return this.userIdentity !== undefined;
+        return this.userIdentity != undefined;
     }
 
     getAuthenticationState(): Observable<AccountModel> {
