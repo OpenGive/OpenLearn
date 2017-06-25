@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MdDialogRef} from "@angular/material";
+import {Observable} from "rxjs/Observable";
 
 import {AdminDialogComponent} from "../../admin-dialog.component";
 import {AdminModel} from "../../admin.constants";
@@ -19,6 +20,8 @@ export class AdminSessionsFormComponent implements OnInit {
   editing: boolean;
 
   organizations: any[];
+
+  filteredOrganizations: Observable<any[]>;
 
   sessionForm: FormGroup;
   formErrors = {
@@ -113,7 +116,15 @@ export class AdminSessionsFormComponent implements OnInit {
   private getOrganizations(): void {
     this.adminService.getAll(AdminModel.Organization.route).subscribe(resp => {
       this.organizations = resp;
+      this.filteredOrganizations = this.sessionForm.get('organization')
+        .valueChanges
+        .startWith(null)
+        .map(val => val ? this.filterOrganizations(val) : this.organizations.slice());
     });
+  }
+
+  private filterOrganizations(val: string): any[] {
+    return this.organizations.filter(organization => new RegExp(`${val}`, 'gi').test(organization.name));
   }
 
   save(): void {

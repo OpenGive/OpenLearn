@@ -40,7 +40,7 @@
         <input mdInput formControlName="organization" placeholder="Organization" [mdAutocomplete]="organization"/>
         <md-error *ngIf="formErrors.organization">{{formErrors.organization}}</md-error>
         <md-autocomplete #organization="mdAutocomplete" [displayWith]="displayOrganization">
-          <md-option *ngFor="let organization of organizations" [value]="organization">{{organization.name}}</md-option>
+          <md-option *ngFor="let organization of filteredOrganizations | async" [value]="organization">{{organization.name}}</md-option>
         </md-autocomplete>
       </md-input-container>
       <md-input-container fxFlex="30%">
