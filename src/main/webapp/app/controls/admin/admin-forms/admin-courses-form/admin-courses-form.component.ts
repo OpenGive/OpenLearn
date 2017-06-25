@@ -1,13 +1,13 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MdDialogRef} from "@angular/material";
+import {Observable} from "rxjs/Observable";
 
 import {AdminDialogComponent} from "../../admin-dialog.component";
 import {AdminModel} from "../../admin.constants";
 import {AdminService} from "../../../../services/admin.service";
 import {NotifyService} from "../../../../services/notify.service";
 import {UserService} from "../../../../services/user.service";
-import {Observable} from "rxjs/Observable";
 
 @Component({
   selector: 'admin-courses-form',

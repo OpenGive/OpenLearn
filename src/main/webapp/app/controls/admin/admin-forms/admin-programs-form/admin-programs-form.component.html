@@ -39,13 +39,13 @@
         <input mdInput formControlName="session" placeholder="Session" [mdAutocomplete]="session">
         <md-error *ngIf="formErrors.session">{{formErrors.session}}</md-error>
         <md-autocomplete #session="mdAutocomplete" [displayWith]="displaySession">
-          <md-option *ngFor="let session of sessions" [value]="session">{{session.name}}</md-option>
+          <md-option *ngFor="let session of filteredSessions | async" [value]="session">{{session.name}}</md-option>
         </md-autocomplete>
       </md-input-container>
       <md-input-container fxFlex="30%">
         <input mdInput formControlName="school" placeholder="School" [mdAutocomplete]="school">
         <md-autocomplete #school="mdAutocomplete" [displayWith]="displaySchool">
-          <md-option *ngFor="let school of schools" [value]="school">{{school.name}}</md-option>
+          <md-option *ngFor="let school of filteredSchools | async" [value]="school">{{school.name}}</md-option>
         </md-autocomplete>
       </md-input-container>
       <!-- [disabled] used as workaround for angular material bug -->

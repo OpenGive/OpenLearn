@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MdDialogRef} from "@angular/material";
+import {Observable} from "rxjs/Observable";
 
 import {AdminDialogComponent} from "../../admin-dialog.component";
 import {AdminModel} from "../../admin.constants";
@@ -20,6 +21,9 @@ export class AdminProgramsFormComponent implements OnInit {
 
   schools: any[];
   sessions: any[];
+
+  filteredSchools: Observable<any[]>;
+  filteredSessions: Observable<any[]>;
 
   programForm: FormGroup;
   formErrors = {
@@ -98,13 +102,29 @@ export class AdminProgramsFormComponent implements OnInit {
   private getSchools(): void {
     this.adminService.getAll(AdminModel.School.route).subscribe(resp => {
       this.schools = resp;
+      this.filteredSchools = this.programForm.get('school')
+        .valueChanges
+        .startWith(null)
+        .map(val => val ? this.filterSchools(val) : this.schools.slice());
     });
+  }
+
+  private filterSchools(val: string): any[] {
+    return this.schools.filter(school => new RegExp(`${val}`, 'gi').test(school.name));
   }
 
   private getSessions(): void {
     this.adminService.getAll(AdminModel.Session.route).subscribe(resp => {
       this.sessions = resp;
+      this.filteredSessions = this.programForm.get('session')
+        .valueChanges
+        .startWith(null)
+        .map(val => val ? this.filterSessions(val) : this.sessions.slice());
     });
+  }
+
+  private filterSessions(val: string): any[] {
+    return this.sessions.filter(session => new RegExp(`${val}`, 'gi').test(session.name));
   }
 
   save(): void {
