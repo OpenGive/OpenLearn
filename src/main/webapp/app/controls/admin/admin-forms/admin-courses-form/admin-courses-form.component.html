@@ -40,21 +40,21 @@
         <input mdInput formControlName="organization" placeholder="Organization" [mdAutocomplete]="organization">
         <md-error *ngIf="formErrors.organization">{{formErrors.organization}}</md-error>
         <md-autocomplete #organization="mdAutocomplete" [displayWith]="displayOrganization">
-          <md-option *ngFor="let organization of organizations" [value]="organization">{{organization.name}}</md-option>
+          <md-option *ngFor="let organization of filteredOrganizations | async" [value]="organization">{{organization.name}}</md-option>
         </md-autocomplete>
       </md-input-container>
       <md-input-container fxFlex="30%">
         <input mdInput formControlName="program" placeholder="Program" [mdAutocomplete]="program">
         <md-error *ngIf="formErrors.program">{{formErrors.program}}</md-error>
         <md-autocomplete #program="mdAutocomplete" [displayWith]="displayProgram">
-          <md-option *ngFor="let program of programs" [value]="program">{{program.name}}</md-option>
+          <md-option *ngFor="let program of filteredPrograms | async" [value]="program">{{program.name}}</md-option>
         </md-autocomplete>
       </md-input-container>
       <md-input-container fxFlex="30%">
         <input mdInput formControlName="instructor" placeholder="Instructor" [mdAutocomplete]="instructor">
         <md-error *ngIf="formErrors.instructor">{{formErrors.instructor}}</md-error>
         <md-autocomplete #instructor="mdAutocomplete" [displayWith]="displayInstructor">
-          <md-option *ngFor="let instructor of instructors" [value]="instructor">{{instructor.lastName}}, {{instructor.firstName}}</md-option>
+          <md-option *ngFor="let instructor of filteredInstructors | async" [value]="instructor">{{instructor.lastName}}, {{instructor.firstName}}</md-option>
         </md-autocomplete>
       </md-input-container>
       <md-input-container fxFlex="30%">

@@ -7,6 +7,7 @@ import {AdminModel} from "../../admin.constants";
 import {AdminService} from "../../../../services/admin.service";
 import {NotifyService} from "../../../../services/notify.service";
 import {UserService} from "../../../../services/user.service";
+import {Observable} from "rxjs/Observable";
 
 @Component({
   selector: 'admin-courses-form',
@@ -22,6 +23,10 @@ export class AdminCoursesFormComponent implements OnInit {
   instructors: any[];
   organizations: any[];
   programs: any[];
+
+  filteredInstructors: Observable<any[]>;
+  filteredOrganizations: Observable<any[]>;
+  filteredPrograms: Observable<any[]>;
 
   courseForm: FormGroup;
   formErrors = {
@@ -132,19 +137,47 @@ export class AdminCoursesFormComponent implements OnInit {
   private getInstructors(): void {
     this.userService.getInstructors().subscribe(resp => {
       this.instructors = resp;
+      this.filteredInstructors = this.courseForm.get('instructor')
+        .valueChanges
+        .startWith(null)
+        .map(val => val ? this.filterInstructors(val) : this.instructors.slice());
+    });
+  }
+
+  private filterInstructors(val: string): any[] {
+    return this.instructors.filter(instructor => {
+      let input = new RegExp(`${val}`, 'gi');
+      return (input.test(instructor.firstName + ' ' + instructor.lastName)
+        || input.test(instructor.lastName + ', ' + instructor.firstName));
     });
   }
 
   private getOrganizations(): void {
     this.adminService.getAll(AdminModel.Organization.route).subscribe(resp => {
       this.organizations = resp;
+      this.filteredOrganizations = this.courseForm.get('organization')
+        .valueChanges
+        .startWith(null)
+        .map(val => val ? this.filterOrganizations(val) : this.organizations.slice());
     });
+  }
+
+  private filterOrganizations(val: string): any[] {
+    return this.organizations.filter(organization => new RegExp(`${val}`, 'gi').test(organization.name));
   }
 
   private getPrograms(): void {
     this.adminService.getAll(AdminModel.Program.route).subscribe(resp => {
       this.programs = resp;
+      this.filteredPrograms = this.courseForm.get('program')
+        .valueChanges
+        .startWith(null)
+        .map(val => val ? this.filterPrograms(val) : this.programs.slice());
     });
+  }
+
+  private filterPrograms(val: string): any[] {
+    return this.programs.filter(program => new RegExp(`${val}`, 'gi').test(program.name));
   }
 
   save(): void {

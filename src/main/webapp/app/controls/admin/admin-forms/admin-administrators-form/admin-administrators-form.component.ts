@@ -22,6 +22,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
 
   roles: string[];
   states: any[];
+
   filteredStates: Observable<any[]>;
 
   administratorForm: FormGroup;
