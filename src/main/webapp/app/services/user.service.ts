@@ -4,7 +4,7 @@ import * as _ from "lodash";
 
 import {AppConstants} from "../app.constants";
 import {HttpWrapperService} from '../shared/auth/http-wrapper.service';
-import {User} from "../shared/user/user.model";
+import {User} from "../models/user.model";
 
 
 @Injectable()

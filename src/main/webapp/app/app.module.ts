@@ -1,4 +1,3 @@
-import {CourseService} from './services/course.service';
 import {HttpWrapperService} from './shared/auth/http-wrapper.service';
 import {AppRoutingModule} from "./app-routing.module";
 import {BrowserModule} from "@angular/platform-browser";
@@ -22,7 +21,7 @@ import {UserService} from "./services/user.service";
 import {UserRouteAccessService} from "./shared/auth/user-route-access-service";
 import {Principal} from "./shared/auth/principal.service";
 import {AccountService} from "./shared/auth/account.service";
-import {LoginService} from "./shared/login/login.service";
+import {LoginService} from "./services/login.service";
 import {CookieModule} from "ngx-cookie";
 import {AuthServerProvider} from "./shared/auth/auth-oauth2.service";
 import {StateStorageService} from "./shared/auth/state-storage.service";
@@ -36,7 +35,6 @@ import {PortfolioListComponent} from './controls/portfolio/portfolio-list/portfo
 import {AdminGridService} from "./services/admin-grid.service";
 import {AdminService} from "./services/admin.service";
 import {CourseViewComponent} from "./controls/course/course-view/course-view.component"
-import {CourseMilestoneListComponent} from './controls/course/course-milestone-list/course-milestone-list.component';
 import {ProfilePageComponent} from "./pages/profile-page/profile-page.component";
 import {NotifyService} from "./services/notify.service";
 import {OLAdminModule} from "./controls/admin/admin.module";
@@ -59,7 +57,6 @@ import {DashboardPageComponent} from "./pages/dashboard-page/dashboard-page.comp
     PortfolioPageComponent,
     PortfolioListComponent,
     CourseViewComponent,
-    CourseMilestoneListComponent,
     ProfilePageComponent,
     DashboardPageComponent
   ],
@@ -85,7 +82,6 @@ import {DashboardPageComponent} from "./pages/dashboard-page/dashboard-page.comp
     AuthServerProvider,
     StateStorageService,
     HttpWrapperService,
-    CourseService,
     PortfolioService,
     AdminService,
     AdminGridService,

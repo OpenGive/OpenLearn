@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 
-import {LoginService} from "../../shared/login/login.service";
+import {LoginService} from "../../services/login.service";
 import {Principal} from "../../shared/auth/principal.service";
 import {AppConstants} from "../../app.constants";
 
@@ -19,7 +19,8 @@ export class NavigationMenuComponent {
     student: false
   };
 
-  constructor(private loginService: LoginService, private principal: Principal) {}
+  constructor(private loginService: LoginService,
+              private principal: Principal) {}
 
   authenticated(): boolean {
     let authenticated = this.principal.isIdentityResolved();

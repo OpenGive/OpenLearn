@@ -23,11 +23,6 @@ export class AdminPageComponent implements OnInit {
   ];
   filteredTabs: any[];
 
-  adminPageFlex = {
-    lg: '1280px',
-    xs: '100%'
-  };
-
   constructor(private principal: Principal) {}
 
   ngOnInit(): void {

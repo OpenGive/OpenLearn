@@ -9,12 +9,4 @@
     <h3>{{this.course.name}} {{this.course.id}}</h3>
     <h5>{{this.course.instructor.firstName}} {{this.course.instructor.lastName}}</h5>
   </div>
-  <div fxFlex="grow" class="course-view-header-progress">
-    <h3>{{calculateTotalPoints()}}</h3> <h5>Points</h5> | <h3>0</h3> <h5>Badges</h5>
-  </div>
-
 </div>
-<md-dialog-content class="course-view-milestones">
-  <app-course-milestone-list [milestones]="course.milestones"></app-course-milestone-list>
-
-</md-dialog-content>
