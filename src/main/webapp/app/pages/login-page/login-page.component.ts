@@ -2,7 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {MdDialog} from "@angular/material";
 import {Router} from "@angular/router";
 
-import {LoginService} from "../../shared/login/login.service";
+import {LoginService} from "../../services/login.service";
 import {ForgotPasswordDialogComponent} from "../../controls/forgot-password-dialog/forgot-password-dialog.component";
 
 @Component({

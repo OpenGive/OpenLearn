@@ -1,7 +1,9 @@
-import { Course } from './../../../models/course';
-import { CourseService } from './../../../services/course.service';
 import {Component, OnInit, Inject} from '@angular/core';
 import {MD_DIALOG_DATA} from '@angular/material';
+
+import {AdminModel} from "../../admin/admin.constants";
+import {AdminService} from "../../../services/admin.service";
+import {Course} from '../../../models/course';
 
 @Component({
   selector: 'app-course-view',
@@ -10,17 +12,16 @@ import {MD_DIALOG_DATA} from '@angular/material';
 })
 export class CourseViewComponent implements OnInit {
 
-  constructor(@Inject(MD_DIALOG_DATA) public course: Course, private courseService: CourseService) {
+  constructor(@Inject(MD_DIALOG_DATA) public course: Course,
+              private adminService: AdminService) {}
+
+  ngOnInit(): void {
+    this.getCourses();
   }
 
-  ngOnInit() {
-    //reload the course to retrieve the list of milestones
-    this.courseService.get(this.course.id).subscribe(course => {this.course = course});
+  private getCourses(): void {
+    this.adminService.get(AdminModel.Course.route, this.course.id).subscribe(course => {
+      this.course = course;
+    });
   }
-
-  calculateTotalPoints(): Number {
-    if (!this.course.milestones) return 0;
-    return this.course.milestones.reduce(function(a,b) { return a + b.points; }, 0);
-  }
-
 }

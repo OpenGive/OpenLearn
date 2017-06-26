@@ -1,6 +1,8 @@
-import { Course } from './../models/course';
-import { CourseService } from './../services/course.service';
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+
+import {AdminModel} from "../controls/admin/admin.constants";
+import {AdminService} from "../services/admin.service";
+import {Course} from '../models/course';
 
 @Component({
   selector: 'app-student-courses',
@@ -9,10 +11,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StudentCoursesComponent implements OnInit {
 
-  constructor(private courseService: CourseService) { }
-studentCourses: Course[] = [];
+  studentCourses: Course[] = [];
+
+  constructor(private adminService: AdminService) {}
+
   ngOnInit() {
-     this.courseService.getAll().subscribe(courses => {
+    this.getCourses();
+  }
+
+  private getCourses(): void {
+    this.adminService.getAll(AdminModel.Course.route).subscribe(courses => {
       this.studentCourses = courses
     });
   }
