@@ -13,21 +13,22 @@ $perspective: 1;
   position:absolute;
   // height:100%;
   width:100%;
-  top:0px;
+  top:0;
   z-index:0;
   background-color:$farColor;
 }
 
 .layer {
   position:fixed;
-  top:0px;
   margin:auto;
   width:100%;
   z-index:100;
   min-height:400px;
-  top: 0; left: -160px; right: 0; bottom: 0;
-  background-position: top center;
-  background-repeat: no-repeat;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: no-repeat top center;
 }
 
 .parallax {
@@ -43,22 +44,19 @@ $perspective: 1;
   transform-style: preserve-3d;
 }
 
-
-
-
 @for $i from 1 to $layer {
   .parallax-group div:nth-child(#{$i}) {
-    
+
     //figure out best mixing math, this isn't true to the starting colors, doesnt scale that well
-    $mixedColor: mix($nearColor, $farColor, $i*15); 
+    $mixedColor: mix($nearColor, $farColor, $i*15);
     $randOffset: random(300)+px;
     $zDepth: ($layer - $i)/0.5;
-    
-    background-color:$farColor;    
+
+    background-color:$farColor;
     margin-top:#{300*($i+1) + px};
     background-color:$mixedColor;
     transform: translateZ(#{-($zDepth) + px}) scale(#{1 + (-($zDepth) * -1) / $perspective});
- 
+
     &:before {
       content:"";
       width:100%;
@@ -102,7 +100,7 @@ $perspective: 1;
   $zDepth: (1)/0.5;
   transform: translateZ(#{-($zDepth) + px}) scale(#{1 + (-($zDepth) * -1) / $perspective});
 }
- 
+
 .fill {
   height:80%; //?
 }
