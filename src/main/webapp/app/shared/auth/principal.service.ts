@@ -127,4 +127,8 @@ export class Principal {
     getName(): string {
         return this.isIdentityResolved() ? this.userIdentity.lastName + ', ' + this.userIdentity.firstName : null;
     }
+
+    getRoles(): string[] {
+      return this.isIdentityResolved() ? this.userIdentity.authorities : [];
+    }
 }

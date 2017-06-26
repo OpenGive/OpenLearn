@@ -3,10 +3,10 @@
     <div fxLayout="column" fxLayoutAlign="center center">
       <div class="side-logo"></div>
       <button routerLink="/" (click)="sidenav.close()" md-button>Home</button>
-      <button routerLink="/login" (click)="sidenav.close()" md-button>Login</button>
-      <button routerLink="/admin" (click)="sidenav.close()" md-button>Admin</button>
-      <button routerLink="/dashboard" (click)="sidenav.close()" md-button>Dashboard</button>
-      <button routerLink="/portfolio" (click)="sidenav.close()" md-button>Portfolio</button>
+      <button routerLink="/login" (click)="sidenav.close()" md-button *ngIf="!authenticated()">Login</button>
+      <button routerLink="/admin" (click)="sidenav.close()" md-button *ngIf="authenticated() && (roles.admin || roles.orgAdmin)">Admin</button>
+      <button routerLink="/dashboard" (click)="sidenav.close()" md-button *ngIf="authenticated() && roles.instructor">Dashboard</button>
+      <button routerLink="/portfolio" (click)="sidenav.close()" md-button *ngIf="authenticated() && roles.student">Portfolio</button>
     </div>
   </md-sidenav>
   <div class="main-content">
@@ -26,9 +26,9 @@
     <div fxHide.lt-md>
       <button routerLink="/" md-button>Home</button>
       <button routerLink="/login" md-button *ngIf="!authenticated()">Login</button>
-      <button routerLink="/admin" md-button *ngIf="authenticated()">Admin</button>
-      <button routerLink="/dashboard" md-button *ngIf="authenticated()">Dashboard</button>
-      <button routerLink="/portfolio" md-button *ngIf="authenticated()">Portfolio</button>
+      <button routerLink="/admin" md-button *ngIf="authenticated() && (roles.admin || roles.orgAdmin)">Admin</button>
+      <button routerLink="/dashboard" md-button *ngIf="authenticated() && roles.instructor">Dashboard</button>
+      <button routerLink="/portfolio" md-button *ngIf="authenticated() && roles.student">Portfolio</button>
     </div>
     <div *ngIf="authenticated()">
       <button class="profile-menu" md-button [mdMenuTriggerFor]="profileMenu">
