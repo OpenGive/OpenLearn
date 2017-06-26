@@ -5,8 +5,8 @@
       <button routerLink="/" (click)="sidenav.close()" md-button>Home</button>
       <button routerLink="/login" (click)="sidenav.close()" md-button>Login</button>
       <button routerLink="/admin" (click)="sidenav.close()" md-button>Admin</button>
-      <button routerLink="/student/1" (click)="sidenav.close()" md-button>Dashboard</button>
-      <button routerLink="/course/1" (click)="sidenav.close()" md-button>Courses</button>
+      <button routerLink="/dashboard" (click)="sidenav.close()" md-button>Dashboard</button>
+      <button routerLink="/portfolio" (click)="sidenav.close()" md-button>Portfolio</button>
     </div>
   </md-sidenav>
   <div class="main-content">
@@ -27,8 +27,8 @@
       <button routerLink="/" md-button>Home</button>
       <button routerLink="/login" md-button *ngIf="!authenticated()">Login</button>
       <button routerLink="/admin" md-button *ngIf="authenticated()">Admin</button>
-      <button routerLink="/student/1" md-button *ngIf="authenticated()">Dashboard</button>
-      <button routerLink="/course/1" md-button *ngIf="authenticated()">Courses</button>
+      <button routerLink="/dashboard" md-button *ngIf="authenticated()">Dashboard</button>
+      <button routerLink="/portfolio" md-button *ngIf="authenticated()">Portfolio</button>
     </div>
     <div *ngIf="authenticated()">
       <button class="profile-menu" md-button [mdMenuTriggerFor]="profileMenu">

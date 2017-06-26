@@ -11,10 +11,10 @@ import {Principal} from "../../shared/auth/principal.service";
 export class AdminPageComponent implements OnInit {
 
   tabs = [
-    { name: AdminModel.Organization.title, route: AdminModel.Organization.route, authorities: AdminModel.Organization.authorities },
     { name: AdminModel.Administrator.title, route: AdminModel.Administrator.route, authorities: AdminModel.Administrator.authorities },
     { name: AdminModel.Instructor.title, route: AdminModel.Instructor.route, authorities: AdminModel.Instructor.authorities },
     { name: AdminModel.Student.title, route: AdminModel.Student.route, authorities: AdminModel.Student.authorities },
+    { name: AdminModel.Organization.title, route: AdminModel.Organization.route, authorities: AdminModel.Organization.authorities },
     { name: AdminModel.Session.title, route: AdminModel.Session.route, authorities: AdminModel.Session.authorities },
     { name: AdminModel.Program.title, route: AdminModel.Program.route, authorities: AdminModel.Program.authorities },
     { name: AdminModel.Course.title, route: AdminModel.Course.route, authorities: AdminModel.Course.authorities },

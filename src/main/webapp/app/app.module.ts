@@ -9,8 +9,6 @@ import {HttpModule} from "@angular/http";
 import {AppComponent} from "./app.component";
 import {LandingPageComponent} from "./pages/landing-page/landing-page.component";
 import {LoginPageComponent} from "./pages/login-page/login-page.component";
-import {StudentPageComponent} from "./pages/student-page/student-page.component";
-import {CoursePageComponent} from "./pages/course-page/course-page.component";
 import {PortfolioPageComponent} from "./pages/portfolio-page/portfolio-page.component";
 import {NavigationMenuComponent} from "./controls/navigation-menu/navigation-menu.component";
 import {MaterialModule, MdNativeDateModule} from "@angular/material";
@@ -42,6 +40,7 @@ import {CourseMilestoneListComponent} from './controls/course/course-milestone-l
 import {ProfilePageComponent} from "./pages/profile-page/profile-page.component";
 import {NotifyService} from "./services/notify.service";
 import {OLAdminModule} from "./controls/admin/admin.module";
+import {DashboardPageComponent} from "./pages/dashboard-page/dashboard-page.component";
 
 @NgModule({
   declarations: [
@@ -50,8 +49,6 @@ import {OLAdminModule} from "./controls/admin/admin.module";
     LoginPageComponent,
     ForgotPasswordDialogComponent,
     AdminPageComponent,
-    StudentPageComponent,
-    CoursePageComponent,
     NavigationMenuComponent,
     PortfolioCardComponent,
     CourseCardComponent,
@@ -63,7 +60,8 @@ import {OLAdminModule} from "./controls/admin/admin.module";
     PortfolioListComponent,
     CourseViewComponent,
     CourseMilestoneListComponent,
-    ProfilePageComponent
+    ProfilePageComponent,
+    DashboardPageComponent
   ],
   imports: [
     AppRoutingModule,

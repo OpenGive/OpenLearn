@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { PortfolioService } from '../../services/portfolio.service'
-import { PortfolioItem } from '../../models/portfolio-item'
+import {Component} from '@angular/core';
+
+import {PortfolioItem} from "../../models/portfolio-item";
+import {PortfolioService} from "../../services/portfolio.service";
 
 @Component({
   selector: 'app-portfolio-page',
   templateUrl: './portfolio-page.component.html',
   styleUrls: ['./portfolio-page.component.css']
 })
-export class PortfolioPageComponent implements OnInit {
+export class PortfolioPageComponent {
 
   constructor(private portfolioService: PortfolioService) {}
 
@@ -29,5 +30,4 @@ export class PortfolioPageComponent implements OnInit {
       this.loadFakePortfolios();
     });
   }
-
 }
