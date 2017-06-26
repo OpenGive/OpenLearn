@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity Milestone.
+    -->
+    <changeSet id="20170412144656-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="course_id"
+                                 baseTableName="milestone"
+                                 constraintName="fk_milestone_course_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="course"/>
+
+         <addForeignKeyConstraint baseColumnNames="milestone_id"
+                                 baseTableName="milestone_link"
+                                 constraintName="fk_milestone_link_milestone_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="milestone"/>
+
+       	<addForeignKeyConstraint baseColumnNames="link_id"
+                                 baseTableName="milestone_link"
+                                 constraintName="fk_milestone_link_link_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="item_link"/>
+
+    </changeSet>
+</databaseChangeLog>

@@ -47,8 +47,9 @@ public class Achievement implements Serializable {
 	@Column(name = "badge_url", length = 200)
 	private String badgeUrl;
 
+	@NotNull
 	@ManyToOne
-	private Activity activity;
+	private Milestone milestone;
 
 	@NotNull
 	@OneToOne(optional = false)
@@ -102,17 +103,17 @@ public class Achievement implements Serializable {
 		this.badgeUrl = badgeUrl;
 	}
 
-	public Activity getActivity() {
-		return activity;
+	public Milestone getMilestone() {
+		return milestone;
 	}
 
-	public Achievement activity(final Activity activity) {
-		this.activity = activity;
+	public Achievement milestone(final Milestone milestone) {
+		this.milestone = milestone;
 		return this;
 	}
 
-	public void setActivity(final Activity activity) {
-		this.activity = activity;
+	public void setMilestone(final Milestone milestone) {
+		this.milestone = milestone;
 	}
 
 	public User getAchievedBy() {
@@ -149,7 +150,7 @@ public class Achievement implements Serializable {
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("Achievement [id=").append(id).append(", name=").append(name).append(", description=")
-		.append(description).append(", badgeUrl=").append(badgeUrl).append(", activity=").append(activity)
+		.append(description).append(", badgeUrl=").append(badgeUrl).append(", milestone=").append(milestone)
 		.append(", achievedBy=").append(achievedBy).append("]");
 		return builder.toString();
 	}

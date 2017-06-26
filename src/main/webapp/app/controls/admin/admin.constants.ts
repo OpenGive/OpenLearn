@@ -1,14 +1,6 @@
 import {AppConstants} from "../../app.constants";
+
 export const AdminModel = {
-  Organization: {
-    title: 'Organizations',
-    route: 'organizations',
-    defaultSort: 'name',
-    columns: [
-      {property: 'name', display: 'Name'}
-    ],
-    authorities: [AppConstants.Role.Admin]
-  },
   Administrator: {
     title: 'Administrators',
     route: 'administrators',
@@ -46,7 +38,16 @@ export const AdminModel = {
       {property: 'authorities', display: 'Roles'},
       {property: 'activated', display: 'Active'}
     ],
-    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor]
+    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin]
+  },
+  Organization: {
+    title: 'Organizations',
+    route: 'organizations',
+    defaultSort: 'name',
+    columns: [
+      {property: 'name', display: 'Name'}
+    ],
+    authorities: [AppConstants.Role.Admin]
   },
   Session: {
     title: 'Sessions',
@@ -85,7 +86,29 @@ export const AdminModel = {
       {property: 'startDate', display: 'Start Date'},
       {property: 'endDate', display: 'End Date'}
     ],
-    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor]
+    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin]
+  },
+  Milestone: {
+    title: 'Milestones',
+    route: 'milestones',
+    defaultSort: 'name',
+    columns: [
+      {property: 'name', display: 'Name'},
+      {property: 'course', display: 'Course'},
+      {property: 'points', display: 'Points'}
+    ],
+    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin]
+  },
+  Achievement: {
+    title: 'Achievements',
+    route: 'achievements',
+    defaultSort: 'name',
+    columns: [
+      {property: 'name', display: 'Name'},
+      {property: 'milestone', display: 'Milestone'},
+      {property: 'achievedBy', display: 'Achieved By'}
+    ],
+    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin]
   },
   School: {
     route: 'schools'

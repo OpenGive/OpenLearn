@@ -53,9 +53,10 @@ public class CacheConfiguration {
 			cm.createCache(org.opengive.denver.stem.domain.Course.class.getName(), jcacheConfiguration);
 			cm.createCache(org.opengive.denver.stem.domain.Course.class.getName() + ".resources", jcacheConfiguration);
 			cm.createCache(org.opengive.denver.stem.domain.Course.class.getName() + ".students", jcacheConfiguration);
-			cm.createCache(org.opengive.denver.stem.domain.Course.class.getName() + ".activities", jcacheConfiguration);
-			cm.createCache(org.opengive.denver.stem.domain.Activity.class.getName(), jcacheConfiguration);
-			cm.createCache(org.opengive.denver.stem.domain.Activity.class.getName() + ".resources", jcacheConfiguration);
+			cm.createCache(org.opengive.denver.stem.domain.Course.class.getName() + ".milestones", jcacheConfiguration);
+			cm.createCache(org.opengive.denver.stem.domain.Milestone.class.getName(), jcacheConfiguration);
+			cm.createCache(org.opengive.denver.stem.domain.Milestone.class.getName() + ".resources", jcacheConfiguration);
+			cm.createCache(org.opengive.denver.stem.domain.Milestone.class.getName() + ".achievements", jcacheConfiguration);
 			cm.createCache(org.opengive.denver.stem.domain.Achievement.class.getName(), jcacheConfiguration);
 			cm.createCache(org.opengive.denver.stem.domain.Achievement.class.getName() + ".achievedBy", jcacheConfiguration);
 			cm.createCache(org.opengive.denver.stem.domain.ItemLink.class.getName(), jcacheConfiguration);

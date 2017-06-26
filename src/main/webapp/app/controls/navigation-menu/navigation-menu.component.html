@@ -3,10 +3,10 @@
     <div fxLayout="column" fxLayoutAlign="center center">
       <div class="side-logo"></div>
       <button routerLink="/" (click)="sidenav.close()" md-button>Home</button>
-      <button routerLink="/login" (click)="sidenav.close()" md-button>Login</button>
-      <button routerLink="/admin" (click)="sidenav.close()" md-button>Admin</button>
-      <button routerLink="/student/1" (click)="sidenav.close()" md-button>Dashboard</button>
-      <button routerLink="/course/1" (click)="sidenav.close()" md-button>Courses</button>
+      <button routerLink="/login" (click)="sidenav.close()" md-button *ngIf="!authenticated()">Login</button>
+      <button routerLink="/admin" (click)="sidenav.close()" md-button *ngIf="authenticated() && (roles.admin || roles.orgAdmin)">Admin</button>
+      <button routerLink="/dashboard" (click)="sidenav.close()" md-button *ngIf="authenticated() && roles.instructor">Dashboard</button>
+      <button routerLink="/portfolio" (click)="sidenav.close()" md-button *ngIf="authenticated() && roles.student">Portfolio</button>
     </div>
   </md-sidenav>
   <div class="main-content">
@@ -25,34 +25,28 @@
   <div fxLayout="row">
     <div fxHide.lt-md>
       <button routerLink="/" md-button>Home</button>
-      <button routerLink="/login" md-button>Login</button>
-      <button routerLink="/admin" md-button>Admin</button>
-      <button routerLink="/student/1" md-button>Dashboard</button>
-      <button routerLink="/course/1" md-button>Courses</button>
+      <button routerLink="/login" md-button *ngIf="!authenticated()">Login</button>
+      <button routerLink="/admin" md-button *ngIf="authenticated() && (roles.admin || roles.orgAdmin)">Admin</button>
+      <button routerLink="/dashboard" md-button *ngIf="authenticated() && roles.instructor">Dashboard</button>
+      <button routerLink="/portfolio" md-button *ngIf="authenticated() && roles.student">Portfolio</button>
     </div>
-    <div>
+    <div *ngIf="authenticated()">
       <button class="profile-menu" md-button [mdMenuTriggerFor]="profileMenu">
         <div class="circle">
-          <img height="32" width="32" src="https://material.angular.io/shiba1.d84e1a8ed94377452dbf.jpg" alt="Braden Hamm">
+          <img height="32" width="32" style="border-radius: 50%" src="https://media.licdn.com/mpr/mpr/shrinknp_200_200/AAEAAQAAAAAAAADYAAAAJGQ5NDE2NTkwLTM2YWQtNDAwMi05MTRmLTMxMGFkNWYwY2RhYg.jpg" alt="Vik">
         </div>
-        <span>
-        Levi Fuller
-        </span>
+        <span>{{name}}</span>
       </button>
       <md-menu #profileMenu="mdMenu" yPosition="above">
         <button routerLink="/profile" md-menu-item>
           <md-icon><i mdPrefix class="fa fa-user fa-lg"></i></md-icon>
           <span>Profile</span>
         </button>
-        <button md-menu-item disabled>
-          <md-icon><i mdPrefix class="fa fa-cog fa-lg"></i></md-icon>
-          <span>Admin</span>
-        </button>
         <button md-menu-item>
           <md-icon><i mdPrefix class="fa fa-info fa-lg"></i></md-icon>
           <span>About</span>
         </button>
-        <button md-menu-item>
+        <button routerLink="/" (click)="logout()" md-menu-item>
           <md-icon>
           <i mdPrefix class="fa fa-sign-out fa-lg"></i></md-icon>
           <span>Logout</span>

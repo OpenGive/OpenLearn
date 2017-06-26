@@ -79,9 +79,9 @@ export class AdminGridComponent implements OnInit {
       return this.displayAuthorities(row[column.property]);
     } else if (['endDate', 'startDate'].includes(column.property)) {
       return this.displayDate(row[column.property]);
-    } else if (['organization', 'program', 'school', 'session'].includes(column.property)) {
+    } else if (['course', 'milestone', 'organization', 'program', 'school', 'session'].includes(column.property)) {
       return this.displayObject(row[column.property]);
-    } else if (['instructor'].includes(column.property)) {
+    } else if (['achievedBy', 'instructor'].includes(column.property)) {
       return this.displayUser(row[column.property]);
     } else {
       return row[column.property];
@@ -115,9 +115,9 @@ export class AdminGridComponent implements OnInit {
     this.sortColumn = column.property;
     if (['authorities'].includes(column.property)) {
       this.filteredRows = _.sortBy(this.grid.rows, [row => this.displayAuthorities(row[column.property])]);
-    } else if (['organization', 'program', 'school', 'session'].includes(column.property)) {
+    } else if (['course', 'milestone', 'organization', 'program', 'school', 'session'].includes(column.property)) {
       this.filteredRows = _.sortBy(this.grid.rows, [row => this.displayObject(row[column.property])]);
-    } else if (['instructor'].includes(column.property)) {
+    } else if (['achievedBy', 'instructor'].includes(column.property)) {
       this.filteredRows = _.sortBy(this.grid.rows, [row => this.displayUser(row[column.property])]);
     } else {
       this.filteredRows = _.sortBy(this.grid.rows, [row => row[column.property]]);

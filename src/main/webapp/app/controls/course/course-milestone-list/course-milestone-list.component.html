@@ -1,0 +1,7 @@
+<div class="course-assignment" *ngFor="let milestone of milestones">
+  <div fxLayout fxLayout.xs="column" fxLayoutAlign="center end" fxLayoutGap.xs="0">
+    <h2 fxFlex><span class="milestone-completed">&#10003;</span>{{milestone.name}}</h2>
+    <h4 fxFlex="25%" class="milestone-points">{{milestone.points}} points</h4>
+  </div>
+  <p>{{milestone.description}}</p>
+</div>

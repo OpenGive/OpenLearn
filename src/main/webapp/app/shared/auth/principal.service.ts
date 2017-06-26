@@ -113,15 +113,22 @@ export class Principal {
     }
 
     isIdentityResolved(): boolean {
-        return this.userIdentity !== undefined;
+        return this.userIdentity != undefined;
     }
 
     getAuthenticationState(): Observable<AccountModel> {
         return this.authenticationState.asObservable();
     }
 
-    getImageUrl(): String {
+    getImageUrl(): string {
         return this.isIdentityResolved() ? this.userIdentity.imageUrl : null;
     }
 
+    getName(): string {
+        return this.isIdentityResolved() ? this.userIdentity.lastName + ', ' + this.userIdentity.firstName : null;
+    }
+
+    getRoles(): string[] {
+      return this.isIdentityResolved() ? this.userIdentity.authorities : [];
+    }
 }
