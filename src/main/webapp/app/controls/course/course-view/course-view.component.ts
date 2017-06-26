@@ -14,13 +14,7 @@ export class CourseViewComponent implements OnInit {
   }
 
   ngOnInit() {
-    //reload the course to retrieve the list of milestones
     this.courseService.get(this.course.id).subscribe(course => {this.course = course});
-  }
-
-  calculateTotalPoints(): Number {
-    if (!this.course.milestones) return 0;
-    return this.course.milestones.reduce(function(a,b) { return a + b.points; }, 0);
   }
 
 }
