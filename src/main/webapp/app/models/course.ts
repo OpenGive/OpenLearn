@@ -1,5 +1,4 @@
-import { Instructor }   from './instructor';
-import { Milestone } from './milestone';
+import {User} from "../shared/user/user.model";
 
 export interface Course {
   name?: string;
@@ -7,6 +6,5 @@ export interface Course {
   startDate: Date;
   endDate?: Date;
   id?: number;
-  instructor?: Instructor;
-  milestones?: Milestone[];
+  instructor?: User;
 }
