@@ -69,8 +69,12 @@ public class Course implements Serializable {
 	private Program program;
 
 	@NotNull
-	@OneToOne(optional = false)
-	@JoinColumn(unique = true)
+	@ManyToOne(optional = false)
+  @JoinTable(
+    name="course_instructor",
+    joinColumns=@JoinColumn(name="instructor_id", referencedColumnName = "id"),
+    inverseJoinColumns=@JoinColumn(name="course_id", referencedColumnName = "id")
+  )
 	private User instructor;
 
 	@ManyToMany
@@ -81,7 +85,7 @@ public class Course implements Serializable {
 	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 	private Set<ItemLink> resources = new HashSet<>();
 
-	@OneToMany
+	@ManyToMany
 	@JoinTable(
 			name = "student_course",
 			joinColumns = {	@JoinColumn(name = "user_id", referencedColumnName = "id") },
