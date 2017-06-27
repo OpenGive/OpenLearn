@@ -16,43 +16,44 @@
     <div class="nav-logo" fxHide.xs fxHide.sm></div>
     <div fxHide.gt-sm>
       <button (click)="sidenav.open()" class="nav-button" md-button>
-        <md-icon>menu</md-icon>
+        <md-icon class="menu-toggle">menu</md-icon>
       </button>
     </div>
   </div>
 
   <span class="toolbar-filler"></span>
-  <div fxLayout="row">
-    <div fxHide.lt-md>
+  <div fxLayout="row" fxLayoutAlign="start center">
+    <div fxHide.xs fxHide.sm [ngClass]="{'nav-divide': authenticated()}">
       <button routerLink="/" md-button>Home</button>
       <button routerLink="/login" md-button *ngIf="!authenticated()">Login</button>
       <button routerLink="/admin" md-button *ngIf="authenticated() && (roles.admin || roles.orgAdmin)">Admin</button>
       <button routerLink="/dashboard" md-button *ngIf="authenticated() && roles.instructor">Dashboard</button>
       <button routerLink="/portfolio" md-button *ngIf="authenticated() && roles.student">Portfolio</button>
     </div>
-    <div *ngIf="authenticated()">
-      <button class="profile-menu" md-button [mdMenuTriggerFor]="profileMenu">
-        <div class="circle">
-          <img height="32" width="32" style="border-radius: 50%" src="https://media.licdn.com/mpr/mpr/shrinknp_200_200/AAEAAQAAAAAAAADYAAAAJGQ5NDE2NTkwLTM2YWQtNDAwMi05MTRmLTMxMGFkNWYwY2RhYg.jpg" alt="Vik">
+    <button class="profile-menu" md-button [mdMenuTriggerFor]="profileMenu" *ngIf="authenticated()">
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div fxLayout="column" fxLayoutAlign="center end">
+          <span class="user-name">{{name}}</span>
+          <span class="user-role">{{roleDescription}}</span>
         </div>
-        <span>{{name}}</span>
+        <md-icon>keyboard_arrow_down</md-icon>
+      </div>
+    </button>
+    <md-menu #profileMenu="mdMenu" yPosition="above">
+      <button routerLink="/profile" md-menu-item>
+        <md-icon><i mdPrefix class="fa fa-user fa-lg"></i></md-icon>
+        <span>Profile</span>
       </button>
-      <md-menu #profileMenu="mdMenu" yPosition="above">
-        <button routerLink="/profile" md-menu-item>
-          <md-icon><i mdPrefix class="fa fa-user fa-lg"></i></md-icon>
-          <span>Profile</span>
-        </button>
-        <button md-menu-item>
-          <md-icon><i mdPrefix class="fa fa-info fa-lg"></i></md-icon>
-          <span>About</span>
-        </button>
-        <button routerLink="/" (click)="logout()" md-menu-item>
-          <md-icon>
-          <i mdPrefix class="fa fa-sign-out fa-lg"></i></md-icon>
-          <span>Logout</span>
-        </button>
-      </md-menu>
-    </div>
+      <button md-menu-item>
+        <md-icon><i mdPrefix class="fa fa-info fa-lg"></i></md-icon>
+        <span>About</span>
+      </button>
+      <button routerLink="/" (click)="logout()" md-menu-item>
+        <md-icon>
+        <i mdPrefix class="fa fa-sign-out fa-lg"></i></md-icon>
+        <span>Logout</span>
+      </button>
+    </md-menu>
   </div>
 </md-toolbar>
 <router-outlet></router-outlet>

@@ -1,5 +1,5 @@
 .toolbar-filler {
-    flex: 1;
+  flex: 1;
 }
 
 .example-header-image {
@@ -12,16 +12,17 @@
 }
 
 .circle {
-    display: inline-flex;
-    padding-right: 3px;
+  display: inline-flex;
+  padding-right: 3px;
 }
 
 .nav-button {
-    min-width: 0;
+  min-width: 0;
+  padding: 0 6px;
 }
 
 .main-content {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 .nav-logo {
@@ -38,4 +39,28 @@
   width: 60px;
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.nav-divide {
+  border-right: 2px solid white;
+  padding-right: 5px;
+}
+
+.user-name {
+  margin: 0;
+  line-height: normal;
+}
+
+.user-role {
+  margin: 0;
+  padding-top: 3px;
+  line-height: normal;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.profile-menu {
+  height: 36px;
+  margin-left: 5px;
+  padding-right: 0;
 }
