@@ -1,5 +1,5 @@
-import { Injectable, Inject } from '@angular/core';
-import { Http, Response, Headers } from '@angular/http';
+import { Injectable } from '@angular/core';
+import { Http, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import {StateStorageService} from "./state-storage.service";
 

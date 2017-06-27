@@ -25,13 +25,14 @@
 }
 
 .nav-logo {
-  background: url('/assets/opengive-logo-white.bee31fa4.svg') no-repeat;
+  background: url('/assets/OpenLearn_Banner_White.svg') no-repeat;
+  background-size: 158px 25px;
   height: 25px;
-  width: 138px;
+  width: 158px;
 }
 
 .side-logo {
-  background: url('/assets/login-logo.png') no-repeat;
+  background: url('/assets/circle-logo.png') no-repeat;
   background-size: 60px 60px;
   height: 60px;
   width: 60px;
