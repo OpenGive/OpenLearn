@@ -26,7 +26,8 @@
     <include file="classpath:config/liquibase/changelog/20170429213338_added_entity_constraints_Program.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170429214832_added_entity_constraints_School.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170430152623_added_entity_constraints_PortfolioItem.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170609131100_added_biography_to_User.xml" relativeToChangelogFile="false"/>
+  <include file="classpath:config/liquibase/changelog/20170609131100_added_biography_to_User.xml" relativeToChangelogFile="false"/>
+  <include file="classpath:config/liquibase/changelog/20170627155113_changelog.xml" relativeToChangelogFile="false"/>
 
     <include file="classpath:config/liquibase/changelog/99999999999999_test_data_load.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>
