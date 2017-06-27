@@ -1,63 +1,57 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
-    <changeSet author="btaylor (generated)" id="1498596710677-1">
+    <changeSet author="btaylor (generated)" id="1498598460969-1">
         <addForeignKeyConstraint baseColumnNames="org_id" baseTableName="user_org" constraintName="FKdj4qxxm1vyqd6tg82d37jw34u" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="user"/>
     </changeSet>
-    <changeSet author="btaylor (generated)" id="1498596710677-2">
+    <changeSet author="btaylor (generated)" id="1498598460969-2">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="student_course" constraintName="FKhd4mrc86svx77hmlkpjs0kjsh" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="course"/>
     </changeSet>
-    <changeSet author="btaylor (generated)" id="1498596710677-3">
+    <changeSet author="btaylor (generated)" id="1498598460969-3">
         <addForeignKeyConstraint baseColumnNames="course_id" baseTableName="course_link" constraintName="FKj01je4e8ewn2fhjmbavx2daom" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="course"/>
     </changeSet>
-    <changeSet author="btaylor (generated)" id="1498596710677-4">
-        <dropForeignKeyConstraint baseTableName="COURSE" constraintName="FK_COURSE_INSTRUCTOR_ID"/>
-    </changeSet>
-    <changeSet author="btaylor (generated)" id="1498596710677-5">
+    <changeSet author="btaylor (generated)" id="1498598460969-4">
         <dropForeignKeyConstraint baseTableName="COURSE_LINK" constraintName="FK_COURSE_LINK_COURSE_ID"/>
     </changeSet>
-    <changeSet author="btaylor (generated)" id="1498596710677-6">
+    <changeSet author="btaylor (generated)" id="1498598460969-5">
         <dropForeignKeyConstraint baseTableName="OAUTH_ACCESS_TOKEN" constraintName="FK_OAUTH_ACCESS_TOKEN_USERNAME"/>
     </changeSet>
-    <changeSet author="btaylor (generated)" id="1498596710677-7">
+    <changeSet author="btaylor (generated)" id="1498598460969-6">
         <dropForeignKeyConstraint baseTableName="OAUTH_CLIENT_TOKEN" constraintName="FK_OAUTH_CLIENT_TOKEN_USERNAME"/>
     </changeSet>
-    <changeSet author="btaylor (generated)" id="1498596710677-8">
+    <changeSet author="btaylor (generated)" id="1498598460969-7">
         <dropForeignKeyConstraint baseTableName="STUDENT_COURSE" constraintName="FK_STUDENT_COURSE_COURSE_ID"/>
     </changeSet>
-    <changeSet author="btaylor (generated)" id="1498596710677-9">
+    <changeSet author="btaylor (generated)" id="1498598460969-8">
         <dropForeignKeyConstraint baseTableName="STUDENT_COURSE" constraintName="FK_STUDENT_COURSE_USER_ID"/>
     </changeSet>
-    <changeSet author="btaylor (generated)" id="1498596710677-10">
+    <changeSet author="btaylor (generated)" id="1498598460969-9">
         <dropForeignKeyConstraint baseTableName="USER_ORG" constraintName="FK_USER_ORGANIZATION_ORG_ID"/>
     </changeSet>
-    <changeSet author="btaylor (generated)" id="1498596710677-11">
+    <changeSet author="btaylor (generated)" id="1498598460969-10">
         <dropUniqueConstraint constraintName="CONSTRAINT_5" tableName="SOCIAL_USER_CONNECTION"/>
     </changeSet>
-    <changeSet author="btaylor (generated)" id="1498596710677-12">
+    <changeSet author="btaylor (generated)" id="1498598460969-11">
         <dropUniqueConstraint constraintName="CONSTRAINT_56" tableName="SOCIAL_USER_CONNECTION"/>
     </changeSet>
-    <changeSet author="btaylor (generated)" id="1498596710677-13">
+    <changeSet author="btaylor (generated)" id="1498598460969-12">
         <dropUniqueConstraint constraintName="CONSTRAINT_7" tableName="COURSE"/>
     </changeSet>
-    <changeSet author="btaylor (generated)" id="1498596710677-14">
+    <changeSet author="btaylor (generated)" id="1498598460969-13">
         <dropTable tableName="OAUTH_ACCESS_TOKEN"/>
     </changeSet>
-    <changeSet author="btaylor (generated)" id="1498596710677-15">
+    <changeSet author="btaylor (generated)" id="1498598460969-14">
         <dropTable tableName="OAUTH_APPROVALS"/>
     </changeSet>
-    <changeSet author="btaylor (generated)" id="1498596710677-16">
+    <changeSet author="btaylor (generated)" id="1498598460969-15">
         <dropTable tableName="OAUTH_CLIENT_DETAILS"/>
     </changeSet>
-    <changeSet author="btaylor (generated)" id="1498596710677-17">
+    <changeSet author="btaylor (generated)" id="1498598460969-16">
         <dropTable tableName="OAUTH_CLIENT_TOKEN"/>
     </changeSet>
-    <changeSet author="btaylor (generated)" id="1498596710677-18">
+    <changeSet author="btaylor (generated)" id="1498598460969-17">
         <dropTable tableName="OAUTH_CODE"/>
     </changeSet>
-    <changeSet author="btaylor (generated)" id="1498596710677-19">
+    <changeSet author="btaylor (generated)" id="1498598460969-18">
         <dropTable tableName="OAUTH_REFRESH_TOKEN"/>
-    </changeSet>
-    <changeSet author="btaylor (generated)" id="1498596710677-20">
-        <dropColumn columnName="INSTRUCTOR_ID" tableName="COURSE"/>
     </changeSet>
 </databaseChangeLog>
