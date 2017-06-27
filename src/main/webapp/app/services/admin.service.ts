@@ -40,6 +40,12 @@ export class AdminService {
       .catch(this.handleError);
   }
 
+  search(type: string, query: string): Observable<any> {
+    return this._http.get(this.endpoint + '_search/' + type + '?query=' + query)
+      .map(resp => resp.json())
+      .catch(this.handleError);
+  }
+
   private handleError(error: Response) {
     console.error(error);
     return Observable.throw(error.json() || {message: 'Server Error'});
