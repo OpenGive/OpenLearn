@@ -132,7 +132,7 @@ public class UserService {
         return newUser;
     }
 
-    public User createUser(UserDTO userDTO) {
+    public User createUser(UserDTO userDTO, String password) {
         final User user = new User();
         user.setLogin(userDTO.getLogin());
         user.setFirstName(userDTO.getFirstName());
@@ -157,7 +157,7 @@ public class UserService {
             user.setAuthorities(authorities);
         }
 
-        String encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
+        String encryptedPassword = passwordEncoder.encode(password);
         user.setPassword(encryptedPassword);
         user.setResetKey(RandomUtil.generateResetKey());
         user.setResetDate(ZonedDateTime.now());
