@@ -18,7 +18,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
-import org.openlearn.OpenLearnApplication;
+import org.openlearn.OpenGiveApplication;
 import org.openlearn.domain.Achievement;
 import org.openlearn.domain.User;
 import org.openlearn.repository.AchievementRepository;
@@ -41,7 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @see AchievementResource
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = OpenLearnApplication.class)
+@SpringBootTest(classes = OpenGiveApplication.class)
 public class AchievementResourceIntTest {
 
 	private static final String DEFAULT_NAME = "AAAAAAAAAA";

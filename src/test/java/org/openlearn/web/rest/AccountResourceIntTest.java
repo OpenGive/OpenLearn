@@ -20,7 +20,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.openlearn.OpenLearnApplication;
+import org.openlearn.OpenGiveApplication;
 import org.openlearn.domain.Authority;
 import org.openlearn.domain.User;
 import org.openlearn.repository.AuthorityRepository;
@@ -44,7 +44,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @see AccountResource
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = OpenLearnApplication.class)
+@SpringBootTest(classes = OpenGiveApplication.class)
 public class AccountResourceIntTest {
 
 	@Autowired

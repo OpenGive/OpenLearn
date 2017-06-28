@@ -1,6 +1,6 @@
 package org.openlearn.web.rest;
 
-import org.openlearn.OpenLearnApplication;
+import org.openlearn.OpenGiveApplication;
 import org.openlearn.web.rest.vm.LoggerVM;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see LogsResource
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = OpenLearnApplication.class)
+@SpringBootTest(classes = OpenGiveApplication.class)
 public class LogsResourceIntTest {
 
     private MockMvc restLogsMockMvc;

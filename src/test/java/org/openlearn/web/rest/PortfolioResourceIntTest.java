@@ -1,6 +1,6 @@
 package org.openlearn.web.rest;
 
-import org.openlearn.OpenLearnApplication;
+import org.openlearn.OpenGiveApplication;
 
 import org.openlearn.domain.Portfolio;
 import org.openlearn.domain.User;
@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see PortfolioResource
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = OpenLearnApplication.class)
+@SpringBootTest(classes = OpenGiveApplication.class)
 public class PortfolioResourceIntTest {
 
     @Autowired

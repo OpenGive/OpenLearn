@@ -1,6 +1,6 @@
 package org.openlearn.web.rest;
 
-import org.openlearn.OpenLearnApplication;
+import org.openlearn.OpenGiveApplication;
 
 import org.openlearn.domain.ItemLink;
 import org.openlearn.repository.ItemLinkRepository;
@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see ItemLinkResource
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = OpenLearnApplication.class)
+@SpringBootTest(classes = OpenGiveApplication.class)
 public class ItemLinkResourceIntTest {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";

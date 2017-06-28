@@ -1,6 +1,6 @@
 package org.openlearn.web.rest;
 
-import org.openlearn.OpenLearnApplication;
+import org.openlearn.OpenGiveApplication;
 
 import org.openlearn.domain.Address;
 import org.openlearn.repository.AddressRepository;
@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see AddressResource
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = OpenLearnApplication.class)
+@SpringBootTest(classes = OpenGiveApplication.class)
 public class AddressResourceIntTest {
 
     private static final String DEFAULT_STREET_ADDRESS_1 = "AAAAAAAAAA";

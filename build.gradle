@@ -42,7 +42,7 @@ defaultTasks 'bootRun'
 
 
 bootRepackage {
-   mainClass = 'org.openlearn.OpenLearnApplication'
+   mainClass = 'org.openlearn.OpenGiveApplication'
 }
 
 war {
@@ -50,7 +50,7 @@ war {
 }
 
 springBoot {
-    mainClass = 'org.openlearn.OpenLearnApplication'
+    mainClass = 'org.openlearn.OpenGiveApplication'
     executable = true
     buildInfo()
 }
