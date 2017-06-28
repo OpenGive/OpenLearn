@@ -12,7 +12,7 @@
 
 eureka:
     instance:
-        hostname: opengive-denver-2017.herokuapp.com
+        hostname: open-learn-www-stage.herokuapp.com
         non-secure-port: 80
         prefer-ip-address: false
     client:
