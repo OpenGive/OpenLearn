@@ -1,6 +1,6 @@
 apply plugin: 'com.heroku.sdk.heroku-gradle'
 
 heroku {
-  appName = "opengive-denver-2017"
+  appName = "open-learn-www"
 }
 
