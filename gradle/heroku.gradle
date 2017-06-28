@@ -1,6 +1,6 @@
 apply plugin: 'com.heroku.sdk.heroku-gradle'
 
 heroku {
-  appName = "open-learn-www"
+  appName = "open-learn-www-stage"
 }
 
