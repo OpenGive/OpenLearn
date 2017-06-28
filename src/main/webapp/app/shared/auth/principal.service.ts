@@ -124,11 +124,15 @@ export class Principal {
         return this.isIdentityResolved() ? this.userIdentity.imageUrl : null;
     }
 
+    getLogin(): string {
+        return this.isIdentityResolved() ? this.userIdentity.login : null;
+    }
+
     getName(): string {
         return this.isIdentityResolved() ? this.userIdentity.lastName + ', ' + this.userIdentity.firstName : null;
     }
 
     getRoles(): string[] {
-      return this.isIdentityResolved() ? this.userIdentity.authorities : [];
+        return this.isIdentityResolved() ? this.userIdentity.authorities : [];
     }
 }
