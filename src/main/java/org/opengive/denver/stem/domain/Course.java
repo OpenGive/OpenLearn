@@ -70,11 +70,6 @@ public class Course implements Serializable {
 
 	@NotNull
 	@ManyToOne(optional = false)
-  @JoinTable(
-    name="course_instructor",
-    joinColumns=@JoinColumn(name="instructor_id", referencedColumnName = "id"),
-    inverseJoinColumns=@JoinColumn(name="course_id", referencedColumnName = "id")
-  )
 	private User instructor;
 
 	@ManyToMany
