@@ -39,6 +39,7 @@ import {ProfilePageComponent} from "./pages/profile-page/profile-page.component"
 import {NotifyService} from "./services/notify.service";
 import {OLAdminModule} from "./controls/admin/admin.module";
 import {DashboardPageComponent} from "./pages/dashboard-page/dashboard-page.component";
+import {PasswordService} from "./shared/auth/password.service";
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import {DashboardPageComponent} from "./pages/dashboard-page/dashboard-page.comp
     UserService,
     UserRouteAccessService,
     Principal,
+    PasswordService,
     AccountService,
     LoginService,
     AuthServerProvider,

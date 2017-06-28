@@ -7,6 +7,7 @@ import * as _ from "lodash";
 import {AdminDialogComponent} from "../../admin-dialog.component";
 import {AppConstants} from "../../../../app.constants";
 import {NotifyService} from "../../../../services/notify.service";
+import {PasswordService} from "../../../../shared/auth/password.service";
 import {UserService} from "../../../../services/user.service";
 
 @Component({
@@ -96,7 +97,8 @@ export class AdminAdministratorsFormComponent implements OnInit {
   constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
               private fb: FormBuilder,
               private userService: UserService,
-              private notify: NotifyService) {}
+              private notify: NotifyService,
+              private passwordService: PasswordService) {}
 
   ngOnInit(): void {
     this.buildForm();
@@ -302,6 +304,14 @@ export class AdminAdministratorsFormComponent implements OnInit {
 
   close(): void {
     this.dialogRef.close();
+  }
+
+  resetPassword(): void {
+    this.passwordService.resetPassword(this.formAdministrator.login).subscribe(resp => {
+      this.notify.success('Password reset email sent');
+    }, error => {
+      this.notify.error('Failed to send password reset email');
+    });
   }
 
   displayRole(role: string): string { // Convert "ROLE_ONE_TWO" to "One Two"
