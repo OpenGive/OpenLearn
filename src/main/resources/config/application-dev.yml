@@ -26,8 +26,8 @@ spring:
         serialization.indent_output: true
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:h2:file:./target/h2db/db/opengive;DB_CLOSE_DELAY=-1
-        username: opengive
+        url: jdbc:h2:file:./target/h2db/db/openlearn;DB_CLOSE_DELAY=-1
+        username: openlearn
         password:
     h2:
         console:
@@ -65,7 +65,7 @@ liquibase:
 
 # ===================================================================
 # To enable SSL, generate a certificate using:
-# keytool -genkey -alias opengive -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 3650
+# keytool -genkey -alias openlearn -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 3650
 #
 # You can also use Let's Encrypt:
 # https://maximilian-boehm.com/hp2121/Create-a-Java-Keystore-JKS-from-Let-s-Encrypt-Certificates.htm
@@ -78,7 +78,7 @@ liquibase:
 #        key-store: keystore.p12
 #        key-store-password: <your-password>
 #        keyStoreType: PKCS12
-#        keyAlias: opengive
+#        keyAlias: openlearn
 # ===================================================================
 server:
     port: 8080
@@ -105,7 +105,7 @@ jhipster:
         allow-credentials: true
         max-age: 1800
     mail: # specific JHipster mail property, for standard properties see MailProperties
-        from: opengive@localhost
+        from: openlearn@localhost
         base-url: http://127.0.0.1:8080
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
@@ -113,7 +113,7 @@ jhipster:
             enabled: false
             host: localhost
             port: 2003
-            prefix: opengive
+            prefix: openlearn
         prometheus: # Use the "prometheus" Maven profile to have the Prometheus dependencies
             enabled: false
             endpoint: /prometheusMetrics

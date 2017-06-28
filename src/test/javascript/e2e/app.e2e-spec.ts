@@ -1,6 +1,6 @@
 import { OpenLearn } from './app.po';
 
-describe('open-give-scaffold-final App', () => {
+describe('OpenLearn App', () => {
   let page: OpenLearn;
 
   beforeEach(() => {

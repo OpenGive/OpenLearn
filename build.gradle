@@ -42,7 +42,7 @@ defaultTasks 'bootRun'
 
 
 bootRepackage {
-   mainClass = 'org.opengive.denver.stem.OpenGiveApplication'
+   mainClass = 'org.openlearn.OpenLearnApplication'
 }
 
 war {
@@ -50,7 +50,7 @@ war {
 }
 
 springBoot {
-    mainClass = 'org.opengive.denver.stem.OpenGiveApplication'
+    mainClass = 'org.openlearn.OpenLearnApplication'
     executable = true
     buildInfo()
 }
@@ -134,7 +134,7 @@ if (project.hasProperty('prometheus')) {
     apply from: 'gradle/prometheus.gradle'
 }
 
-group = 'org.opengive.denver.stem'
+group = 'org.openlearn'
 version = '0.0.1-SNAPSHOT'
 
 description = ''

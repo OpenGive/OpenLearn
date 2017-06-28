@@ -16,14 +16,14 @@
 
 spring:
     application:
-        name: opengive
+        name: openlearn
     jackson:
         serialization.write_dates_as_timestamps: false
     cache:
         type: none
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:h2:mem:opengive;DB_CLOSE_DELAY=-1
+        url: jdbc:h2:mem:openlearn;DB_CLOSE_DELAY=-1
         name:
         username:
         password:
@@ -86,7 +86,7 @@ jhipster:
     security:
         authentication:
             oauth:
-                client-id: opengiveapp
+                client-id: openlearnapp
                 client-secret: my-secret-token-to-change-in-production
                 # Token is valid 30 minutes
                 token-validity-in-seconds: 1800

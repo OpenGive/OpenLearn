@@ -35,7 +35,7 @@ class ItemLinkGatlingTest extends Simulation {
         "Accept" -> """application/json"""
     )
 
-    val authorization_header = "Basic " + Base64.getEncoder.encodeToString("opengiveapp:my-secret-token-to-change-in-production".getBytes(StandardCharsets.UTF_8))
+    val authorization_header = "Basic " + Base64.getEncoder.encodeToString("openlearnapp:my-secret-token-to-change-in-production".getBytes(StandardCharsets.UTF_8))
 
     val headers_http_authentication = Map(
         "Content-Type" -> """application/x-www-form-urlencoded""",
@@ -62,7 +62,7 @@ class ItemLinkGatlingTest extends Simulation {
         .formParam("grant_type", "password")
         .formParam("scope", "read write")
         .formParam("client_secret", "my-secret-token-to-change-in-production")
-        .formParam("client_id", "opengiveapp")
+        .formParam("client_id", "openlearnapp")
         .formParam("submit", "Login")
         .check(jsonPath("$.access_token").saveAs("access_token"))).exitHereIfFailed
         .pause(1)

@@ -23,4 +23,4 @@ import { CommonModule } from '@angular/common';
         // InfiniteScrollModule
     ]
 })
-export class OpengiveSharedLibsModule {}
+export class OpenLearnSharedLibsModule {}

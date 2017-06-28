@@ -22,7 +22,7 @@
     </appender>
 -->
 
-    <logger name="org.opengive.denver.stem" level="#logback.loglevel#"/>
+    <logger name="org.openlearn" level="#logback.loglevel#"/>
 
     <logger name="io.github.jhipster" level="DEBUG"/>
 

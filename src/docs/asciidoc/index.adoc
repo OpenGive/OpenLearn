@@ -1,4 +1,4 @@
-= OpenGive
+= OpenLearn
 :icons: font
 
 include::overview/index.adoc[]

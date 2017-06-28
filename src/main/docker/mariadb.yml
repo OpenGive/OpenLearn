@@ -1,13 +1,13 @@
 version: '2'
 services:
-    opengive-mariadb:
+    openlearn-mariadb:
         image: mariadb:10.1.17
         # volumes:
-        #     - ~/volumes/opengive/mysql/:/var/lib/mysql/
+        #     - ~/volumes/openlearn/mysql/:/var/lib/mysql/
         environment:
             - MYSQL_USER=root
             - MYSQL_ALLOW_EMPTY_PASSWORD=yes
-            - MYSQL_DATABASE=opengive
+            - MYSQL_DATABASE=openlearn
         ports:
             - 3306:3306
         command: mysqld --lower_case_table_names=1 --skip-ssl

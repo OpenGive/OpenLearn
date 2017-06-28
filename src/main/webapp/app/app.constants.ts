@@ -5,7 +5,7 @@ export class AppConstants {
     Instructor: 'ROLE_INSTRUCTOR',
     Student: 'ROLE_STUDENT',
   };
-  public static ForgotPasswordEmail = "passwordrequest@opengive.com";
+  public static ForgotPasswordEmail = "passwordrequest@openlearn.com";
   public static States = [
     {name: 'Alabama', value: 'ALABAMA'},
     {name: 'Alaska', value: 'ALASKA'},

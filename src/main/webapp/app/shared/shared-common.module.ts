@@ -1,12 +1,12 @@
 import { NgModule, Sanitizer } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import {
-    OpengiveSharedLibsModule,
+    OpenLearnSharedLibsModule,
 } from './';
 
 @NgModule({
     imports: [
-        OpengiveSharedLibsModule
+        OpenLearnSharedLibsModule
     ],
     declarations: [
     ],
@@ -14,7 +14,7 @@ import {
         Title
     ],
     exports: [
-        OpengiveSharedLibsModule,
+        OpenLearnSharedLibsModule,
     ]
 })
-export class OpengiveSharedCommonModule {}
+export class OpenLearnSharedCommonModule {}

@@ -1,4 +1,4 @@
-# OpenGive - Denver 2017 [![Build Status](https://travis-ci.org/Credera/OpenGive-Denver-2017.svg?branch=master)](https://travis-ci.org/Credera/OpenGive-Denver-2017)
+# OpenLearn [![Build Status](https://travis-ci.org/Credera/OpenLearn.svg?branch=master)](https://travis-ci.org/Credera/OpenLearn)
 
 ## Development
 
@@ -99,7 +99,7 @@ will generate few files:
 
 ## Building for production
 
-To optimize the opengive application for production, run:
+To optimize the OpenLearn application for production, run:
 
     ./gradlew -Pprod clean bootRepackage
 
@@ -133,7 +133,7 @@ Performance tests are run by [Gatling][] and written in Scala. They're located i
 <!---
 ## Using Docker to simplify development (optional)
 
-You can use Docker to improve the OpenGive development experience. A number of docker-compose configuration are available in the [src/main/docker](src/main/docker) folder to launch required third party services.
+You can use Docker to improve the OpenLearn development experience. A number of docker-compose configuration are available in the [src/main/docker](src/main/docker) folder to launch required third party services.
 For example, to start a mariadb database in a docker container, run:
 
     docker-compose -f src/main/docker/mariadb.yml up -d

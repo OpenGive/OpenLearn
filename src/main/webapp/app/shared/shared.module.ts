@@ -3,8 +3,8 @@ import { DatePipe } from '@angular/common';
 
 import { CookieService } from 'ngx-cookie';
 import {
-    OpengiveSharedLibsModule,
-    OpengiveSharedCommonModule,
+    OpenLearnSharedLibsModule,
+    OpenLearnSharedCommonModule,
     CSRFService,
     AuthService,
     AuthServerProvider,
@@ -18,8 +18,8 @@ import {
 
 @NgModule({
     imports: [
-        OpengiveSharedLibsModule,
-        OpengiveSharedCommonModule
+        OpenLearnSharedLibsModule,
+        OpenLearnSharedCommonModule
     ],
     declarations: [
         HasAnyAuthorityDirective,
@@ -38,7 +38,7 @@ import {
     ],
 //    entryComponents: [JhiLoginModalComponent],
     exports: [
-        OpengiveSharedCommonModule,
+        OpenLearnSharedCommonModule,
         HasAnyAuthorityDirective,
         HasAtLeastAuthorityDirective,
         DatePipe
@@ -46,4 +46,4 @@ import {
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 
 })
-export class OpengiveSharedModule {}
+export class OpenLearnSharedModule {}

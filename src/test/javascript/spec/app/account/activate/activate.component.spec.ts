@@ -1,7 +1,7 @@
 import { TestBed, async, tick, fakeAsync, inject } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
-import { OpengiveTestModule } from '../../../test.module';
+import { OpenLearnTestModule } from '../../../test.module';
 import { MockActivatedRoute } from '../../../helpers/mock-route.service';
 import { LoginModalService } from '../../../../../../main/webapp/app/shared';
 import { Activate } from '../../../../../../main/webapp/app/account/activate/activate.service';
@@ -15,7 +15,7 @@ describe('Component Tests', () => {
 
         beforeEach(async(() => {
             TestBed.configureTestingModule({
-                imports: [OpengiveTestModule],
+                imports: [OpenLearnTestModule],
                 declarations: [ActivateComponent],
                 providers: [
                     Activate,
