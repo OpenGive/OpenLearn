@@ -114,7 +114,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
 			inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id") }
 			)
 	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	private final Set<User> organizations = new HashSet<>();
+	private final Set<Organization> organizations = new HashSet<>();
 
 	public Long getId() {
 		return id;
