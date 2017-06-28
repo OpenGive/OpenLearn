@@ -87,6 +87,6 @@
     "languages": [
       "en"
     ],
-    "herokuAppName": "open-learn-www"
+    "herokuAppName": "open-learn-www-stage"
   }
 }

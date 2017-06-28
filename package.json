@@ -9,7 +9,8 @@
     "build-prod": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "postbuild": "ng build"
   },
   "private": true,
   "dependencies": {
@@ -51,8 +52,5 @@
     "ts-node": "~2.0.0",
     "tslint": "~4.5.0",
     "typescript": "~2.2.0"
-  },
-  "scripts": {
-    "postbuild": "ng build"
   }
 }
