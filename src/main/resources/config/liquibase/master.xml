@@ -4,30 +4,8 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-    <include file="classpath:config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170412144652_added_entity_Organization.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170412144653_added_entity_Address.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170412144654_added_entity_Portfolio.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170412144655_added_entity_Course.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170412144656_added_entity_Milestone.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170412144657_added_entity_Achievement.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170412144658_added_entity_ItemLink.xml" relativeToChangelogFile="false"/>
-	<include file="classpath:config/liquibase/changelog/20170429204828_added_entity_Session.xml" relativeToChangelogFile="false"/>
-	<include file="classpath:config/liquibase/changelog/20170429213338_added_entity_Program.xml" relativeToChangelogFile="false"/>
-	<include file="classpath:config/liquibase/changelog/20170429214832_added_entity_School.xml" relativeToChangelogFile="false"/>
-	<include file="classpath:config/liquibase/changelog/20170430152623_added_entity_PortfolioItem.xml" relativeToChangelogFile="false"/>
-
-    <include file="classpath:config/liquibase/changelog/20170412144652_added_entity_constraints_Organization.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170412144654_added_entity_constraints_Portfolio.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170412144655_added_entity_constraints_Course.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170412144656_added_entity_constraints_Milestone.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170412144657_added_entity_constraints_Achievement.xml" relativeToChangelogFile="false"/>
-	<include file="classpath:config/liquibase/changelog/20170429204828_added_entity_constraints_Session.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170429213338_added_entity_constraints_Program.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170429214832_added_entity_constraints_School.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170430152623_added_entity_constraints_PortfolioItem.xml" relativeToChangelogFile="false"/>
-  <include file="classpath:config/liquibase/changelog/20170609131100_added_biography_to_User.xml" relativeToChangelogFile="false"/>
-  <include file="classpath:config/liquibase/changelog/20170629105707_changelog.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/00000000000000_core_domain_schema.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/00000000000001_oauth_schema.xml" relativeToChangelogFile="false"/>
 
     <include file="classpath:config/liquibase/changelog/99999999999999_test_data_load.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

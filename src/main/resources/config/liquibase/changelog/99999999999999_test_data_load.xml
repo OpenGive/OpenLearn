@@ -18,7 +18,28 @@
         Test data loader
     -->
     <changeSet id="99999999999999-1" author="acooperman">
- 		<loadData encoding="UTF-8"
+      <loadData encoding="UTF-8"
+                file="config/liquibase/users.csv"
+                separator=","
+                tableName="user">
+        <column name="is_14_plus" type="boolean"/>
+        <column name="activated" type="boolean"/>
+        <column name="created_date" type="timestamp"/>
+      </loadData>
+      <dropDefaultValue tableName="user" columnName="created_date" columnDataType="datetime"/>
+
+      <loadData encoding="UTF-8"
+                file="config/liquibase/authorities.csv"
+                separator=","
+                tableName="authority"/>
+
+      <loadData encoding="UTF-8"
+                file="config/liquibase/users_authorities.csv"
+                separator=","
+                tableName="user_authority"/>
+
+
+      <loadData encoding="UTF-8"
                   file="config/liquibase/organizations.csv"
                   separator=","
                   tableName="organization">
