@@ -1,5 +1,8 @@
 package org.openlearn.security;
 
+import org.openlearn.service.AchievementService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -9,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
  * Utility class for Spring Security.
  */
 public final class SecurityUtils {
+  private static final Logger log = LoggerFactory.getLogger(SecurityUtils.class);
 
     private SecurityUtils() {
     }
@@ -30,6 +34,7 @@ public final class SecurityUtils {
                 userName = (String) authentication.getPrincipal();
             }
         }
+        log.warn("getCurrentUserLogin: "+userName);
         return userName;
     }
 

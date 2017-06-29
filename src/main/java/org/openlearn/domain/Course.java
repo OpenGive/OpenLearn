@@ -6,17 +6,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -61,17 +51,13 @@ public class Course implements Serializable {
 
 	@NotNull
 	@ManyToOne(optional = false)
-	private Organization organization;
-
-	@NotNull
-	@ManyToOne(optional = false)
 	private Program program;
 
 	@NotNull
 	@ManyToOne(optional = false)
 	private User instructor;
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(
 			name="course_link",
 			joinColumns=@JoinColumn(name="course_id", referencedColumnName="id"),
@@ -79,7 +65,7 @@ public class Course implements Serializable {
 	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 	private Set<ItemLink> resources = new HashSet<>();
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(
 			name = "student_course",
 			joinColumns = {	@JoinColumn(name = "course_id", referencedColumnName = "id") },
@@ -88,7 +74,7 @@ public class Course implements Serializable {
 	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 	private Set<User> students = new HashSet<>();
 
-	@OneToMany(mappedBy = "course")
+	@OneToMany(mappedBy = "course", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 	private Set<Milestone> milestones = new HashSet<>();
 
@@ -150,19 +136,6 @@ public class Course implements Serializable {
 
 	public void setEndDate(final ZonedDateTime endDate) {
 		this.endDate = endDate;
-	}
-
-	public Organization getOrganization() {
-		return organization;
-	}
-
-	public Course organization(final Organization organization) {
-		this.organization = organization;
-		return this;
-	}
-
-	public void setOrganization(final Organization organization) {
-		this.organization = organization;
 	}
 
 	public Program getProgram() {
@@ -274,14 +247,19 @@ public class Course implements Serializable {
 		return Objects.hashCode(id);
 	}
 
-	@Override
-	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("Course [id=").append(id).append(", name=").append(name).append(", description=")
-		.append(description).append(", startDate=").append(startDate).append(", endDate=").append(endDate)
-		.append(", organization=").append(organization).append(", program=").append(program)
-		.append(", instructor=").append(instructor).append(", resources=").append(resources)
-		.append(", students=").append(students).append(", milestones=").append(milestones).append("]");
-		return builder.toString();
-	}
+  @Override
+  public String toString() {
+    return "Course{" +
+      "id=" + id +
+      ", name='" + name + '\'' +
+      ", description='" + description + '\'' +
+      ", startDate=" + startDate +
+      ", endDate=" + endDate +
+      ", program=" + program +
+      ", instructor=" + instructor +
+      ", resources=" + resources +
+      ", students=" + students +
+      ", milestones=" + milestones +
+      '}';
+  }
 }
