@@ -11,7 +11,7 @@
 // @Component({
 //   selector: 'admin-achievements-form',
 //   templateUrl: './admin-achievements-form.component.html',
-//   styleUrls: ['../admin-forms.css']
+//   styleUrls: []
 // })
 // export class AdminAchievementsFormComponent implements OnInit {
 //

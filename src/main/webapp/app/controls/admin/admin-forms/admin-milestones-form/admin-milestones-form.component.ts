@@ -11,7 +11,7 @@
 // @Component({
 //   selector: 'admin-milestones-form',
 //   templateUrl: './admin-milestones-form.component.html',
-//   styleUrls: ['../admin-forms.css']
+//   styleUrls: ['../../../dialog-forms.css']
 // })
 // export class AdminMilestonesFormComponent implements OnInit {
 //

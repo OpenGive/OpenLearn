@@ -15,13 +15,13 @@
       </md-input-container>
     </div>
     <div fxLayout="row">
-      <button md-raised-button *ngIf="editing" (click)="save()" class="admin-dialog-button grey-button" mdTooltip="Save">
+      <button md-raised-button *ngIf="editing" (click)="save()" class="ol-dialog-button grey-button" mdTooltip="Save">
         <md-icon>save</md-icon>
       </button>
-      <button md-raised-button *ngIf="editing" (click)="cancel()" class="admin-dialog-button navy-button" mdTooltip="Cancel">
+      <button md-raised-button *ngIf="editing" (click)="cancel()" class="ol-dialog-button navy-button" mdTooltip="Cancel">
         <md-icon>clear</md-icon>
       </button>
-      <button md-raised-button *ngIf="!editing" (click)="edit()" class="admin-dialog-button grey-button" mdTooltip="Edit">
+      <button md-raised-button *ngIf="!editing" (click)="edit()" class="ol-dialog-button grey-button" mdTooltip="Edit">
         <md-icon>create</md-icon>
       </button>
     </div>

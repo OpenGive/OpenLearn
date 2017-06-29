@@ -1,6 +1,8 @@
+
 .course-view-header {
-  border-bottom: 2px solid rgba(229,229,229,1);
-  padding: 10px 24px 10px 0px;
+  height: 60px;
+  padding: 11px 20px;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,.2);
 }
 
 .course-view-header-close {
@@ -10,6 +12,14 @@
   line-height: 30px;
   font-size: 18px;
   color: rgba(151,151,151,1);
+}
+
+.course-view-title {
+  font-family: Rubik, sans-serif;
+  font-size: 22px;
+  color: #4D5A70;
+  letter-spacing: -0.6px;
+  padding-left: 15px;
 }
 
 .course-view-header-progress {

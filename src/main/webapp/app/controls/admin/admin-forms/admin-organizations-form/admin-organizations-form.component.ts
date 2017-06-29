@@ -10,7 +10,7 @@ import {NotifyService} from "../../../../services/notify.service";
 @Component({
   selector: 'admin-organizations-form',
   templateUrl: './admin-organizations-form.component.html',
-  styleUrls: ['../admin-forms.css']
+  styleUrls: ['../../../dialog-forms.css']
 })
 export class AdminOrganizationsFormComponent implements OnInit {
 

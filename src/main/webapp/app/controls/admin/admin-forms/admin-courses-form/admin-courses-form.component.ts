@@ -12,7 +12,7 @@ import {UserService} from "../../../../services/user.service";
 @Component({
   selector: 'admin-courses-form',
   templateUrl: './admin-courses-form.component.html',
-  styleUrls: ['../admin-forms.css']
+  styleUrls: ['../../../dialog-forms.css']
 })
 export class AdminCoursesFormComponent implements OnInit {
 

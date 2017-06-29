@@ -11,7 +11,7 @@ import {NotifyService} from "../../../../services/notify.service";
 @Component({
   selector: 'admin-programs-form',
   templateUrl: './admin-programs-form.component.html',
-  styleUrls: ['../admin-forms.css']
+  styleUrls: ['../../../dialog-forms.css']
 })
 export class AdminProgramsFormComponent implements OnInit {
 
