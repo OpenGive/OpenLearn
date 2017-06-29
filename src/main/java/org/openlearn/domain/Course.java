@@ -5,6 +5,7 @@ import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -65,14 +66,15 @@ public class Course implements Serializable {
 	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 	private Set<ItemLink> resources = new HashSet<>();
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(
-			name = "student_course",
-			joinColumns = {	@JoinColumn(name = "course_id", referencedColumnName = "id") },
-			inverseJoinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") }
-			)
+//	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//	@JoinTable(
+//			name = "student_course",
+//			joinColumns = {	@JoinColumn(name = "course_id", referencedColumnName = "id") },
+//			inverseJoinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") }
+//			)
+  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "course")
 	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	private Set<User> students = new HashSet<>();
+	private Set<StudentCourse> students = new HashSet<>();
 
 	@OneToMany(mappedBy = "course", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -183,26 +185,28 @@ public class Course implements Serializable {
 	}
 
 	public Set<User> getStudents() {
-		return students;
+	  return students.stream().map(StudentCourse::getUser).collect(Collectors.toSet());
 	}
 
 	public Course students(final Set<User> users) {
-		students = users;
+	  setStudents(users);
 		return this;
 	}
 
 	public Course addStudents(final User user) {
-		students.add(user);
+	  students.add(new StudentCourse(this, user));
 		return this;
 	}
 
 	public Course removeStudents(final User user) {
-		students.remove(user);
+	  students = students.stream().filter(sc -> !sc.getUser().equals(user)).collect(Collectors.toSet());
 		return this;
 	}
 
 	public void setStudents(final Set<User> users) {
-		students = users;
+	  users.forEach(u -> {
+	    students.add(new StudentCourse(this, u));
+    });
 	}
 
 	public Set<Milestone> getMilestones() {

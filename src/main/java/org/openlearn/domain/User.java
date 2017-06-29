@@ -96,6 +96,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	@Column(name = "biography", length = 2000)
 	private String biography;
 
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "user")
+  private Set<StudentCourse> courses = new HashSet<>();
+
 	@JsonIgnore
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(
