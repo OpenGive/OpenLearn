@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MdDialogRef} from "@angular/material";
 import {Observable} from "rxjs/Observable";
 
-import {OLDialogComponent} from "../../../../shared/ol-dialog.component";
+import {AdminDialogComponent} from "../../admin-dialog.component";
 import {AdminModel} from "../../admin.constants";
 import {AdminService} from "../../../../services/admin.service";
 import {NotifyService} from "../../../../services/notify.service";
@@ -12,7 +12,7 @@ import {UserService} from "../../../../services/user.service";
 @Component({
   selector: 'admin-courses-form',
   templateUrl: './admin-courses-form.component.html',
-  styleUrls: ['../../../../shared/ol-forms.css']
+  styleUrls: ['../../../dialog-forms.css']
 })
 export class AdminCoursesFormComponent implements OnInit {
 
@@ -65,7 +65,7 @@ export class AdminCoursesFormComponent implements OnInit {
     }
   };
 
-  constructor(public dialogRef: MdDialogRef<OLDialogComponent>,
+  constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
               private fb: FormBuilder,
               private adminService: AdminService,
               private userService: UserService,

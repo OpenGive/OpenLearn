@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from "@angular/core";
 import {MdDialog} from "@angular/material";
 import * as _ from "lodash";
 
-import {OLDialogComponent} from "../../../shared/ol-dialog.component";
+import {AdminDialogComponent} from "../admin-dialog.component";
 import {AdminGridModel} from "../../../models/admin-grid.model";
 import {AdminGridService} from "../../../services/admin-grid.service";
 
@@ -35,7 +35,7 @@ export class AdminGridComponent implements OnInit {
   }
 
   add(): void {
-    this.dialog.open(OLDialogComponent, {
+    this.dialog.open(AdminDialogComponent, {
       data: {
         tab: this.grid.route,
         item: {},
@@ -48,7 +48,7 @@ export class AdminGridComponent implements OnInit {
   }
 
   viewDetails(row): void {
-    this.dialog.open(OLDialogComponent, {
+    this.dialog.open(AdminDialogComponent, {
       data: {
         tab: this.grid.route,
         item: row,

@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from "@angular/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MdDialogRef} from "@angular/material";
 
-import {OLDialogComponent} from "../../../../shared/ol-dialog.component";
+import {AdminDialogComponent} from "../../admin-dialog.component";
 import {AdminModel} from "../../admin.constants";
 import {AdminService} from "../../../../services/admin.service";
 import {NotifyService} from "../../../../services/notify.service";
@@ -10,7 +10,7 @@ import {NotifyService} from "../../../../services/notify.service";
 @Component({
   selector: 'admin-organizations-form',
   templateUrl: './admin-organizations-form.component.html',
-  styleUrls: ['../../../../shared/ol-forms.css']
+  styleUrls: ['../../../dialog-forms.css']
 })
 export class AdminOrganizationsFormComponent implements OnInit {
 
@@ -35,7 +35,7 @@ export class AdminOrganizationsFormComponent implements OnInit {
     }
   };
 
-  constructor(public dialogRef: MdDialogRef<OLDialogComponent>,
+  constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
               private fb: FormBuilder,
               private adminService: AdminService,
               private notify: NotifyService) {}

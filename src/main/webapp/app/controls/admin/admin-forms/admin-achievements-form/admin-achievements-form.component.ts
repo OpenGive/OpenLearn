@@ -2,7 +2,7 @@
 // import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 // import {MdDialogRef} from "@angular/material";
 //
-// import {OLDialogComponent} from "../../../../shared/ol-dialog.component";
+// import {AdminDialogComponent} from "../../admin-dialog.component";
 // import {AdminModel} from "../../admin.constants";
 // import {AdminService} from "../../../../services/admin.service";
 // import {NotifyService} from "../../../../services/notify.service";
@@ -11,7 +11,7 @@
 // @Component({
 //   selector: 'admin-achievements-form',
 //   templateUrl: './admin-achievements-form.component.html',
-//   styleUrls: ['../../../../shared/ol-forms.css']
+//   styleUrls: []
 // })
 // export class AdminAchievementsFormComponent implements OnInit {
 //
@@ -52,7 +52,7 @@
 //     }
 //   };
 //
-//   constructor(public dialogRef: MdDialogRef<OLDialogComponent>,
+//   constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
 //               private fb: FormBuilder,
 //               private adminService: AdminService,
 //               private userService: UserService,

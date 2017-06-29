@@ -3,7 +3,7 @@
 // import {MdDialogRef} from "@angular/material";
 //
 // import {AppConstants} from "../../../../app.constants";
-// import {OLDialogComponent} from "../../../../shared/ol-dialog.component";
+// import {AdminDialogComponent} from "../../admin-dialog.component";
 // import {AdminModel} from "../../admin.constants";
 // import {AdminService} from "../../../../services/admin.service";
 // import {NotifyService} from "../../../../services/notify.service";
@@ -11,7 +11,7 @@
 // @Component({
 //   selector: 'admin-milestones-form',
 //   templateUrl: './admin-milestones-form.component.html',
-//   styleUrls: ['../../../../shared/ol-forms.css']
+//   styleUrls: ['../../../dialog-forms.css']
 // })
 // export class AdminMilestonesFormComponent implements OnInit {
 //
@@ -44,7 +44,7 @@
 //     }
 //   };
 //
-//   constructor(public dialogRef: MdDialogRef<OLDialogComponent>,
+//   constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
 //               private fb: FormBuilder,
 //               private adminService: AdminService,
 //               private notify: NotifyService) {}
