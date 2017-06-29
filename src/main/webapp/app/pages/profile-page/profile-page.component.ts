@@ -5,7 +5,7 @@ import {AccountService} from "../../shared/auth/account.service";
 @Component({
   selector: 'profile-form',
   templateUrl: './profile-page.component.html',
-  styleUrls: ['./profile-page.component.css']
+  styleUrls: ['./profile-page.component.css', '../../controls/dialog-forms.css']
 })
 export class ProfilePageComponent {
 
