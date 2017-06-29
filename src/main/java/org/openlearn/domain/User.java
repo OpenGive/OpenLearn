@@ -97,7 +97,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	private String biography;
 
 	@JsonIgnore
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(
 			name = "user_authority",
 			joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
@@ -107,7 +107,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	private Set<Authority> authorities = new HashSet<>();
 
   @JsonIgnore
-  @ManyToMany
+  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(
 			name = "user_org",
 			joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id") },
@@ -269,6 +269,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
     return "User{" +
       "id=" + id +
       ", login='" + login + '\'' +
+      ", password='" + password + '\'' +
       ", firstName='" + firstName + '\'' +
       ", lastName='" + lastName + '\'' +
       ", email='" + email + '\'' +
@@ -281,6 +282,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
       ", resetDate=" + resetDate +
       ", is14Plus=" + is14Plus +
       ", biography='" + biography + '\'' +
+      ", authorities=" + authorities +
       ", organizations=" + organizations +
       '}';
   }

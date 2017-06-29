@@ -59,9 +59,6 @@
             <column name="description" type="VARCHAR(200)"/>
             <column name="start_date" type="TIMESTAMP"/>
             <column name="end_date" type="TIMESTAMP"/>
-            <column name="organization_id" type="BIGINT">
-              <constraints nullable="false"/>
-            </column>
             <column name="instructor_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
@@ -444,9 +441,6 @@
     </changeSet>
     <changeSet author="btaylor (generated)" id="0000000000000-59">
         <addForeignKeyConstraint baseColumnNames="milestone_id" baseTableName="achievement" constraintName="FKjlihjgm4otkgnwce7sdmane3d" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="milestone"/>
-    </changeSet>
-    <changeSet author="btaylor (generated)" id="0000000000000-60">
-        <addForeignKeyConstraint baseColumnNames="organization_id" baseTableName="course" constraintName="FKk7lpx5vpabikdmqwx0htpbo9b" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="organization"/>
     </changeSet>
     <changeSet author="btaylor (generated)" id="0000000000000-61">
         <addForeignKeyConstraint baseColumnNames="program_id" baseTableName="course" constraintName="FKkrt3dma7ruv45lsafb5lu5x7r" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="program"/>

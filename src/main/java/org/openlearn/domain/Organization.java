@@ -46,11 +46,6 @@ public class Organization implements Serializable {
 	@Column(name = "description", length = 800)
 	private String description;
 
-	@OneToMany(mappedBy = "organization")
-	// @JsonIgnore
-	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	private Set<Course> courses = new HashSet<>();
-
 	@ManyToMany
 	@JoinTable(
 			name = "user_org",
@@ -93,31 +88,6 @@ public class Organization implements Serializable {
 
 	public void setDescription(final String description) {
 		this.description = description;
-	}
-
-	public Set<Course> getCourses() {
-		return courses;
-	}
-
-	public Organization courses(final Set<Course> courses) {
-		this.courses = courses;
-		return this;
-	}
-
-	public Organization addCourses(final Course course) {
-		courses.add(course);
-		course.setOrganization(this);
-		return this;
-	}
-
-	public Organization removeCourses(final Course course) {
-		courses.remove(course);
-		course.setOrganization(null);
-		return this;
-	}
-
-	public void setCourses(final Set<Course> courses) {
-		this.courses = courses;
 	}
 
 	public Set<User> getUsers() {
