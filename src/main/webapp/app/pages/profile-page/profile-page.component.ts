@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from "@angular/core";
+import {Component, Input} from "@angular/core";
 import {UserService} from "../../services/user.service";
 import {AccountService} from "../../shared/auth/account.service";
 
@@ -7,17 +7,13 @@ import {AccountService} from "../../shared/auth/account.service";
   templateUrl: './profile-page.component.html',
   styleUrls: ['./profile-page.component.css']
 })
-export class ProfilePageComponent implements OnInit {
+export class ProfilePageComponent {
 
   @Input() profile: any = {};
   @Input() editing: boolean;
 
   constructor(private userService: UserService, private accountService: AccountService) {
     this.accountService.get().subscribe(resp => {this.profile = resp});
-  }
-
-  ngOnInit() {
-
   }
 
   edit(): void {
