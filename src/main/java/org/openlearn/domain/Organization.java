@@ -54,8 +54,8 @@ public class Organization implements Serializable {
 	@ManyToMany
 	@JoinTable(
 			name = "user_org",
-			joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id") },
-			inverseJoinColumns = {@JoinColumn(name = "org_id", referencedColumnName = "id") }
+			joinColumns = {@JoinColumn(name = "org_id", referencedColumnName = "id") },
+			inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id") }
 			)
 	// @JsonIgnore
 	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)

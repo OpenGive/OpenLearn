@@ -82,8 +82,8 @@ public class Course implements Serializable {
 	@ManyToMany
 	@JoinTable(
 			name = "student_course",
-			joinColumns = {	@JoinColumn(name = "user_id", referencedColumnName = "id") },
-			inverseJoinColumns = { @JoinColumn(name = "course_id", referencedColumnName = "id") }
+			joinColumns = {	@JoinColumn(name = "course_id", referencedColumnName = "id") },
+			inverseJoinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") }
 			)
 	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 	private Set<User> students = new HashSet<>();
