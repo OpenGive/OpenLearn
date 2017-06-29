@@ -6,7 +6,7 @@ import {MdButtonModule, MdIconModule, MdTooltipModule} from "@angular/material";
 // import {AdminAchievementsComponent} from "./admin-tabs/admin-achievements.component";
 import {AdminAdministratorsComponent} from "./admin-tabs/admin-administrators.component";
 import {AdminCoursesComponent} from "./admin-tabs/admin-courses.component";
-import {AdminDialogComponent} from "./admin-dialog.component";
+import {OLDialogComponent} from "../../shared/ol-dialog.component";
 import {AdminGridComponent} from "./admin-grid/admin-grid.component";
 import {AdminInstructorsComponent} from "./admin-tabs/admin-instructors.component";
 // import {AdminMilestonesComponent} from "./admin-tabs/admin-milestones.component";
@@ -21,7 +21,7 @@ import {OLAdminFormsModule} from "./admin-forms/admin-forms.module";
     // AdminAchievementsComponent,
     AdminAdministratorsComponent,
     AdminCoursesComponent,
-    AdminDialogComponent,
+    OLDialogComponent,
     AdminGridComponent,
     AdminInstructorsComponent,
     // AdminMilestonesComponent,
@@ -39,7 +39,7 @@ import {OLAdminFormsModule} from "./admin-forms/admin-forms.module";
     OLAdminFormsModule
   ],
   entryComponents: [
-    AdminDialogComponent
+    OLDialogComponent
   ]
 })
 export class OLAdminModule {}

@@ -20,7 +20,10 @@ export class DashboardPageComponent implements OnInit {
   }
 
   private getCourses(): void {
-    this.adminService.search(AdminModel.Course.route, 'instructor:1').subscribe(courses => {
+    /*this.adminService.search(AdminModel.Course.route, 'instructor:1').subscribe(courses => {
+      this.courses = courses;
+    });*/
+    this.adminService.getAll(AdminModel.Course.route).subscribe(courses => {
       this.courses = courses;
     });
   }

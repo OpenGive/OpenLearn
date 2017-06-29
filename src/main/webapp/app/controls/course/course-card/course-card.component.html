@@ -10,8 +10,6 @@
     <p>{{course.description}}</p>
   </md-card-content>
   <md-card-actions>
-    <button md-button *ngIf="!studentView">LIKE</button>
-    <button md-button *ngIf="!studentView">SHARE</button>
-    <button md-button *ngIf="studentView" (click)="viewCourse()">View Class</button>
+    <button md-button (click)="viewCourse()">View Class</button>
   </md-card-actions>
 </md-card>

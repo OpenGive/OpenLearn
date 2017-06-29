@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MdDialogRef} from "@angular/material";
 import {Observable} from "rxjs/Observable";
 
-import {AdminDialogComponent} from "../../admin-dialog.component";
+import {OLDialogComponent} from "../../../../shared/ol-dialog.component";
 import {AdminModel} from "../../admin.constants";
 import {AdminService} from "../../../../services/admin.service";
 import {NotifyService} from "../../../../services/notify.service";
@@ -11,7 +11,7 @@ import {NotifyService} from "../../../../services/notify.service";
 @Component({
   selector: 'admin-programs-form',
   templateUrl: './admin-programs-form.component.html',
-  styleUrls: ['../admin-forms.css']
+  styleUrls: ['../../../../shared/ol-forms.css']
 })
 export class AdminProgramsFormComponent implements OnInit {
 
@@ -41,7 +41,7 @@ export class AdminProgramsFormComponent implements OnInit {
     }
   };
 
-  constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
+  constructor(public dialogRef: MdDialogRef<OLDialogComponent>,
               private fb: FormBuilder,
               private adminService: AdminService,
               private notify: NotifyService) {}

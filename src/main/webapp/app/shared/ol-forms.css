@@ -7,17 +7,17 @@ input[disabled], textarea[disabled] {
   color: white;
 }
 
-.admin-dialog {
+.ol-dialog {
   padding: 0;
 }
 
-.admin-dialog-header {
+.ol-dialog-header {
   height: 60px;
   padding: 11px 20px;
   box-shadow: 0 2px 2px 0 rgba(0,0,0,.2);
 }
 
-.admin-dialog-header.edit {
+.ol-dialog-header.edit {
   background: rgba(255, 82, 82, 0.9);
 }
 
@@ -32,7 +32,7 @@ input[disabled], textarea[disabled] {
   box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
 }
 
-.admin-dialog-title {
+.ol-dialog-title {
   font-family: Rubik, sans-serif;
   font-size: 22px;
   color: #4D5A70;
@@ -40,11 +40,11 @@ input[disabled], textarea[disabled] {
   padding-left: 15px;
 }
 
-.admin-dialog-title.edit {
+.ol-dialog-title.edit {
   color: white !important;
 }
 
-.admin-dialog-button {
+.ol-dialog-button {
   border-radius: 4px;
   height: 36px;
   font-family: OpenSans, sans-serif;
@@ -73,7 +73,7 @@ input[disabled], textarea[disabled] {
   color: #FFFFFF;
 }
 
-.admin-dialog-content {
+.ol-dialog-content {
   padding: 20px 40px;
   overflow-y: scroll;
 }

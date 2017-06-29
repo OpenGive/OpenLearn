@@ -3,6 +3,7 @@ import {MdDialog} from '@angular/material';
 
 import {Course} from '../../../models/course';
 import {CourseViewComponent} from '../course-view/course-view.component'
+import {OLDialogComponent} from "../../../shared/ol-dialog.component";
 
 @Component({
   selector: 'app-course-card',

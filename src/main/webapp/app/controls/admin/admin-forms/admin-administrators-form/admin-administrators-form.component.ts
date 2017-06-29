@@ -4,7 +4,7 @@ import {MdDialogRef} from "@angular/material";
 import {Observable} from "rxjs/Observable";
 import * as _ from "lodash";
 
-import {AdminDialogComponent} from "../../admin-dialog.component";
+import {OLDialogComponent} from "../../../../shared/ol-dialog.component";
 import {AppConstants} from "../../../../app.constants";
 import {NotifyService} from "../../../../services/notify.service";
 import {PasswordService} from "../../../../shared/auth/password.service";
@@ -13,7 +13,7 @@ import {UserService} from "../../../../services/user.service";
 @Component({
   selector: 'admin-administrators-form',
   templateUrl: './admin-administrators-form.component.html',
-  styleUrls: ['../admin-forms.css']
+  styleUrls: ['../../../../shared/ol-forms.css']
 })
 export class AdminAdministratorsFormComponent implements OnInit {
 
@@ -94,7 +94,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
     }
   };
 
-  constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
+  constructor(public dialogRef: MdDialogRef<OLDialogComponent>,
               private fb: FormBuilder,
               private userService: UserService,
               private notify: NotifyService,
