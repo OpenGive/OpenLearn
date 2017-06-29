@@ -41,16 +41,11 @@
     </button>
     <md-menu #profileMenu="mdMenu" yPosition="above">
       <button routerLink="/profile" md-menu-item>
-        <md-icon><i mdPrefix class="fa fa-user fa-lg"></i></md-icon>
+        <md-icon aria-hidden="true" class="user-menu-icon">person</md-icon>
         <span>Profile</span>
       </button>
-      <button md-menu-item>
-        <md-icon><i mdPrefix class="fa fa-info fa-lg"></i></md-icon>
-        <span>About</span>
-      </button>
       <button routerLink="/" (click)="logout()" md-menu-item>
-        <md-icon>
-        <i mdPrefix class="fa fa-sign-out fa-lg"></i></md-icon>
+        <md-icon aria-hidden="true" class="user-menu-icon">exit_to_app</md-icon>
         <span>Logout</span>
       </button>
     </md-menu>

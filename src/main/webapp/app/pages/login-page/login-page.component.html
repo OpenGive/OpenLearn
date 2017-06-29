@@ -4,15 +4,13 @@
     <div fxLayout="row" fxLayoutAlign="center center">
       <!--[fxFlex.md]="flexSettings.md" [fxFlex.lg]="flexSettings.lg"-->
       <md-input-container [fxFlex.xs]="flexSettings.xs" [fxFlex.gt-xs]="flexSettings.sm" color="primary">
-        <i mdPrefix class="fa fa-user fa-lg"></i>
+        <md-icon mdPrefix>person</md-icon>
         <input mdInput placeholder="Username" [(ngModel)]="username">
       </md-input-container>
-
-
     </div>
     <div fxLayout="row" fxLayoutAlign="center center">
       <md-input-container [fxFlex.xs]="flexSettings.xs" [fxFlex.gt-xs]="flexSettings.sm" color="primary">
-        <i mdPrefix class="fa fa-lock fa-lg"></i>
+        <md-icon mdPrefix>lock</md-icon>
         <input type="password" mdInput placeholder="Password" [(ngModel)]="password">
       </md-input-container>
     </div>
@@ -27,7 +25,3 @@
     </div>
   </div>
 </div>
-
-
-
-
