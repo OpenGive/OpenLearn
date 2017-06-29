@@ -15,3 +15,8 @@
   color: rgba(0, 0, 0, 0.38);
   cursor: pointer;
 }
+
+md-icon {
+  color: #ff5252;
+  padding-right: 5px;
+}
