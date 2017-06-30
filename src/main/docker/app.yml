@@ -1,0 +1,19 @@
+version: '2'
+services:
+    openlearn-app:
+        image: openlearn
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod,swagger
+            - SPRING_DATASOURCE_URL=jdbc:mariadb://openlearn-mariadb:3306/openlearn
+            - SLEEP=10 # gives time for the database to boot before the application
+            - SPRING_DATA_ELASTICSEARCH_CLUSTER_NODES=openlearn-elasticsearch:9300
+        ports:
+            - 8080:8080
+    openlearn-mariadb:
+        extends:
+            file: mariadb.yml
+            service: openlearn-mariadb
+    openlearn-elasticsearch:
+        extends:
+            file: elasticsearch.yml
+            service: openlearn-elasticsearch

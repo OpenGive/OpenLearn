@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+
+    <property name="now" value="now()" dbms="mysql"/>
+    <property name="autoIncrement" value="true"/>
+
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+    <!--
+        Test data loader
+    -->
+    <changeSet id="99999999999999-1" author="acooperman">
+      <loadData encoding="UTF-8"
+                file="config/liquibase/users.csv"
+                separator=","
+                tableName="user">
+        <column name="is_14_plus" type="boolean"/>
+        <column name="activated" type="boolean"/>
+        <column name="created_date" type="timestamp"/>
+      </loadData>
+      <dropDefaultValue tableName="user" columnName="created_date" columnDataType="datetime"/>
+
+      <loadData encoding="UTF-8"
+                file="config/liquibase/authorities.csv"
+                separator=","
+                tableName="authority"/>
+
+      <loadData encoding="UTF-8"
+                file="config/liquibase/users_authorities.csv"
+                separator=","
+                tableName="user_authority"/>
+
+
+      <loadData encoding="UTF-8"
+                  file="config/liquibase/organizations.csv"
+                  separator=","
+                  tableName="organization">
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/schools.csv"
+                  separator=","
+                  tableName="school">
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/session.csv"
+                  separator=","
+                  tableName="session">
+                  <column name="active" type="boolean"/>
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/program.csv"
+                  separator=","
+                  tableName="program">
+                  <column name="active" type="boolean"/>
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/course.csv"
+                  separator=","
+                  tableName="course">
+	    		<column name="active" type="boolean"/>
+	    		<column name="start_date" type="timestamp"/>
+	    		<column name="end_date" type="timestamp"/>
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/milestone.csv"
+                  separator=","
+                  tableName="milestone">
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/achievement.csv"
+                  separator=","
+                  tableName="achievement">
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/address.csv"
+                  separator=","
+                  tableName="address">
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/portfolio.csv"
+                  separator=","
+                  tableName="portfolio">
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/item_link.csv"
+                  separator=","
+                  tableName="item_link">
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/users_orgs.csv"
+                  separator=","
+                  tableName="user_org">
+        </loadData>
+
+    </changeSet>
+    <changeSet id="99999999999999-2" author="sstevenson">
+      <loadUpdateData encoding="UTF-8"
+                file="config/liquibase/milestone_descriptions_and_points.csv"
+                separator=","
+                primaryKey="id"
+                tableName="milestone">
+      </loadUpdateData>
+    </changeSet>
+</databaseChangeLog>
