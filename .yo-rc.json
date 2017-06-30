@@ -26,10 +26,6 @@
     "useSass": true,
     "clientPackageManager": "yarn",
     "applicationType": "monolith",
-    "testFrameworks": [
-      "gatling",
-      "protractor"
-    ],
     "jhiPrefix": "jhi",
     "otherModules": [
       {
