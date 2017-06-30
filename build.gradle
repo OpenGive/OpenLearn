@@ -1,4 +1,3 @@
-import groovy.json.JsonSlurper
 import org.gradle.internal.os.OperatingSystem
 
 buildscript {
@@ -17,7 +16,6 @@ buildscript {
         classpath "org.springframework.build.gradle:propdeps-plugin:0.0.7"
         classpath "com.moowork.gradle:gradle-node-plugin:1.1.1"
         classpath "io.spring.gradle:dependency-management-plugin:0.6.1.RELEASE"
-        classpath 'gradle.plugin.com.heroku.sdk:heroku-gradle:0.2.0'
         classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.3'
         classpath 'org.asciidoctor:asciidoctorj-pdf:1.5.0-alpha.14'
         classpath 'io.github.swagger2markup:swagger2markup-gradle-plugin:1.3.1'
@@ -88,31 +86,15 @@ test {
     reports.html.enabled = false
 }
 
-task cucumberTest(type: Test) {
-    include '**/CucumberTest*'
-
-    // uncomment if the tests reports are not generated
-    // see https://github.com/jhipster/generator-jhipster/pull/2771 and https://github.com/jhipster/generator-jhipster/pull/4484
-    // ignoreFailures true
-    reports.html.enabled = false
-}
-
-test.finalizedBy(cucumberTest)
-
 task testReport(type: TestReport) {
     destinationDir = file("$buildDir/reports/tests")
     reportOn test
-    reportOn cucumberTest
 }
-
-cucumberTest.finalizedBy(testReport)
 
 apply from: 'gradle/sonar.gradle'
 apply from: 'gradle/liquibase.gradle'
 apply from: 'gradle/gatling.gradle'
 apply from: 'gradle/mapstruct.gradle'
-apply from: 'gradle/docker.gradle'
-apply from: 'gradle/heroku.gradle'
 apply from: 'gradle/swagger2markup.gradle'
 //jhipster-needle-gradle-apply-from - JHipster will add additional gradle scripts to be applied here
 
@@ -219,8 +201,6 @@ dependencies {
     compile "org.springframework.social:spring-social-twitter"
     testCompile "org.awaitility:awaitility:${awaitility_version}"
     testCompile "com.jayway.jsonpath:json-path"
-    testCompile "info.cukes:cucumber-junit:${cucumber_version}"
-    testCompile "info.cukes:cucumber-spring:${cucumber_version}"
     testCompile "org.springframework.boot:spring-boot-starter-test"
     testCompile "org.springframework.security:spring-security-test"
     testCompile "org.springframework.boot:spring-boot-test"

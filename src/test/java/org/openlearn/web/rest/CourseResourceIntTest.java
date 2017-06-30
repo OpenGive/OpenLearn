@@ -123,11 +123,6 @@ public class CourseResourceIntTest {
 		em.flush();
 		course.setProgram(program);
 
-		final Organization org = OrganizationResourceIntTest.createEntity(em);
-		em.persist(org);
-		em.flush();
-		course.setOrganization(org);
-
 		return course;
 	}
 

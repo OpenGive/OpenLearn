@@ -28,7 +28,6 @@
     "applicationType": "monolith",
     "testFrameworks": [
       "gatling",
-      "cucumber",
       "protractor"
     ],
     "jhiPrefix": "jhi",
@@ -36,10 +35,6 @@
       {
         "name": "generator-jhipster-nav-element",
         "version": "1.2.2"
-      },
-      {
-        "name": "generator-jhipster-docker",
-        "version": "2.2.0"
       },
       {
         "name": "generator-jhipster-ci",
@@ -86,7 +81,6 @@
     "nativeLanguage": "en",
     "languages": [
       "en"
-    ],
-    "herokuAppName": "open-learn-www-stage"
+    ]
   }
 }
