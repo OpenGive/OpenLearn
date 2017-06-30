@@ -24,7 +24,6 @@ sourceCompatibility=1.8
 targetCompatibility=1.8
 apply plugin: 'maven'
 apply plugin: 'org.springframework.boot'
-apply plugin: 'war'
 apply plugin: 'propdeps'
 apply plugin: 'com.moowork.node'
 apply plugin: 'io.spring.dependency-management'
