@@ -10,16 +10,11 @@ buildscript {
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.1"
         classpath "net.ltgt.gradle:gradle-apt-plugin:0.9"
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${spring_boot_version}"
         classpath "org.springframework.build.gradle:propdeps-plugin:0.0.7"
         classpath "com.moowork.gradle:gradle-node-plugin:1.1.1"
         classpath "io.spring.gradle:dependency-management-plugin:0.6.1.RELEASE"
-        classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.3'
-        classpath 'org.asciidoctor:asciidoctorj-pdf:1.5.0-alpha.14'
-        classpath 'io.github.swagger2markup:swagger2markup-gradle-plugin:1.3.1'
-        classpath 'io.github.swagger2markup:swagger2markup-spring-restdocs-ext:1.3.1'
         //jhipster-needle-gradle-buildscript-dependency - JHipster will add additional gradle build script plugins here
     }
 }
@@ -91,24 +86,14 @@ task testReport(type: TestReport) {
     reportOn test
 }
 
-apply from: 'gradle/sonar.gradle'
 apply from: 'gradle/liquibase.gradle'
 apply from: 'gradle/mapstruct.gradle'
-apply from: 'gradle/swagger2markup.gradle'
 //jhipster-needle-gradle-apply-from - JHipster will add additional gradle scripts to be applied here
 
 if (project.hasProperty('prod')) {
     apply from: 'gradle/profile_prod.gradle'
 } else {
     apply from: 'gradle/profile_dev.gradle'
-}
-
-if (project.hasProperty('graphite')) {
-    apply from: 'gradle/graphite.gradle'
-}
-
-if (project.hasProperty('prometheus')) {
-    apply from: 'gradle/prometheus.gradle'
 }
 
 group = 'org.openlearn'

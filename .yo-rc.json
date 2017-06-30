@@ -41,10 +41,6 @@
         "version": "3.5.1"
       },
       {
-        "name": "generator-jhipster-swagger2markup",
-        "version": "1.2.0"
-      },
-      {
         "name": "generator-jhipster-swagger-cli",
         "version": "2.0.5"
       },
