@@ -8,14 +8,7 @@ dependencies {
 
 }
 
-def profiles = 'test'
-if (project.hasProperty('no-liquibase')) {
-	profiles += ',no-liquibase'
-}
-
-if (project.hasProperty('swagger')) {
-	profiles += ',swagger'
-}
+def profiles = 'test,no-liquibase,swagger'
 
 bootRun {
 	args = []
