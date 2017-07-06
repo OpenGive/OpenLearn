@@ -89,8 +89,10 @@ apply from: 'gradle/mapstruct.gradle'
 
 if (project.hasProperty('prod')) {
     apply from: 'gradle/profile_prod.gradle'
+} else if (project.hasProperty('test')) {
+    apply from: 'gradle/profile_test.gradle'
 } else {
-    apply from: 'gradle/profile_dev.gradle'
+	apply from: 'gradle/profile_dev.gradle'
 }
 
 group = 'org.openlearn'

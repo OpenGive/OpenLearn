@@ -71,4 +71,4 @@ ${AnsiColor.RED}
 
 
 ${AnsiColor.BRIGHT_BLUE}:: OpenLearn :: Running Spring Boot ${spring-boot.version} ::
-:: http://openlearn.io ::${AnsiColor.DEFAULT}
+:: http://openlearn.opengive.io ::${AnsiColor.DEFAULT}
