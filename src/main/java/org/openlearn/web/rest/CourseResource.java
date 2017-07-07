@@ -8,7 +8,9 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.openlearn.domain.Course;
+import org.openlearn.domain.CourseStudent;
 import org.openlearn.service.CourseService;
+import org.openlearn.service.StudentCourseService;
 import org.openlearn.web.rest.util.HeaderUtil;
 import org.openlearn.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -46,8 +48,11 @@ public class CourseResource {
 
 	private final CourseService courseService;
 
-	public CourseResource(final CourseService courseService) {
+	private final StudentCourseService studentCourseService;
+
+	public CourseResource(final CourseService courseService, final StudentCourseService studentCourseService) {
 		this.courseService = courseService;
+		this.studentCourseService = studentCourseService;
 	}
 
 	/**
@@ -150,5 +155,63 @@ public class CourseResource {
 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 	}
 
+	/**
+	 * Get students for course
+	 *
+	 * @param id the id of the course to add the student to
+	 * @return the students in the course
+	 */
+	@GetMapping("/courses/{id}/students")
+	@Timed
+	public ResponseEntity<List<CourseStudent>> studentsInCourse(@PathVariable final Long id, @ApiParam final Pageable pageable) {
+		log.debug("REST request to get students in course with id {}", id);
+		final Page<CourseStudent> page = studentCourseService.findByCourseId(id, pageable);
+		final HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/courses"+id+"/students");
+		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+	}
 
+	/**
+	 * Add Student to course  /courses/{id}/students?student_id={studentId}
+	 *
+	 * @param id the id of the course to add the student to
+	 * @param studentId the id of the student to add to the course
+	 * @return the student added to the course
+	 */
+	@PostMapping("/courses/{id}/students")
+	@Timed
+	public ResponseEntity<CourseStudent> addStudentToCourse(@PathVariable final Long id, @RequestParam final Long studentId) {
+		log.debug("REST request to add student with id {} to course with id {}", studentId, id);
+		final CourseStudent studentCourse = studentCourseService.addStudentToCourse(id, studentId);
+		return ResponseUtil.wrapOrNotFound(Optional.ofNullable(studentCourse));
+	}
+
+	/**
+	 * Remove Student from course  /courses/{id}/students?student_id={studentId}
+	 *
+	 * @param id the id of the course to add the student to
+	 * @param studentId the id of the student to add to the course
+	 * @return the student added to the course
+	 */
+	@DeleteMapping("/courses/{id}/students/{studentId}")
+	@Timed
+	public ResponseEntity<CourseStudent> removeStudentFromCourse(@PathVariable final Long id, @PathVariable final Long studentId) {
+		log.debug("REST request to add student with id {} to course with id {}", studentId, id);
+		final CourseStudent studentCourse = studentCourseService.removeStudentFromCourse(id, studentId);
+		return ResponseUtil.wrapOrNotFound(Optional.ofNullable(studentCourse));
+	}
+
+	/**
+	 * Assign a grade to a course and student association /courses/{id}/students?student_id={studentId}&grade={grade}
+	 *
+	 * @param id the id of the course to add the student to
+	 * @param studentId the id of the student to add to the course
+	 * @return the student added to the course
+	 */
+	@PostMapping("/courses/{id}/grade")
+	@Timed
+	public ResponseEntity<CourseStudent> addGradeToCourseStudent(@PathVariable final Long id, @RequestParam final Long studentId, @RequestParam final String grade) {
+		log.debug("REST request to set student with id {} in course with id {} to have the grade {}", studentId, id, grade);
+		final CourseStudent studentCourse = studentCourseService.addGradeToStudentCourse(id, studentId, grade);
+		return ResponseUtil.wrapOrNotFound(Optional.ofNullable(studentCourse));
+	}
 }

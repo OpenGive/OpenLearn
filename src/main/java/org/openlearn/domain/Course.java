@@ -72,10 +72,10 @@ public class Course implements Serializable {
 //			joinColumns = {	@JoinColumn(name = "course_id", referencedColumnName = "id") },
 //			inverseJoinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") }
 //			)
-  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "course")
-	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	private Set<StudentCourse> students = new HashSet<>();
-
+//  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "course")
+//	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+//	private Set<StudentCourse> students = new HashSet<>();
+//
 	@OneToMany(mappedBy = "course", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 	private Set<Milestone> milestones = new HashSet<>();
@@ -184,31 +184,31 @@ public class Course implements Serializable {
 		resources = itemLinks;
 	}
 
-	public Set<User> getStudents() {
-	  return students.stream().map(StudentCourse::getUser).collect(Collectors.toSet());
-	}
-
-	public Course students(final Set<User> users) {
-	  setStudents(users);
-		return this;
-	}
-
-	public Course addStudents(final User user) {
-	  students.add(new StudentCourse(this, user));
-		return this;
-	}
-
-	public Course removeStudents(final User user) {
-	  students = students.stream().filter(sc -> !sc.getUser().equals(user)).collect(Collectors.toSet());
-		return this;
-	}
-
-	public void setStudents(final Set<User> users) {
-	  users.forEach(u -> {
-	    students.add(new StudentCourse(this, u));
-    });
-	}
-
+//	public Set<User> getStudents() {
+//	  return students.stream().map(StudentCourse::getStudent).collect(Collectors.toSet());
+//	}
+//
+//	public Course students(final Set<User> users) {
+//	  setStudents(users);
+//		return this;
+//	}
+//
+//	public Course addStudents(final User user) {
+//	  students.add(new StudentCourse(this, user));
+//		return this;
+//	}
+//
+//	public Course removeStudents(final User user) {
+//	  students = students.stream().filter(sc -> !sc.getStudent().equals(user)).collect(Collectors.toSet());
+//		return this;
+//	}
+//
+//	public void setStudents(final Set<User> users) {
+//	  users.forEach(u -> {
+//	    students.add(new StudentCourse(this, u));
+//    });
+//	}
+//
 	public Set<Milestone> getMilestones() {
 		return milestones;
 	}
@@ -262,7 +262,7 @@ public class Course implements Serializable {
       ", program=" + program +
       ", instructor=" + instructor +
       ", resources=" + resources +
-      ", students=" + students +
+//      ", students=" + students +
       ", milestones=" + milestones +
       '}';
   }

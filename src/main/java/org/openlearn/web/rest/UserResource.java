@@ -10,11 +10,13 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.openlearn.config.Constants;
+import org.openlearn.domain.StudentCourse;
 import org.openlearn.domain.User;
 import org.openlearn.repository.UserRepository;
 import org.openlearn.repository.search.UserSearchRepository;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.service.MailService;
+import org.openlearn.service.StudentCourseService;
 import org.openlearn.service.UserService;
 import org.openlearn.service.dto.UserDTO;
 import org.openlearn.web.rest.util.HeaderUtil;
@@ -84,13 +86,16 @@ public class UserResource {
 
 	private final UserSearchRepository userSearchRepository;
 
+	private final StudentCourseService studentCourseService;
+
 	public UserResource(final UserRepository userRepository, final MailService mailService,
-			final UserService userService, final UserSearchRepository userSearchRepository) {
+			final UserService userService, final UserSearchRepository userSearchRepository, final StudentCourseService studentCourseService) {
 
 		this.userRepository = userRepository;
 		this.mailService = mailService;
 		this.userService = userService;
 		this.userSearchRepository = userSearchRepository;
+		this.studentCourseService = studentCourseService;
 	}
 
 	/**
@@ -199,6 +204,22 @@ public class UserResource {
 		return ResponseUtil.wrapOrNotFound(
 				userService.getUserWithAuthoritiesByLogin(login)
 				.map(UserDTO::new));
+	}
+
+	/**
+	 * GET  /users/:login/courses : get the "login" user's courses.
+	 *
+	 * @param login the login of the user to find
+	 * @return the ResponseEntity with status 200 (OK) and with body the "login" user, or with status 404 (Not Found)
+	 */
+	@GetMapping("/users/{login:" + Constants.LOGIN_REGEX + "}/courses")
+	@Timed
+	public ResponseEntity<List<StudentCourse>> getUserCourses(@PathVariable final String login, Pageable pageable) {
+		log.debug("REST request to get User : {}", login);
+		final Page<StudentCourse> page = studentCourseService.findByLogin(login, pageable);
+		final HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/"+login+"/students");
+		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+
 	}
 
 	/**

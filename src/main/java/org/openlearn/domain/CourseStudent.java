@@ -6,17 +6,17 @@ import java.io.Serializable;
 @Entity
 @Table(name = "student_course")
 @IdClass(StudentCourseId.class)
-public class StudentCourse implements Serializable{
+public class CourseStudent implements Serializable{
 
   private static final long serialVersionUID = 1L;
 
-  public StudentCourse(){
+  public CourseStudent(){
   }
 
-  public StudentCourse(Course c, User u){
+  public CourseStudent(Course c, User u){
     userId = u.getId();
     courseId = c.getId();
-    course = c;
+    student = u;
   }
 
   @Id
@@ -28,9 +28,8 @@ public class StudentCourse implements Serializable{
   private Long userId;
 
   @ManyToOne
-  @JoinColumn(name = "course_id",  referencedColumnName = "id", insertable = false, updatable = false)
-//  @PrimaryKeyJoinColumn(name = "course_id", referencedColumnName = "id")
-  private Course course;
+  @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
+  private User student;
 
   @Column(name = "grade")
   private String grade;
@@ -51,13 +50,13 @@ public class StudentCourse implements Serializable{
   	this.userId = userId;
   }
 
-	public Course getCourse() {
-		return course;
-	}
+  public User getStudent() {
+    return student;
+  }
 
-	public void setCourse(Course course) {
-		this.course = course;
-	}
+  public void setStudent(User student) {
+    this.student = student;
+  }
 
 	public String getGrade() {
     return grade;
@@ -72,7 +71,7 @@ public class StudentCourse implements Serializable{
 	  return "StudentCourse{" +
 		  "courseId=" + courseId +
 		  ", userId=" + userId +
-		  ", course=" + course +
+		  ", student=" + student +
 		  ", grade='" + grade + '\'' +
 		  '}';
   }
@@ -80,13 +79,13 @@ public class StudentCourse implements Serializable{
   @Override
   public boolean equals(Object o) {
 	  if (this == o) return true;
-	  if (!(o instanceof StudentCourse)) return false;
+	  if (!(o instanceof CourseStudent)) return false;
 
-	  StudentCourse that = (StudentCourse) o;
+	  CourseStudent that = (CourseStudent) o;
 
 	  if (!courseId.equals(that.courseId)) return false;
 	  if (!userId.equals(that.userId)) return false;
-	  if (course != null ? !course.equals(that.course) : that.course != null) return false;
+	  if (student != null ? !student.equals(that.student) : that.student != null) return false;
 	  return grade != null ? grade.equals(that.grade) : that.grade == null;
   }
 
@@ -94,7 +93,7 @@ public class StudentCourse implements Serializable{
   public int hashCode() {
 	  int result = courseId.hashCode();
 	  result = 31 * result + userId.hashCode();
-	  result = 31 * result + (course != null ? course.hashCode() : 0);
+	  result = 31 * result + (student != null ? student.hashCode() : 0);
 	  result = 31 * result + (grade != null ? grade.hashCode() : 0);
 	  return result;
   }
