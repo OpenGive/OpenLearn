@@ -31,6 +31,7 @@ import org.openlearn.domain.User;
 import org.openlearn.repository.CourseRepository;
 import org.openlearn.repository.search.CourseSearchRepository;
 import org.openlearn.service.CourseService;
+import org.openlearn.service.StudentCourseService;
 import org.openlearn.web.rest.errors.ExceptionTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -70,6 +71,9 @@ public class CourseResourceIntTest {
 	private CourseService courseService;
 
 	@Autowired
+	private StudentCourseService studentCourseService;
+
+	@Autowired
 	private CourseSearchRepository courseSearchRepository;
 
 	@Autowired
@@ -91,7 +95,7 @@ public class CourseResourceIntTest {
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
-		final CourseResource courseResource = new CourseResource(courseService);
+		final CourseResource courseResource = new CourseResource(courseService, studentCourseService);
 		restCourseMockMvc = MockMvcBuilders.standaloneSetup(courseResource)
 				.setCustomArgumentResolvers(pageableArgumentResolver)
 				.setControllerAdvice(exceptionTranslator)
@@ -122,11 +126,6 @@ public class CourseResourceIntTest {
 		em.persist(program);
 		em.flush();
 		course.setProgram(program);
-
-		final Organization org = OrganizationResourceIntTest.createEntity(em);
-		em.persist(org);
-		em.flush();
-		course.setOrganization(org);
 
 		return course;
 	}

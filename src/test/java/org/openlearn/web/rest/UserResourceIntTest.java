@@ -26,6 +26,7 @@ import org.openlearn.domain.User;
 import org.openlearn.repository.UserRepository;
 import org.openlearn.repository.search.UserSearchRepository;
 import org.openlearn.service.MailService;
+import org.openlearn.service.StudentCourseService;
 import org.openlearn.service.UserService;
 import org.openlearn.web.rest.errors.ExceptionTranslator;
 import org.openlearn.web.rest.vm.ManagedUserVM;
@@ -81,6 +82,9 @@ public class UserResourceIntTest {
 	private UserSearchRepository userSearchRepository;
 
 	@Autowired
+	StudentCourseService studentCourseService;
+
+	@Autowired
 	private MailService mailService;
 
 	@Autowired
@@ -125,7 +129,7 @@ public class UserResourceIntTest {
     @Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
-		final UserResource userResource = new UserResource(userRepository, mailService, userService, userSearchRepository);
+		final UserResource userResource = new UserResource(userRepository, mailService, userService, userSearchRepository, studentCourseService);
 		restUserMockMvc = MockMvcBuilders.standaloneSetup(userResource)
 				.setCustomArgumentResolvers(pageableArgumentResolver)
 				.setControllerAdvice(exceptionTranslator)
