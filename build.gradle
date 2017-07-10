@@ -96,7 +96,21 @@ if (project.hasProperty('prod')) {
 }
 
 group = 'org.openlearn'
-version = '0.0.1-SNAPSHOT'
+
+// Versioning logic
+def release = '0.0.0'
+def versionBuild = 'noVersion'
+def suffix = 'SNAPSHOT'
+if (project.hasProperty('releaseNumber')) {
+	release = releaseNumber
+}
+if (project.hasProperty('buildVersion')) {
+	versionBuild = buildVersion
+}
+if (project.hasProperty('buildType')) {
+	suffix = buildType
+}
+version = release.toString() + '-' + versionBuild.toString() + '-' + suffix.toString()
 
 description = ''
 
