@@ -1,6 +1,6 @@
 package org.openlearn.web.rest;
 
-import org.openlearn.OpenGiveApplication;
+import org.openlearn.OpenLearnApplication;
 
 import org.openlearn.domain.Organization;
 import org.openlearn.repository.OrganizationRepository;
@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see OrganizationResource
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = OpenGiveApplication.class)
+@SpringBootTest(classes = OpenLearnApplication.class)
 public class OrganizationResourceIntTest {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";

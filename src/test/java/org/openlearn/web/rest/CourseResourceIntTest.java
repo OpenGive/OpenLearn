@@ -23,9 +23,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
-import org.openlearn.OpenGiveApplication;
+import org.openlearn.OpenLearnApplication;
 import org.openlearn.domain.Course;
-import org.openlearn.domain.Organization;
 import org.openlearn.domain.Program;
 import org.openlearn.domain.User;
 import org.openlearn.repository.CourseRepository;
@@ -48,7 +47,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @see CourseResource
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = OpenGiveApplication.class)
+@SpringBootTest(classes = OpenLearnApplication.class)
 public class CourseResourceIntTest {
 
 	private static final String DEFAULT_NAME = "AAAAAAAAAA";

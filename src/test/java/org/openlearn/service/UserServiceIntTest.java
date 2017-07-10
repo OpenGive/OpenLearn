@@ -8,7 +8,7 @@ import java.util.Optional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openlearn.OpenGiveApplication;
+import org.openlearn.OpenLearnApplication;
 import org.openlearn.config.Constants;
 import org.openlearn.domain.User;
 import org.openlearn.repository.UserRepository;
@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @see UserService
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = OpenGiveApplication.class)
+@SpringBootTest(classes = OpenLearnApplication.class)
 @Transactional
 public class UserServiceIntTest {
 
