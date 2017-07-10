@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.openlearn.config.Constants;
+import org.openlearn.domain.Course;
 import org.openlearn.domain.StudentCourse;
 import org.openlearn.domain.User;
 import org.openlearn.repository.UserRepository;
@@ -251,4 +252,15 @@ public class UserResource {
 				.stream(userSearchRepository.search(queryStringQuery(query)).spliterator(), false)
 				.collect(Collectors.toList());
 	}
+
+	@GetMapping("/users/{login:" + Constants.LOGIN_REGEX + "}/instructors")
+	@Timed
+	@Secured(AuthoritiesConstants.INSTRUCTOR)
+	public ResponseEntity<List<Course>> getUserInstructors(@PathVariable final String login, Pageable pageable){
+		log.debug("REST request to get courses instructed by user with login : {}", login);
+		final Page<Course> page = userService.getCoursesInstructedByUser(login,pageable);
+		final HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users/"+login+"/instructors");
+		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+	}
+
 }

@@ -9,9 +9,11 @@ import java.util.Set;
 import org.openlearn.config.Constants;
 import org.openlearn.domain.Address;
 import org.openlearn.domain.Authority;
+import org.openlearn.domain.Course;
 import org.openlearn.domain.User;
 import org.openlearn.repository.AddressRepository;
 import org.openlearn.repository.AuthorityRepository;
+import org.openlearn.repository.CourseRepository;
 import org.openlearn.repository.UserRepository;
 import org.openlearn.repository.search.UserSearchRepository;
 import org.openlearn.security.AuthoritiesConstants;
@@ -39,6 +41,8 @@ public class UserService {
 
   private final UserRepository userRepository;
 
+  private final CourseRepository courseRepository;
+
   private final PasswordEncoder passwordEncoder;
 
   private final SocialService socialService;
@@ -51,7 +55,7 @@ public class UserService {
 
   private final AddressRepository addressRepository;
 
-  public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, SocialService socialService, JdbcTokenStore jdbcTokenStore, UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository, AddressRepository addressRepository) {
+  public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, SocialService socialService, JdbcTokenStore jdbcTokenStore, UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository, AddressRepository addressRepository, CourseRepository courseRepository) {
     this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
     this.socialService = socialService;
@@ -59,6 +63,7 @@ public class UserService {
     this.userSearchRepository = userSearchRepository;
     this.authorityRepository = authorityRepository;
     this.addressRepository = addressRepository;
+    this.courseRepository = courseRepository;
   }
 
   public Optional<User> activateRegistration(String key) {
@@ -280,5 +285,12 @@ public class UserService {
       userRepository.delete(user);
       userSearchRepository.delete(user);
     }
+  }
+
+  @Transactional(readOnly = true)
+	public Page<Course> getCoursesInstructedByUser(final String login, final Pageable pageable){
+  	Optional<User> user = userRepository.findOneWithAuthoritiesByLogin(login);
+  	Page<Course> result = courseRepository.findAllByInstructorId(user.get().getId(), pageable);
+  	return result;
   }
 }

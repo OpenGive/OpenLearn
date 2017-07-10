@@ -66,16 +66,6 @@ public class Course implements Serializable {
 	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 	private Set<ItemLink> resources = new HashSet<>();
 
-//	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//	@JoinTable(
-//			name = "student_course",
-//			joinColumns = {	@JoinColumn(name = "course_id", referencedColumnName = "id") },
-//			inverseJoinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") }
-//			)
-//  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "course")
-//	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-//	private Set<StudentCourse> students = new HashSet<>();
-//
 	@OneToMany(mappedBy = "course", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 	private Set<Milestone> milestones = new HashSet<>();
