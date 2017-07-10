@@ -102,6 +102,12 @@ public class CourseService {
 		return result;
 	}
 
+	/**
+	 * Get the item links associatd with a course
+	 *
+	 *  @param id the course id to find item links with
+	 *  @return the set of item links associated with the course id
+	 */
 	@Transactional(readOnly =  true)
 	public Set<ItemLink> getItemLinksForCourse(final Long id) {
 		log.debug("Request to get item links for course id : {}", id);
@@ -110,23 +116,37 @@ public class CourseService {
 		return result;
 	}
 
+	/**
+	 * Add an item link to a course
+	 *
+	 *  @param courseId the course id associate the item link with
+	 *  @param itemLinkId the id of the item link to associate with the course
+	 *  @return the set of item links associated with the course id after adding the item link
+	 */
 	@Transactional
-	public ItemLink addItemLinkToCourse(final Long courseId, final Long itemLinkId){
+	public Set<ItemLink> addItemLinkToCourse(final Long courseId, final Long itemLinkId){
 		log.debug("Request to add item link id {} to course id {}", itemLinkId, courseId);
 		Course course = courseRepository.findOne(courseId);
 		ItemLink itemLink = itemLinkRepository.findOne(itemLinkId);
 		course.getResources().add(itemLink);
 		courseRepository.save(course);
-		return itemLink;
+		return course.getResources();
 	}
 
+	/**
+	 * Remove an item link from a course
+	 *
+	 *  @param courseId the course id to remove the item link from
+	 *  @param itemLinkId the id of the item link to remove
+	 *  @return the set of item links associated with the course id after removing the item link
+	 */
 	@Transactional
-	public Course removeItemLinkFromCourse(Long courseId, Long itemLinkId) {
+	public Set<ItemLink> removeItemLinkFromCourse(Long courseId, Long itemLinkId) {
 		log.debug("Request to remove item link id {} from course id {}", itemLinkId, courseId);
 		Course course = courseRepository.findOne(courseId);
 		Predicate<ItemLink> itemLinkPredicate = p-> p.getId() == itemLinkId;
 		course.getResources().removeIf(itemLinkPredicate);
 		courseRepository.save(course);
-		return course;
+		return course.getResources();
 	}
 }

@@ -217,6 +217,12 @@ public class CourseResource {
 		return ResponseUtil.wrapOrNotFound(Optional.ofNullable(studentCourse));
 	}
 
+	/**
+	 * Get the resources associated with a course
+	 *
+	 * @param courseId the id of the course to add the item link to
+	 * @return the item links associated with the course
+	 */
 	@GetMapping("/courses/{courseId}/resources")
 	@Timed
 	public ResponseEntity<Set<ItemLink>> getCourseResources(@PathVariable final Long courseId){
@@ -225,19 +231,33 @@ public class CourseResource {
 		return new ResponseEntity<Set<ItemLink>>(results, HttpStatus.OK);
 	}
 
+	/**
+	 * Add a resource item link to a course
+	 *
+	 * @param courseId the id of the course to add the item link to
+	 * @param itemLinkId the id of the item link to add to the course
+	 * @return the item links that are associated with the course
+	 */
 	@PostMapping("/courses/{courseId}/resources")
 	@Timed
-	public ResponseEntity<ItemLink> addResourceToCourse(@PathVariable final Long courseId, @RequestParam Long itemLinkId){
+	public ResponseEntity<Set<ItemLink>> addResourceToCourse(@PathVariable final Long courseId, @RequestParam Long itemLinkId){
 		log.debug("REST request to add item link with id {} to course with id {}", itemLinkId, courseId);
-		final ItemLink result = courseService.addItemLinkToCourse(courseId, itemLinkId);
-		return new ResponseEntity<ItemLink>(result, HttpStatus.OK);
+		final Set<ItemLink> result = courseService.addItemLinkToCourse(courseId, itemLinkId);
+		return new ResponseEntity<Set<ItemLink>>(result, HttpStatus.OK);
 	}
 
+	/**
+	 * Add a resource item link to a course
+	 *
+	 * @param courseId the id of the course to add the item link to
+	 * @param itemLinkId the id of the item link to add to the course
+	 * @return the item links that are associated with the course
+	 */
 	@DeleteMapping("/courses/{courseId}/resources/{itemLinkId}")
 	@Timed
-	public ResponseEntity<Course> removeItemLinkFromCourse(@PathVariable final Long courseId, @PathVariable final Long itemLinkId){
+	public ResponseEntity<Set<ItemLink>> removeItemLinkFromCourse(@PathVariable final Long courseId, @PathVariable final Long itemLinkId){
 		log.debug("REST request to remove item link with id {} from course id {}", itemLinkId, courseId);
-		final Course result = courseService.removeItemLinkFromCourse(courseId, itemLinkId);
-		return new ResponseEntity<Course>(result, HttpStatus.OK);
+		final Set<ItemLink> result = courseService.removeItemLinkFromCourse(courseId, itemLinkId);
+		return new ResponseEntity<Set<ItemLink>>(result, HttpStatus.OK);
 	}
 }
