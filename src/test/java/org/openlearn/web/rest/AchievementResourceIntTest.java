@@ -15,6 +15,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
@@ -42,6 +43,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = OpenLearnApplication.class)
+@Ignore
 public class AchievementResourceIntTest {
 
 	private static final String DEFAULT_NAME = "AAAAAAAAAA";

@@ -39,7 +39,7 @@ public class Address implements Serializable {
     @Column(name = "city", length = 50, nullable = false)
     private String city;
 
-//    @NotNull
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "state", nullable = false)
     private State state;
