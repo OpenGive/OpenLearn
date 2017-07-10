@@ -18,7 +18,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
-import org.openlearn.OpenGiveApplication;
+import org.openlearn.OpenLearnApplication;
 import org.openlearn.domain.Milestone;
 import org.openlearn.repository.MilestoneRepository;
 import org.openlearn.repository.search.MilestoneSearchRepository;
@@ -40,7 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @see MilestoneResource
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = OpenGiveApplication.class)
+@SpringBootTest(classes = OpenLearnApplication.class)
 public class MilestoneResourceIntTest {
 
 	private static final String DEFAULT_NAME = "AAAAAAAAAA";

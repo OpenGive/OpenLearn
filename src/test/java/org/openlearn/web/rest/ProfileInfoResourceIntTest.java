@@ -1,7 +1,7 @@
 package org.openlearn.web.rest;
 
 import io.github.jhipster.config.JHipsterProperties;
-import org.openlearn.OpenGiveApplication;
+import org.openlearn.OpenLearnApplication;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see ProfileInfoResource
  **/
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = OpenGiveApplication.class)
+@SpringBootTest(classes = OpenLearnApplication.class)
 public class ProfileInfoResourceIntTest {
 
     @Mock

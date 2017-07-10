@@ -1,6 +1,6 @@
 package org.openlearn.web.rest;
 
-import org.openlearn.OpenGiveApplication;
+import org.openlearn.OpenLearnApplication;
 import org.openlearn.config.audit.AuditEventConverter;
 import org.openlearn.domain.PersistentAuditEvent;
 import org.openlearn.repository.PersistenceAuditEventRepository;
@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see AuditResource
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = OpenGiveApplication.class)
+@SpringBootTest(classes = OpenLearnApplication.class)
 @Transactional
 public class AuditResourceIntTest {
 

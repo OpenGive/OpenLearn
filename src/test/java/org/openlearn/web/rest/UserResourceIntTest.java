@@ -21,7 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
-import org.openlearn.OpenGiveApplication;
+import org.openlearn.OpenLearnApplication;
 import org.openlearn.domain.User;
 import org.openlearn.repository.UserRepository;
 import org.openlearn.repository.search.UserSearchRepository;
@@ -47,7 +47,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @see UserResource
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = OpenGiveApplication.class)
+@SpringBootTest(classes = OpenLearnApplication.class)
 public class UserResourceIntTest {
 
 	private static final String DEFAULT_LOGIN = "johndoe";

@@ -1,6 +1,6 @@
 package org.openlearn.repository;
 
-import org.openlearn.OpenGiveApplication;
+import org.openlearn.OpenLearnApplication;
 import org.openlearn.domain.SocialUserConnection;
 
 import org.junit.Before;
@@ -30,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = OpenGiveApplication.class)
+@SpringBootTest(classes = OpenLearnApplication.class)
 @Transactional
 public class CustomSocialUsersConnectionRepositoryIntTest {
 
