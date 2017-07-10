@@ -138,6 +138,7 @@ public class UserService {
     user.setAddress(userDTO.getAddress());
     user.setImageUrl(userDTO.getImageUrl());
     user.setBiography(userDTO.getBiography());
+    user.setIs14Plus(userDTO.getIs14Plus());
     if (userDTO.getAuthorities() != null) {
 
       Set<Authority> authorities = new HashSet<>();
@@ -199,10 +200,16 @@ public class UserService {
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
         user.setPhoneNumber(userDTO.getPhoneNumber());
-        user.setAddress(userDTO.getAddress());
+        if(userDTO.getAddress() == null || (userDTO.getAddress() != null && userDTO.getAddress().isEmpty())){
+			addressRepository.delete(user.getAddress());
+			user.setAddress(null);
+		  }else{
+			  user.setAddress(userDTO.getAddress());
+		  }
         user.setImageUrl(userDTO.getImageUrl());
         user.setActivated(userDTO.isActivated());
         user.setBiography(userDTO.getBiography());
+        user.setIs14Plus(userDTO.is14Plus());
         final Set<Authority> managedAuthorities = user.getAuthorities();
         managedAuthorities.clear();
         userDTO.getAuthorities().stream()
@@ -257,7 +264,6 @@ public class UserService {
   public User getUserWithAuthorities() {
     return userRepository.findOneWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).orElse(null);
   }
-
 
   /**
    * Not activated users should be automatically deleted after 3 days.

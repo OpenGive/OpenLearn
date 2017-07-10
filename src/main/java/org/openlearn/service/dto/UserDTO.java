@@ -167,6 +167,8 @@ public class UserDTO
 		return is14Plus;
 	}
 
+	public boolean getIs14Plus() { return is14Plus; }
+
 	public String getBiography() {
 		return biography;
 	}
@@ -186,6 +188,7 @@ public class UserDTO
 				", createdDate=" + createdDate +
 				", lastModifiedBy='" + lastModifiedBy + '\'' +
 				", lastModifiedDate=" + lastModifiedDate +
+			", is14Plus=" + is14Plus +
 				", authorities=" + authorities +
 				", biography=" + biography +
 				"}";

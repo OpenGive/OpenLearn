@@ -39,7 +39,7 @@ public class Address implements Serializable {
     @Column(name = "city", length = 50, nullable = false)
     private String city;
 
-    @NotNull
+//    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "state", nullable = false)
     private State state;
@@ -153,4 +153,12 @@ public class Address implements Serializable {
             ", postalCode='" + postalCode + "'" +
             '}';
     }
+
+	public Boolean isEmpty(){
+		return ( (getStreetAddress1() == null || getStreetAddress1().isEmpty()) &&
+			(getStreetAddress2() == null || getStreetAddress2().isEmpty()) &&
+			(getCity() == null || getCity().isEmpty()) &&
+			(getPostalCode() == null || getPostalCode().isEmpty())
+		);
+	}
 }

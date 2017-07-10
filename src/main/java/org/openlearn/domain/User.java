@@ -234,6 +234,8 @@ public class User extends AbstractAuditingEntity implements Serializable {
 		return is14Plus;
 	}
 
+	public boolean is14Plus() { return is14Plus; }
+
 	public void setIs14Plus(final boolean is14Plus)
 	{
 		this.is14Plus = is14Plus;
