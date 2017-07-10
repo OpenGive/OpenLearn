@@ -25,7 +25,6 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.openlearn.OpenLearnApplication;
 import org.openlearn.domain.Course;
-import org.openlearn.domain.Organization;
 import org.openlearn.domain.Program;
 import org.openlearn.domain.User;
 import org.openlearn.repository.CourseRepository;

@@ -1,5 +1,4 @@
 apply plugin: 'org.springframework.boot'
-apply plugin: 'com.moowork.node'
 
 ext {
     logbackLoglevel = "INFO"
@@ -9,14 +8,7 @@ dependencies {
 
 }
 
-def profiles = 'prod'
-if (project.hasProperty('no-liquibase')) {
-    profiles += ',no-liquibase'
-}
-
-if (project.hasProperty('swagger')) {
-    profiles += ',swagger'
-}
+def profiles = 'prod,no-liquibase'
 
 bootRun {
     args = []

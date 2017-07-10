@@ -26,20 +26,11 @@
     "useSass": true,
     "clientPackageManager": "yarn",
     "applicationType": "monolith",
-    "testFrameworks": [
-      "gatling",
-      "cucumber",
-      "protractor"
-    ],
     "jhiPrefix": "jhi",
     "otherModules": [
       {
         "name": "generator-jhipster-nav-element",
         "version": "1.2.2"
-      },
-      {
-        "name": "generator-jhipster-docker",
-        "version": "2.2.0"
       },
       {
         "name": "generator-jhipster-ci",
@@ -48,10 +39,6 @@
       {
         "name": "generator-jhipster-bootstrap-material-design",
         "version": "3.5.1"
-      },
-      {
-        "name": "generator-jhipster-swagger2markup",
-        "version": "1.2.0"
       },
       {
         "name": "generator-jhipster-swagger-cli",
@@ -86,7 +73,6 @@
     "nativeLanguage": "en",
     "languages": [
       "en"
-    ],
-    "herokuAppName": "open-learn-www-stage"
+    ]
   }
 }
