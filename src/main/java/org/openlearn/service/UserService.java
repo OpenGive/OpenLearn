@@ -206,7 +206,9 @@ public class UserService {
         user.setEmail(userDTO.getEmail());
         user.setPhoneNumber(userDTO.getPhoneNumber());
         if(userDTO.getAddress() == null || (userDTO.getAddress() != null && userDTO.getAddress().isEmpty())){
-			addressRepository.delete(user.getAddress());
+        	if(user.getAddress() != null){
+				addressRepository.delete(user.getAddress());
+			}
 			user.setAddress(null);
 		  }else{
 			  user.setAddress(userDTO.getAddress());
