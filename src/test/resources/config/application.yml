@@ -62,7 +62,7 @@ spring:
         mode: XHTML
 
 liquibase:
-    contexts: test
+    contexts: dev
 
 security:
     basic:

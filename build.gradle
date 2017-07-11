@@ -87,11 +87,11 @@ apply from: 'gradle/liquibase.gradle'
 apply from: 'gradle/mapstruct.gradle'
 //jhipster-needle-gradle-apply-from - JHipster will add additional gradle scripts to be applied here
 
-if (project.hasProperty('prod')) {
+if (project.hasProperty('prod')) {              // OpenLearn Prod => JHipster Prod
     apply from: 'gradle/profile_prod.gradle'
-} else if (project.hasProperty('test')) {
+} else if (project.hasProperty('dev')) {        // OpenLearn Dev => JHipster Test
     apply from: 'gradle/profile_test.gradle'
-} else {
+} else {                                        // OpenLearn Local => JHipster Dev
 	apply from: 'gradle/profile_dev.gradle'
 }
 
