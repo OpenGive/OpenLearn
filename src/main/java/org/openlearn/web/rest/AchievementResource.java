@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
@@ -132,23 +131,4 @@ public class AchievementResource {
 		achievementService.delete(id);
 		return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
 	}
-
-	/**
-	 * SEARCH  /_search/achievements?query=:query : search for the achievement corresponding
-	 * to the query.
-	 *
-	 * @param query the query of the achievement search
-	 * @param pageable the pagination information
-	 * @return the result of the search
-	 */
-	@GetMapping("/_search/achievements")
-	@Timed
-	public ResponseEntity<List<Achievement>> searchAchievements(@RequestParam final String query, @ApiParam final Pageable pageable) {
-		log.debug("REST request to search for a page of Achievements for query {}", query);
-		final Page<Achievement> page = achievementService.search(query, pageable);
-		final HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/achievements");
-		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-	}
-
-
 }

@@ -21,7 +21,6 @@ import org.openlearn.domain.Authority;
 import org.openlearn.domain.User;
 import org.openlearn.repository.AuthorityRepository;
 import org.openlearn.repository.UserRepository;
-import org.openlearn.repository.search.UserSearchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -48,9 +47,6 @@ public class SocialServiceIntTest {
 
 	@Autowired
 	private UserRepository userRepository;
-	@Autowired
-	private UserSearchRepository userSearchRepository;
-
 
 	@Mock
 	private MailService mockMailService;
@@ -71,7 +67,7 @@ public class SocialServiceIntTest {
 		when(mockUsersConnectionRepository.createConnectionRepository(anyString())).thenReturn(mockConnectionRepository);
 
 		socialService = new SocialService(mockUsersConnectionRepository, authorityRepository,
-				passwordEncoder, userRepository, mockMailService, userSearchRepository);
+				passwordEncoder, userRepository, mockMailService);
 	}
 
 	@Test

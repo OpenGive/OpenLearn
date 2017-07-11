@@ -1,20 +1,16 @@
 package org.openlearn.web.rest;
 
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.openlearn.config.Constants;
 import org.openlearn.domain.Course;
 import org.openlearn.domain.StudentCourse;
 import org.openlearn.domain.User;
 import org.openlearn.repository.UserRepository;
-import org.openlearn.repository.search.UserSearchRepository;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.service.MailService;
 import org.openlearn.service.StudentCourseService;
@@ -85,17 +81,14 @@ public class UserResource {
 
 	private final UserService userService;
 
-	private final UserSearchRepository userSearchRepository;
-
 	private final StudentCourseService studentCourseService;
 
 	public UserResource(final UserRepository userRepository, final MailService mailService,
-			final UserService userService, final UserSearchRepository userSearchRepository, final StudentCourseService studentCourseService) {
+			final UserService userService, final StudentCourseService studentCourseService) {
 
 		this.userRepository = userRepository;
 		this.mailService = mailService;
 		this.userService = userService;
-		this.userSearchRepository = userSearchRepository;
 		this.studentCourseService = studentCourseService;
 	}
 
@@ -238,21 +231,6 @@ public class UserResource {
 		return ResponseEntity.ok().headers(HeaderUtil.createAlert( "userManagement.deleted", login)).build();
 	}
 
-	/**
-	 * SEARCH  /_search/users/:query : search for the User corresponding
-	 * to the query.
-	 *
-	 * @param query the query to search
-	 * @return the result of the search
-	 */
-	@GetMapping("/_search/users/{query}")
-	@Timed
-	public List<User> search(@PathVariable final String query) {
-		return StreamSupport
-				.stream(userSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-				.collect(Collectors.toList());
-	}
-
 	@GetMapping("/users/{login:" + Constants.LOGIN_REGEX + "}/instructors")
 	@Timed
 	@Secured(AuthoritiesConstants.INSTRUCTOR)
@@ -262,5 +240,4 @@ public class UserResource {
 		final HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users/"+login+"/instructors");
 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 	}
-
 }

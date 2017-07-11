@@ -1,10 +1,7 @@
 package org.openlearn.service;
 
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
-
 import org.openlearn.domain.Milestone;
 import org.openlearn.repository.MilestoneRepository;
-import org.openlearn.repository.search.MilestoneSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -23,11 +20,8 @@ public class MilestoneService {
 
 	private final MilestoneRepository milestoneRepository;
 
-	private final MilestoneSearchRepository milestoneSearchRepository;
-
-	public MilestoneService(final MilestoneRepository milestoneRepository, final MilestoneSearchRepository milestoneSearchRepository) {
+	public MilestoneService(final MilestoneRepository milestoneRepository) {
 		this.milestoneRepository = milestoneRepository;
-		this.milestoneSearchRepository = milestoneSearchRepository;
 	}
 
 	/**
@@ -39,7 +33,6 @@ public class MilestoneService {
 	public Milestone save(final Milestone milestone) {
 		log.debug("Request to save Milestone : {}", milestone);
 		final Milestone result = milestoneRepository.save(milestone);
-		milestoneSearchRepository.save(result);
 		return result;
 	}
 
@@ -77,20 +70,5 @@ public class MilestoneService {
 	public void delete(final Long id) {
 		log.debug("Request to delete Milestone : {}", id);
 		milestoneRepository.delete(id);
-		milestoneSearchRepository.delete(id);
-	}
-
-	/**
-	 * Search for the milestone corresponding to the query.
-	 *
-	 *  @param query the query of the search
-	 *  @param pageable the pagination information
-	 *  @return the list of entities
-	 */
-	@Transactional(readOnly = true)
-	public Page<Milestone> search(final String query, final Pageable pageable) {
-		log.debug("Request to search for a page of Milestones for query {}", query);
-		final Page<Milestone> result = milestoneSearchRepository.search(queryStringQuery(query), pageable);
-		return result;
 	}
 }

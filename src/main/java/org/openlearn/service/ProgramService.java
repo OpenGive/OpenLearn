@@ -2,17 +2,12 @@ package org.openlearn.service;
 
 import org.openlearn.domain.Program;
 import org.openlearn.repository.ProgramRepository;
-import org.openlearn.repository.search.ProgramSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing Program.
@@ -25,11 +20,8 @@ public class ProgramService {
 
     private final ProgramRepository programRepository;
 
-    private final ProgramSearchRepository programSearchRepository;
-
-    public ProgramService(ProgramRepository programRepository, ProgramSearchRepository programSearchRepository) {
+    public ProgramService(ProgramRepository programRepository) {
         this.programRepository = programRepository;
-        this.programSearchRepository = programSearchRepository;
     }
 
     /**
@@ -41,7 +33,6 @@ public class ProgramService {
     public Program save(Program program) {
         log.debug("Request to save Program : {}", program);
         Program result = programRepository.save(program);
-        programSearchRepository.save(result);
         return result;
     }
 
@@ -54,7 +45,6 @@ public class ProgramService {
     public List<Program> findAll() {
         log.debug("Request to get all Programs");
         List<Program> result = programRepository.findAll();
-
         return result;
     }
 
@@ -79,20 +69,5 @@ public class ProgramService {
     public void delete(Long id) {
         log.debug("Request to delete Program : {}", id);
         programRepository.delete(id);
-        programSearchRepository.delete(id);
-    }
-
-    /**
-     * Search for the program corresponding to the query.
-     *
-     *  @param query the query of the search
-     *  @return the list of entities
-     */
-    @Transactional(readOnly = true)
-    public List<Program> search(String query) {
-        log.debug("Request to search Programs for query {}", query);
-        return StreamSupport
-            .stream(programSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
     }
 }

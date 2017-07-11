@@ -21,7 +21,6 @@ import org.mockito.MockitoAnnotations;
 import org.openlearn.OpenLearnApplication;
 import org.openlearn.domain.School;
 import org.openlearn.repository.SchoolRepository;
-import org.openlearn.repository.search.SchoolSearchRepository;
 import org.openlearn.service.SchoolService;
 import org.openlearn.web.rest.errors.ExceptionTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,9 +53,6 @@ public class SchoolResourceIntTest {
 
 	@Autowired
 	private SchoolService schoolService;
-
-	@Autowired
-	private SchoolSearchRepository schoolSearchRepository;
 
 	@Autowired
 	private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -99,7 +95,6 @@ public class SchoolResourceIntTest {
 
 	@Before
 	public void initTest() {
-		schoolSearchRepository.deleteAll();
 		school = createEntity(em);
 	}
 
@@ -120,10 +115,6 @@ public class SchoolResourceIntTest {
 		final School testSchool = schoolList.get(schoolList.size() - 1);
 		assertThat(testSchool.getName()).isEqualTo(DEFAULT_NAME);
 		assertThat(testSchool.getDistrict()).isEqualTo(DEFAULT_DISTRICT);
-
-		// Validate the School in Elasticsearch
-		final School schoolEs = schoolSearchRepository.findOne(testSchool.getId());
-		assertThat(schoolEs).isEqualToComparingFieldByField(testSchool);
 	}
 
 	@Test
@@ -226,10 +217,6 @@ public class SchoolResourceIntTest {
 		final School testSchool = schoolList.get(schoolList.size() - 1);
 		assertThat(testSchool.getName()).isEqualTo(UPDATED_NAME);
 		assertThat(testSchool.getDistrict()).isEqualTo(UPDATED_DISTRICT);
-
-		// Validate the School in Elasticsearch
-		final School schoolEs = schoolSearchRepository.findOne(testSchool.getId());
-		assertThat(schoolEs).isEqualToComparingFieldByField(testSchool);
 	}
 
 	@Test
@@ -263,28 +250,9 @@ public class SchoolResourceIntTest {
 				.accept(TestUtil.APPLICATION_JSON_UTF8))
 		.andExpect(status().isOk());
 
-		// Validate Elasticsearch is empty
-		final boolean schoolExistsInEs = schoolSearchRepository.exists(school.getId());
-		assertThat(schoolExistsInEs).isFalse();
-
 		// Validate the database is empty
 		final List<School> schoolList = schoolRepository.findAll();
 		assertThat(schoolList).hasSize(databaseSizeBeforeDelete - 1);
-	}
-
-	@Test
-	@Transactional
-	public void searchSchool() throws Exception {
-		// Initialize the database
-		schoolService.save(school);
-
-		// Search the school
-		restSchoolMockMvc.perform(get("/api/_search/schools?query=id:" + school.getId()))
-		.andExpect(status().isOk())
-		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-		.andExpect(jsonPath("$.[*].id").value(hasItem(school.getId().intValue())))
-		.andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-		.andExpect(jsonPath("$.[*].district").value(hasItem(DEFAULT_DISTRICT.toString())));
 	}
 
 	@Test

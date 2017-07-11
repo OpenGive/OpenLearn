@@ -24,7 +24,6 @@ import org.mockito.MockitoAnnotations;
 import org.openlearn.OpenLearnApplication;
 import org.openlearn.domain.User;
 import org.openlearn.repository.UserRepository;
-import org.openlearn.repository.search.UserSearchRepository;
 import org.openlearn.service.MailService;
 import org.openlearn.service.StudentCourseService;
 import org.openlearn.service.UserService;
@@ -79,9 +78,6 @@ public class UserResourceIntTest {
 	private UserRepository userRepository;
 
 	@Autowired
-	private UserSearchRepository userSearchRepository;
-
-	@Autowired
 	StudentCourseService studentCourseService;
 
 	@Autowired
@@ -129,7 +125,7 @@ public class UserResourceIntTest {
     @Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
-		final UserResource userResource = new UserResource(userRepository, mailService, userService, userSearchRepository, studentCourseService);
+		final UserResource userResource = new UserResource(userRepository, mailService, userService, studentCourseService);
 		restUserMockMvc = MockMvcBuilders.standaloneSetup(userResource)
 				.setCustomArgumentResolvers(pageableArgumentResolver)
 				.setControllerAdvice(exceptionTranslator)
@@ -256,7 +252,6 @@ public class UserResourceIntTest {
 //	public void createUserWithExistingLogin() throws Exception {
 //		// Initialize the database
 //		userRepository.saveAndFlush(user);
-//		userSearchRepository.save(user);
 //		final int databaseSizeBeforeCreate = userRepository.findAll().size();
 //
 //		final Set<String> authorities = new HashSet<>();
@@ -296,7 +291,6 @@ public class UserResourceIntTest {
 //	public void createUserWithExistingEmail() throws Exception {
 //		// Initialize the database
 //		userRepository.saveAndFlush(user);
-//		userSearchRepository.save(user);
 //		final int databaseSizeBeforeCreate = userRepository.findAll().size();
 //
 //		final Set<String> authorities = new HashSet<>();
@@ -336,7 +330,6 @@ public class UserResourceIntTest {
 	public void getAllUsers() throws Exception {
 		// Initialize the database
 		userRepository.saveAndFlush(user);
-		userSearchRepository.save(user);
 
 		// Get all the users
 		restUserMockMvc.perform(get("/api/users?sort=id,desc")
@@ -356,7 +349,6 @@ public class UserResourceIntTest {
 	public void getUser() throws Exception {
 		// Initialize the database
 		userRepository.saveAndFlush(user);
-		userSearchRepository.save(user);
 
 		// Get the user
 		restUserMockMvc.perform(get("/api/users/{login}", user.getLogin()))
@@ -383,7 +375,6 @@ public class UserResourceIntTest {
 	public void updateUser() throws Exception {
 		// Initialize the database
 		userRepository.saveAndFlush(user);
-		userSearchRepository.save(user);
 		final int databaseSizeBeforeUpdate = userRepository.findAll().size();
 
 		// Update the user
@@ -431,7 +422,6 @@ public class UserResourceIntTest {
 	public void updateUserLogin() throws Exception {
 		// Initialize the database
 		userRepository.saveAndFlush(user);
-		userSearchRepository.save(user);
 		final int databaseSizeBeforeUpdate = userRepository.findAll().size();
 
 		// Update the user
@@ -480,7 +470,6 @@ public class UserResourceIntTest {
 	public void updateUserExistingEmail() throws Exception {
 		// Initialize the database with 2 users
 		userRepository.saveAndFlush(user);
-		userSearchRepository.save(user);
 
 		final User anotherUser = new User();
 		anotherUser.setLogin("jhipster");
@@ -492,7 +481,6 @@ public class UserResourceIntTest {
 		anotherUser.setImageUrl("");
 		anotherUser.setBiography("other bio");
 		userRepository.saveAndFlush(anotherUser);
-		userSearchRepository.save(anotherUser);
 
 		// Update the user
 		final User updatedUser = userRepository.findOne(user.getId());
@@ -529,7 +517,6 @@ public class UserResourceIntTest {
 	public void updateUserExistingLogin() throws Exception {
 		// Initialize the database
 		userRepository.saveAndFlush(user);
-		userSearchRepository.save(user);
 
 		final User anotherUser = new User();
 		anotherUser.setLogin("jhipster");
@@ -541,7 +528,6 @@ public class UserResourceIntTest {
 		anotherUser.setImageUrl("");
 		anotherUser.setBiography("bio");
 		userRepository.saveAndFlush(anotherUser);
-		userSearchRepository.save(anotherUser);
 
 		// Update the user
 		final User updatedUser = userRepository.findOne(user.getId());
@@ -578,7 +564,6 @@ public class UserResourceIntTest {
 	public void deleteUser() throws Exception {
 		// Initialize the database
 		userRepository.saveAndFlush(user);
-		userSearchRepository.save(user);
 		final int databaseSizeBeforeDelete = userRepository.findAll().size();
 
 		// Delete the user

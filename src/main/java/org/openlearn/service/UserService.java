@@ -15,7 +15,6 @@ import org.openlearn.repository.AddressRepository;
 import org.openlearn.repository.AuthorityRepository;
 import org.openlearn.repository.CourseRepository;
 import org.openlearn.repository.UserRepository;
-import org.openlearn.repository.search.UserSearchRepository;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.security.SecurityUtils;
 import org.openlearn.service.dto.UserDTO;
@@ -49,18 +48,16 @@ public class UserService {
 
   public final JdbcTokenStore jdbcTokenStore;
 
-  private final UserSearchRepository userSearchRepository;
 
   private final AuthorityRepository authorityRepository;
 
   private final AddressRepository addressRepository;
 
-  public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, SocialService socialService, JdbcTokenStore jdbcTokenStore, UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository, AddressRepository addressRepository, CourseRepository courseRepository) {
+  public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, SocialService socialService, JdbcTokenStore jdbcTokenStore, AuthorityRepository authorityRepository, AddressRepository addressRepository, CourseRepository courseRepository) {
     this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
     this.socialService = socialService;
     this.jdbcTokenStore = jdbcTokenStore;
-    this.userSearchRepository = userSearchRepository;
     this.authorityRepository = authorityRepository;
     this.addressRepository = addressRepository;
     this.courseRepository = courseRepository;
@@ -73,7 +70,6 @@ public class UserService {
         // activate given user for the registration key.
         user.setActivated(true);
         user.setActivationKey(null);
-        userSearchRepository.save(user);
         log.debug("Activated user: {}", user);
         return user;
       });
@@ -128,7 +124,6 @@ public class UserService {
     authorities.add(authority);
     newUser.setAuthorities(authorities);
     userRepository.save(newUser);
-    userSearchRepository.save(newUser);
     log.debug("Created Information for User: {}", newUser);
     return newUser;
   }
@@ -163,7 +158,6 @@ public class UserService {
     user.setResetDate(ZonedDateTime.now());
     user.setActivated(true);
     userRepository.save(user);
-    userSearchRepository.save(user);
     log.debug("Created Information for User: {}", user);
     return user;
   }
@@ -185,7 +179,6 @@ public class UserService {
       user.setAddress(address);
       user.setImageUrl(imageUrl);
       user.setBiography(biography);
-      userSearchRepository.save(user);
       log.debug("Changed Information for User: {}", user);
     });
   }
@@ -234,7 +227,6 @@ public class UserService {
     userRepository.findOneByLogin(login).ifPresent(user -> {
       socialService.deleteUserSocialConnection(user.getLogin());
       userRepository.delete(user);
-      userSearchRepository.delete(user);
       log.debug("Deleted User: {}", user);
     });
   }
@@ -285,7 +277,6 @@ public class UserService {
     for (final User user : users) {
       log.debug("Deleting not activated user {}", user.getLogin());
       userRepository.delete(user);
-      userSearchRepository.delete(user);
     }
   }
 

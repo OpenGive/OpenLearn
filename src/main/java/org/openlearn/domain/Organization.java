@@ -13,14 +13,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.data.elasticsearch.annotations.Document;
 
 /**
  * A Organization.
@@ -28,7 +26,6 @@ import org.springframework.data.elasticsearch.annotations.Document;
 @Entity
 @Table(name = "organization")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "organization")
 public class Organization implements Serializable {
 
 	private static final long serialVersionUID = 1L;

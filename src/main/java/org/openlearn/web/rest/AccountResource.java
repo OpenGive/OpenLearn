@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
-import org.elasticsearch.common.Strings;
 import org.openlearn.domain.User;
 import org.openlearn.repository.UserRepository;
 import org.openlearn.security.SecurityUtils;
@@ -176,7 +175,7 @@ public class AccountResource {
       .map(User::getEmail).orElse(null);
     return userService.requestPasswordReset(login)
       .map(user -> {
-        if (!Strings.isNullOrEmpty(requesterEmail)) {
+        if (!StringUtils.isEmpty(requesterEmail)) {
           mailService.sendPasswordResetMail(user, requesterEmail);
           return new ResponseEntity<>("email was sent", HttpStatus.OK);
         } else {

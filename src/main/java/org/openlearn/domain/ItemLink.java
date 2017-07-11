@@ -14,7 +14,6 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.data.elasticsearch.annotations.Document;
 
 /**
  * A ItemLink.
@@ -22,7 +21,6 @@ import org.springframework.data.elasticsearch.annotations.Document;
 @Entity
 @Table(name = "item_link")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "itemlink")
 public class ItemLink implements Serializable {
 
     private static final long serialVersionUID = 1L;

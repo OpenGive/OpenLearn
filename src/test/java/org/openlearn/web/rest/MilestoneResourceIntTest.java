@@ -22,7 +22,6 @@ import org.mockito.MockitoAnnotations;
 import org.openlearn.OpenLearnApplication;
 import org.openlearn.domain.Milestone;
 import org.openlearn.repository.MilestoneRepository;
-import org.openlearn.repository.search.MilestoneSearchRepository;
 import org.openlearn.service.MilestoneService;
 import org.openlearn.web.rest.errors.ExceptionTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,9 +52,6 @@ public class MilestoneResourceIntTest {
 
 	@Autowired
 	private MilestoneService milestoneService;
-
-	@Autowired
-	private MilestoneSearchRepository milestoneSearchRepository;
 
 	@Autowired
 	private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -97,7 +93,6 @@ public class MilestoneResourceIntTest {
 
 	@Before
 	public void initTest() {
-		milestoneSearchRepository.deleteAll();
 		milestone = createEntity(em);
 	}
 
@@ -117,10 +112,6 @@ public class MilestoneResourceIntTest {
 		assertThat(milestoneList).hasSize(databaseSizeBeforeCreate + 1);
 		final Milestone testMilestone = milestoneList.get(milestoneList.size() - 1);
 		assertThat(testMilestone.getName()).isEqualTo(DEFAULT_NAME);
-
-		// Validate the Milestone in Elasticsearch
-		final Milestone milestoneEs = milestoneSearchRepository.findOne(testMilestone.getId());
-		assertThat(milestoneEs).isEqualToComparingFieldByField(testMilestone);
 	}
 
 	@Test
@@ -219,10 +210,6 @@ public class MilestoneResourceIntTest {
 		assertThat(milestoneList).hasSize(databaseSizeBeforeUpdate);
 		final Milestone testMilestone = milestoneList.get(milestoneList.size() - 1);
 		assertThat(testMilestone.getName()).isEqualTo(UPDATED_NAME);
-
-		// Validate the Milestone in Elasticsearch
-		final Milestone milestoneEs = milestoneSearchRepository.findOne(testMilestone.getId());
-		assertThat(milestoneEs).isEqualToComparingFieldByField(testMilestone);
 	}
 
 	@Test
@@ -256,27 +243,9 @@ public class MilestoneResourceIntTest {
 				.accept(TestUtil.APPLICATION_JSON_UTF8))
 		.andExpect(status().isOk());
 
-		// Validate Elasticsearch is empty
-		final boolean milestoneExistsInEs = milestoneSearchRepository.exists(milestone.getId());
-		assertThat(milestoneExistsInEs).isFalse();
-
 		// Validate the database is empty
 		final List<Milestone> milestoneList = milestoneRepository.findAll();
 		assertThat(milestoneList).hasSize(databaseSizeBeforeDelete - 1);
-	}
-
-	@Test
-	@Transactional
-	public void searchMilestone() throws Exception {
-		// Initialize the database
-		milestoneService.save(milestone);
-
-		// Search the milestone
-		restMilestoneMockMvc.perform(get("/api/_search/milestones?query=id:" + milestone.getId()))
-		.andExpect(status().isOk())
-		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-		.andExpect(jsonPath("$.[*].id").value(hasItem(milestone.getId().intValue())))
-		.andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())));
 	}
 
 	@Test

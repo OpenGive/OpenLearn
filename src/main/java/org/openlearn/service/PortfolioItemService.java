@@ -2,15 +2,12 @@ package org.openlearn.service;
 
 import org.openlearn.domain.PortfolioItem;
 import org.openlearn.repository.PortfolioItemRepository;
-import org.openlearn.repository.search.PortfolioItemSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing PortfolioItem.
@@ -23,11 +20,8 @@ public class PortfolioItemService {
 
     private final PortfolioItemRepository portfolioItemRepository;
 
-    private final PortfolioItemSearchRepository portfolioItemSearchRepository;
-
-    public PortfolioItemService(PortfolioItemRepository portfolioItemRepository, PortfolioItemSearchRepository portfolioItemSearchRepository) {
+    public PortfolioItemService(PortfolioItemRepository portfolioItemRepository) {
         this.portfolioItemRepository = portfolioItemRepository;
-        this.portfolioItemSearchRepository = portfolioItemSearchRepository;
     }
 
     /**
@@ -39,7 +33,6 @@ public class PortfolioItemService {
     public PortfolioItem save(PortfolioItem portfolioItem) {
         log.debug("Request to save PortfolioItem : {}", portfolioItem);
         PortfolioItem result = portfolioItemRepository.save(portfolioItem);
-        portfolioItemSearchRepository.save(result);
         return result;
     }
 
@@ -77,20 +70,5 @@ public class PortfolioItemService {
     public void delete(Long id) {
         log.debug("Request to delete PortfolioItem : {}", id);
         portfolioItemRepository.delete(id);
-        portfolioItemSearchRepository.delete(id);
-    }
-
-    /**
-     * Search for the portfolioItem corresponding to the query.
-     *
-     *  @param query the query of the search
-     *  @param pageable the pagination information
-     *  @return the list of entities
-     */
-    @Transactional(readOnly = true)
-    public Page<PortfolioItem> search(String query, Pageable pageable) {
-        log.debug("Request to search for a page of PortfolioItems for query {}", query);
-        Page<PortfolioItem> result = portfolioItemSearchRepository.search(queryStringQuery(query), pageable);
-        return result;
     }
 }

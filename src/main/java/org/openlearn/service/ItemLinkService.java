@@ -1,10 +1,7 @@
 package org.openlearn.service;
 
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
-
 import org.openlearn.domain.ItemLink;
 import org.openlearn.repository.ItemLinkRepository;
-import org.openlearn.repository.search.ItemLinkSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -23,11 +20,8 @@ public class ItemLinkService {
 
 	private final ItemLinkRepository itemLinkRepository;
 
-	private final ItemLinkSearchRepository itemLinkSearchRepository;
-
-	public ItemLinkService(final ItemLinkRepository itemLinkRepository, final ItemLinkSearchRepository itemLinkSearchRepository) {
+	public ItemLinkService(final ItemLinkRepository itemLinkRepository) {
 		this.itemLinkRepository = itemLinkRepository;
-		this.itemLinkSearchRepository = itemLinkSearchRepository;
 	}
 
 	/**
@@ -39,7 +33,6 @@ public class ItemLinkService {
 	public ItemLink save(final ItemLink itemLink) {
 		log.debug("Request to save ItemLink : {}", itemLink);
 		final ItemLink result = itemLinkRepository.save(itemLink);
-		itemLinkSearchRepository.save(result);
 		return result;
 	}
 
@@ -77,20 +70,5 @@ public class ItemLinkService {
 	public void delete(final Long id) {
 		log.debug("Request to delete ItemLink : {}", id);
 		itemLinkRepository.delete(id);
-		itemLinkSearchRepository.delete(id);
-	}
-
-	/**
-	 * Search for the itemLink corresponding to the query.
-	 *
-	 *  @param query the query of the search
-	 *  @param pageable the pagination information
-	 *  @return the list of entities
-	 */
-	@Transactional(readOnly = true)
-	public Page<ItemLink> search(final String query, final Pageable pageable) {
-		log.debug("Request to search for a page of ItemLinks for query {}", query);
-		final Page<ItemLink> result = itemLinkSearchRepository.search(queryStringQuery(query), pageable);
-		return result;
 	}
 }

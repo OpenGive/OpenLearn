@@ -114,20 +114,4 @@ public class ProgramResource {
         programService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/programs?query=:query : search for the program corresponding
-     * to the query.
-     *
-     * @param query the query of the program search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/programs")
-    @Timed
-    public List<Program> searchPrograms(@RequestParam String query) {
-        log.debug("REST request to search Programs for query {}", query);
-        return programService.search(query);
-    }
-
-
 }

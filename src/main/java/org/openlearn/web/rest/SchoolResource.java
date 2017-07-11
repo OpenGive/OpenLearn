@@ -114,20 +114,4 @@ public class SchoolResource {
         schoolService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/schools?query=:query : search for the school corresponding
-     * to the query.
-     *
-     * @param query the query of the school search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/schools")
-    @Timed
-    public List<School> searchSchools(@RequestParam String query) {
-        log.debug("REST request to search Schools for query {}", query);
-        return schoolService.search(query);
-    }
-
-
 }

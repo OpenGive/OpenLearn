@@ -23,7 +23,6 @@ import org.openlearn.OpenLearnApplication;
 import org.openlearn.domain.Achievement;
 import org.openlearn.domain.User;
 import org.openlearn.repository.AchievementRepository;
-import org.openlearn.repository.search.AchievementSearchRepository;
 import org.openlearn.service.AchievementService;
 import org.openlearn.web.rest.errors.ExceptionTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,9 +59,6 @@ public class AchievementResourceIntTest {
 
 	@Autowired
 	private AchievementService achievementService;
-
-	@Autowired
-	private AchievementSearchRepository achievementSearchRepository;
 
 	@Autowired
 	private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -112,7 +108,6 @@ public class AchievementResourceIntTest {
 
 	@Before
 	public void initTest() {
-		achievementSearchRepository.deleteAll();
 		achievement = createEntity(em);
 	}
 
@@ -134,10 +129,6 @@ public class AchievementResourceIntTest {
 		assertThat(testAchievement.getName()).isEqualTo(DEFAULT_NAME);
 		assertThat(testAchievement.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
 		assertThat(testAchievement.getBadgeUrl()).isEqualTo(DEFAULT_BADGE_URL);
-
-		// Validate the Achievement in Elasticsearch
-		final Achievement achievementEs = achievementSearchRepository.findOne(testAchievement.getId());
-		assertThat(achievementEs).isEqualToComparingFieldByField(testAchievement);
 	}
 
 	@Test
@@ -244,10 +235,6 @@ public class AchievementResourceIntTest {
 		assertThat(testAchievement.getName()).isEqualTo(UPDATED_NAME);
 		assertThat(testAchievement.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
 		assertThat(testAchievement.getBadgeUrl()).isEqualTo(UPDATED_BADGE_URL);
-
-		// Validate the Achievement in Elasticsearch
-		final Achievement achievementEs = achievementSearchRepository.findOne(testAchievement.getId());
-		assertThat(achievementEs).isEqualToComparingFieldByField(testAchievement);
 	}
 
 	@Test
@@ -281,29 +268,9 @@ public class AchievementResourceIntTest {
 				.accept(TestUtil.APPLICATION_JSON_UTF8))
 		.andExpect(status().isOk());
 
-		// Validate Elasticsearch is empty
-		final boolean achievementExistsInEs = achievementSearchRepository.exists(achievement.getId());
-		assertThat(achievementExistsInEs).isFalse();
-
 		// Validate the database is empty
 		final List<Achievement> achievementList = achievementRepository.findAll();
 		assertThat(achievementList).hasSize(databaseSizeBeforeDelete - 1);
-	}
-
-	@Test
-	@Transactional
-	public void searchAchievement() throws Exception {
-		// Initialize the database
-		achievementService.save(achievement);
-
-		// Search the achievement
-		restAchievementMockMvc.perform(get("/api/_search/achievements?query=id:" + achievement.getId()))
-		.andExpect(status().isOk())
-		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-		.andExpect(jsonPath("$.[*].id").value(hasItem(achievement.getId().intValue())))
-		.andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-		.andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-		.andExpect(jsonPath("$.[*].badgeUrl").value(hasItem(DEFAULT_BADGE_URL.toString())));
 	}
 
 	@Test

@@ -23,7 +23,6 @@ import org.openlearn.domain.ItemLink;
 import org.openlearn.domain.Portfolio;
 import org.openlearn.domain.PortfolioItem;
 import org.openlearn.repository.PortfolioItemRepository;
-import org.openlearn.repository.search.PortfolioItemSearchRepository;
 import org.openlearn.service.PortfolioItemService;
 import org.openlearn.web.rest.errors.ExceptionTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,9 +49,6 @@ public class PortfolioItemResourceIntTest {
 
 	@Autowired
 	private PortfolioItemService portfolioItemService;
-
-	@Autowired
-	private PortfolioItemSearchRepository portfolioItemSearchRepository;
 
 	@Autowired
 	private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -103,7 +99,6 @@ public class PortfolioItemResourceIntTest {
 
 	@Before
 	public void initTest() {
-		portfolioItemSearchRepository.deleteAll();
 		portfolioItem = createEntity(em);
 	}
 
@@ -122,10 +117,6 @@ public class PortfolioItemResourceIntTest {
 		final List<PortfolioItem> portfolioItemList = portfolioItemRepository.findAll();
 		assertThat(portfolioItemList).hasSize(databaseSizeBeforeCreate + 1);
 		final PortfolioItem testPortfolioItem = portfolioItemList.get(portfolioItemList.size() - 1);
-
-		// Validate the PortfolioItem in Elasticsearch
-		final PortfolioItem portfolioItemEs = portfolioItemSearchRepository.findOne(testPortfolioItem.getId());
-		assertThat(portfolioItemEs).isEqualToComparingFieldByField(testPortfolioItem);
 	}
 
 	@Test
@@ -201,10 +192,6 @@ public class PortfolioItemResourceIntTest {
 		final List<PortfolioItem> portfolioItemList = portfolioItemRepository.findAll();
 		assertThat(portfolioItemList).hasSize(databaseSizeBeforeUpdate);
 		final PortfolioItem testPortfolioItem = portfolioItemList.get(portfolioItemList.size() - 1);
-
-		// Validate the PortfolioItem in Elasticsearch
-		final PortfolioItem portfolioItemEs = portfolioItemSearchRepository.findOne(testPortfolioItem.getId());
-		assertThat(portfolioItemEs).isEqualToComparingFieldByField(testPortfolioItem);
 	}
 
 	@Test
@@ -238,26 +225,9 @@ public class PortfolioItemResourceIntTest {
 				.accept(TestUtil.APPLICATION_JSON_UTF8))
 		.andExpect(status().isOk());
 
-		// Validate Elasticsearch is empty
-		final boolean portfolioItemExistsInEs = portfolioItemSearchRepository.exists(portfolioItem.getId());
-		assertThat(portfolioItemExistsInEs).isFalse();
-
 		// Validate the database is empty
 		final List<PortfolioItem> portfolioItemList = portfolioItemRepository.findAll();
 		assertThat(portfolioItemList).hasSize(databaseSizeBeforeDelete - 1);
-	}
-
-	@Test
-	@Transactional
-	public void searchPortfolioItem() throws Exception {
-		// Initialize the database
-		portfolioItemService.save(portfolioItem);
-
-		// Search the portfolioItem
-		restPortfolioItemMockMvc.perform(get("/api/_search/portfolio-items?query=id:" + portfolioItem.getId()))
-		.andExpect(status().isOk())
-		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-		.andExpect(jsonPath("$.[*].id").value(hasItem(portfolioItem.getId().intValue())));
 	}
 
 	@Test

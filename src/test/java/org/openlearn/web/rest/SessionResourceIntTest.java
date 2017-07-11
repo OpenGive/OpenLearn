@@ -22,7 +22,6 @@ import org.openlearn.OpenLearnApplication;
 import org.openlearn.domain.Organization;
 import org.openlearn.domain.Session;
 import org.openlearn.repository.SessionRepository;
-import org.openlearn.repository.search.SessionSearchRepository;
 import org.openlearn.service.SessionService;
 import org.openlearn.web.rest.errors.ExceptionTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,9 +54,6 @@ public class SessionResourceIntTest {
 
 	@Autowired
 	private SessionService sessionService;
-
-	@Autowired
-	private SessionSearchRepository sessionSearchRepository;
 
 	@Autowired
 	private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -105,7 +101,6 @@ public class SessionResourceIntTest {
 
 	@Before
 	public void initTest() {
-		sessionSearchRepository.deleteAll();
 		session = createEntity(em);
 	}
 
@@ -126,10 +121,6 @@ public class SessionResourceIntTest {
 		final Session testSession = sessionList.get(sessionList.size() - 1);
 		assertThat(testSession.getName()).isEqualTo(DEFAULT_NAME);
 		assertThat(testSession.isActive()).isEqualTo(DEFAULT_ACTIVE);
-
-		// Validate the Session in Elasticsearch
-		final Session sessionEs = sessionSearchRepository.findOne(testSession.getId());
-		assertThat(sessionEs).isEqualToComparingFieldByField(testSession);
 	}
 
 	@Test
@@ -250,10 +241,6 @@ public class SessionResourceIntTest {
 		final Session testSession = sessionList.get(sessionList.size() - 1);
 		assertThat(testSession.getName()).isEqualTo(UPDATED_NAME);
 		assertThat(testSession.isActive()).isEqualTo(UPDATED_ACTIVE);
-
-		// Validate the Session in Elasticsearch
-		final Session sessionEs = sessionSearchRepository.findOne(testSession.getId());
-		assertThat(sessionEs).isEqualToComparingFieldByField(testSession);
 	}
 
 	@Test
@@ -287,28 +274,9 @@ public class SessionResourceIntTest {
 				.accept(TestUtil.APPLICATION_JSON_UTF8))
 		.andExpect(status().isOk());
 
-		// Validate Elasticsearch is empty
-		final boolean sessionExistsInEs = sessionSearchRepository.exists(session.getId());
-		assertThat(sessionExistsInEs).isFalse();
-
 		// Validate the database is empty
 		final List<Session> sessionList = sessionRepository.findAll();
 		assertThat(sessionList).hasSize(databaseSizeBeforeDelete - 1);
-	}
-
-	@Test
-	@Transactional
-	public void searchSession() throws Exception {
-		// Initialize the database
-		sessionService.save(session);
-
-		// Search the session
-		restSessionMockMvc.perform(get("/api/_search/sessions?query=id:" + session.getId()))
-		.andExpect(status().isOk())
-		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-		.andExpect(jsonPath("$.[*].id").value(hasItem(session.getId().intValue())))
-		.andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-		.andExpect(jsonPath("$.[*].active").value(hasItem(DEFAULT_ACTIVE.booleanValue())));
 	}
 
 	@Test

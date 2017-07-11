@@ -123,23 +123,4 @@ public class PortfolioItemResource {
         portfolioItemService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/portfolio-items?query=:query : search for the portfolioItem corresponding
-     * to the query.
-     *
-     * @param query the query of the portfolioItem search
-     * @param pageable the pagination information
-     * @return the result of the search
-     */
-    @GetMapping("/_search/portfolio-items")
-    @Timed
-    public ResponseEntity<List<PortfolioItem>> searchPortfolioItems(@RequestParam String query, @ApiParam Pageable pageable) {
-        log.debug("REST request to search for a page of PortfolioItems for query {}", query);
-        Page<PortfolioItem> page = portfolioItemService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/portfolio-items");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
-
-
 }

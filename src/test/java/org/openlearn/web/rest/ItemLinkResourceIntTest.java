@@ -5,7 +5,6 @@ import org.openlearn.OpenLearnApplication;
 import org.openlearn.domain.ItemLink;
 import org.openlearn.repository.ItemLinkRepository;
 import org.openlearn.service.ItemLinkService;
-import org.openlearn.repository.search.ItemLinkSearchRepository;
 import org.openlearn.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -58,9 +57,6 @@ public class ItemLinkResourceIntTest {
     private ItemLinkService itemLinkService;
 
     @Autowired
-    private ItemLinkSearchRepository itemLinkSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -103,7 +99,6 @@ public class ItemLinkResourceIntTest {
 
     @Before
     public void initTest() {
-        itemLinkSearchRepository.deleteAll();
         itemLink = createEntity(em);
     }
 
@@ -126,10 +121,6 @@ public class ItemLinkResourceIntTest {
         assertThat(testItemLink.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testItemLink.getThumbnailImageUrl()).isEqualTo(DEFAULT_THUMBNAIL_IMAGE_URL);
         assertThat(testItemLink.getItemUrl()).isEqualTo(DEFAULT_ITEM_URL);
-
-        // Validate the ItemLink in Elasticsearch
-        ItemLink itemLinkEs = itemLinkSearchRepository.findOne(testItemLink.getId());
-        assertThat(itemLinkEs).isEqualToComparingFieldByField(testItemLink);
     }
 
     @Test
@@ -276,10 +267,6 @@ public class ItemLinkResourceIntTest {
         assertThat(testItemLink.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testItemLink.getThumbnailImageUrl()).isEqualTo(UPDATED_THUMBNAIL_IMAGE_URL);
         assertThat(testItemLink.getItemUrl()).isEqualTo(UPDATED_ITEM_URL);
-
-        // Validate the ItemLink in Elasticsearch
-        ItemLink itemLinkEs = itemLinkSearchRepository.findOne(testItemLink.getId());
-        assertThat(itemLinkEs).isEqualToComparingFieldByField(testItemLink);
     }
 
     @Test
@@ -313,30 +300,9 @@ public class ItemLinkResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean itemLinkExistsInEs = itemLinkSearchRepository.exists(itemLink.getId());
-        assertThat(itemLinkExistsInEs).isFalse();
-
         // Validate the database is empty
         List<ItemLink> itemLinkList = itemLinkRepository.findAll();
         assertThat(itemLinkList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchItemLink() throws Exception {
-        // Initialize the database
-        itemLinkService.save(itemLink);
-
-        // Search the itemLink
-        restItemLinkMockMvc.perform(get("/api/_search/item-links?query=id:" + itemLink.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(itemLink.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].thumbnailImageUrl").value(hasItem(DEFAULT_THUMBNAIL_IMAGE_URL.toString())))
-            .andExpect(jsonPath("$.[*].itemUrl").value(hasItem(DEFAULT_ITEM_URL.toString())));
     }
 
     @Test

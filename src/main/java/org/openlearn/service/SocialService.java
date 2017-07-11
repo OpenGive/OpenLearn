@@ -11,7 +11,6 @@ import org.openlearn.domain.Authority;
 import org.openlearn.domain.User;
 import org.openlearn.repository.AuthorityRepository;
 import org.openlearn.repository.UserRepository;
-import org.openlearn.repository.search.UserSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,18 +35,16 @@ public class SocialService {
 
 	private final MailService mailService;
 
-	private final UserSearchRepository userSearchRepository;
 
 	public SocialService(final UsersConnectionRepository usersConnectionRepository, final AuthorityRepository authorityRepository,
 			final PasswordEncoder passwordEncoder, final UserRepository userRepository,
-			final MailService mailService, final UserSearchRepository userSearchRepository) {
+			final MailService mailService) {
 
 		this.usersConnectionRepository = usersConnectionRepository;
 		this.authorityRepository = authorityRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.userRepository = userRepository;
 		this.mailService = mailService;
-		this.userSearchRepository = userSearchRepository;
 	}
 
 	public void deleteUserSocialConnection(final String login) {
@@ -108,7 +105,6 @@ public class SocialService {
 		newUser.setAuthorities(authorities);
 		newUser.setImageUrl(imageUrl);
 
-		userSearchRepository.save(newUser);
 		return userRepository.save(newUser);
 	}
 

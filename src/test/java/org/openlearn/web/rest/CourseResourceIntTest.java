@@ -28,7 +28,6 @@ import org.openlearn.domain.Course;
 import org.openlearn.domain.Program;
 import org.openlearn.domain.User;
 import org.openlearn.repository.CourseRepository;
-import org.openlearn.repository.search.CourseSearchRepository;
 import org.openlearn.service.CourseService;
 import org.openlearn.service.StudentCourseService;
 import org.openlearn.web.rest.errors.ExceptionTranslator;
@@ -71,9 +70,6 @@ public class CourseResourceIntTest {
 
 	@Autowired
 	private StudentCourseService studentCourseService;
-
-	@Autowired
-	private CourseSearchRepository courseSearchRepository;
 
 	@Autowired
 	private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -131,7 +127,6 @@ public class CourseResourceIntTest {
 
 	@Before
 	public void initTest() {
-		courseSearchRepository.deleteAll();
 		course = createEntity(em);
 	}
 
@@ -154,10 +149,6 @@ public class CourseResourceIntTest {
 		assertThat(testCourse.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
 		assertThat(testCourse.getStartDate()).isEqualTo(DEFAULT_START_DATE);
 		assertThat(testCourse.getEndDate()).isEqualTo(DEFAULT_END_DATE);
-
-		// Validate the Course in Elasticsearch
-		final Course courseEs = courseSearchRepository.findOne(testCourse.getId());
-		assertThat(courseEs).isEqualToComparingFieldByField(testCourse);
 	}
 
 	@Test
@@ -268,10 +259,6 @@ public class CourseResourceIntTest {
 		assertThat(testCourse.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
 		assertThat(testCourse.getStartDate()).isEqualTo(UPDATED_START_DATE);
 		assertThat(testCourse.getEndDate()).isEqualTo(UPDATED_END_DATE);
-
-		// Validate the Course in Elasticsearch
-		final Course courseEs = courseSearchRepository.findOne(testCourse.getId());
-		assertThat(courseEs).isEqualToComparingFieldByField(testCourse);
 	}
 
 	@Test
@@ -305,30 +292,9 @@ public class CourseResourceIntTest {
 				.accept(TestUtil.APPLICATION_JSON_UTF8))
 		.andExpect(status().isOk());
 
-		// Validate Elasticsearch is empty
-		final boolean courseExistsInEs = courseSearchRepository.exists(course.getId());
-		assertThat(courseExistsInEs).isFalse();
-
 		// Validate the database is empty
 		final List<Course> courseList = courseRepository.findAll();
 		assertThat(courseList).hasSize(databaseSizeBeforeDelete - 1);
-	}
-
-	@Test
-	@Transactional
-	public void searchCourse() throws Exception {
-		// Initialize the database
-		courseService.save(course);
-
-		// Search the course
-		restCourseMockMvc.perform(get("/api/_search/courses?query=id:" + course.getId()))
-		.andExpect(status().isOk())
-		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-		.andExpect(jsonPath("$.[*].id").value(hasItem(course.getId().intValue())))
-		.andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-		.andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-		.andExpect(jsonPath("$.[*].startDate").value(Matchers.hasItem(TestUtil.sameInstant(DEFAULT_START_DATE))))
-		.andExpect(jsonPath("$.[*].endDate").value(Matchers.hasItem(TestUtil.sameInstant(DEFAULT_END_DATE))));
 	}
 
 	@Test

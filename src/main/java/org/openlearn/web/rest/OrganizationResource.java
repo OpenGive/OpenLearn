@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
@@ -132,23 +131,4 @@ public class OrganizationResource {
 		organizationService.delete(id);
 		return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
 	}
-
-	/**
-	 * SEARCH  /_search/organizations?query=:query : search for the organization corresponding
-	 * to the query.
-	 *
-	 * @param query the query of the organization search
-	 * @param pageable the pagination information
-	 * @return the result of the search
-	 */
-	@GetMapping("/_search/organizations")
-	@Timed
-	public ResponseEntity<List<Organization>> searchOrganizations(@RequestParam final String query, @ApiParam final Pageable pageable) {
-		log.debug("REST request to search for a page of Organizations for query {}", query);
-		final Page<Organization> page = organizationService.search(query, pageable);
-		final HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/organizations");
-		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-	}
-
-
 }

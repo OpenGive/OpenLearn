@@ -5,7 +5,6 @@ import org.openlearn.OpenLearnApplication;
 import org.openlearn.domain.Address;
 import org.openlearn.repository.AddressRepository;
 import org.openlearn.service.AddressService;
-import org.openlearn.repository.search.AddressSearchRepository;
 import org.openlearn.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -62,9 +61,6 @@ public class AddressResourceIntTest {
     private AddressService addressService;
 
     @Autowired
-    private AddressSearchRepository addressSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -108,7 +104,6 @@ public class AddressResourceIntTest {
 
     @Before
     public void initTest() {
-        addressSearchRepository.deleteAll();
         address = createEntity(em);
     }
 
@@ -132,10 +127,6 @@ public class AddressResourceIntTest {
         assertThat(testAddress.getCity()).isEqualTo(DEFAULT_CITY);
         assertThat(testAddress.getState()).isEqualTo(DEFAULT_STATE);
         assertThat(testAddress.getPostalCode()).isEqualTo(DEFAULT_POSTAL_CODE);
-
-        // Validate the Address in Elasticsearch
-        Address addressEs = addressSearchRepository.findOne(testAddress.getId());
-        assertThat(addressEs).isEqualToComparingFieldByField(testAddress);
     }
 
     @Test
@@ -304,10 +295,6 @@ public class AddressResourceIntTest {
         assertThat(testAddress.getCity()).isEqualTo(UPDATED_CITY);
         assertThat(testAddress.getState()).isEqualTo(UPDATED_STATE);
         assertThat(testAddress.getPostalCode()).isEqualTo(UPDATED_POSTAL_CODE);
-
-        // Validate the Address in Elasticsearch
-        Address addressEs = addressSearchRepository.findOne(testAddress.getId());
-        assertThat(addressEs).isEqualToComparingFieldByField(testAddress);
     }
 
     @Test
@@ -341,31 +328,9 @@ public class AddressResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean addressExistsInEs = addressSearchRepository.exists(address.getId());
-        assertThat(addressExistsInEs).isFalse();
-
         // Validate the database is empty
         List<Address> addressList = addressRepository.findAll();
         assertThat(addressList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchAddress() throws Exception {
-        // Initialize the database
-        addressService.save(address);
-
-        // Search the address
-        restAddressMockMvc.perform(get("/api/_search/addresses?query=id:" + address.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(address.getId().intValue())))
-            .andExpect(jsonPath("$.[*].streetAddress1").value(hasItem(DEFAULT_STREET_ADDRESS_1.toString())))
-            .andExpect(jsonPath("$.[*].streetAddress2").value(hasItem(DEFAULT_STREET_ADDRESS_2.toString())))
-            .andExpect(jsonPath("$.[*].city").value(hasItem(DEFAULT_CITY.toString())))
-            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())))
-            .andExpect(jsonPath("$.[*].postalCode").value(hasItem(DEFAULT_POSTAL_CODE.toString())));
     }
 
     @Test

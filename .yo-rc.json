@@ -16,7 +16,6 @@
     "databaseType": "sql",
     "devDatabaseType": "h2Disk",
     "prodDatabaseType": "mariadb",
-    "searchEngine": "elasticsearch",
     "messageBroker": false,
     "serviceDiscoveryType": false,
     "buildTool": "gradle",
@@ -55,10 +54,6 @@
       {
         "name": "generator-jhipster-darktheme",
         "version": "0.0.7"
-      },
-      {
-        "name": "generator-jhipster-elasticsearch-reindexer",
-        "version": "0.3.0"
       },
       {
         "name": "generator-jhipster-spring-social-connectors",

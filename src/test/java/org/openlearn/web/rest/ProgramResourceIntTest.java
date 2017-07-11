@@ -22,7 +22,6 @@ import org.openlearn.OpenLearnApplication;
 import org.openlearn.domain.Program;
 import org.openlearn.domain.Session;
 import org.openlearn.repository.ProgramRepository;
-import org.openlearn.repository.search.ProgramSearchRepository;
 import org.openlearn.service.ProgramService;
 import org.openlearn.web.rest.errors.ExceptionTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,9 +57,6 @@ public class ProgramResourceIntTest {
 
 	@Autowired
 	private ProgramService programService;
-
-	@Autowired
-	private ProgramSearchRepository programSearchRepository;
 
 	@Autowired
 	private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -110,7 +106,6 @@ public class ProgramResourceIntTest {
 
 	@Before
 	public void initTest() {
-		programSearchRepository.deleteAll();
 		program = createEntity(em);
 	}
 
@@ -132,10 +127,6 @@ public class ProgramResourceIntTest {
 		assertThat(testProgram.getName()).isEqualTo(DEFAULT_NAME);
 		assertThat(testProgram.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
 		assertThat(testProgram.isActive()).isEqualTo(DEFAULT_ACTIVE);
-
-		// Validate the Program in Elasticsearch
-		final Program programEs = programSearchRepository.findOne(testProgram.getId());
-		assertThat(programEs).isEqualToComparingFieldByField(testProgram);
 	}
 
 	@Test
@@ -242,10 +233,6 @@ public class ProgramResourceIntTest {
 		assertThat(testProgram.getName()).isEqualTo(UPDATED_NAME);
 		assertThat(testProgram.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
 		assertThat(testProgram.isActive()).isEqualTo(UPDATED_ACTIVE);
-
-		// Validate the Program in Elasticsearch
-		final Program programEs = programSearchRepository.findOne(testProgram.getId());
-		assertThat(programEs).isEqualToComparingFieldByField(testProgram);
 	}
 
 	@Test
@@ -279,29 +266,9 @@ public class ProgramResourceIntTest {
 				.accept(TestUtil.APPLICATION_JSON_UTF8))
 		.andExpect(status().isOk());
 
-		// Validate Elasticsearch is empty
-		final boolean programExistsInEs = programSearchRepository.exists(program.getId());
-		assertThat(programExistsInEs).isFalse();
-
 		// Validate the database is empty
 		final List<Program> programList = programRepository.findAll();
 		assertThat(programList).hasSize(databaseSizeBeforeDelete - 1);
-	}
-
-	@Test
-	@Transactional
-	public void searchProgram() throws Exception {
-		// Initialize the database
-		programService.save(program);
-
-		// Search the program
-		restProgramMockMvc.perform(get("/api/_search/programs?query=id:" + program.getId()))
-		.andExpect(status().isOk())
-		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-		.andExpect(jsonPath("$.[*].id").value(hasItem(program.getId().intValue())))
-		.andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-		.andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-		.andExpect(jsonPath("$.[*].active").value(hasItem(DEFAULT_ACTIVE.booleanValue())));
 	}
 
 	@Test

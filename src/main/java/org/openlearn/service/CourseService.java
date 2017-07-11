@@ -1,12 +1,9 @@
 package org.openlearn.service;
 
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
-
 import org.openlearn.domain.Course;
 import org.openlearn.domain.ItemLink;
 import org.openlearn.repository.CourseRepository;
 import org.openlearn.repository.ItemLinkRepository;
-import org.openlearn.repository.search.CourseSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -28,13 +25,10 @@ public class CourseService {
 
 	private final CourseRepository courseRepository;
 
-	private final CourseSearchRepository courseSearchRepository;
-
 	private final ItemLinkRepository itemLinkRepository;
 
-	public CourseService(final CourseRepository courseRepository, final CourseSearchRepository courseSearchRepository, final ItemLinkRepository itemLinkRepository) {
+	public CourseService(final CourseRepository courseRepository, final ItemLinkRepository itemLinkRepository) {
 		this.courseRepository = courseRepository;
-		this.courseSearchRepository = courseSearchRepository;
 		this.itemLinkRepository = itemLinkRepository;
 	}
 
@@ -47,7 +41,6 @@ public class CourseService {
 	public Course save(final Course course) {
 		log.debug("Request to save Course : {}", course);
 		final Course result = courseRepository.save(course);
-		courseSearchRepository.save(result);
 		return result;
 	}
 
@@ -85,21 +78,6 @@ public class CourseService {
 	public void delete(final Long id) {
 		log.debug("Request to delete Course : {}", id);
 		courseRepository.delete(id);
-		courseSearchRepository.delete(id);
-	}
-
-	/**
-	 * Search for the course corresponding to the query.
-	 *
-	 *  @param query the query of the search
-	 *  @param pageable the pagination information
-	 *  @return the list of entities
-	 */
-	@Transactional(readOnly = true)
-	public Page<Course> search(final String query, final Pageable pageable) {
-		log.debug("Request to search for a page of Courses for query {}", query);
-		final Page<Course> result = courseSearchRepository.search(queryStringQuery(query), pageable);
-		return result;
 	}
 
 	/**

@@ -5,7 +5,6 @@ import org.openlearn.OpenLearnApplication;
 import org.openlearn.domain.Organization;
 import org.openlearn.repository.OrganizationRepository;
 import org.openlearn.service.OrganizationService;
-import org.openlearn.repository.search.OrganizationSearchRepository;
 import org.openlearn.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -52,9 +51,6 @@ public class OrganizationResourceIntTest {
     private OrganizationService organizationService;
 
     @Autowired
-    private OrganizationSearchRepository organizationSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -95,7 +91,6 @@ public class OrganizationResourceIntTest {
 
     @Before
     public void initTest() {
-        organizationSearchRepository.deleteAll();
         organization = createEntity(em);
     }
 
@@ -116,10 +111,6 @@ public class OrganizationResourceIntTest {
         Organization testOrganization = organizationList.get(organizationList.size() - 1);
         assertThat(testOrganization.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testOrganization.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
-
-        // Validate the Organization in Elasticsearch
-        Organization organizationEs = organizationSearchRepository.findOne(testOrganization.getId());
-        assertThat(organizationEs).isEqualToComparingFieldByField(testOrganization);
     }
 
     @Test
@@ -222,10 +213,6 @@ public class OrganizationResourceIntTest {
         Organization testOrganization = organizationList.get(organizationList.size() - 1);
         assertThat(testOrganization.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testOrganization.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-
-        // Validate the Organization in Elasticsearch
-        Organization organizationEs = organizationSearchRepository.findOne(testOrganization.getId());
-        assertThat(organizationEs).isEqualToComparingFieldByField(testOrganization);
     }
 
     @Test
@@ -259,28 +246,9 @@ public class OrganizationResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean organizationExistsInEs = organizationSearchRepository.exists(organization.getId());
-        assertThat(organizationExistsInEs).isFalse();
-
         // Validate the database is empty
         List<Organization> organizationList = organizationRepository.findAll();
         assertThat(organizationList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchOrganization() throws Exception {
-        // Initialize the database
-        organizationService.save(organization);
-
-        // Search the organization
-        restOrganizationMockMvc.perform(get("/api/_search/organizations?query=id:" + organization.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(organization.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
     }
 
     @Test

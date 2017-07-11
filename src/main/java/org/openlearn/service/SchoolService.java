@@ -2,17 +2,12 @@ package org.openlearn.service;
 
 import org.openlearn.domain.School;
 import org.openlearn.repository.SchoolRepository;
-import org.openlearn.repository.search.SchoolSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing School.
@@ -25,11 +20,8 @@ public class SchoolService {
 
     private final SchoolRepository schoolRepository;
 
-    private final SchoolSearchRepository schoolSearchRepository;
-
-    public SchoolService(SchoolRepository schoolRepository, SchoolSearchRepository schoolSearchRepository) {
+    public SchoolService(SchoolRepository schoolRepository) {
         this.schoolRepository = schoolRepository;
-        this.schoolSearchRepository = schoolSearchRepository;
     }
 
     /**
@@ -41,7 +33,6 @@ public class SchoolService {
     public School save(School school) {
         log.debug("Request to save School : {}", school);
         School result = schoolRepository.save(school);
-        schoolSearchRepository.save(result);
         return result;
     }
 
@@ -54,7 +45,6 @@ public class SchoolService {
     public List<School> findAll() {
         log.debug("Request to get all Schools");
         List<School> result = schoolRepository.findAll();
-
         return result;
     }
 
@@ -79,20 +69,5 @@ public class SchoolService {
     public void delete(Long id) {
         log.debug("Request to delete School : {}", id);
         schoolRepository.delete(id);
-        schoolSearchRepository.delete(id);
-    }
-
-    /**
-     * Search for the school corresponding to the query.
-     *
-     *  @param query the query of the search
-     *  @return the list of entities
-     */
-    @Transactional(readOnly = true)
-    public List<School> search(String query) {
-        log.debug("Request to search Schools for query {}", query);
-        return StreamSupport
-            .stream(schoolSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
     }
 }

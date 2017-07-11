@@ -19,7 +19,6 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.data.elasticsearch.annotations.Document;
 
 /**
  * A Session.
@@ -27,7 +26,6 @@ import org.springframework.data.elasticsearch.annotations.Document;
 @Entity
 @Table(name = "session")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "session")
 public class Session implements Serializable {
 
 	private static final long serialVersionUID = 1L;

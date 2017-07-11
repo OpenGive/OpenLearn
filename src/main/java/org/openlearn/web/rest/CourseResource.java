@@ -141,23 +141,6 @@ public class CourseResource {
 	}
 
 	/**
-	 * SEARCH  /_search/courses?query=:query : search for the course corresponding
-	 * to the query.
-	 *
-	 * @param query the query of the course search
-	 * @param pageable the pagination information
-	 * @return the result of the search
-	 */
-	@GetMapping("/_search/courses")
-	@Timed
-	public ResponseEntity<List<Course>> searchCourses(@RequestParam final String query, @ApiParam final Pageable pageable) {
-		log.debug("REST request to search for a page of Courses for query {}", query);
-		final Page<Course> page = courseService.search(query, pageable);
-		final HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/courses");
-		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-	}
-
-	/**
 	 * Get students for course
 	 *
 	 * @param id the id of the course to add the student to

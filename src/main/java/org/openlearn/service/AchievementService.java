@@ -1,10 +1,7 @@
 package org.openlearn.service;
 
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
-
 import org.openlearn.domain.Achievement;
 import org.openlearn.repository.AchievementRepository;
-import org.openlearn.repository.search.AchievementSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -23,11 +20,8 @@ public class AchievementService {
 
 	private final AchievementRepository achievementRepository;
 
-	private final AchievementSearchRepository achievementSearchRepository;
-
-	public AchievementService(final AchievementRepository achievementRepository, final AchievementSearchRepository achievementSearchRepository) {
+	public AchievementService(final AchievementRepository achievementRepository) {
 		this.achievementRepository = achievementRepository;
-		this.achievementSearchRepository = achievementSearchRepository;
 	}
 
 	/**
@@ -39,7 +33,6 @@ public class AchievementService {
 	public Achievement save(final Achievement achievement) {
 		log.debug("Request to save Achievement : {}", achievement);
 		final Achievement result = achievementRepository.save(achievement);
-		achievementSearchRepository.save(result);
 		return result;
 	}
 
@@ -77,20 +70,5 @@ public class AchievementService {
 	public void delete(final Long id) {
 		log.debug("Request to delete Achievement : {}", id);
 		achievementRepository.delete(id);
-		achievementSearchRepository.delete(id);
-	}
-
-	/**
-	 * Search for the achievement corresponding to the query.
-	 *
-	 *  @param query the query of the search
-	 *  @param pageable the pagination information
-	 *  @return the list of entities
-	 */
-	@Transactional(readOnly = true)
-	public Page<Achievement> search(final String query, final Pageable pageable) {
-		log.debug("Request to search for a page of Achievements for query {}", query);
-		final Page<Achievement> result = achievementSearchRepository.search(queryStringQuery(query), pageable);
-		return result;
 	}
 }
