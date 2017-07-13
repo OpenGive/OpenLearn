@@ -54,7 +54,7 @@ after_success:
   - docker tag $REPO:$COMMIT $REPO:$TAG
   - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
   - docker push $REPO
-  - if [ "$TRAVIS_BRANCH" == "develop" ]; then /home/travis/build/Credera/OpenLearn/src/main/resources/config/kubernetes/deploy-staging.sh; fi
+  # - if [ "$TRAVIS_BRANCH" == "develop" ]; then /home/travis/build/Credera/OpenLearn/src/main/resources/config/kubernetes/deploy-staging.sh; fi
   # - if [ "$TRAVIS_BRANCH" == "master" ]; then /home/travis/build/Credera/OpenLearn/src/main/resources/config/kubernetes/deploy-prod.sh; fi
 notifications:
   webhooks:
