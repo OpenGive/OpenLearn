@@ -198,14 +198,19 @@ public class UserService {
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
         user.setPhoneNumber(userDTO.getPhoneNumber());
-        if(userDTO.getAddress() == null || (userDTO.getAddress() != null && userDTO.getAddress().isEmpty())){
-        	if(user.getAddress() != null){
-				addressRepository.delete(user.getAddress());
-			}
-			user.setAddress(null);
-		  }else{
-			  user.setAddress(userDTO.getAddress());
+        user.setAddress(userDTO.getAddress());
+		if(userDTO.getAddress() != null && userDTO.getAddress().getId() != null){
+		  Address findAddress = addressRepository.findOne(userDTO.getAddress().getId());
+		  if(findAddress != null){
+			  user.setAddress(findAddress);
 		  }
+		}
+        if(userDTO.getAddress() == null && user.getAddress() != null){
+			addressRepository.delete(user.getAddress().getId());
+		}
+        if(userDTO.getAddress() != null && userDTO.getAddress().isEmpty()){
+			addressRepository.delete(user.getAddress().getId());
+		}
         user.setImageUrl(userDTO.getImageUrl());
         user.setActivated(userDTO.isActivated());
         user.setBiography(userDTO.getBiography());
