@@ -2,6 +2,7 @@ package org.openlearn.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import org.openlearn.domain.Session;
+import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.service.SessionService;
 import org.openlearn.web.rest.util.HeaderUtil;
 import org.openlearn.web.rest.util.PaginationUtil;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -88,6 +90,7 @@ public class SessionResource {
      * @return the ResponseEntity with status 200 (OK) and the list of sessions in body
      */
     @GetMapping("/sessions")
+	@Secured({ AuthoritiesConstants.ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.ORG_ADMIN})
     @Timed
     public ResponseEntity<List<Session>> getAllSessions(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of Sessions");
@@ -96,7 +99,7 @@ public class SessionResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
-    /**
+	/**
      * GET  /sessions/:id : get the "id" session.
      *
      * @param id the id of the session to retrieve

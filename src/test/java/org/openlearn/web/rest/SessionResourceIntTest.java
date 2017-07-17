@@ -184,6 +184,8 @@ public class SessionResourceIntTest {
 		// Initialize the database
 		sessionRepository.saveAndFlush(session);
 
+		TestUtil.setSecurityContextAdmin();
+
 		// Get all the sessionList
 		restSessionMockMvc.perform(get("/api/sessions?sort=id,desc"))
 		.andExpect(status().isOk())
