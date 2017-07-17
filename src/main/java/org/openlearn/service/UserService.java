@@ -243,7 +243,19 @@ public class UserService {
 
   @Transactional(readOnly = true)
   public Page<UserDTO> getAllManagedUsers(final Pageable pageable) {
-    return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER).map(UserDTO::new);
+  	if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
+		log.debug("User has ADMIN authority");
+  		// get all users
+		return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER).map(UserDTO::new);
+	}
+	if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.STUDENT)){
+  		log.debug("User has Student authority");
+  		// get users in org
+		return userRepository.findOneByLogin(pageable,SecurityUtils.getCurrentUserLogin()).map(UserDTO::new);
+	}
+	log.debug("User does not have ADMIN or STUDENT authority");
+	Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
+    return userRepository.findAllByOrganizationIds(pageable,user.get().getOrganizationIds()).map(UserDTO::new);
   }
 
   @Transactional(readOnly = true)

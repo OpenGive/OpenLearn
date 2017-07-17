@@ -103,7 +103,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	@BatchSize(size = 20)
 	private Set<Authority> authorities = new HashSet<>();
 
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name="user_org", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
 	@Column(name = "org_id")
 	public Set<Long> organizationIds;
