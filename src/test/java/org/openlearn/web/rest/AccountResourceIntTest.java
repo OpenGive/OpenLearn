@@ -158,7 +158,8 @@ public class AccountResourceIntTest {
 				null,                   // createdDate
 				null,                   // lastModifiedBy
 				null,                   // lastModifiedDate
-				new HashSet<>(Arrays.asList(AuthoritiesConstants.STUDENT)), true, // is
+				new HashSet<>(Arrays.asList(AuthoritiesConstants.STUDENT.toString())),
+			   true, // is
 																				// 14
 																				// plus
 				"biography"
@@ -427,7 +428,8 @@ public class AccountResourceIntTest {
 				null,                   // lastModifiedDate
 				new HashSet<>(Arrays.asList(AuthoritiesConstants.STUDENT)),
 				true,					// is 14 plus
-				"biography"
+				"biography",
+			null
 				);
 
 		restUserMockMvc.perform(
