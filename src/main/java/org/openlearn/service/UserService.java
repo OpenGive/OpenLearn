@@ -258,7 +258,7 @@ public class UserService {
 	}
 	log.debug("User does not have ADMIN or STUDENT authority");
 	Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-    return userRepository.findAllByOrganizationIds(pageable,user.get().getOrganizationIds()).map(UserDTO::new);
+    return userRepository.findAllByOrganizationIdsIn(pageable,user.get().getOrganizationIds()).map(UserDTO::new);
   }
 
   @Transactional(readOnly = true)

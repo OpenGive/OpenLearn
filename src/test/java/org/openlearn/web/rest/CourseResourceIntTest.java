@@ -194,6 +194,8 @@ public class CourseResourceIntTest {
 		// Initialize the database
 		courseRepository.saveAndFlush(course);
 
+		TestUtil.setSecurityContextAdmin();
+
 		// Get all the courseList
 		restCourseMockMvc.perform(get("/api/courses?sort=id,desc"))
 		.andExpect(status().isOk())

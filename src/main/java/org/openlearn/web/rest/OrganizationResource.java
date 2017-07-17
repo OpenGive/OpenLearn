@@ -10,6 +10,7 @@ import javax.validation.Valid;
 
 import org.openlearn.domain.Organization;
 import org.openlearn.domain.User;
+import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.service.OrganizationService;
 import org.openlearn.web.rest.util.HeaderUtil;
 import org.openlearn.web.rest.util.PaginationUtil;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import com.codahale.metrics.annotation.Timed;
@@ -136,6 +138,7 @@ public class OrganizationResource {
 	}
 
 	@PostMapping("/organizations/{organizationId}/users")
+	@Secured(AuthoritiesConstants.ADMIN)
 	@Timed
 	public ResponseEntity<Organization> addUserToOrganization(@PathVariable final Long organizationId, @RequestParam final Long userId){
 		log.debug("REST request to add user with id {} to organization :{}", userId, organizationId);
@@ -144,6 +147,7 @@ public class OrganizationResource {
 	}
 
 	@DeleteMapping("/organizations/{organizationId}/users/{userId}")
+	@Secured(AuthoritiesConstants.ADMIN)
 	@Timed
 	public ResponseEntity<Organization> deleteUserFromOrganization(@PathVariable final Long organizationId, @PathVariable final Long userId){
 		log.debug("REST request to remove user {} from organization {}", userId, organizationId);

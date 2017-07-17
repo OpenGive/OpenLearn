@@ -245,6 +245,7 @@ public class UserResource {
 	}
 
 	@PostMapping("/users/{login:" + Constants.LOGIN_REGEX + "}/organizations")
+	@Secured(AuthoritiesConstants.ADMIN)
 	@Timed
 	public ResponseEntity<User> addUserToOrganization(@PathVariable final String login, @RequestParam final Long organizationId){
 		log.debug("REST request to add user {} to organization {}", login, organizationId);
@@ -253,6 +254,7 @@ public class UserResource {
 	}
 
 	@DeleteMapping("/users/{login:" + Constants.LOGIN_REGEX + "}/organizations/{organizationId}")
+	@Secured(AuthoritiesConstants.ADMIN)
 	@Timed
 	public ResponseEntity<User> removeUserFromOrganization(@PathVariable final String login, @PathVariable final Long organizationId){
 		log.debug("REST request to remove user {} from organization {}", login, organizationId);

@@ -2,8 +2,12 @@ package org.openlearn.service;
 
 import org.openlearn.domain.Course;
 import org.openlearn.domain.ItemLink;
+import org.openlearn.domain.User;
 import org.openlearn.repository.CourseRepository;
 import org.openlearn.repository.ItemLinkRepository;
+import org.openlearn.repository.UserRepository;
+import org.openlearn.security.AuthoritiesConstants;
+import org.openlearn.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -11,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -27,9 +32,12 @@ public class CourseService {
 
 	private final ItemLinkRepository itemLinkRepository;
 
-	public CourseService(final CourseRepository courseRepository, final ItemLinkRepository itemLinkRepository) {
+	private final UserRepository userRepository;
+
+	public CourseService(final CourseRepository courseRepository, final ItemLinkRepository itemLinkRepository, UserRepository userRepository) {
 		this.courseRepository = courseRepository;
 		this.itemLinkRepository = itemLinkRepository;
+		this.userRepository = userRepository;
 	}
 
 	/**
@@ -53,8 +61,12 @@ public class CourseService {
 	@Transactional(readOnly = true)
 	public Page<Course> findAll(final Pageable pageable) {
 		log.debug("Request to get all Courses");
-		final Page<Course> result = courseRepository.findAll(pageable);
-		return result;
+		if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
+			final Page<Course> result = courseRepository.findAll(pageable);
+			return result;
+		}
+		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
+		return courseRepository.findAllByOrganizationId(pageable, user.get().getOrganizationIds());
 	}
 
 	/**
