@@ -4,10 +4,12 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.openlearn.config.Constants;
 import org.openlearn.domain.Course;
+import org.openlearn.domain.Organization;
 import org.openlearn.domain.StudentCourse;
 import org.openlearn.domain.User;
 import org.openlearn.repository.UserRepository;
@@ -29,14 +31,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.codahale.metrics.annotation.Timed;
 
@@ -239,5 +234,29 @@ public class UserResource {
 		final Page<Course> page = userService.getCoursesInstructedByUser(login,pageable);
 		final HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users/"+login+"/instructors");
 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+	}
+
+	@GetMapping("/users/{login:" + Constants.LOGIN_REGEX + "}/organizations")
+	@Timed
+	public ResponseEntity<Set<Organization>> getOrganizationsForUser(@PathVariable final String login){
+		log.debug("REST request to get organizations for user : {}", login);
+		final Set<Organization> orgs = userService.getOrganizationsForUser(login);
+		return new ResponseEntity<Set<Organization>>(orgs, HttpStatus.OK);
+	}
+
+	@PostMapping("/users/{login:" + Constants.LOGIN_REGEX + "}/organizations")
+	@Timed
+	public ResponseEntity<User> addUserToOrganization(@PathVariable final String login, @RequestParam final Long organizationId){
+		log.debug("REST request to add user {} to organization {}", login, organizationId);
+		final User user = userService.addUserToOrganization(login, organizationId);
+		return new ResponseEntity<User>(user, HttpStatus.OK);
+	}
+
+	@DeleteMapping("/users/{login:" + Constants.LOGIN_REGEX + "}/organizations/{organizationId}")
+	@Timed
+	public ResponseEntity<User> removeUserFromOrganization(@PathVariable final String login, @PathVariable final Long organizationId){
+		log.debug("REST request to remove user {} from organization {}", login, organizationId);
+		final User user = userService.removeUserFromOrganization(login, organizationId);
+		return new ResponseEntity<User>(user, HttpStatus.OK);
 	}
 }

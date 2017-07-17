@@ -5,20 +5,13 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cascade;
 
 /**
  * A Organization.
@@ -43,15 +36,22 @@ public class Organization implements Serializable {
 	@Column(name = "description", length = 800)
 	private String description;
 
-	@ManyToMany
-	@JoinTable(
-			name = "user_org",
-			joinColumns = {@JoinColumn(name = "org_id", referencedColumnName = "id") },
-			inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id") }
-			)
-	// @JsonIgnore
-	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	private Set<User> users = new HashSet<>();
+//	@ManyToMany(fetch = FetchType.EAGER)
+//	@JoinTable(
+//			name = "user_org",
+//			joinColumns = {@JoinColumn(name = "org_id", referencedColumnName = "id") },
+//			inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id") }
+//			)
+//	// @JsonIgnore
+//	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+//	private Set<User> users = new HashSet<>();
+
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name="user_org", joinColumns = @JoinColumn(name = "org_id", referencedColumnName = "id"))
+	@Column(name = "user_id")
+	public Set<Long> userIds;
+
+
 
 	public Long getId() {
 		return id;
@@ -87,27 +87,27 @@ public class Organization implements Serializable {
 		this.description = description;
 	}
 
-	public Set<User> getUsers() {
-		return users;
+	public Set<Long> getUserIds() {
+		return userIds;
 	}
 
-	public Organization users(final Set<User> users) {
-		this.users = users;
+	public Organization userIds(final Set<Long> userIds) {
+		this.userIds = userIds;
 		return this;
 	}
 
-	public Organization addUsers(final User user) {
-		users.add(user);
+	public Organization addUsers(final Long userId) {
+		userIds.add(userId);
 		return this;
 	}
 
-	public Organization removeUsers(final User user) {
-		users.remove(user);
+	public Organization removeUsers(final Long userId) {
+		userIds.remove(userId);
 		return this;
 	}
 
-	public void setUsers(final Set<User> users) {
-		this.users = users;
+	public void setUserIds(final Set<Long> userIds) {
+		this.userIds = userIds;
 	}
 
 	@Override

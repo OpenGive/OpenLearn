@@ -30,7 +30,7 @@ public class ManagedUserVM extends UserDTO {
                        final ZonedDateTime lastModifiedDate, final Set<String> authorities, final boolean is14Plus, final String biography) {
 
 		super(id, login, firstName, lastName, email, phoneNumber, address, activated, imageUrl,
-				createdBy, createdDate, lastModifiedBy, lastModifiedDate, authorities, is14Plus, biography);
+				createdBy, createdDate, lastModifiedBy, lastModifiedDate, authorities, is14Plus, biography, null);
 
 		this.password = password;
 	}

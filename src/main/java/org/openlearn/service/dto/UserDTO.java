@@ -1,6 +1,7 @@
 package org.openlearn.service.dto;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -11,6 +12,7 @@ import org.hibernate.validator.constraints.Email;
 import org.openlearn.config.Constants;
 import org.openlearn.domain.Address;
 import org.openlearn.domain.Authority;
+import org.openlearn.domain.Organization;
 import org.openlearn.domain.User;
 
 /**
@@ -59,6 +61,8 @@ public class UserDTO
 
 	private String biography;
 
+	private Set<Long> organizationIds;
+
 	public UserDTO() {
 		// Empty constructor needed for MapStruct.
 	}
@@ -68,14 +72,14 @@ public class UserDTO
 				user.getEmail(), user.getPhoneNumber(), user.getAddress(), user.getActivated(), user.getImageUrl(),
 				user.getCreatedBy(), user.getCreatedDate(), user.getLastModifiedBy(),
 				user.getLastModifiedDate(),
-				user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet()), user.getIs14Plus(), user.getBiography());
+				user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet()), user.getIs14Plus(), user.getBiography(), user.getOrganizationIds());
 	}
 
 	public UserDTO(final Long id, final String login, final String firstName, final String lastName,
 			final String email, final String phoneNumber, final Address address, final boolean activated,
 			final String imageUrl, final String createdBy, final ZonedDateTime createdDate,
 			final String lastModifiedBy, final ZonedDateTime lastModifiedDate, final Set<String> authorities,
-			final boolean is14Plus, final String biography) {
+			final boolean is14Plus, final String biography, final Set<Long> organizationIds) {
 
 		this.id = id;
 		this.login = login;
@@ -93,6 +97,7 @@ public class UserDTO
 		this.authorities = authorities;
 		this.is14Plus = is14Plus;
 		this.biography = biography;
+		this.organizationIds = organizationIds;
 	}
 
 	public Long getId() {
@@ -171,6 +176,10 @@ public class UserDTO
 
 	public String getBiography() {
 		return biography;
+	}
+
+	public Set<Long> getOrganizationIds() {
+		return organizationIds;
 	}
 
 	@Override

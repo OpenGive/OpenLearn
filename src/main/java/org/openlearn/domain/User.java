@@ -94,7 +94,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	@Column(name = "biography", length = 2000)
 	private String biography;
 
-	@JsonIgnore
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(
 			name = "user_authority",
@@ -104,15 +103,10 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	@BatchSize(size = 20)
 	private Set<Authority> authorities = new HashSet<>();
 
-  @JsonIgnore
-  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(
-			name = "user_org",
-			joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id") },
-			inverseJoinColumns = {@JoinColumn(name = "org_id", referencedColumnName = "id") }
-			)
-	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	private final Set<Organization> organizations = new HashSet<>();
+	@ElementCollection
+	@CollectionTable(name="user_org", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+	@Column(name = "org_id")
+	public Set<Long> organizationIds;
 
 	public Long getId() {
 		return id;
@@ -247,6 +241,23 @@ public class User extends AbstractAuditingEntity implements Serializable {
 		this.biography = biography;
 	}
 
+	public Set<Long> getOrganizationIds() {
+		return organizationIds;
+	}
+
+	public void setOrganizationIds(Set<Long> organizationIds) {
+		this.organizationIds = organizationIds;
+	}
+
+	//	public Set<Organization> getOrganizations(){
+//		return this.organizations;
+//	}
+//
+//	public void setOrganizations(Set<Organization> organizations){
+//		this.organizations.clear();
+//		this.organizations.addAll(organizations);
+//	}
+
 	@Override
 	public boolean equals(final Object o) {
 		if (this == o)
@@ -283,7 +294,8 @@ public class User extends AbstractAuditingEntity implements Serializable {
       ", is14Plus=" + is14Plus +
       ", biography='" + biography + '\'' +
       ", authorities=" + authorities +
-      ", organizations=" + organizations +
+// 	  ", organizations=" + organizations +
+      ", organizationIds=" + organizationIds +
       '}';
   }
 }

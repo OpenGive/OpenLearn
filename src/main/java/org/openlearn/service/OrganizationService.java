@@ -1,13 +1,17 @@
 package org.openlearn.service;
 
 import org.openlearn.domain.Organization;
+import org.openlearn.domain.User;
 import org.openlearn.repository.OrganizationRepository;
+import org.openlearn.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
 
 /**
  * Service Implementation for managing Organization.
@@ -20,8 +24,11 @@ public class OrganizationService {
 
     private final OrganizationRepository organizationRepository;
 
-    public OrganizationService(OrganizationRepository organizationRepository) {
+    private final UserRepository userRepository;
+
+    public OrganizationService(OrganizationRepository organizationRepository, UserRepository userRepository) {
         this.organizationRepository = organizationRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -71,4 +78,24 @@ public class OrganizationService {
         log.debug("Request to delete Organization : {}", id);
         organizationRepository.delete(id);
     }
+
+    public Set<User> getUsersForOrganization(Long organizationId){
+    	log.debug("Request to get Users for organization : {}", organizationId);
+    	return userRepository.findAllByOrganizationIds(organizationId);
+	}
+
+	public Organization addUserToOrganization(Long organizationId, Long userId) {
+    	User user = userRepository.findOne(userId);
+    	Organization organization = organizationRepository.findOne(organizationId);
+    	organization.getUserIds().add(userId);
+    	organizationRepository.save(organization);
+    	return organization;
+	}
+
+	public Organization removeUserFromOrganization(Long organizationId, Long userId) {
+    	Organization organization = organizationRepository.findOne(organizationId);
+    	 Boolean x = organization.getUserIds().remove(userId);
+    	organizationRepository.save(organization);
+    	return organization;
+	}
 }

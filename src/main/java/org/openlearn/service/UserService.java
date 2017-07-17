@@ -7,14 +7,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.openlearn.config.Constants;
-import org.openlearn.domain.Address;
-import org.openlearn.domain.Authority;
-import org.openlearn.domain.Course;
-import org.openlearn.domain.User;
-import org.openlearn.repository.AddressRepository;
-import org.openlearn.repository.AuthorityRepository;
-import org.openlearn.repository.CourseRepository;
-import org.openlearn.repository.UserRepository;
+import org.openlearn.domain.*;
+import org.openlearn.repository.*;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.security.SecurityUtils;
 import org.openlearn.service.dto.UserDTO;
@@ -42,6 +36,8 @@ public class UserService {
 
   private final CourseRepository courseRepository;
 
+  private final OrganizationRepository organizationRepository;
+
   private final PasswordEncoder passwordEncoder;
 
   private final SocialService socialService;
@@ -53,7 +49,7 @@ public class UserService {
 
   private final AddressRepository addressRepository;
 
-  public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, SocialService socialService, JdbcTokenStore jdbcTokenStore, AuthorityRepository authorityRepository, AddressRepository addressRepository, CourseRepository courseRepository) {
+  public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, SocialService socialService, JdbcTokenStore jdbcTokenStore, AuthorityRepository authorityRepository, AddressRepository addressRepository, CourseRepository courseRepository, OrganizationRepository organizationRepository) {
     this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
     this.socialService = socialService;
@@ -61,6 +57,7 @@ public class UserService {
     this.authorityRepository = authorityRepository;
     this.addressRepository = addressRepository;
     this.courseRepository = courseRepository;
+    this.organizationRepository = organizationRepository;
   }
 
   public Optional<User> activateRegistration(String key) {
@@ -251,7 +248,8 @@ public class UserService {
 
   @Transactional(readOnly = true)
   public Optional<User> getUserWithAuthoritiesByLogin(final String login) {
-    return userRepository.findOneWithAuthoritiesByLogin(login);
+  	Optional<User> x = userRepository.findOneWithAuthoritiesByLogin(login);
+    return x;
   }
 
   @Transactional(readOnly = true)
@@ -291,4 +289,24 @@ public class UserService {
   	Page<Course> result = courseRepository.findAllByInstructorId(user.get().getId(), pageable);
   	return result;
   }
+
+  @Transactional(readOnly = true)
+	public Set<Organization> getOrganizationsForUser(final String login){
+	  Optional<User> user = userRepository.findOneByLogin(login);
+	  return organizationRepository.findAllByUserIds(user.get().getId());
+  }
+
+	public User addUserToOrganization(String login, Long organizationId) {
+		Optional<User> user = userRepository.findOneByLogin(login);
+		user.get().getOrganizationIds().add(organizationId);
+		userRepository.save(user.get());
+		return user.get();
+	}
+
+	public User removeUserFromOrganization(String login, Long organizationId) {
+		Optional<User> user = userRepository.findOneByLogin(login);
+		user.get().getOrganizationIds().remove(organizationId);
+		userRepository.save(user.get());
+		return user.get();
+	}
 }

@@ -4,10 +4,12 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.validation.Valid;
 
 import org.openlearn.domain.Organization;
+import org.openlearn.domain.User;
 import org.openlearn.service.OrganizationService;
 import org.openlearn.web.rest.util.HeaderUtil;
 import org.openlearn.web.rest.util.PaginationUtil;
@@ -18,14 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.codahale.metrics.annotation.Timed;
 
@@ -130,5 +125,29 @@ public class OrganizationResource {
 		log.debug("REST request to delete Organization : {}", id);
 		organizationService.delete(id);
 		return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+	}
+
+	@GetMapping("/organizations/{organizationId}/users")
+	@Timed
+	public ResponseEntity<Set<User>> getUsersForOrganization(@PathVariable final Long organizationId){
+		log.debug("REST request to get users for an organization");
+		final Set<User> orgUsers = organizationService.getUsersForOrganization(organizationId);
+		return new ResponseEntity<Set<User>>(orgUsers, HttpStatus.OK);
+	}
+
+	@PostMapping("/organizations/{organizationId}/users")
+	@Timed
+	public ResponseEntity<Organization> addUserToOrganization(@PathVariable final Long organizationId, @RequestParam final Long userId){
+		log.debug("REST request to add user with id {} to organization :{}", userId, organizationId);
+		final Organization org = organizationService.addUserToOrganization(organizationId, userId);
+		return new ResponseEntity<Organization>(org, HttpStatus.OK);
+	}
+
+	@DeleteMapping("/organizations/{organizationId}/users/{userId}")
+	@Timed
+	public ResponseEntity<Organization> deleteUserFromOrganization(@PathVariable final Long organizationId, @PathVariable final Long userId){
+		log.debug("REST request to remove user {} from organization {}", userId, organizationId);
+		Organization organization = organizationService.removeUserFromOrganization(organizationId, userId);
+		return new ResponseEntity<Organization>(organization, HttpStatus.OK);
 	}
 }
