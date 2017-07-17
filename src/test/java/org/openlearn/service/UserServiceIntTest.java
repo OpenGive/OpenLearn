@@ -14,6 +14,7 @@ import org.openlearn.domain.User;
 import org.openlearn.repository.UserRepository;
 import org.openlearn.service.dto.UserDTO;
 import org.openlearn.service.util.RandomUtil;
+import org.openlearn.web.rest.TestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -124,10 +125,12 @@ public class UserServiceIntTest {
 
 	@Test
 	public void assertThatAnonymousUserIsNotGet() {
+		TestUtil.setSecurityContextAdmin();
 		final PageRequest pageable = new PageRequest(0, (int) userRepository.count());
 		final Page<UserDTO> allManagedUsers = userService.getAllManagedUsers(pageable);
 		assertThat(allManagedUsers.getContent().stream()
 				.noneMatch(user -> Constants.ANONYMOUS_USER.equals(user.getLogin())))
 		.isTrue();
 	}
+
 }

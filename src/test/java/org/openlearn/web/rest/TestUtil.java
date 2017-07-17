@@ -6,14 +6,23 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
+import org.openlearn.security.AuthoritiesConstants;
+import org.openlearn.security.SecurityUtils;
 import org.springframework.http.MediaType;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  * Utility class for testing REST controllers.
@@ -116,4 +125,14 @@ public class TestUtil {
 		// HashCodes are equals because the objects are not persisted yet
 		assertThat(domainObject1.hashCode()).isEqualTo(domainObject2.hashCode());
 	}
+
+	public static void setSecurityContextAdmin() {
+		Collection<GrantedAuthority> authorities = new ArrayList<>();
+		authorities.add(new SimpleGrantedAuthority(AuthoritiesConstants.ADMIN));
+		SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+		securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin", authorities));
+		SecurityContextHolder.setContext(securityContext);
+		SecurityUtils.isAuthenticated();
+	}
+
 }

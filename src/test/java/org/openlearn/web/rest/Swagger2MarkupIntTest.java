@@ -47,6 +47,7 @@ public class Swagger2MarkupIntTest {
 
 	@Test
 	public void getAllUsersSamples() throws Exception {
+		TestUtil.setSecurityContextAdmin();
 		mockMvc.perform(get("/api/users")
 				.accept(MediaType.APPLICATION_JSON))
 		.andDo(document("getAllUsersUsingGET", preprocessResponse(prettyPrint())))

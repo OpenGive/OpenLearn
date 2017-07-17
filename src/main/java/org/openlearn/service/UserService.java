@@ -243,6 +243,9 @@ public class UserService {
 
   @Transactional(readOnly = true)
   public Page<UserDTO> getAllManagedUsers(final Pageable pageable) {
+    if(!SecurityUtils.isAuthenticated()){
+    	return null;
+	}
   	if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
 		log.debug("User has ADMIN authority");
   		// get all users
