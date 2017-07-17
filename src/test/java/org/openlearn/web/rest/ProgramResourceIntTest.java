@@ -172,6 +172,8 @@ public class ProgramResourceIntTest {
 		// Initialize the database
 		programRepository.saveAndFlush(program);
 
+		TestUtil.setSecurityContextAdmin();
+
 		// Get all the programList
 		restProgramMockMvc.perform(get("/api/programs?sort=id,desc"))
 		.andExpect(status().isOk())

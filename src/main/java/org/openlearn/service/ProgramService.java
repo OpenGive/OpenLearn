@@ -1,13 +1,18 @@
 package org.openlearn.service;
 
 import org.openlearn.domain.Program;
+import org.openlearn.domain.User;
 import org.openlearn.repository.ProgramRepository;
+import org.openlearn.repository.UserRepository;
+import org.openlearn.security.AuthoritiesConstants;
+import org.openlearn.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service Implementation for managing Program.
@@ -20,8 +25,11 @@ public class ProgramService {
 
     private final ProgramRepository programRepository;
 
-    public ProgramService(ProgramRepository programRepository) {
+    private final UserRepository userRepository;
+
+    public ProgramService(ProgramRepository programRepository, UserRepository userRepository) {
         this.programRepository = programRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -44,8 +52,12 @@ public class ProgramService {
     @Transactional(readOnly = true)
     public List<Program> findAll() {
         log.debug("Request to get all Programs");
-        List<Program> result = programRepository.findAll();
-        return result;
+		if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
+			List<Program> result = programRepository.findAll();
+			return result;
+		}
+		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
+		return programRepository.findAllByOrganizationIds(user.get().getOrganizationIds());
     }
 
     /**
