@@ -18,4 +18,7 @@ public interface CourseRepository extends JpaRepository<Course,Long> {
 
 	@Query("select course from Course course where course.program.session.organization.id in (:organizationIds)")
 	Page<Course> findAllByOrganizationId(Pageable pageable, @Param("organizationIds") Set<Long> organizationIds);
+
+	@Query("select course from Course course where course.id = :id and course.program.session.organization.id in (:organizationIds)")
+	Course findOneByIdAndOrganizationId(@Param("id") Long id, @Param("organizationIds") Set<Long> organiztionIds);
 }

@@ -126,6 +126,7 @@ public class UserService {
   }
 
   public User createUser(UserDTO userDTO, String password) {
+  	Optional<User> requestUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
     final User user = new User();
     user.setLogin(userDTO.getLogin());
     user.setFirstName(userDTO.getFirstName());
@@ -187,43 +188,45 @@ public class UserService {
    * @return updated user
    */
   public Optional<UserDTO> updateUser(final UserDTO userDTO) {
-    return Optional.of(userRepository
-      .findOne(userDTO.getId()))
-      .map(user -> {
-        user.setLogin(userDTO.getLogin());
-        user.setFirstName(userDTO.getFirstName());
-        user.setLastName(userDTO.getLastName());
-        user.setEmail(userDTO.getEmail());
-        user.setPhoneNumber(userDTO.getPhoneNumber());
-        user.setAddress(userDTO.getAddress());
+  	if(!validateAccess(userDTO.getId())) return Optional.empty();
+	  return Optional.of(userRepository
+	  .findOne(userDTO.getId()))
+	  .map(user -> {
+		user.setLogin(userDTO.getLogin());
+		user.setFirstName(userDTO.getFirstName());
+		user.setLastName(userDTO.getLastName());
+		user.setEmail(userDTO.getEmail());
+		user.setPhoneNumber(userDTO.getPhoneNumber());
+		user.setAddress(userDTO.getAddress());
 		if(userDTO.getAddress() != null && userDTO.getAddress().getId() != null){
 		  Address findAddress = addressRepository.findOne(userDTO.getAddress().getId());
 		  if(findAddress != null){
 			  user.setAddress(findAddress);
 		  }
 		}
-        if(userDTO.getAddress() == null && user.getAddress() != null){
+		if(userDTO.getAddress() == null && user.getAddress() != null){
 			addressRepository.delete(user.getAddress().getId());
 		}
-        if(userDTO.getAddress() != null && userDTO.getAddress().isEmpty()){
+		if(userDTO.getAddress() != null && userDTO.getAddress().isEmpty()){
 			addressRepository.delete(user.getAddress().getId());
 		}
-        user.setImageUrl(userDTO.getImageUrl());
-        user.setActivated(userDTO.isActivated());
-        user.setBiography(userDTO.getBiography());
-        user.setIs14Plus(userDTO.is14Plus());
-        final Set<Authority> managedAuthorities = user.getAuthorities();
-        managedAuthorities.clear();
-        userDTO.getAuthorities().stream()
-          .map(authorityRepository::findOne)
-          .forEach(managedAuthorities::add);
-        log.debug("Changed Information for User: {}", user);
-        return user;
-      })
-      .map(UserDTO::new);
+		user.setImageUrl(userDTO.getImageUrl());
+		user.setActivated(userDTO.isActivated());
+		user.setBiography(userDTO.getBiography());
+		user.setIs14Plus(userDTO.is14Plus());
+		final Set<Authority> managedAuthorities = user.getAuthorities();
+		managedAuthorities.clear();
+		userDTO.getAuthorities().stream()
+		  .map(authorityRepository::findOne)
+		  .forEach(managedAuthorities::add);
+		log.debug("Changed Information for User: {}", user);
+		return user;
+	  })
+	  .map(UserDTO::new);
   }
 
   public void deleteUser(final String login) {
+  	if(!validateAccess(login));
     jdbcTokenStore.findTokensByUserName(login).forEach(token ->
       jdbcTokenStore.removeAccessToken(token));
     userRepository.findOneByLogin(login).ifPresent(user -> {
@@ -322,5 +325,35 @@ public class UserService {
 		user.get().getOrganizationIds().remove(organizationId);
 		userRepository.save(user.get());
 		return user.get();
+	}
+
+	private boolean validateAccess(String login){
+		Optional<User> user = userRepository.findOneByLogin(login);
+		return validateAccess(user.get());
+	}
+
+	private boolean validateAccess(Long id){
+		User user = userRepository.findOne(id);
+		return validateAccess(user);
+	}
+
+	private boolean validateAccess(User user){
+		if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.STUDENT)){
+			Optional<User> requestUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
+			if(user.getId() != requestUser.get().getId()){
+				return false;
+			}
+		}
+
+		if(!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) &&
+			(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ORG_ADMIN) ||
+				SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.INSTRUCTOR))) {
+			Optional<User> currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
+			Optional<User> changeUser = userRepository.findOneByLogin(user.getLogin());
+			if (!changeUser.get().getOrganizationIds().contains(currentUser.get().organizationIds)) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

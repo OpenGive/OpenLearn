@@ -79,6 +79,7 @@ public class SessionResourceIntTest {
 				.setCustomArgumentResolvers(pageableArgumentResolver)
 				.setControllerAdvice(exceptionTranslator)
 				.setMessageConverters(jacksonMessageConverter).build();
+		TestUtil.setSecurityContextAdmin();
 	}
 
 	/**
@@ -183,8 +184,6 @@ public class SessionResourceIntTest {
 	public void getAllSessions() throws Exception {
 		// Initialize the database
 		sessionRepository.saveAndFlush(session);
-
-		TestUtil.setSecurityContextAdmin();
 
 		// Get all the sessionList
 		restSessionMockMvc.perform(get("/api/sessions?sort=id,desc"))

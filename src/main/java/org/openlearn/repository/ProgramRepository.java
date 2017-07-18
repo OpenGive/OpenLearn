@@ -16,4 +16,7 @@ public interface ProgramRepository extends JpaRepository<Program,Long> {
 
 	@Query("select program from Program program where program.session.organization.id in (:organizationIds)")
 	List<Program> findAllByOrganizationIds(@Param("organizationIds") Set<Long> organizationIds);
+
+	@Query("select program from Program program where program.id = :id and program.session.organization.id in (:organizationIds)")
+	Program findOneByOrganizationIds(@Param("id")Long id, @Param("organizationIds") Set<Long> organizationIds);
 }

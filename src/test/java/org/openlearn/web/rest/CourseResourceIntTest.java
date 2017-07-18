@@ -95,6 +95,9 @@ public class CourseResourceIntTest {
 				.setCustomArgumentResolvers(pageableArgumentResolver)
 				.setControllerAdvice(exceptionTranslator)
 				.setMessageConverters(jacksonMessageConverter).build();
+
+		TestUtil.setSecurityContextAdmin();
+
 	}
 
 	/**
@@ -193,8 +196,6 @@ public class CourseResourceIntTest {
 	public void getAllCourses() throws Exception {
 		// Initialize the database
 		courseRepository.saveAndFlush(course);
-
-		TestUtil.setSecurityContextAdmin();
 
 		// Get all the courseList
 		restCourseMockMvc.perform(get("/api/courses?sort=id,desc"))

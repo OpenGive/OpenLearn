@@ -48,8 +48,15 @@ public class CourseService {
 	 */
 	public Course save(final Course course) {
 		log.debug("Request to save Course : {}", course);
-		final Course result = courseRepository.save(course);
-		return result;
+		if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+			return courseRepository.save(course);
+		}
+		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
+		Course origCourse = findOne(course.getId());
+		if(origCourse != null){
+			return courseRepository.save(course);
+		}
+		return null;
 	}
 
 	/**
@@ -78,8 +85,11 @@ public class CourseService {
 	@Transactional(readOnly = true)
 	public Course findOne(final Long id) {
 		log.debug("Request to get Course : {}", id);
-		final Course course = courseRepository.findOne(id);
-		return course;
+		if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
+			return courseRepository.findOne(id);
+		}
+		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
+		return courseRepository.findOneByIdAndOrganizationId(id, user.get().organizationIds);
 	}
 
 	/**
@@ -89,7 +99,14 @@ public class CourseService {
 	 */
 	public void delete(final Long id) {
 		log.debug("Request to delete Course : {}", id);
-		courseRepository.delete(id);
+		if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+			courseRepository.delete(id);
+		}
+		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
+		Course origCourse = findOne(id);
+		if(origCourse != null){
+			courseRepository.delete(id);
+		}
 	}
 
 	/**
@@ -117,7 +134,13 @@ public class CourseService {
 	public Set<ItemLink> addItemLinkToCourse(final Long courseId, final Long itemLinkId){
 		log.debug("Request to add item link id {} to course id {}", itemLinkId, courseId);
 		Course course = courseRepository.findOne(courseId);
+		if(course == null){
+			return null;
+		}
 		ItemLink itemLink = itemLinkRepository.findOne(itemLinkId);
+		if(itemLink == null){
+			return null;
+		}
 		course.getResources().add(itemLink);
 		courseRepository.save(course);
 		return course.getResources();
@@ -134,6 +157,9 @@ public class CourseService {
 	public Set<ItemLink> removeItemLinkFromCourse(Long courseId, Long itemLinkId) {
 		log.debug("Request to remove item link id {} from course id {}", itemLinkId, courseId);
 		Course course = courseRepository.findOne(courseId);
+		if(course == null){
+			return null;
+		}
 		Predicate<ItemLink> itemLinkPredicate = p-> p.getId() == itemLinkId;
 		course.getResources().removeIf(itemLinkPredicate);
 		courseRepository.save(course);

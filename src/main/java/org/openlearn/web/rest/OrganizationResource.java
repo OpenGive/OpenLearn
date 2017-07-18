@@ -16,6 +16,7 @@ import org.openlearn.web.rest.util.HeaderUtil;
 import org.openlearn.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.actuate.autoconfigure.ShellProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -54,6 +55,7 @@ public class OrganizationResource {
 	 * @throws URISyntaxException if the Location URI syntax is incorrect
 	 */
 	@PostMapping("/organizations")
+	@Secured(AuthoritiesConstants.ADMIN)
 	@Timed
 	public ResponseEntity<Organization> createOrganization(@Valid @RequestBody final Organization organization) throws URISyntaxException {
 		log.debug("REST request to save Organization : {}", organization);
@@ -75,6 +77,7 @@ public class OrganizationResource {
 	 * @throws URISyntaxException if the Location URI syntax is incorrect
 	 */
 	@PutMapping("/organizations")
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
 	@Timed
 	public ResponseEntity<Organization> updateOrganization(@Valid @RequestBody final Organization organization) throws URISyntaxException {
 		log.debug("REST request to update Organization : {}", organization);
@@ -93,6 +96,7 @@ public class OrganizationResource {
 	 * @return the ResponseEntity with status 200 (OK) and the list of organizations in body
 	 */
 	@GetMapping("/organizations")
+	@Secured(AuthoritiesConstants.ADMIN)
 	@Timed
 	public ResponseEntity<List<Organization>> getAllOrganizations(@ApiParam final Pageable pageable) {
 		log.debug("REST request to get a page of Organizations");
@@ -108,6 +112,7 @@ public class OrganizationResource {
 	 * @return the ResponseEntity with status 200 (OK) and with body the organization, or with status 404 (Not Found)
 	 */
 	@GetMapping("/organizations/{id}")
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
 	@Timed
 	public ResponseEntity<Organization> getOrganization(@PathVariable final Long id) {
 		log.debug("REST request to get Organization : {}", id);
@@ -122,6 +127,7 @@ public class OrganizationResource {
 	 * @return the ResponseEntity with status 200 (OK)
 	 */
 	@DeleteMapping("/organizations/{id}")
+	@Secured(AuthoritiesConstants.ADMIN)
 	@Timed
 	public ResponseEntity<Void> deleteOrganization(@PathVariable final Long id) {
 		log.debug("REST request to delete Organization : {}", id);

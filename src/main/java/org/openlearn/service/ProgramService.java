@@ -1,5 +1,6 @@
 package org.openlearn.service;
 
+import org.openlearn.domain.Course;
 import org.openlearn.domain.Program;
 import org.openlearn.domain.User;
 import org.openlearn.repository.ProgramRepository;
@@ -40,8 +41,15 @@ public class ProgramService {
      */
     public Program save(Program program) {
         log.debug("Request to save Program : {}", program);
-        Program result = programRepository.save(program);
-        return result;
+		if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+			return programRepository.save(program);
+		}
+		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
+		Program orig = findOne(program.getId());
+		if(orig != null){
+			return programRepository.save(program);
+		}
+		return null;
     }
 
     /**
@@ -69,8 +77,11 @@ public class ProgramService {
     @Transactional(readOnly = true)
     public Program findOne(Long id) {
         log.debug("Request to get Program : {}", id);
-        Program program = programRepository.findOne(id);
-        return program;
+        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
+        	return programRepository.findOne(id);
+		}
+		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
+        return programRepository.findOneByOrganizationIds(id, user.get().organizationIds);
     }
 
     /**
@@ -80,6 +91,13 @@ public class ProgramService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Program : {}", id);
-        programRepository.delete(id);
+		if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+			programRepository.delete(id);
+		}
+		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
+		Program orig = findOne(id);
+		if(orig != null){
+			programRepository.delete(id);
+		}
     }
 }

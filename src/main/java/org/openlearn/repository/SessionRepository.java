@@ -25,4 +25,6 @@ public interface SessionRepository extends JpaRepository<Session,Long> {
     @Query("select session from Session session left join fetch session.programs where session.id =:id")
     Session findOneWithEagerRelationships(@Param("id") Long id);
 
+	@Query("select session from Session session left join fetch session.programs where session.id =:id and session.organization.id in (:organizationIds)")
+	Session findOneByIdAndOrgIdsWithEagerRelationships(@Param("id") Long id, @Param("organizationIds") Set<Long> organizationIds);
 }

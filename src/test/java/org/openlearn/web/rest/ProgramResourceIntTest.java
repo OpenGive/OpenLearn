@@ -82,6 +82,9 @@ public class ProgramResourceIntTest {
 				.setCustomArgumentResolvers(pageableArgumentResolver)
 				.setControllerAdvice(exceptionTranslator)
 				.setMessageConverters(jacksonMessageConverter).build();
+
+		TestUtil.setSecurityContextAdmin();
+
 	}
 
 	/**
@@ -171,8 +174,6 @@ public class ProgramResourceIntTest {
 	public void getAllPrograms() throws Exception {
 		// Initialize the database
 		programRepository.saveAndFlush(program);
-
-		TestUtil.setSecurityContextAdmin();
 
 		// Get all the programList
 		restProgramMockMvc.perform(get("/api/programs?sort=id,desc"))

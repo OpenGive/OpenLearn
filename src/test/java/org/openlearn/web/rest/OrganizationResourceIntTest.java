@@ -22,7 +22,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -74,6 +76,8 @@ public class OrganizationResourceIntTest {
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
             .setMessageConverters(jacksonMessageConverter).build();
+		TestUtil.setSecurityContextAdmin();
+
     }
 
     /**
@@ -168,7 +172,12 @@ public class OrganizationResourceIntTest {
     @Test
     @Transactional
     public void getOrganization() throws Exception {
-        // Initialize the database
+		// Add user to org for test
+		Set<Long> userIds = new HashSet<Long>();
+		userIds.add(3L);
+		organization.setUserIds(userIds);
+
+		// Initialize the database
         organizationRepository.saveAndFlush(organization);
 
         // Get the organization

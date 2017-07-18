@@ -2,8 +2,11 @@ package org.openlearn.service;
 
 import org.openlearn.domain.Organization;
 import org.openlearn.domain.User;
+import org.openlearn.exceptions.NotAuthorizedException;
 import org.openlearn.repository.OrganizationRepository;
 import org.openlearn.repository.UserRepository;
+import org.openlearn.security.AuthoritiesConstants;
+import org.openlearn.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -11,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -37,10 +41,10 @@ public class OrganizationService {
      * @param organization the entity to save
      * @return the persisted entity
      */
-    public Organization save(Organization organization) {
+	public Organization save(Organization organization) {
         log.debug("Request to save Organization : {}", organization);
-        Organization result = organizationRepository.save(organization);
-        return result;
+		Organization result = organizationRepository.save(organization);
+		return result;
     }
 
     /**
@@ -52,8 +56,12 @@ public class OrganizationService {
     @Transactional(readOnly = true)
     public Page<Organization> findAll(Pageable pageable) {
         log.debug("Request to get all Organizations");
-        Page<Organization> result = organizationRepository.findAll(pageable);
-        return result;
+        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
+			Page<Organization> result = organizationRepository.findAll(pageable);
+			return result;
+		}
+		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
+        return organizationRepository.findAllByIdIn(pageable, user.get().getOrganizationIds());
     }
 
     /**
@@ -65,8 +73,11 @@ public class OrganizationService {
     @Transactional(readOnly = true)
     public Organization findOne(Long id) {
         log.debug("Request to get Organization : {}", id);
-        Organization organization = organizationRepository.findOne(id);
-        return organization;
+        Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
+        if(user.get().getOrganizationIds().contains(id)){
+			return organizationRepository.findOne(id);
+		}
+        return null;
     }
 
     /**
@@ -76,26 +87,34 @@ public class OrganizationService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Organization : {}", id);
-        organizationRepository.delete(id);
+		organizationRepository.delete(id);
     }
 
     public Set<User> getUsersForOrganization(Long organizationId){
     	log.debug("Request to get Users for organization : {}", organizationId);
-    	return userRepository.findAllByOrganizationIds(organizationId);
+		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
+		if(user.get().getOrganizationIds().contains(organizationId)){
+			return userRepository.findAllByOrganizationIds(organizationId);
+		}
+		return null;
 	}
 
 	public Organization addUserToOrganization(Long organizationId, Long userId) {
     	User user = userRepository.findOne(userId);
     	Organization organization = organizationRepository.findOne(organizationId);
-    	organization.getUserIds().add(userId);
-    	organizationRepository.save(organization);
-    	return organization;
+		if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
+			organization.getUserIds().add(userId);
+			organizationRepository.save(organization);
+		}
+    	return null;
 	}
 
 	public Organization removeUserFromOrganization(Long organizationId, Long userId) {
     	Organization organization = organizationRepository.findOne(organizationId);
-    	 Boolean x = organization.getUserIds().remove(userId);
-    	organizationRepository.save(organization);
-    	return organization;
+		if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
+			organization.getUserIds().remove(userId);
+			organizationRepository.save(organization);
+		}
+    	return null;
 	}
 }

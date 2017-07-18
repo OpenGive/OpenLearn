@@ -42,7 +42,15 @@ public class SessionService {
      */
     public Session save(Session session) {
         log.debug("Request to save Session : {}", session);
-        return sessionRepository.save(session);
+		if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+			return sessionRepository.save(session);
+		}
+		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
+		Session orig = findOne(session.getId());
+		if(orig != null){
+			return sessionRepository.save(session);
+		}
+		return null;
     }
 
     /**
@@ -70,6 +78,9 @@ public class SessionService {
 	@Transactional(readOnly = true)
 	public Page<Session> findAllOrgSessions(Pageable pageable) {
 		log.debug("Request to get all Sessions");
+		if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
+			return sessionRepository.findAll(pageable);
+		}
 		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
 		return sessionRepository.findAllByOrganization(pageable,user.get().getOrganizationIds());
 	}
@@ -83,7 +94,11 @@ public class SessionService {
     @Transactional(readOnly = true)
     public Session findOne(Long id) {
         log.debug("Request to get Session : {}", id);
-        return sessionRepository.findOneWithEagerRelationships(id);
+        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
+			return sessionRepository.findOneWithEagerRelationships(id);
+		}
+		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
+        return sessionRepository.findOneByIdAndOrgIdsWithEagerRelationships(id, user.get().getOrganizationIds());
     }
 
     /**
@@ -93,6 +108,13 @@ public class SessionService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Session : {}", id);
-        sessionRepository.delete(id);
+		if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+			sessionRepository.delete(id);
+		}
+		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
+		Session orig = findOne(id);
+		if(orig != null){
+			sessionRepository.delete(id);
+		}
     }
 }
