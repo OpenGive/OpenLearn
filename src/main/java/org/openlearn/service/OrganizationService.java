@@ -2,7 +2,6 @@ package org.openlearn.service;
 
 import org.openlearn.domain.Organization;
 import org.openlearn.domain.User;
-import org.openlearn.exceptions.NotAuthorizedException;
 import org.openlearn.repository.OrganizationRepository;
 import org.openlearn.repository.UserRepository;
 import org.openlearn.security.AuthoritiesConstants;
