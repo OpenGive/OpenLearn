@@ -188,7 +188,6 @@ public class UserService {
    * @return updated user
    */
   public Optional<UserDTO> updateUser(final UserDTO userDTO) {
-  	if(!validateAccess(userDTO.getId())) return Optional.empty();
 	  return Optional.of(userRepository
 	  .findOne(userDTO.getId()))
 	  .map(user -> {
