@@ -61,12 +61,12 @@ public class CacheConfiguration {
 			cm.createCache(Achievement.class.getName(), jcacheConfiguration);
 			cm.createCache(Achievement.class.getName() + ".achievedBy", jcacheConfiguration);
 			cm.createCache(ItemLink.class.getName(), jcacheConfiguration);
-			cm.createCache(Session.class.getName(), jcacheConfiguration);
-			cm.createCache(Session.class.getName() + ".programs", jcacheConfiguration);
 			cm.createCache(Program.class.getName(), jcacheConfiguration);
-			cm.createCache(Program.class.getName() + ".courses", jcacheConfiguration);
+			cm.createCache(Program.class.getName() + ".sessions", jcacheConfiguration);
+			cm.createCache(Session.class.getName(), jcacheConfiguration);
+			cm.createCache(Session.class.getName() + ".courses", jcacheConfiguration);
 			cm.createCache(School.class.getName(), jcacheConfiguration);
-			cm.createCache(School.class.getName() + ".programs", jcacheConfiguration);
+			cm.createCache(School.class.getName() + ".sessions", jcacheConfiguration);
 			cm.createCache(PortfolioItem.class.getName(), jcacheConfiguration);
 			cm.createCache(PortfolioItem.class.getName() + ".resources", jcacheConfiguration);
 			// jhipster-needle-ehcache-add-entry

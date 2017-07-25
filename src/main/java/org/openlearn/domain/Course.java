@@ -49,7 +49,7 @@ public class Course implements Serializable {
 
 	@NotNull
 	@ManyToOne(optional = false)
-	private Program program;
+	private Session session;
 
 	@NotNull
 	@ManyToOne(optional = false)
@@ -127,12 +127,12 @@ public class Course implements Serializable {
 		this.endDate = endDate;
 	}
 
-	public Program getProgram() {
-		return program;
+	public Session getSession() {
+		return session;
 	}
 
-	public void setProgram(final Program program) {
-		this.program = program;
+	public void setSession(final Session session) {
+		this.session = session;
 	}
 
 	public User getInstructor() {
@@ -246,7 +246,7 @@ public class Course implements Serializable {
       ", description='" + description + '\'' +
       ", startDate=" + startDate +
       ", endDate=" + endDate +
-      ", program=" + program +
+      ", session=" + session +
       ", instructor=" + instructor +
       ", resources=" + resources +
 //      ", students=" + students +
