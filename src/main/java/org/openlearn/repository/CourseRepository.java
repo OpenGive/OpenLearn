@@ -14,7 +14,8 @@ import java.util.Set;
  */
 @SuppressWarnings("unused")
 public interface CourseRepository extends JpaRepository<Course,Long> {
-	public Page<Course> findAllByInstructorId(Long id, Pageable pageable);
+	@Query("select course from Course course where course.instructor.id = :id")
+	public Page<Course> findAllByInstructorId(@Param("id") Long id, Pageable pageable);
 
 	@Query("select course from Course course where course.program.session.organization.id in (:organizationIds)")
 	Page<Course> findAllByOrganizationId(Pageable pageable, @Param("organizationIds") Set<Long> organizationIds);
