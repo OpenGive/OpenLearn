@@ -226,6 +226,21 @@ public class UserResource {
 		return ResponseEntity.ok().headers(HeaderUtil.createAlert( "userManagement.deleted", login)).build();
 	}
 
+	/**
+	 * DELETE /users/:login : delete the User by id.
+	 *
+	 * @param id the id of the user to delete
+	 * @return the ResponseEntity with status 200 (OK)
+	 */
+	@DeleteMapping("/users/{id}")
+	@Timed
+	@Secured(AuthoritiesConstants.ADMIN)
+	public ResponseEntity<Void> deleteUser(@PathVariable final Long id) {
+		log.debug("REST request to delete User: {}", id);
+		userService.deleteUser(id);
+		return ResponseEntity.ok().headers(HeaderUtil.createAlert( "userManagement.deleted", id.toString())).build();
+	}
+
 	@GetMapping("/users/{login:" + Constants.LOGIN_REGEX + "}/instructors")
 	@Timed
 	@Secured(AuthoritiesConstants.INSTRUCTOR)

@@ -235,7 +235,12 @@ public class UserService {
     });
   }
 
-  public void changePassword(final String password) {
+	public void deleteUser(final Long id) {
+  	    User user = userRepository.findOne(id);
+		deleteUser(user.getLogin());
+	}
+
+	public void changePassword(final String password) {
     userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).ifPresent(user -> {
       final String encryptedPassword = passwordEncoder.encode(password);
       user.setPassword(encryptedPassword);
