@@ -40,7 +40,7 @@ public class School implements Serializable {
     @OneToMany(mappedBy = "school")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Session> sessions = new HashSet<>();
+    private Set<Program> programs = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -89,29 +89,29 @@ public class School implements Serializable {
         this.address = address;
     }
 
-    public Set<Session> getSessions() {
-        return sessions;
+    public Set<Program> getPrograms() {
+        return programs;
     }
 
-    public School sessions(Set<Session> sessions) {
-        this.sessions = sessions;
+    public School programs(Set<Program> programs) {
+        this.programs = programs;
         return this;
     }
 
-    public School addSession(Session session) {
-        this.sessions.add(session);
-        session.setSchool(this);
+    public School addProgram(Program program) {
+        this.programs.add(program);
+        program.setSchool(this);
         return this;
     }
 
-    public School removeProgram(Session session) {
-        this.sessions.remove(session);
-        session.setSchool(null);
+    public School removeProgram(Program program) {
+        this.programs.remove(program);
+        program.setSchool(null);
         return this;
     }
 
-    public void setSessions(Set<Session> sessions) {
-        this.sessions = sessions;
+    public void setPrograms(Set<Program> programs) {
+        this.programs = programs;
     }
 
     @Override

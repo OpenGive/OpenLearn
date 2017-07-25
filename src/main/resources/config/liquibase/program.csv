@@ -1,5 +1,5 @@
-id,name,description,active,organization_id
-1,PSAT Prep,faucibus orci luctus et ultrices posuere cubilia curae mauris viverra diam vitae quam suspendisse potenti nullam porttitor,TRUE,1
-2,Focused Learning,Lorum ipsum,FALSE,2
-3,ABC,lacinia sapien quis libero nullam sit amet turpis elementum ligula vehicula consequat morbi a ipsum integer a,TRUE,2
-4,Programming Immersion,sollicitudin vitae consectetuer eget rutrum at lorem integer tincidunt ante vel ipsum praesent blandit,TRUE,3
+id,name,description,active,school_id,session_id
+1,PSAT Prep,faucibus orci luctus et ultrices posuere cubilia curae mauris viverra diam vitae quam suspendisse potenti nullam porttitor,TRUE,1,1
+2,Focused Learning,Lorum ipsum,FALSE,1,2
+3,ABC,lacinia sapien quis libero nullam sit amet turpis elementum ligula vehicula consequat morbi a ipsum integer a,TRUE,2,2
+4,Programming Immersion,sollicitudin vitae consectetuer eget rutrum at lorem integer tincidunt ante vel ipsum praesent blandit,TRUE,2,3

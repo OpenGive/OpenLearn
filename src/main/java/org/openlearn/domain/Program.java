@@ -19,6 +19,8 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * A Program.
  */
@@ -44,14 +46,16 @@ public class Program implements Serializable {
 	@Column(name = "active", nullable = false)
 	private boolean active;
 
+	@ManyToOne
+	private School school;
+
 	@ManyToOne(optional = false)
-	@NotNull
-	private Organization organization;
+	private Session session;
 
 	@OneToMany(mappedBy = "program")
+	@JsonIgnore
 	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	private Set<Session> sessions = new HashSet<>();
-
+	private Set<Course> courses = new HashSet<>();
 
 	public Long getId() {
 		return id;
@@ -100,42 +104,50 @@ public class Program implements Serializable {
 		this.active = active;
 	}
 
-	public Organization getOrganization() {
-		return organization;
+	public School getSchool() {
+		return school;
 	}
 
-	public Program organization(final Organization organization) {
-		this.organization = organization;
+	public Program school(final School school) {
+		this.school = school;
 		return this;
 	}
 
-	public void setOrganization(final Organization organization) {
-		this.organization = organization;
+	public void setSchool(final School school) {
+		this.school = school;
 	}
 
-	public Set<Session> getSessions() {
-		return sessions;
+	public Session getSession() {
+		return session;
 	}
 
-	public Program sessions(final Set<Session> sessions) {
-		this.sessions = sessions;
+	public void setSession(final Session session) {
+		this.session = session;
+	}
+
+	public Set<Course> getCourses() {
+		return courses;
+	}
+
+	public Program courses(final Set<Course> courses) {
+		this.courses = courses;
 		return this;
 	}
 
-	public Program addSession(final Session session) {
-		sessions.add(session);
-		session.setProgram(this);
+	public Program addCourse(final Course course) {
+		courses.add(course);
+		course.setProgram(this);
 		return this;
 	}
 
-	public Program removeSession(final Session session) {
-		sessions.remove(sessions);
-		session.setProgram(null);
+	public Program removeCourse(final Course course) {
+		courses.remove(course);
+		course.setProgram(null);
 		return this;
 	}
 
-	public void setSessions(final Set<Session> sessions) {
-		this.sessions = sessions;
+	public void setCourses(final Set<Course> courses) {
+		this.courses = courses;
 	}
 
 	@Override

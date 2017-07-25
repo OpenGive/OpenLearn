@@ -2,7 +2,6 @@ package org.openlearn.service;
 
 import org.openlearn.domain.Session;
 import org.openlearn.domain.User;
-import org.openlearn.repository.ProgramRepository;
 import org.openlearn.repository.SessionRepository;
 import org.openlearn.repository.UserRepository;
 import org.openlearn.security.AuthoritiesConstants;
@@ -14,7 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.security.Security;
 import java.util.Optional;
 
 /**
@@ -57,6 +56,7 @@ public class SessionService {
     /**
      *  Get all the sessions.
      *
+     *  @param pageable the pagination information
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
@@ -66,12 +66,13 @@ public class SessionService {
 			return sessionRepository.findAll(pageable);
 		}
 		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-		return sessionRepository.findAllByOrganizationIds(pageable,user.get().organizationIds);
+		return sessionRepository.findAllByOrganization(pageable, user.get().organizationIds);
     }
 
 	/**
 	 *  Get all the sessions by user orgs
 	 *
+	 *  @param pageable the pagination information
 	 *  @return the list of entities
 	 */
 	@Transactional(readOnly = true)
@@ -81,7 +82,7 @@ public class SessionService {
 			return sessionRepository.findAll(pageable);
 		}
 		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-		return sessionRepository.findAllByOrganizationIds(pageable,user.get().getOrganizationIds());
+		return sessionRepository.findAllByOrganization(pageable,user.get().getOrganizationIds());
 	}
 
 	/**
@@ -94,10 +95,10 @@ public class SessionService {
     public Session findOne(Long id) {
         log.debug("Request to get Session : {}", id);
         if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
-			return sessionRepository.findOne(id);
+			return sessionRepository.findOneWithEagerRelationships(id);
 		}
 		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-        return sessionRepository.findOneByOrganizationIds(id, user.get().getOrganizationIds());
+        return sessionRepository.findOneByIdAndOrgIdsWithEagerRelationships(id, user.get().getOrganizationIds());
     }
 
     /**

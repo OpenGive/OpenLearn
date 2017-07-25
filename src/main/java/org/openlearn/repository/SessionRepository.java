@@ -1,8 +1,7 @@
 package org.openlearn.repository;
 
-import org.openlearn.domain.Program;
-
 import org.openlearn.domain.Session;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
@@ -12,14 +11,20 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Spring Data JPA repository for the Program entity.
+ * Spring Data JPA repository for the Session entity.
  */
 @SuppressWarnings("unused")
 public interface SessionRepository extends JpaRepository<Session,Long> {
 
-	@Query("select session from Session session where session.program.organization.id in (:organizationIds)")
-	Page<Session> findAllByOrganizationIds(Pageable pageable, @Param("organizationIds") Set<Long> organizationIds);
+	@Query("select session from Session session where session.organization.id in (:organizationIds)")
+	public Page<Session> findAllByOrganization(Pageable pageable, @Param("organizationIds") Set<Long> organizationIds);
 
-	@Query("select session from Session session where program.id = :id and session.program.organization.id in (:organizationIds)")
-	Session findOneByOrganizationIds(@Param("id")Long id, @Param("organizationIds") Set<Long> organizationIds);
+    @Query("select distinct session from Session session left join fetch session.programs")
+    List<Session> findAllWithEagerRelationships();
+
+    @Query("select session from Session session left join fetch session.programs where session.id =:id")
+    Session findOneWithEagerRelationships(@Param("id") Long id);
+
+	@Query("select session from Session session left join fetch session.programs where session.id =:id and session.organization.id in (:organizationIds)")
+	Session findOneByIdAndOrgIdsWithEagerRelationships(@Param("id") Long id, @Param("organizationIds") Set<Long> organizationIds);
 }

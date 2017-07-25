@@ -94,7 +94,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	@Column(name = "biography", length = 2000)
 	private String biography;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.DETACH})
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(
 			name = "user_authority",
 			joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},

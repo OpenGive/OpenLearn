@@ -1,19 +1,12 @@
 package org.openlearn.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import io.swagger.annotations.ApiParam;
 import org.openlearn.domain.Program;
-import org.openlearn.domain.Session;
 import org.openlearn.service.ProgramService;
 import org.openlearn.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
-import org.openlearn.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,7 +47,7 @@ public class ProgramResource {
         if (program.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new program cannot already have an ID")).body(null);
         }
-		Program result = programService.save(program);
+        Program result = programService.save(program);
         return ResponseEntity.created(new URI("/api/programs/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -76,7 +69,7 @@ public class ProgramResource {
         if (program.getId() == null) {
             return createProgram(program);
         }
-		Program result = programService.save(program);
+        Program result = programService.save(program);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, program.getId().toString()))
             .body(result);
@@ -89,10 +82,9 @@ public class ProgramResource {
      */
     @GetMapping("/programs")
     @Timed
-    public ResponseEntity<List<Program>> getAllPrograms(@ApiParam final Pageable pageable) {
+    public List<Program> getAllPrograms() {
         log.debug("REST request to get all Programs");
-        final List<Program> page = programService.findAll(pageable);
-        return new ResponseEntity<>(page, HttpStatus.OK);
+        return programService.findAll();
     }
 
     /**

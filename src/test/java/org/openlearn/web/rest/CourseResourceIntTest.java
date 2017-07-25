@@ -25,7 +25,7 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.openlearn.OpenLearnApplication;
 import org.openlearn.domain.Course;
-import org.openlearn.domain.Session;
+import org.openlearn.domain.Program;
 import org.openlearn.domain.User;
 import org.openlearn.repository.CourseRepository;
 import org.openlearn.service.CourseService;
@@ -120,10 +120,10 @@ public class CourseResourceIntTest {
 		em.flush();
 		course.setInstructor(instructor);
 
-		final Session program = ProgramResourceIntTest.createEntity(em);
+		final Program program = ProgramResourceIntTest.createEntity(em);
 		em.persist(program);
 		em.flush();
-		course.setSession(program);
+		course.setProgram(program);
 
 		return course;
 	}

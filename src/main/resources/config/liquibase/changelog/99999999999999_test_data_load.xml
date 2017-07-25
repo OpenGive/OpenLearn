@@ -49,16 +49,16 @@
                   separator=","
                   tableName="school">
         </loadData>
-		<loadData encoding="UTF-8"
-				  file="config/liquibase/program.csv"
-				  separator=","
-				  tableName="program">
-			<column name="active" type="boolean"/>
-		</loadData>
         <loadData encoding="UTF-8"
                   file="config/liquibase/session.csv"
                   separator=","
                   tableName="session">
+                  <column name="active" type="boolean"/>
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/program.csv"
+                  separator=","
+                  tableName="program">
                   <column name="active" type="boolean"/>
         </loadData>
         <loadData encoding="UTF-8"
