@@ -17,15 +17,15 @@ import java.util.Set;
 @SuppressWarnings("unused")
 public interface ProgramRepository extends JpaRepository<Program,Long> {
 
-	@Query("select Program from Program program where program.organization.id in (:organizationIds)")
+	@Query("select program from Program program where program.organization.id in (:organizationIds)")
 	public List<Program> findAllByOrganization(@Param("organizationIds") Set<Long> organizationIds);
 
-    @Query("select distinct program from Program program left join fetch session.programs")
+    @Query("select distinct program from Program program left join fetch program.sessions")
     List<Program> findAllWithEagerRelationships();
 
     @Query("select program from Program program left join fetch program.sessions where program.id =:id")
 	Program findOneWithEagerRelationships(@Param("id") Long id);
 
-	@Query("select Program from Program program left join fetch program.sessions where program.id =:id and program.organization.id in (:organizationIds)")
+	@Query("select program from Program program left join fetch program.sessions where program.id =:id and program.organization.id in (:organizationIds)")
 	Program findOneByIdAndOrgIdsWithEagerRelationships(@Param("id") Long id, @Param("organizationIds") Set<Long> organizationIds);
 }

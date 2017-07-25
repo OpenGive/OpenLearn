@@ -11,7 +11,7 @@
   <include file="classpath:config/liquibase/changelog/00000000000001_oauth_schema.xml" relativeToChangelogFile="false"/>
   <!--<include file="classpath:config/liquibase/changelog/00000000000002_added_grade_to_studentcourse.xml" relativeToChangelogFile="false"/>-->
 	<!--<include file="classpath:config/liquibase/changelog/00000000000002_swap_session_program.xml" relativeToChangelogFile="false"/>-->
-    <!--<include file="classpath:config/liquibase/changelog/99999999999999_test_data_load.xml" relativeToChangelogFile="false"/>-->
+    <include file="classpath:config/liquibase/changelog/99999999999999_test_data_load.xml" relativeToChangelogFile="false"/>
 
 
 </databaseChangeLog>
