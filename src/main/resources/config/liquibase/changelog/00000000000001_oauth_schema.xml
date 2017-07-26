@@ -71,7 +71,7 @@
     </createTable>
 
     <loadData encoding="UTF-8"
-              file="config/liquibase/oauth_client_details.csv"
+              file="config/liquibase/data/oauth_client_details.csv"
               separator=","
               tableName="oauth_client_details"/>
   </changeSet></databaseChangeLog>

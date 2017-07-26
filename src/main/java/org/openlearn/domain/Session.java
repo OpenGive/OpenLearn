@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -53,13 +54,17 @@ public class Session implements Serializable {
 	@Column(name = "active", nullable = false)
 	private Boolean active;
 
-	@OneToMany(mappedBy = "session")
-	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	private Set<Program> programs = new HashSet<>();
+	@ManyToOne
+	private School school;
 
 	@ManyToOne(optional = false)
-	@NotNull
-	private Organization organization;
+	private Program program;
+
+	@OneToMany(mappedBy = "session")
+	@JsonIgnore
+	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+	private Set<Course> courses = new HashSet<>();
+
 
 	public Long getId() {
 		return id;
@@ -76,6 +81,14 @@ public class Session implements Serializable {
 	public Session name(final String name) {
 		this.name = name;
 		return this;
+	}
+
+	public Program getProgram() {
+		return program;
+	}
+
+	public void setProgram(final Program program) {
+		this.program = program;
 	}
 
 	public void setName(final String name) {
@@ -95,42 +108,42 @@ public class Session implements Serializable {
 		this.active = active;
 	}
 
-	public Set<Program> getPrograms() {
-		return programs;
+	public Set<Course> getCourses() {
+		return courses;
 	}
 
-	public Session programs(final Set<Program> programs) {
-		this.programs = programs;
+	public Session courses(final Set<Course> courses) {
+		this.courses = courses;
 		return this;
 	}
 
-	public Session addProgram(final Program program) {
-		programs.add(program);
-		program.setSession(this);
+	public Session addCourse(final Course course) {
+		courses.add(course);
+		course.setSession(this);
 		return this;
 	}
 
-	public Session removeProgram(final Program program) {
-		programs.remove(program);
-		program.setSession(null);
+	public Session removeCourse(final Course course) {
+		courses.remove(course);
+		course.setSession(null);
 		return this;
 	}
 
-	public void setPrograms(final Set<Program> programs) {
-		this.programs = programs;
+	public void setCourses(final Set<Course> courses) {
+		this.courses = courses;
 	}
 
-	public Organization getOrganization() {
-		return organization;
+	public School getSchool() {
+		return school;
 	}
 
-	public Session organization(final Organization organization) {
-		this.organization = organization;
+	public Session school(final School school) {
+		this.school = school;
 		return this;
 	}
 
-	public void setOrganization(final Organization organization) {
-		this.organization = organization;
+	public void setSchool(final School school) {
+		this.school = school;
 	}
 
 	public String getDescription() {

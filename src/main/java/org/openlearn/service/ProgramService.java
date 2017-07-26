@@ -1,6 +1,5 @@
 package org.openlearn.service;
 
-import org.openlearn.domain.Course;
 import org.openlearn.domain.Program;
 import org.openlearn.domain.User;
 import org.openlearn.repository.ProgramRepository;
@@ -9,6 +8,8 @@ import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -58,14 +59,14 @@ public class ProgramService {
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<Program> findAll() {
+    public List<Program> findAll(Pageable pageable) {
         log.debug("Request to get all Programs");
 		if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
 			List<Program> result = programRepository.findAll();
 			return result;
 		}
 		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-		return programRepository.findAllByOrganizationIds(user.get().getOrganizationIds());
+		return programRepository.findAllByOrganization(user.get().getOrganizationIds());
     }
 
     /**
@@ -81,7 +82,7 @@ public class ProgramService {
         	return programRepository.findOne(id);
 		}
 		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-        return programRepository.findOneByOrganizationIds(id, user.get().organizationIds);
+        return programRepository.findOneByIdAndOrgIdsWithEagerRelationships(id, user.get().organizationIds);
     }
 
     /**
