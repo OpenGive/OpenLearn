@@ -121,3 +121,9 @@ Desktop.ini
 .apt_generated
 .cache-main
 .cache-tests
+
+######################
+# Local Properties
+######################
+src/main/local-props
+

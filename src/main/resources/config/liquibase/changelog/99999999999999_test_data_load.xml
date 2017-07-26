@@ -19,50 +19,49 @@
     -->
     <changeSet id="99999999999999-1" author="acooperman">
       <loadData encoding="UTF-8"
-                file="config/liquibase/users.csv"
+                file="config/liquibase/data/local/users.csv"
                 separator=","
                 tableName="user">
         <column name="is_14_plus" type="boolean"/>
         <column name="activated" type="boolean"/>
         <column name="created_date" type="timestamp"/>
       </loadData>
-      <dropDefaultValue tableName="user" columnName="created_date" columnDataType="datetime"/>
 
       <loadData encoding="UTF-8"
-                file="config/liquibase/authorities.csv"
+                file="config/liquibase/data/local/authorities.csv"
                 separator=","
                 tableName="authority"/>
 
       <loadData encoding="UTF-8"
-                file="config/liquibase/users_authorities.csv"
+                file="config/liquibase/data/local/users_authorities.csv"
                 separator=","
                 tableName="user_authority"/>
 
 
       <loadData encoding="UTF-8"
-                  file="config/liquibase/organizations.csv"
+                  file="config/liquibase/data/local/organizations.csv"
                   separator=","
                   tableName="organization">
         </loadData>
         <loadData encoding="UTF-8"
-                  file="config/liquibase/schools.csv"
+                  file="config/liquibase/data/local/schools.csv"
                   separator=","
                   tableName="school">
         </loadData>
 		<loadData encoding="UTF-8"
-				  file="config/liquibase/program.csv"
+				  file="config/liquibase/data/local/program.csv"
 				  separator=","
 				  tableName="program">
 			<column name="active" type="boolean"/>
 		</loadData>
         <loadData encoding="UTF-8"
-                  file="config/liquibase/session.csv"
+                  file="config/liquibase/data/local/session.csv"
                   separator=","
                   tableName="session">
                   <column name="active" type="boolean"/>
         </loadData>
         <loadData encoding="UTF-8"
-                  file="config/liquibase/course.csv"
+                  file="config/liquibase/data/local/course.csv"
                   separator=","
                   tableName="course">
 	    		<column name="active" type="boolean"/>
@@ -70,32 +69,32 @@
 	    		<column name="end_date" type="timestamp"/>
         </loadData>
         <loadData encoding="UTF-8"
-                  file="config/liquibase/milestone.csv"
+                  file="config/liquibase/data/local/milestone.csv"
                   separator=","
                   tableName="milestone">
         </loadData>
         <loadData encoding="UTF-8"
-                  file="config/liquibase/achievement.csv"
+                  file="config/liquibase/data/local/achievement.csv"
                   separator=","
                   tableName="achievement">
         </loadData>
         <loadData encoding="UTF-8"
-                  file="config/liquibase/address.csv"
+                  file="config/liquibase/data/local/address.csv"
                   separator=","
                   tableName="address">
         </loadData>
         <loadData encoding="UTF-8"
-                  file="config/liquibase/portfolio.csv"
+                  file="config/liquibase/data/local/portfolio.csv"
                   separator=","
                   tableName="portfolio">
         </loadData>
         <loadData encoding="UTF-8"
-                  file="config/liquibase/item_link.csv"
+                  file="config/liquibase/data/local/item_link.csv"
                   separator=","
                   tableName="item_link">
         </loadData>
         <loadData encoding="UTF-8"
-                  file="config/liquibase/users_orgs.csv"
+                  file="config/liquibase/data/local/users_orgs.csv"
                   separator=","
                   tableName="user_org">
         </loadData>
@@ -103,7 +102,7 @@
     </changeSet>
     <changeSet id="99999999999999-2" author="sstevenson">
       <loadUpdateData encoding="UTF-8"
-                file="config/liquibase/milestone_descriptions_and_points.csv"
+                file="config/liquibase/data/local/milestone_descriptions_and_points.csv"
                 separator=","
                 primaryKey="id"
                 tableName="milestone">
