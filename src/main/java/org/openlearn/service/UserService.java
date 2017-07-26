@@ -188,7 +188,6 @@ public class UserService {
    * @return updated user
    */
   public Optional<UserDTO> updateUser(final UserDTO userDTO) {
-  	if(!validateAccess(userDTO.getId())) return Optional.empty();
 	  return Optional.of(userRepository
 	  .findOne(userDTO.getId()))
 	  .map(user -> {
@@ -236,7 +235,12 @@ public class UserService {
     });
   }
 
-  public void changePassword(final String password) {
+	public void deleteUser(final Long id) {
+  	    User user = userRepository.findOne(id);
+		deleteUser(user.getLogin());
+	}
+
+	public void changePassword(final String password) {
     userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).ifPresent(user -> {
       final String encryptedPassword = passwordEncoder.encode(password);
       user.setPassword(encryptedPassword);

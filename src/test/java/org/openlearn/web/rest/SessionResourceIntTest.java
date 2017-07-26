@@ -21,7 +21,7 @@ import org.mockito.MockitoAnnotations;
 import org.openlearn.OpenLearnApplication;
 import org.openlearn.domain.Organization;
 import org.openlearn.domain.Session;
-import org.openlearn.repository.SessionRepository;
+import org.openlearn.repository.ProgramRepository;
 import org.openlearn.service.SessionService;
 import org.openlearn.web.rest.errors.ExceptionTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +50,7 @@ public class SessionResourceIntTest {
 	private static final Boolean UPDATED_ACTIVE = true;
 
 	@Autowired
-	private SessionRepository sessionRepository;
+	private ProgramRepository sessionRepository;
 
 	@Autowired
 	private SessionService sessionService;

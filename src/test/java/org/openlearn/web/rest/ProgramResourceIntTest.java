@@ -21,7 +21,7 @@ import org.mockito.MockitoAnnotations;
 import org.openlearn.OpenLearnApplication;
 import org.openlearn.domain.Program;
 import org.openlearn.domain.Session;
-import org.openlearn.repository.ProgramRepository;
+import org.openlearn.repository.SessionRepository;
 import org.openlearn.service.ProgramService;
 import org.openlearn.web.rest.errors.ExceptionTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +53,7 @@ public class ProgramResourceIntTest {
 	private static final Boolean UPDATED_ACTIVE = true;
 
 	@Autowired
-	private ProgramRepository programRepository;
+	private SessionRepository programRepository;
 
 	@Autowired
 	private ProgramService programService;
@@ -72,7 +72,7 @@ public class ProgramResourceIntTest {
 
 	private MockMvc restProgramMockMvc;
 
-	private Program program;
+	private Session program;
 
 	@Before
 	public void setup() {
@@ -93,8 +93,8 @@ public class ProgramResourceIntTest {
 	 * This is a static method, as tests for other entities might also need it,
 	 * if they test an entity which requires the current entity.
 	 */
-	public static Program createEntity(final EntityManager em) {
-		final Program program = new Program()
+	public static Session createEntity(final EntityManager em) {
+		final Session program = new Program()
 				.name(DEFAULT_NAME)
 				.description(DEFAULT_DESCRIPTION)
 				.active(DEFAULT_ACTIVE);

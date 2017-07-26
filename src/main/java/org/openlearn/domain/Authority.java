@@ -20,6 +20,12 @@ public class Authority implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public Authority(){}
+
+    public Authority(String name){
+    	this.name = name;
+	}
+
     @NotNull
     @Size(min = 0, max = 50)
     @Id
