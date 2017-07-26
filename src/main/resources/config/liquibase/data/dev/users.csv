@@ -1,0 +1,2 @@
+id,created_date, login,password_hash,first_name,last_name,email,phone_num,image_url,activated,created_by,last_modified_by,is_14_plus
+1,"2017-08-26T12:00:00Z,2017-11-15T12:00:00Z",system,$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC,System,System,system@localhost,,,TRUE,system,system,TRUE

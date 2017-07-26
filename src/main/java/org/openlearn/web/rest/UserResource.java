@@ -232,7 +232,7 @@ public class UserResource {
 	 * @param id the id of the user to delete
 	 * @return the ResponseEntity with status 200 (OK)
 	 */
-	@DeleteMapping("/users/{id}")
+	@DeleteMapping("/users/{id:" + Constants.ID_REGEX + "}")
 	@Timed
 	@Secured(AuthoritiesConstants.ADMIN)
 	public ResponseEntity<Void> deleteUser(@PathVariable final Long id) {

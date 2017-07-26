@@ -19,9 +19,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.openlearn.OpenLearnApplication;
+import org.openlearn.domain.Organization;
 import org.openlearn.domain.Program;
 import org.openlearn.domain.Session;
-import org.openlearn.repository.SessionRepository;
+import org.openlearn.repository.ProgramRepository;
 import org.openlearn.service.ProgramService;
 import org.openlearn.web.rest.errors.ExceptionTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,7 @@ public class ProgramResourceIntTest {
 	private static final Boolean UPDATED_ACTIVE = true;
 
 	@Autowired
-	private SessionRepository programRepository;
+	private ProgramRepository programRepository;
 
 	@Autowired
 	private ProgramService programService;
@@ -72,16 +73,16 @@ public class ProgramResourceIntTest {
 
 	private MockMvc restProgramMockMvc;
 
-	private Session program;
+	private Program program;
 
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
 		final ProgramResource programResource = new ProgramResource(programService);
 		restProgramMockMvc = MockMvcBuilders.standaloneSetup(programResource)
-				.setCustomArgumentResolvers(pageableArgumentResolver)
-				.setControllerAdvice(exceptionTranslator)
-				.setMessageConverters(jacksonMessageConverter).build();
+			.setCustomArgumentResolvers(pageableArgumentResolver)
+			.setControllerAdvice(exceptionTranslator)
+			.setMessageConverters(jacksonMessageConverter).build();
 
 		TestUtil.setSecurityContextAdmin();
 
@@ -93,16 +94,16 @@ public class ProgramResourceIntTest {
 	 * This is a static method, as tests for other entities might also need it,
 	 * if they test an entity which requires the current entity.
 	 */
-	public static Session createEntity(final EntityManager em) {
-		final Session program = new Program()
-				.name(DEFAULT_NAME)
-				.description(DEFAULT_DESCRIPTION)
-				.active(DEFAULT_ACTIVE);
+	public static Program createEntity(final EntityManager em) {
+		final Program program = new Program()
+			.name(DEFAULT_NAME)
+			.description(DEFAULT_DESCRIPTION)
+			.active(DEFAULT_ACTIVE);
 
-		final Session session = SessionResourceIntTest.createEntity(em);
-		em.persist(session);
+		final Organization organization = OrganizationResourceIntTest.createEntity(em);
+		em.persist(organization);
 		em.flush();
-		program.setSession(session);
+		program.setOrganization(organization);
 
 		return program;
 	}
@@ -119,9 +120,9 @@ public class ProgramResourceIntTest {
 
 		// Create the Program
 		restProgramMockMvc.perform(post("/api/programs")
-				.contentType(TestUtil.APPLICATION_JSON_UTF8)
-				.content(TestUtil.convertObjectToJsonBytes(program)))
-		.andExpect(status().isCreated());
+			.contentType(TestUtil.APPLICATION_JSON_UTF8)
+			.content(TestUtil.convertObjectToJsonBytes(program)))
+			.andExpect(status().isCreated());
 
 		// Validate the Program in the database
 		final List<Program> programList = programRepository.findAll();
@@ -142,9 +143,9 @@ public class ProgramResourceIntTest {
 
 		// An entity with an existing ID cannot be created, so this API call must fail
 		restProgramMockMvc.perform(post("/api/programs")
-				.contentType(TestUtil.APPLICATION_JSON_UTF8)
-				.content(TestUtil.convertObjectToJsonBytes(program)))
-		.andExpect(status().isBadRequest());
+			.contentType(TestUtil.APPLICATION_JSON_UTF8)
+			.content(TestUtil.convertObjectToJsonBytes(program)))
+			.andExpect(status().isBadRequest());
 
 		// Validate the Alice in the database
 		final List<Program> programList = programRepository.findAll();
@@ -161,9 +162,9 @@ public class ProgramResourceIntTest {
 		// Create the Program, which fails.
 
 		restProgramMockMvc.perform(post("/api/programs")
-				.contentType(TestUtil.APPLICATION_JSON_UTF8)
-				.content(TestUtil.convertObjectToJsonBytes(program)))
-		.andExpect(status().isBadRequest());
+			.contentType(TestUtil.APPLICATION_JSON_UTF8)
+			.content(TestUtil.convertObjectToJsonBytes(program)))
+			.andExpect(status().isBadRequest());
 
 		final List<Program> programList = programRepository.findAll();
 		assertThat(programList).hasSize(databaseSizeBeforeTest);
@@ -177,12 +178,12 @@ public class ProgramResourceIntTest {
 
 		// Get all the programList
 		restProgramMockMvc.perform(get("/api/programs?sort=id,desc"))
-		.andExpect(status().isOk())
-		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-		.andExpect(jsonPath("$.[*].id").value(hasItem(program.getId().intValue())))
-		.andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-		.andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-		.andExpect(jsonPath("$.[*].active").value(hasItem(DEFAULT_ACTIVE.booleanValue())));
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+			.andExpect(jsonPath("$.[*].id").value(hasItem(program.getId().intValue())))
+			.andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+			.andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+			.andExpect(jsonPath("$.[*].active").value(hasItem(DEFAULT_ACTIVE.booleanValue())));
 	}
 
 	@Test
@@ -193,12 +194,12 @@ public class ProgramResourceIntTest {
 
 		// Get the program
 		restProgramMockMvc.perform(get("/api/programs/{id}", program.getId()))
-		.andExpect(status().isOk())
-		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-		.andExpect(jsonPath("$.id").value(program.getId().intValue()))
-		.andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-		.andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
-		.andExpect(jsonPath("$.active").value(DEFAULT_ACTIVE.booleanValue()));
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+			.andExpect(jsonPath("$.id").value(program.getId().intValue()))
+			.andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
+			.andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
+			.andExpect(jsonPath("$.active").value(DEFAULT_ACTIVE.booleanValue()));
 	}
 
 	@Test
@@ -206,7 +207,7 @@ public class ProgramResourceIntTest {
 	public void getNonExistingProgram() throws Exception {
 		// Get the program
 		restProgramMockMvc.perform(get("/api/programs/{id}", Long.MAX_VALUE))
-		.andExpect(status().isNotFound());
+			.andExpect(status().isNotFound());
 	}
 
 	@Test
@@ -220,14 +221,14 @@ public class ProgramResourceIntTest {
 		// Update the program
 		final Program updatedProgram = programRepository.findOne(program.getId());
 		updatedProgram
-		.name(UPDATED_NAME)
-		.description(UPDATED_DESCRIPTION)
-		.active(UPDATED_ACTIVE);
+			.name(UPDATED_NAME)
+			.description(UPDATED_DESCRIPTION)
+			.active(UPDATED_ACTIVE);
 
 		restProgramMockMvc.perform(put("/api/programs")
-				.contentType(TestUtil.APPLICATION_JSON_UTF8)
-				.content(TestUtil.convertObjectToJsonBytes(updatedProgram)))
-		.andExpect(status().isOk());
+			.contentType(TestUtil.APPLICATION_JSON_UTF8)
+			.content(TestUtil.convertObjectToJsonBytes(updatedProgram)))
+			.andExpect(status().isOk());
 
 		// Validate the Program in the database
 		final List<Program> programList = programRepository.findAll();
@@ -247,9 +248,9 @@ public class ProgramResourceIntTest {
 
 		// If the entity doesn't have an ID, it will be created instead of just being updated
 		restProgramMockMvc.perform(put("/api/programs")
-				.contentType(TestUtil.APPLICATION_JSON_UTF8)
-				.content(TestUtil.convertObjectToJsonBytes(program)))
-		.andExpect(status().isCreated());
+			.contentType(TestUtil.APPLICATION_JSON_UTF8)
+			.content(TestUtil.convertObjectToJsonBytes(program)))
+			.andExpect(status().isCreated());
 
 		// Validate the Program in the database
 		final List<Program> programList = programRepository.findAll();
@@ -266,8 +267,8 @@ public class ProgramResourceIntTest {
 
 		// Get the program
 		restProgramMockMvc.perform(delete("/api/programs/{id}", program.getId())
-				.accept(TestUtil.APPLICATION_JSON_UTF8))
-		.andExpect(status().isOk());
+			.accept(TestUtil.APPLICATION_JSON_UTF8))
+			.andExpect(status().isOk());
 
 		// Validate the database is empty
 		final List<Program> programList = programRepository.findAll();

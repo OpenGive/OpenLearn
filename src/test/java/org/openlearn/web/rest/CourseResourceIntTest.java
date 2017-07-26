@@ -25,6 +25,7 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.openlearn.OpenLearnApplication;
 import org.openlearn.domain.Course;
+import org.openlearn.domain.Program;
 import org.openlearn.domain.Session;
 import org.openlearn.domain.User;
 import org.openlearn.repository.CourseRepository;
@@ -92,9 +93,9 @@ public class CourseResourceIntTest {
 		MockitoAnnotations.initMocks(this);
 		final CourseResource courseResource = new CourseResource(courseService, studentCourseService);
 		restCourseMockMvc = MockMvcBuilders.standaloneSetup(courseResource)
-				.setCustomArgumentResolvers(pageableArgumentResolver)
-				.setControllerAdvice(exceptionTranslator)
-				.setMessageConverters(jacksonMessageConverter).build();
+			.setCustomArgumentResolvers(pageableArgumentResolver)
+			.setControllerAdvice(exceptionTranslator)
+			.setMessageConverters(jacksonMessageConverter).build();
 
 		TestUtil.setSecurityContextAdmin();
 
@@ -109,10 +110,10 @@ public class CourseResourceIntTest {
 	public static Course createEntity(final EntityManager em) {
 
 		final Course course = new Course()
-				.name(DEFAULT_NAME)
-				.description(DEFAULT_DESCRIPTION)
-				.startDate(DEFAULT_START_DATE)
-				.endDate(DEFAULT_END_DATE);
+			.name(DEFAULT_NAME)
+			.description(DEFAULT_DESCRIPTION)
+			.startDate(DEFAULT_START_DATE)
+			.endDate(DEFAULT_END_DATE);
 
 		// Add required entity
 		final User instructor = UserResourceIntTest.createEntity(em);
@@ -120,10 +121,10 @@ public class CourseResourceIntTest {
 		em.flush();
 		course.setInstructor(instructor);
 
-		final Session program = ProgramResourceIntTest.createEntity(em);
-		em.persist(program);
+		final Session session = SessionResourceIntTest.createEntity(em);
+		em.persist(session);
 		em.flush();
-		course.setSession(program);
+		course.setSession(session);
 
 		return course;
 	}
@@ -140,9 +141,9 @@ public class CourseResourceIntTest {
 
 		// Create the Course
 		restCourseMockMvc.perform(post("/api/courses")
-				.contentType(TestUtil.APPLICATION_JSON_UTF8)
-				.content(TestUtil.convertObjectToJsonBytes(course)))
-		.andExpect(status().isCreated());
+			.contentType(TestUtil.APPLICATION_JSON_UTF8)
+			.content(TestUtil.convertObjectToJsonBytes(course)))
+			.andExpect(status().isCreated());
 
 		// Validate the Course in the database
 		final List<Course> courseList = courseRepository.findAll();
@@ -164,9 +165,9 @@ public class CourseResourceIntTest {
 
 		// An entity with an existing ID cannot be created, so this API call must fail
 		restCourseMockMvc.perform(post("/api/courses")
-				.contentType(TestUtil.APPLICATION_JSON_UTF8)
-				.content(TestUtil.convertObjectToJsonBytes(course)))
-		.andExpect(status().isBadRequest());
+			.contentType(TestUtil.APPLICATION_JSON_UTF8)
+			.content(TestUtil.convertObjectToJsonBytes(course)))
+			.andExpect(status().isBadRequest());
 
 		// Validate the Alice in the database
 		final List<Course> courseList = courseRepository.findAll();
@@ -183,9 +184,9 @@ public class CourseResourceIntTest {
 		// Create the Course, which fails.
 
 		restCourseMockMvc.perform(post("/api/courses")
-				.contentType(TestUtil.APPLICATION_JSON_UTF8)
-				.content(TestUtil.convertObjectToJsonBytes(course)))
-		.andExpect(status().isBadRequest());
+			.contentType(TestUtil.APPLICATION_JSON_UTF8)
+			.content(TestUtil.convertObjectToJsonBytes(course)))
+			.andExpect(status().isBadRequest());
 
 		final List<Course> courseList = courseRepository.findAll();
 		assertThat(courseList).hasSize(databaseSizeBeforeTest);
@@ -199,13 +200,13 @@ public class CourseResourceIntTest {
 
 		// Get all the courseList
 		restCourseMockMvc.perform(get("/api/courses?sort=id,desc"))
-		.andExpect(status().isOk())
-		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-		.andExpect(jsonPath("$.[*].id").value(hasItem(course.getId().intValue())))
-		.andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-		.andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-		.andExpect(jsonPath("$.[*].startDate").value(Matchers.hasItem(TestUtil.sameInstant(DEFAULT_START_DATE))))
-		.andExpect(jsonPath("$.[*].endDate").value(Matchers.hasItem(TestUtil.sameInstant(DEFAULT_END_DATE))));
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+			.andExpect(jsonPath("$.[*].id").value(hasItem(course.getId().intValue())))
+			.andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+			.andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+			.andExpect(jsonPath("$.[*].startDate").value(Matchers.hasItem(TestUtil.sameInstant(DEFAULT_START_DATE))))
+			.andExpect(jsonPath("$.[*].endDate").value(Matchers.hasItem(TestUtil.sameInstant(DEFAULT_END_DATE))));
 	}
 
 	@Test
@@ -216,13 +217,13 @@ public class CourseResourceIntTest {
 
 		// Get the course
 		restCourseMockMvc.perform(get("/api/courses/{id}", course.getId()))
-		.andExpect(status().isOk())
-		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-		.andExpect(jsonPath("$.id").value(course.getId().intValue()))
-		.andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-		.andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
-		.andExpect(jsonPath("$.startDate").value(TestUtil.sameInstant(DEFAULT_START_DATE)))
-		.andExpect(jsonPath("$.endDate").value(TestUtil.sameInstant(DEFAULT_END_DATE)));
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+			.andExpect(jsonPath("$.id").value(course.getId().intValue()))
+			.andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
+			.andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
+			.andExpect(jsonPath("$.startDate").value(TestUtil.sameInstant(DEFAULT_START_DATE)))
+			.andExpect(jsonPath("$.endDate").value(TestUtil.sameInstant(DEFAULT_END_DATE)));
 	}
 
 	@Test
@@ -230,7 +231,7 @@ public class CourseResourceIntTest {
 	public void getNonExistingCourse() throws Exception {
 		// Get the course
 		restCourseMockMvc.perform(get("/api/courses/{id}", Long.MAX_VALUE))
-		.andExpect(status().isNotFound());
+			.andExpect(status().isNotFound());
 	}
 
 	@Test
@@ -244,15 +245,15 @@ public class CourseResourceIntTest {
 		// Update the course
 		final Course updatedCourse = courseRepository.findOne(course.getId());
 		updatedCourse
-		.name(UPDATED_NAME)
-		.description(UPDATED_DESCRIPTION)
-		.startDate(UPDATED_START_DATE)
-		.endDate(UPDATED_END_DATE);
+			.name(UPDATED_NAME)
+			.description(UPDATED_DESCRIPTION)
+			.startDate(UPDATED_START_DATE)
+			.endDate(UPDATED_END_DATE);
 
 		restCourseMockMvc.perform(put("/api/courses")
-				.contentType(TestUtil.APPLICATION_JSON_UTF8)
-				.content(TestUtil.convertObjectToJsonBytes(updatedCourse)))
-		.andExpect(status().isOk());
+			.contentType(TestUtil.APPLICATION_JSON_UTF8)
+			.content(TestUtil.convertObjectToJsonBytes(updatedCourse)))
+			.andExpect(status().isOk());
 
 		// Validate the Course in the database
 		final List<Course> courseList = courseRepository.findAll();
@@ -273,9 +274,9 @@ public class CourseResourceIntTest {
 
 		// If the entity doesn't have an ID, it will be created instead of just being updated
 		restCourseMockMvc.perform(put("/api/courses")
-				.contentType(TestUtil.APPLICATION_JSON_UTF8)
-				.content(TestUtil.convertObjectToJsonBytes(course)))
-		.andExpect(status().isCreated());
+			.contentType(TestUtil.APPLICATION_JSON_UTF8)
+			.content(TestUtil.convertObjectToJsonBytes(course)))
+			.andExpect(status().isCreated());
 
 		// Validate the Course in the database
 		final List<Course> courseList = courseRepository.findAll();
@@ -292,8 +293,8 @@ public class CourseResourceIntTest {
 
 		// Get the course
 		restCourseMockMvc.perform(delete("/api/courses/{id}", course.getId())
-				.accept(TestUtil.APPLICATION_JSON_UTF8))
-		.andExpect(status().isOk());
+			.accept(TestUtil.APPLICATION_JSON_UTF8))
+			.andExpect(status().isOk());
 
 		// Validate the database is empty
 		final List<Course> courseList = courseRepository.findAll();

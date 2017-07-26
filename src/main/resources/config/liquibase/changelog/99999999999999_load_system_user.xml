@@ -1,0 +1,24 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+	<!-- Manage the OAuth authentication -->
+	<changeSet id="99999999999999-1" author="acooperman">
+	<loadData encoding="UTF-8"
+			  file="config/liquibase/data/dev/users.csv"
+			  separator=","
+			  tableName="user">
+		<column name="is_14_plus" type="boolean"/>
+		<column name="activated" type="boolean"/>
+		<column name="created_date" type="timestamp"/>
+	</loadData>
+
+	<loadData encoding="UTF-8"
+			  file="config/liquibase/data/dev/authorities.csv"
+			  separator=","
+			  tableName="authority"/>
+
+	<loadData encoding="UTF-8"
+			  file="config/liquibase/data/dev/users_authorities.csv"
+			  separator=","
+			  tableName="user_authority"/>
+	</changeSet></databaseChangeLog>
+
