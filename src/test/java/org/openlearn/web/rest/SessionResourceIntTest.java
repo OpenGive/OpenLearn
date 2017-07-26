@@ -20,8 +20,9 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.openlearn.OpenLearnApplication;
 import org.openlearn.domain.Organization;
+import org.openlearn.domain.Program;
 import org.openlearn.domain.Session;
-import org.openlearn.repository.ProgramRepository;
+import org.openlearn.repository.SessionRepository;
 import org.openlearn.service.SessionService;
 import org.openlearn.web.rest.errors.ExceptionTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,7 @@ public class SessionResourceIntTest {
 	private static final Boolean UPDATED_ACTIVE = true;
 
 	@Autowired
-	private ProgramRepository sessionRepository;
+	private SessionRepository sessionRepository;
 
 	@Autowired
 	private SessionService sessionService;
@@ -76,9 +77,9 @@ public class SessionResourceIntTest {
 		MockitoAnnotations.initMocks(this);
 		final SessionResource sessionResource = new SessionResource(sessionService);
 		restSessionMockMvc = MockMvcBuilders.standaloneSetup(sessionResource)
-				.setCustomArgumentResolvers(pageableArgumentResolver)
-				.setControllerAdvice(exceptionTranslator)
-				.setMessageConverters(jacksonMessageConverter).build();
+			.setCustomArgumentResolvers(pageableArgumentResolver)
+			.setControllerAdvice(exceptionTranslator)
+			.setMessageConverters(jacksonMessageConverter).build();
 		TestUtil.setSecurityContextAdmin();
 	}
 
@@ -90,13 +91,14 @@ public class SessionResourceIntTest {
 	 */
 	public static Session createEntity(final EntityManager em) {
 		final Session session = new Session()
-				.name(DEFAULT_NAME)
-				.active(DEFAULT_ACTIVE);
+			.name(DEFAULT_NAME)
+			.active(DEFAULT_ACTIVE);
 		// Add required entity
-		final Organization organization = OrganizationResourceIntTest.createEntity(em);
-		em.persist(organization);
+		final Program program = ProgramResourceIntTest.createEntity(em);
+		em.persist(program);
 		em.flush();
-		session.setOrganization(organization);
+		session.setProgram(program);
+
 		return session;
 	}
 
@@ -112,9 +114,9 @@ public class SessionResourceIntTest {
 
 		// Create the Session
 		restSessionMockMvc.perform(post("/api/sessions")
-				.contentType(TestUtil.APPLICATION_JSON_UTF8)
-				.content(TestUtil.convertObjectToJsonBytes(session)))
-		.andExpect(status().isCreated());
+			.contentType(TestUtil.APPLICATION_JSON_UTF8)
+			.content(TestUtil.convertObjectToJsonBytes(session)))
+			.andExpect(status().isCreated());
 
 		// Validate the Session in the database
 		final List<Session> sessionList = sessionRepository.findAll();
@@ -134,9 +136,9 @@ public class SessionResourceIntTest {
 
 		// An entity with an existing ID cannot be created, so this API call must fail
 		restSessionMockMvc.perform(post("/api/sessions")
-				.contentType(TestUtil.APPLICATION_JSON_UTF8)
-				.content(TestUtil.convertObjectToJsonBytes(session)))
-		.andExpect(status().isBadRequest());
+			.contentType(TestUtil.APPLICATION_JSON_UTF8)
+			.content(TestUtil.convertObjectToJsonBytes(session)))
+			.andExpect(status().isBadRequest());
 
 		// Validate the Alice in the database
 		final List<Session> sessionList = sessionRepository.findAll();
@@ -153,9 +155,9 @@ public class SessionResourceIntTest {
 		// Create the Session, which fails.
 
 		restSessionMockMvc.perform(post("/api/sessions")
-				.contentType(TestUtil.APPLICATION_JSON_UTF8)
-				.content(TestUtil.convertObjectToJsonBytes(session)))
-		.andExpect(status().isBadRequest());
+			.contentType(TestUtil.APPLICATION_JSON_UTF8)
+			.content(TestUtil.convertObjectToJsonBytes(session)))
+			.andExpect(status().isBadRequest());
 
 		final List<Session> sessionList = sessionRepository.findAll();
 		assertThat(sessionList).hasSize(databaseSizeBeforeTest);
@@ -171,9 +173,9 @@ public class SessionResourceIntTest {
 		// Create the Session, which fails.
 
 		restSessionMockMvc.perform(post("/api/sessions")
-				.contentType(TestUtil.APPLICATION_JSON_UTF8)
-				.content(TestUtil.convertObjectToJsonBytes(session)))
-		.andExpect(status().isBadRequest());
+			.contentType(TestUtil.APPLICATION_JSON_UTF8)
+			.content(TestUtil.convertObjectToJsonBytes(session)))
+			.andExpect(status().isBadRequest());
 
 		final List<Session> sessionList = sessionRepository.findAll();
 		assertThat(sessionList).hasSize(databaseSizeBeforeTest);
@@ -187,11 +189,11 @@ public class SessionResourceIntTest {
 
 		// Get all the sessionList
 		restSessionMockMvc.perform(get("/api/sessions?sort=id,desc"))
-		.andExpect(status().isOk())
-		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-		.andExpect(jsonPath("$.[*].id").value(hasItem(session.getId().intValue())))
-		.andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-		.andExpect(jsonPath("$.[*].active").value(hasItem(DEFAULT_ACTIVE.booleanValue())));
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+			.andExpect(jsonPath("$.[*].id").value(hasItem(session.getId().intValue())))
+			.andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+			.andExpect(jsonPath("$.[*].active").value(hasItem(DEFAULT_ACTIVE.booleanValue())));
 	}
 
 	@Test
@@ -202,11 +204,11 @@ public class SessionResourceIntTest {
 
 		// Get the session
 		restSessionMockMvc.perform(get("/api/sessions/{id}", session.getId()))
-		.andExpect(status().isOk())
-		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-		.andExpect(jsonPath("$.id").value(session.getId().intValue()))
-		.andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-		.andExpect(jsonPath("$.active").value(DEFAULT_ACTIVE.booleanValue()));
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+			.andExpect(jsonPath("$.id").value(session.getId().intValue()))
+			.andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
+			.andExpect(jsonPath("$.active").value(DEFAULT_ACTIVE.booleanValue()));
 	}
 
 	@Test
@@ -214,7 +216,7 @@ public class SessionResourceIntTest {
 	public void getNonExistingSession() throws Exception {
 		// Get the session
 		restSessionMockMvc.perform(get("/api/sessions/{id}", Long.MAX_VALUE))
-		.andExpect(status().isNotFound());
+			.andExpect(status().isNotFound());
 	}
 
 	@Test
@@ -228,13 +230,13 @@ public class SessionResourceIntTest {
 		// Update the session
 		final Session updatedSession = sessionRepository.findOne(session.getId());
 		updatedSession
-		.name(UPDATED_NAME)
-		.active(UPDATED_ACTIVE);
+			.name(UPDATED_NAME)
+			.active(UPDATED_ACTIVE);
 
 		restSessionMockMvc.perform(put("/api/sessions")
-				.contentType(TestUtil.APPLICATION_JSON_UTF8)
-				.content(TestUtil.convertObjectToJsonBytes(updatedSession)))
-		.andExpect(status().isOk());
+			.contentType(TestUtil.APPLICATION_JSON_UTF8)
+			.content(TestUtil.convertObjectToJsonBytes(updatedSession)))
+			.andExpect(status().isOk());
 
 		// Validate the Session in the database
 		final List<Session> sessionList = sessionRepository.findAll();
@@ -253,9 +255,9 @@ public class SessionResourceIntTest {
 
 		// If the entity doesn't have an ID, it will be created instead of just being updated
 		restSessionMockMvc.perform(put("/api/sessions")
-				.contentType(TestUtil.APPLICATION_JSON_UTF8)
-				.content(TestUtil.convertObjectToJsonBytes(session)))
-		.andExpect(status().isCreated());
+			.contentType(TestUtil.APPLICATION_JSON_UTF8)
+			.content(TestUtil.convertObjectToJsonBytes(session)))
+			.andExpect(status().isCreated());
 
 		// Validate the Session in the database
 		final List<Session> sessionList = sessionRepository.findAll();
@@ -272,8 +274,8 @@ public class SessionResourceIntTest {
 
 		// Get the session
 		restSessionMockMvc.perform(delete("/api/sessions/{id}", session.getId())
-				.accept(TestUtil.APPLICATION_JSON_UTF8))
-		.andExpect(status().isOk());
+			.accept(TestUtil.APPLICATION_JSON_UTF8))
+			.andExpect(status().isOk());
 
 		// Validate the database is empty
 		final List<Session> sessionList = sessionRepository.findAll();
