@@ -1,0 +1,40 @@
+import {Component, Input} from "@angular/core";
+import {UserService} from "../../services/user.service";
+import {AccountService} from "../../shared/auth/account.service";
+
+@Component({
+  selector: 'profile-form',
+  templateUrl: './profile-page.component.html',
+  styleUrls: ['./profile-page.component.css', '../../controls/dialog-forms.css']
+})
+export class ProfilePageComponent {
+
+  @Input() profile: any = {};
+  @Input() editing: boolean;
+
+  constructor(private userService: UserService, private accountService: AccountService) {
+    this.accountService.get().subscribe(resp => {this.profile = resp});
+  }
+
+  edit(): void {
+    this.editing = true;
+  }
+
+  cancel(exit: boolean): void {
+    this.editing = false;
+    this.accountService.get().subscribe(resp => {this.profile = resp});
+  }
+
+  save(): void {
+    this.userService.update(this.profile).subscribe(resp => this.handleSaveResponse(resp));
+  }
+
+  handleSaveResponse(resp): void {
+    this.editing = false;
+  }
+
+  ageAllowed(): boolean {
+    return this.profile['14Plus'];
+  }
+
+}

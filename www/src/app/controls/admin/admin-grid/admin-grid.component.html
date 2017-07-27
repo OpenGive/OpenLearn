@@ -1,0 +1,27 @@
+<div>
+  <div id="grid-header" fxLayout="row" fxLayoutAlign="space-between center">
+    <span class="grid-header-text">{{grid.title}}</span>
+    <button md-raised-button fxHide.xs (click)="add()" class="grid-add-button" mdTooltip="Add">
+      <md-icon>add</md-icon>
+    </button>
+  </div>
+  <div id="grid-table" fxLayout="row">
+    <div class="table-wrapper">
+      <table>
+        <thead>
+        <tr class="header-row">
+          <th *ngFor="let column of grid.columns" (click)="sort(column)">
+            {{column.display}}
+            <md-icon>{{column.sortIcon}}</md-icon>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let row of filteredRows" (click)="viewDetails(row)">
+          <td *ngFor="let column of grid.columns">{{displayCell(row, column)}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

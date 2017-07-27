@@ -1,0 +1,71 @@
+.toolbar-filler {
+  flex: 1;
+}
+
+.example-header-image {
+  background-image: url('https://material.angular.io/shiba1.d84e1a8ed94377452dbf.jpg');
+  background-size: cover;
+}
+
+.circle img {
+	border-radius: 50%;	/* relative value for
+				   adjustable image size */
+}
+
+.circle {
+  display: inline-flex;
+  padding-right: 3px;
+}
+
+.nav-button {
+  min-width: 0;
+  padding: 0 6px;
+}
+
+.main-content {
+  overflow: hidden;
+}
+
+.nav-logo {
+  background: url('/assets/OpenLearn_Banner_White.svg') no-repeat;
+  background-size: 158px 25px;
+  height: 25px;
+  width: 158px;
+}
+
+.side-logo {
+  background: url('/assets/circle-logo.png') no-repeat;
+  background-size: 60px 60px;
+  height: 60px;
+  width: 60px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.nav-divide {
+  border-right: 2px solid white;
+  padding-right: 5px;
+}
+
+.user-name {
+  margin: 0;
+  line-height: normal;
+}
+
+.user-role {
+  margin: 0;
+  padding-top: 3px;
+  line-height: normal;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.profile-menu {
+  height: 36px;
+  margin-left: 5px;
+  padding-right: 0;
+}
+
+.user-menu-icon {
+  color: #ff5252;
+}

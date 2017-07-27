@@ -1,0 +1,12 @@
+<div fxLayout="row" fxLayoutAlign="center">
+  <div id="admin-page" fxLayout="row" fxLayoutAlign="center" fxFlex.lg="1280px">
+    <div id="admin-tabs" fxHide.lt-md fxFlex="18%">
+      <md-nav-list id="admin-tab-list" dense>
+        <a md-list-item [routerLink]="[tab.route]" routerLinkActive="active" class="admin-tab-option" *ngFor="let tab of filteredTabs">
+          <span class="admin-tab-text">{{tab.name}}</span>
+        </a>
+      </md-nav-list>
+    </div>
+    <router-outlet></router-outlet>
+  </div>
+</div>

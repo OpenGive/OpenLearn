@@ -1,0 +1,22 @@
+.login-logo {
+  background: url('/assets/circle-logo.png') no-repeat;
+  background-size: 80px 80px;
+  height: 80px;
+  width: 80px;
+  margin-bottom: 50px;
+}
+
+.forgot-password-container {
+  width: 100%;
+}
+
+.forgot-password {
+  text-align: right;
+  color: rgba(0, 0, 0, 0.38);
+  cursor: pointer;
+}
+
+md-icon {
+  color: #ff5252;
+  padding-right: 5px;
+}

@@ -1,0 +1,9 @@
+.example-card {
+  margin: 10px;
+}
+
+.example-header-image {
+  background-image: url('http://image.prntscr.com/image/d6b1bcdca61746c9b30d14db670a40df.png');
+  background-size: cover;
+}
+

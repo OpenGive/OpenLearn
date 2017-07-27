@@ -1,0 +1,15 @@
+<div class="card">
+  <div class="card-image">
+    <img src={{portfolioItem.photoUrl}}>
+  </div>
+  <div class="card-actions">
+    <div class="share-button-container">
+      <button md-raised-button (click)="share()" class="share-button" mdTooltip="Share">
+        <md-icon>share</md-icon>
+      </button>
+    </div>
+    <div class="file-name">
+      {{portfolioItem.filename}}
+    </div>
+  </div>
+</div>
