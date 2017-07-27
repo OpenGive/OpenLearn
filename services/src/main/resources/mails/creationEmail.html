@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title th:text="#{email.activation.title}"></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  </head>
+  <body>
+    <p th:text="#{email.greeting(${user.login})}"></p>
+    <p th:text="#{email.creation.text1}"></p>
+    <p>
+      <a th:href="@{|${baseUrl}/#/reset/finish?key=${user.resetKey}|}" th:text="|${user.login}|">Login</a>
+    </p>
+    <p>
+      <span th:text="#{email.signoff}"></span><br/>
+      <em th:text="#{email.signature}"></em>
+    </p>
+  </body>
+</html>
