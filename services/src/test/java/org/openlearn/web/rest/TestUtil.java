@@ -1,0 +1,138 @@
+package org.openlearn.web.rest;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.hamcrest.Description;
+import org.hamcrest.TypeSafeDiagnosingMatcher;
+import org.openlearn.security.AuthoritiesConstants;
+import org.openlearn.security.SecurityUtils;
+import org.springframework.http.MediaType;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+/**
+ * Utility class for testing REST controllers.
+ */
+public class TestUtil {
+
+	/** MediaType for JSON UTF8 */
+	public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(
+			MediaType.APPLICATION_JSON.getType(),
+			MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
+
+	/**
+	 * Convert an object to JSON byte array.
+	 *
+	 * @param object
+	 *            the object to convert
+	 * @return the JSON byte array
+	 * @throws IOException
+	 */
+	public static byte[] convertObjectToJsonBytes(final Object object)
+			throws IOException {
+		final ObjectMapper mapper = new ObjectMapper();
+		mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+		final JavaTimeModule module = new JavaTimeModule();
+		mapper.registerModule(module);
+
+		return mapper.writeValueAsBytes(object);
+	}
+
+	/**
+	 * Create a byte array with a specific size filled with specified data.
+	 *
+	 * @param size the size of the byte array
+	 * @param data the data to put in the byte array
+	 * @return the JSON byte array
+	 */
+	public static byte[] createByteArray(final int size, final String data) {
+		final byte[] byteArray = new byte[size];
+		for (int i = 0; i < size; i++)
+			byteArray[i] = Byte.parseByte(data, 2);
+		return byteArray;
+	}
+
+	/**
+	 * A matcher that tests that the examined string represents the same instant as the reference datetime.
+	 */
+	public static class ZonedDateTimeMatcher extends TypeSafeDiagnosingMatcher<String> {
+
+		private final ZonedDateTime date;
+
+		public ZonedDateTimeMatcher(final ZonedDateTime date) {
+			this.date = date;
+		}
+
+		@Override
+		protected boolean matchesSafely(final String item, final Description mismatchDescription) {
+			try {
+				if (!date.isEqual(ZonedDateTime.parse(item))) {
+					mismatchDescription.appendText("was ").appendValue(item);
+					return false;
+				}
+				return true;
+			} catch (final DateTimeParseException e) {
+				mismatchDescription.appendText("was ").appendValue(item)
+				.appendText(", which could not be parsed as a ZonedDateTime");
+				return false;
+			}
+
+		}
+
+		@Override
+		public void describeTo(final Description description) {
+			description.appendText("a String representing the same Instant as ").appendValue(date);
+		}
+	}
+
+	/**
+	 * Creates a matcher that matches when the examined string reprensents the same instant as the reference datetime
+	 * @param date the reference datetime against which the examined string is checked
+	 */
+	public static ZonedDateTimeMatcher sameInstant(final ZonedDateTime date) {
+		return new ZonedDateTimeMatcher(date);
+	}
+
+	/**
+	 * Verifies the equals/hashcode contract on the domain object.
+	 */
+	public static void equalsVerifier(final Class<?> clazz) throws Exception {
+		final Object domainObject1 = clazz.getConstructor().newInstance();
+		assertThat(domainObject1.toString()).isNotNull();
+		assertThat(domainObject1).isEqualTo(domainObject1);
+		assertThat(domainObject1.hashCode()).isEqualTo(domainObject1.hashCode());
+		// Test with an instance of another class
+		final Object testOtherObject = new Object();
+		assertThat(domainObject1).isNotEqualTo(testOtherObject);
+		// Test with an instance of the same class
+		final Object domainObject2 = clazz.getConstructor().newInstance();
+		assertThat(domainObject1).isNotEqualTo(domainObject2);
+		// HashCodes are equals because the objects are not persisted yet
+		assertThat(domainObject1.hashCode()).isEqualTo(domainObject2.hashCode());
+	}
+
+	public static void setSecurityContextAdmin() {
+		Collection<GrantedAuthority> authorities = new ArrayList<>();
+		authorities.add(new SimpleGrantedAuthority(AuthoritiesConstants.ADMIN));
+		SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+		securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin", authorities));
+		SecurityContextHolder.setContext(securityContext);
+		SecurityUtils.isAuthenticated();
+	}
+
+}

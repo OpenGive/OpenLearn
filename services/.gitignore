@@ -1,25 +1,4 @@
 ######################
-# Project Specific
-######################
-/src/main/webapp/content/css/main.css
-/build/www/**
-/src/test/javascript/coverage/
-/src/test/javascript/PhantomJS*/
-
-######################
-# Node
-######################
-/node/
-node_tmp/
-node_modules/
-npm-debug.log.*
-
-######################
-# SASS
-######################
-.sass-cache/
-
-######################
 # Eclipse
 ######################
 *.pydevproject
@@ -137,14 +116,14 @@ Desktop.ini
 !.mvn/wrapper/maven-wrapper.jar
 
 ######################
-# ESLint
-######################
-.eslintcache
-
-
-######################
-# OpenGive
+# OpenLearn
 ######################
 .apt_generated
 .cache-main
 .cache-tests
+
+######################
+# Local Properties
+######################
+src/main/local-props
+
