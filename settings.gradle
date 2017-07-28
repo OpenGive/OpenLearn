@@ -1,2 +1,2 @@
-include ":services"
+include ":services", ":www"
 project(":services").name = "openlearn-services"
