@@ -101,8 +101,36 @@ task liquibaseApplyChangelog(dependsOn: compileJava, type: JavaExec) {
 
 	main = "liquibase.integration.commandline.Main"
 
-	args "--defaultsFile=src/main/local-props/liquibase-"+env+".properties"
-	args "--changeLogFile=src/main/resources/config/liquibase/master-dev.xml"
+	args "--defaultsFile=local-props/liquibase-"+env+".properties"
+	args "--changeLogFile=src/main/resources/config/liquibase/master-server.xml"
+	args "--referenceUrl=hibernate:spring:org.openlearn.domain?dialect=org.hibernate.dialect.H2Dialect&hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy"
+	args "update"
+}
+
+task liquibaseLoadSampleData(dependsOn: compileJava, type: JavaExec) {
+	group = "liquibase"
+
+	if (OperatingSystem.current().isWindows()) {
+		dependsOn pathingLiquibaseJar
+		doFirst {
+			classpath = files(pathingLiquibaseJar.archivePath)
+		}
+	} else {
+		classpath sourceSets.main.runtimeClasspath
+		classpath configurations.liquibase
+	}
+
+	def env
+	if(project.hasProperty('prod')){
+		env='prod'
+	}else{
+		env='dev'
+	}
+
+	main = "liquibase.integration.commandline.Main"
+
+	args "--defaultsFile=local-props/liquibase-"+env+".properties"
+	args "--changeLogFile=src/main/resources/config/liquibase/load-sample-data.xml"
 	args "--referenceUrl=hibernate:spring:org.openlearn.domain?dialect=org.hibernate.dialect.H2Dialect&hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy"
 	args "update"
 }
