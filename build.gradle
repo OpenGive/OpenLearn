@@ -1,0 +1,4 @@
+allprojects {
+	group = project.group
+	version =  project.version
+}
