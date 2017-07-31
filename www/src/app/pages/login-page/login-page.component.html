@@ -1,0 +1,27 @@
+<div class="margin-md-top" fxLayout="row" fxLayoutAlign="center center" (keyup.enter)="login()">
+  <div fxLayout="column" fxLayoutAlign="center center">
+    <div class="login-logo"></div>
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <!--[fxFlex.md]="flexSettings.md" [fxFlex.lg]="flexSettings.lg"-->
+      <md-input-container [fxFlex.xs]="flexSettings.xs" [fxFlex.gt-xs]="flexSettings.sm" color="primary">
+        <md-icon mdPrefix>person</md-icon>
+        <input mdInput placeholder="Username" [(ngModel)]="username">
+      </md-input-container>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <md-input-container [fxFlex.xs]="flexSettings.xs" [fxFlex.gt-xs]="flexSettings.sm" color="primary">
+        <md-icon mdPrefix>lock</md-icon>
+        <input type="password" mdInput placeholder="Password" [(ngModel)]="password">
+      </md-input-container>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <button md-raised-button [fxFlex.xs]="flexSettings.xs" [fxFlex.gt-xs]="flexSettings.sm" color="primary"
+              (click)="login()">
+        SIGN IN
+      </button>
+    </div>
+    <div fxLayout="column" class="forgot-password-container">
+      <p class="forgot-password" (click)="forgotPassword()"><u>Forgot Password?</u></p>
+    </div>
+  </div>
+</div>

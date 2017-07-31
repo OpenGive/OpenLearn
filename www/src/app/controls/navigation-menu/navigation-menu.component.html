@@ -1,0 +1,56 @@
+<md-sidenav-container class="full-screen-side-nav">
+  <md-sidenav #sidenav class="example-sidenav">
+    <div fxLayout="column" fxLayoutAlign="center center">
+      <div class="side-logo"></div>
+      <button routerLink="/" (click)="sidenav.close()" md-button>Home</button>
+      <button routerLink="/login" (click)="sidenav.close()" md-button *ngIf="!authenticated()">Login</button>
+      <button routerLink="/admin" (click)="sidenav.close()" md-button *ngIf="authenticated() && (roles.admin || roles.orgAdmin)">Admin</button>
+      <button routerLink="/dashboard" (click)="sidenav.close()" md-button *ngIf="authenticated() && roles.instructor">Dashboard</button>
+      <button routerLink="/portfolio" (click)="sidenav.close()" md-button *ngIf="authenticated() && roles.student">Portfolio</button>
+    </div>
+  </md-sidenav>
+  <div class="main-content">
+<md-toolbar color="primary">
+
+  <div fxLayout="row">
+    <div class="nav-logo" fxHide.xs fxHide.sm></div>
+    <div fxHide.gt-sm>
+      <button (click)="sidenav.open()" class="nav-button" md-button>
+        <md-icon class="menu-toggle">menu</md-icon>
+      </button>
+    </div>
+  </div>
+
+  <span class="toolbar-filler"></span>
+  <div fxLayout="row" fxLayoutAlign="start center">
+    <div fxHide.xs fxHide.sm [ngClass]="{'nav-divide': authenticated()}">
+      <button routerLink="/" md-button>Home</button>
+      <button routerLink="/login" md-button *ngIf="!authenticated()">Login</button>
+      <button routerLink="/admin" md-button *ngIf="authenticated() && (roles.admin || roles.orgAdmin)">Admin</button>
+      <button routerLink="/dashboard" md-button *ngIf="authenticated() && roles.instructor">Dashboard</button>
+      <button routerLink="/portfolio" md-button *ngIf="authenticated() && roles.student">Portfolio</button>
+    </div>
+    <button class="profile-menu" md-button [mdMenuTriggerFor]="profileMenu" *ngIf="authenticated()">
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div fxLayout="column" fxLayoutAlign="center end">
+          <span class="user-name">{{name}}</span>
+          <span class="user-role">{{roleDescription}}</span>
+        </div>
+        <md-icon>keyboard_arrow_down</md-icon>
+      </div>
+    </button>
+    <md-menu #profileMenu="mdMenu" yPosition="above">
+      <button routerLink="/profile" md-menu-item>
+        <md-icon aria-hidden="true" class="user-menu-icon">person</md-icon>
+        <span>Profile</span>
+      </button>
+      <button routerLink="/" (click)="logout()" md-menu-item>
+        <md-icon aria-hidden="true" class="user-menu-icon">exit_to_app</md-icon>
+        <span>Logout</span>
+      </button>
+    </md-menu>
+  </div>
+</md-toolbar>
+<router-outlet></router-outlet>
+</div>
+</md-sidenav-container>

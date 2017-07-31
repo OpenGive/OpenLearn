@@ -1,0 +1,39 @@
+plugins {
+  id "com.moowork.node" version "1.2.0"
+}
+
+task start(type: YarnTask) {
+  args = ['start']
+}
+
+task buildLocal(type: YarnTask) {
+  args = ['build-local']
+}
+
+task buildDev(type: YarnTask) {
+  args = ['build-dev']
+}
+
+task buildProd(type: YarnTask) {
+  args = ['build-prod']
+}
+
+task test(type: YarnTask) {
+  args = ['test']
+}
+
+task lint(type: YarnTask) {
+  args = ['lint']
+}
+
+task e2e(type: YarnTask) {
+  args = ['e2e']
+}
+
+task postbuild(type: YarnTask) {
+  args = ['postbuild']
+}
+
+task clean(type: YarnTask) {
+  args = ['clean']
+}

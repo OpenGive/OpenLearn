@@ -1,0 +1,25 @@
+<div class="ol-dialog-header" fxLayout="row" fxLayoutAlign="space-between center">
+  <div><button md-button type="reset" [md-dialog-close]="true"><i class="fa fa-times fa-lg"></i></button></div>
+  <div class="ol-dialog-title">{{course.name}}</div>
+  <div>{{course.instructor.firstName}} {{course.instructor.lastName}}</div>
+</div>
+<div class="ol-dialog-content course-view-body">
+  <div fxLayout="column">
+    <div fxLayout="column">
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <h1>Description</h1>
+      </div>
+      <p fxLayout="row">
+       {{course.description}}
+      </p>
+    </div>
+    <div *ngIf="!studentView" fxLayout="column">
+      <h1 fxLayout="row">Students</h1>
+      <app-course-grid [course]="course"></app-course-grid>
+    </div>
+    <div fxLayout="column">
+      <h1 fxLayout="row">Resources</h1>
+      <app-course-resource-grid [course]="course"></app-course-resource-grid>
+    </div>
+  </div>
+</div>
