@@ -6,8 +6,10 @@ import * as _ from "lodash";
 
 import {AdminDialogComponent} from "../../admin-dialog.component";
 import {AppConstants} from "../../../../app.constants";
+import {AdminModel} from "../../admin.constants";
 import {NotifyService} from "../../../../services/notify.service";
 import {UserService} from "../../../../services/user.service";
+import {AdminService} from "../../../../services/admin.service";
 
 @Component({
   selector: 'admin-instructors-form',
@@ -22,8 +24,10 @@ export class AdminInstructorsFormComponent implements OnInit {
 
   roles: string[];
   states: any[];
+  organizations: any[];
 
   filteredStates: Observable<any[]>;
+  filteredOrganizations: Observable<any[]>;
 
   instructorForm: FormGroup;
   formErrors = {
@@ -35,6 +39,7 @@ export class AdminInstructorsFormComponent implements OnInit {
     biography: '',
     email: '',
     phoneNumber: '',
+    organization: '',
     address: {
       streetAddress1: '',
       streetAddress2: '',
@@ -75,6 +80,9 @@ export class AdminInstructorsFormComponent implements OnInit {
       pattern: 'Phone is not formatted correctly',
       maxlength: 'Phone cannot be more than 15 characters long'
     },
+    organization: {
+      required: 'Organization is required'
+    },
     address: {
       streetAddress1: {
         minlength: 'Street Address 1 must be at least 5 characters long',
@@ -96,13 +104,15 @@ export class AdminInstructorsFormComponent implements OnInit {
   constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
               private fb: FormBuilder,
               private userService: UserService,
-              private notify: NotifyService) {}
+              private notify: NotifyService,
+              private adminService: AdminService) {}
 
   ngOnInit(): void {
     this.buildForm();
     this.setEditing(this.adding);
     this.getRoles();
     this.getStates();
+    this.getOrganizations();
   }
 
   private buildForm(): void {
@@ -124,6 +134,9 @@ export class AdminInstructorsFormComponent implements OnInit {
         Validators.maxLength(50)
       ] : []],
       authorities: [this.formInstructor.authorities, [
+        Validators.required
+      ]],
+      organization: [this.formInstructor.organization, [
         Validators.required
       ]],
       biography: [this.formInstructor.biography, [
@@ -275,6 +288,7 @@ export class AdminInstructorsFormComponent implements OnInit {
         postalCode: this.instructorForm.get('address').get('postalCode').value
       },
       imageUrl: this.instructorForm.get('imageUrl').value,
+      organization: this.instructorForm.get('organization').value,
       activated: this.instructorForm.get('activated').value,
       is14Plus: this.instructorForm.get('is14Plus').value
     };
@@ -312,5 +326,21 @@ export class AdminInstructorsFormComponent implements OnInit {
 
   displayState(stateValue: string): string {
     return stateValue ? _.filter(AppConstants.States, {value: stateValue})[0].name : '';
+  }
+  displayOrganization(organization: any): string {
+    return organization ? organization.name : '';
+  }
+  private getOrganizations(): void {
+    this.adminService.getAll(AdminModel.Organization.route).subscribe(resp => {
+      this.organizations = resp;
+      this.filteredOrganizations = this.instructorForm.get('organization')
+        .valueChanges
+        .startWith(null)
+        .map(val => val ? this.filterOrganizations(val) : this.organizations.slice());
+    });
+  }
+
+  private filterOrganizations(val: string): any[] {
+    return this.organizations.filter(organization => new RegExp(`${val}`, 'gi').test(organization.name));
   }
 }
