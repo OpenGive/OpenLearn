@@ -232,8 +232,20 @@ export class AdminAdministratorsFormComponent implements OnInit {
     return this.states.filter(state => new RegExp(`${val}`, 'gi').test(state.name));
   }
 
+  private setOrganizationID(): void {
+    console.log("in set org id");
+    if (this.administratorForm.valid) {
+      console.log("form is valid");
+      if (this.administratorForm.get('organization').value != null) {
+        console.log("not null value");
+        this.administratorForm.get('organization').setValue([this.administratorForm.get('organization').value['id']])
+      }
+    }
+  }
+
   save(): void {
     if (this.administratorForm.valid) {
+      this.setOrganizationID();
       if (this.adding) {
         this.add();
       } else {
@@ -289,7 +301,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
         postalCode: this.administratorForm.get('address').get('postalCode').value
       },
       imageUrl: this.administratorForm.get('imageUrl').value,
-      organization: this.administratorForm.get('organization').value,
+      organizationIds: this.administratorForm.get('organization').value,
       activated: this.administratorForm.get('activated').value,
       is14Plus: this.administratorForm.get('is14Plus').value
     };
