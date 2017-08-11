@@ -211,20 +211,20 @@ public class UserResource {
 
 	}
 
-	/**
-	 * DELETE /users/:login : delete the "login" User.
-	 *
-	 * @param login the login of the user to delete
-	 * @return the ResponseEntity with status 200 (OK)
-	 */
-	@DeleteMapping("/users/{login:" + Constants.LOGIN_REGEX + "}")
-	@Timed
-	@Secured(AuthoritiesConstants.ADMIN)
-	public ResponseEntity<Void> deleteUser(@PathVariable final String login) {
-		log.debug("REST request to delete User: {}", login);
-		userService.deleteUser(login);
-		return ResponseEntity.ok().headers(HeaderUtil.createAlert( "userManagement.deleted", login)).build();
-	}
+	// /**
+	//  * DELETE /users/:login : delete the "login" User.
+	//  *
+	//  * @param login the login of the user to delete
+	//  * @return the ResponseEntity with status 200 (OK)
+	//  */
+	// @DeleteMapping("/users/{login:" + Constants.LOGIN_REGEX + "}")
+	// @Timed
+	// @Secured(AuthoritiesConstants.ADMIN)
+	// public ResponseEntity<Void> deleteUser(@PathVariable final String login) {
+	// 	log.debug("REST request to delete User: {}", login);
+	// 	userService.deleteUser(login);
+	// 	return ResponseEntity.ok().headers(HeaderUtil.createAlert( "userManagement.deleted", login)).build();
+	// }
 
 	/**
 	 * DELETE /users/:login : delete the User by id.
