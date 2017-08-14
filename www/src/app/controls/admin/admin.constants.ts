@@ -68,7 +68,7 @@ export const AdminModel = {
     defaultSort: 'name',
     columns: [
       {property: 'name', display: 'Name'},
-      {property: 'program', display: 'program'},
+      {property: 'program', display: 'Program'},
       {property: 'startDate', display: 'Start Date'},
       {property: 'endDate', display: 'End Date'},
       {property: 'active', display: 'Active'}

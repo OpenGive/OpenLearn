@@ -24,11 +24,13 @@ export class AdminGridComponent implements OnInit {
 
   ngOnInit(): void {
     this.getRows();
+    console.log("Is this called?");
   }
 
   private getRows(): void {
     this.adminGridService.query(this.grid.route)
       .subscribe(resp => {
+        console.log("GET ROWS RESPONSE: " + JSON.stringify(resp));
         this.grid.rows = resp;
         this.sort(_.find(this.grid.columns, {'property': this.grid.defaultSort}), false);
       });
@@ -67,10 +69,13 @@ export class AdminGridComponent implements OnInit {
         this.grid.rows[ndx] = resp.data;
       } else if (resp.type === 'ADD') {
         this.grid.rows.push(resp.data);
+        console.log("HANDLE DIALOG RESPONSE: " + JSON.stringify(resp));
       } else if (resp.type === 'DELETE') {
         _.remove(this.grid.rows, row => row.id === resp.data.id);
       }
       this.sort(_.find(this.grid.columns, {'property': this.sortColumn}), this.reverse);
+      // Retrieve users again from the DB so the grid doesn't break (change later)
+      this.getRows();
     }
   }
 
@@ -89,6 +94,11 @@ export class AdminGridComponent implements OnInit {
   }
 
   private displayAuthorities(authorities): string { // Convert "ROLE_ONE_TWO" to "One Two"
+    if (authorities.toString() == "[object Object]") {
+      console.log("OBJECT = " + JSON.stringify(authorities));
+    } else {
+      console.log("STRING = " + authorities);
+    }
     return authorities.map(role => {
       return role.split('_').slice(1).map(str => str.charAt(0) + str.slice(1).toLowerCase()).join(' ');
     }).sort().join(', ');
