@@ -233,13 +233,8 @@ export class AdminAdministratorsFormComponent implements OnInit {
   }
 
   private setOrganizationID(): void {
-    console.log("in set org id");
-    if (this.administratorForm.valid) {
-      console.log("form is valid");
-      if (this.administratorForm.get('organizationIds').value != null) {
-        console.log("not null value");
+    if (this.administratorForm.valid && this.administratorForm.get('organizationIds').value != null) {
         this.administratorForm.get('organizationIds').setValue([this.administratorForm.get('organizationIds').value['id']])
-      }
     }
   }
 

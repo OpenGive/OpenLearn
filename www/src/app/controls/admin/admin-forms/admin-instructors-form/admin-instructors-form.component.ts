@@ -136,7 +136,7 @@ export class AdminInstructorsFormComponent implements OnInit {
       authorities: [this.formInstructor.authorities, [
         Validators.required
       ]],
-      organization: [this.formInstructor.organization, [
+      organizationIds: [this.formInstructor.organizationIds, [
         Validators.required
       ]],
       biography: [this.formInstructor.biography, [
@@ -230,8 +230,17 @@ export class AdminInstructorsFormComponent implements OnInit {
     return this.states.filter(state => new RegExp(`${val}`, 'gi').test(state.name));
   }
 
+  private setOrganizationID(): void {
+    console.log("here");
+    if (this.instructorForm.valid && this.instructorForm.get('organizationIds').value != null) {
+      console.log("here2");
+      this.instructorForm.get('organizationIds').setValue([this.instructorForm.get('organizationIds').value['id']])
+    }
+  }
+
   save(): void {
     if (this.instructorForm.valid) {
+      this.setOrganizationID();
       if (this.adding) {
         this.add();
       } else {
@@ -288,7 +297,7 @@ export class AdminInstructorsFormComponent implements OnInit {
         postalCode: this.instructorForm.get('address').get('postalCode').value
       },
       imageUrl: this.instructorForm.get('imageUrl').value,
-      organization: this.instructorForm.get('organization').value,
+      organizationIds: this.instructorForm.get('organizationIds').value,
       activated: this.instructorForm.get('activated').value,
       is14Plus: this.instructorForm.get('is14Plus').value
     };
@@ -333,7 +342,7 @@ export class AdminInstructorsFormComponent implements OnInit {
   private getOrganizations(): void {
     this.adminService.getAll(AdminModel.Organization.route).subscribe(resp => {
       this.organizations = resp;
-      this.filteredOrganizations = this.instructorForm.get('organization')
+      this.filteredOrganizations = this.instructorForm.get('organizationIds')
         .valueChanges
         .startWith(null)
         .map(val => val ? this.filterOrganizations(val) : this.organizations.slice());
