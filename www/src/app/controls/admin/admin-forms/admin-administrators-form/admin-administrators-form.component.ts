@@ -138,7 +138,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
       authorities: [this.formAdministrator.authorities, [
         Validators.required
       ]],
-      organization: [this.formAdministrator.organization, [
+      organizationIds: [this.formAdministrator.organizationIds, [
         Validators.required
       ]],
       biography: [this.formAdministrator.biography, [
@@ -236,9 +236,9 @@ export class AdminAdministratorsFormComponent implements OnInit {
     console.log("in set org id");
     if (this.administratorForm.valid) {
       console.log("form is valid");
-      if (this.administratorForm.get('organization').value != null) {
+      if (this.administratorForm.get('organizationIds').value != null) {
         console.log("not null value");
-        this.administratorForm.get('organization').setValue([this.administratorForm.get('organization').value['id']])
+        this.administratorForm.get('organizationIds').setValue([this.administratorForm.get('organizationIds').value['id']])
       }
     }
   }
@@ -301,7 +301,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
         postalCode: this.administratorForm.get('address').get('postalCode').value
       },
       imageUrl: this.administratorForm.get('imageUrl').value,
-      organizationIds: this.administratorForm.get('organization').value,
+      organizationIds: this.administratorForm.get('organizationIds').value,
       activated: this.administratorForm.get('activated').value,
       is14Plus: this.administratorForm.get('is14Plus').value
     };
@@ -356,7 +356,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
   private getOrganizations(): void {
     this.adminService.getAll(AdminModel.Organization.route).subscribe(resp => {
       this.organizations = resp;
-      this.filteredOrganizations = this.administratorForm.get('organization')
+      this.filteredOrganizations = this.administratorForm.get('organizationIds')
         .valueChanges
         .startWith(null)
         .map(val => val ? this.filterOrganizations(val) : this.organizations.slice());

@@ -89,7 +89,7 @@ public class CourseService {
 			return courseRepository.findOne(id);
 		}
 		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-		return courseRepository.findOneByIdAndOrganizationId(id, user.get().organizationIds);
+		return courseRepository.findOneByIdAndOrganizationId(id, user.get().getOrganizationIds());
 	}
 
 	/**

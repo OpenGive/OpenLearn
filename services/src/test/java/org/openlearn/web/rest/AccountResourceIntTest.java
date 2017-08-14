@@ -162,7 +162,8 @@ public class AccountResourceIntTest {
 			   true, // is
 																				// 14
 																				// plus
-				"biography"
+				"biography",
+			null
 		);
 
 		restMvc.perform(
@@ -193,10 +194,12 @@ public class AccountResourceIntTest {
 				null,                   // createdDate
 				null,                   // lastModifiedBy
 				null,                   // lastModifiedDate
-				new HashSet<>(Arrays.asList(AuthoritiesConstants.STUDENT)), true, // is
+				new HashSet<>(Arrays.asList(AuthoritiesConstants.STUDENT)),
+				true, // is
 																				// 14
 																				// plus
-				"biography"
+				"biography",
+				null
 		);
 
 		restUserMockMvc.perform(
@@ -230,7 +233,8 @@ public class AccountResourceIntTest {
 				new HashSet<>(Arrays.asList(AuthoritiesConstants.STUDENT)), false, // is
 																				// 14
 																				// plus
-				"biography"
+				"biography",
+			null
 		);
 
 		restUserMockMvc.perform(
@@ -264,7 +268,8 @@ public class AccountResourceIntTest {
 				new HashSet<>(Arrays.asList(AuthoritiesConstants.STUDENT)), true, // is
 																				// 14
 																				// plus
-				"biography"
+				"biography",
+			null
 		);
 
 		restUserMockMvc.perform(
@@ -298,7 +303,8 @@ public class AccountResourceIntTest {
 				null,                   // lastModifiedDate
 				new HashSet<>(Arrays.asList(AuthoritiesConstants.STUDENT)),
 				false,					// is 14 plus
-				"biography"
+				"biography",
+			null
 				);
 
 		// Duplicate login, different email
@@ -306,7 +312,7 @@ public class AccountResourceIntTest {
 				"alicejr@example.com", validUser.getPhoneNumber(), validUser.getAddress(), true,
 				validUser.getImageUrl(), validUser.getCreatedBy(), validUser.getCreatedDate(),
 				validUser.getLastModifiedBy(), validUser.getLastModifiedDate(), validUser.getAuthorities(),
-				validUser.is14Plus(), validUser.getBiography());
+				validUser.is14Plus(), validUser.getBiography(),null);
 
 		// Good user
 		restMvc.perform(
@@ -347,14 +353,15 @@ public class AccountResourceIntTest {
 				null,                   // lastModifiedDate
 				new HashSet<>(Arrays.asList(AuthoritiesConstants.STUDENT)),
 				true,					// is 14 plus
-				"biography"
+				"biography",
+			null
 				);
 
 		// Duplicate email, different login
 		final ManagedUserVM duplicatedUser = new ManagedUserVM(validUser.getId(), "johnjr", validUser.getPassword(), validUser.getLogin(), validUser.getLastName(),
 				validUser.getEmail(), validUser.getPhoneNumber(), validUser.getAddress(), true, validUser.getImageUrl(),
 				validUser.getCreatedBy(), validUser.getCreatedDate(), validUser.getLastModifiedBy(),
-				validUser.getLastModifiedDate(), validUser.getAuthorities(), validUser.is14Plus(), validUser.getBiography());
+				validUser.getLastModifiedDate(), validUser.getAuthorities(), validUser.is14Plus(), validUser.getBiography(), null);
 
 		// Good user
 		restMvc.perform(
@@ -394,7 +401,8 @@ public class AccountResourceIntTest {
 				null,                   // lastModifiedDate
 				new HashSet<>(Arrays.asList(AuthoritiesConstants.ADMIN)),
 				true,					// is 14 plus
-				"biography"
+				"biography",
+			null
 				);
 
 		restMvc.perform(
