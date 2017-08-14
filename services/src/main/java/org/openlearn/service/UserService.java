@@ -213,6 +213,7 @@ public class UserService {
 		user.setActivated(userDTO.isActivated());
 		user.setBiography(userDTO.getBiography());
 		user.setIs14Plus(userDTO.is14Plus());
+		user.setOrganizationIds(userDTO.getOrganizationIds());
 		final Set<Authority> managedAuthorities = user.getAuthorities();
 		managedAuthorities.clear();
 		userDTO.getAuthorities().stream()
