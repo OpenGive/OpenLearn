@@ -5,6 +5,7 @@ import * as _ from "lodash";
 import {Course} from '../../../models/course';
 import {CourseDialogComponent} from "../course-dialog.component";
 import {GradeDialogComponent} from "../grade-dialog.component";
+import {AdminDialogComponent} from "../../admin/admin-dialog.component";
 import {CourseService} from "../../../services/course.service";
 
 @Component({
@@ -58,7 +59,8 @@ export class CourseGridComponent implements OnInit {
     });
   }
 
-  editGrade(student): void {
+  editGrade(student, e): void {
+    e.stopPropagation();
     this.dialog.open(GradeDialogComponent, {
       data: {
         course: this.course,
@@ -82,6 +84,17 @@ export class CourseGridComponent implements OnInit {
     this.courseService.getCourseStudents(this.course.id).subscribe(students => {
       this.students = students;
     })
+  }
+
+  viewStudentDetails(row): void {
+    this.dialog.open(AdminDialogComponent, {
+      data: {
+        tab: "students",
+        item: row,
+        adding: false
+      },
+      disableClose: true
+    });
   }
 
   private handleAddStudentResponse(resp): void {
