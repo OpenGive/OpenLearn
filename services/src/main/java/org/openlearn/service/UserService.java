@@ -263,7 +263,12 @@ public class UserService {
   		// get users in org
 		return userRepository.findOneByLogin(pageable,SecurityUtils.getCurrentUserLogin()).map(UserDTO::new);
 	}
-	log.debug("User does not have ADMIN or STUDENT authority");
+	if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.INSTRUCTOR)){
+		log.debug("User has Instructor authority");
+		return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER).map(UserDTO::new);
+	}
+
+	log.debug("User does not have ADMIN or STUDENT authority 1");
 	Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
     return userRepository.findAllByOrganizationIdsIn(pageable,user.get().getOrganizationIds()).map(UserDTO::new);
   }
