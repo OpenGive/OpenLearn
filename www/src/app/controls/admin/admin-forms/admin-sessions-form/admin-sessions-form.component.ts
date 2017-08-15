@@ -181,6 +181,8 @@ export class AdminSessionsFormComponent implements OnInit {
       description: this.sessionForm.get('description').value,
       program: this.sessionForm.get('program').value,
       school: this.sessionForm.get('school').value,
+      startDate: this.sessionForm.get('startDate').value,
+      endDate: this.sessionForm.get('endDate').value,
       active: this.sessionForm.get('active').value
     };
   }
