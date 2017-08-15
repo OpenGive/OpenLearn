@@ -90,6 +90,13 @@
       <md-input-container fxFlex="30%">
         <input mdInput formControlName="imageUrl" placeholder="Image URL"/>
       </md-input-container>
+      <md-input-container fxFlex="30%">
+        <input mdInput formControlName="organization" placeholder="Organization" [mdAutocomplete]="organization">
+        <md-error *ngIf="formErrors.organization">{{formErrors.organization}}</md-error>
+        <md-autocomplete #organization="mdAutocomplete" [displayWith]="displayOrganization">
+          <md-option *ngFor="let organization of filteredOrganizations | async" [value]="organization">{{organization.name}}</md-option>
+        </md-autocomplete>
+      </md-input-container>
       <div fxLayout="row" fxFlex="30%">
         <!-- [disabled] used as workaround for angular material bug -->
         <md-checkbox fxFlex="50%" formControlName="activated" [disabled]="!editing">Activated</md-checkbox>

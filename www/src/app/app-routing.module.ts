@@ -148,7 +148,7 @@ const ROUTES: Routes = [
     path: 'profile',
     component: ProfilePageComponent,
     data: {
-       authorities: [AppConstants.Role.Instructor, AppConstants.Role.Student]
+       authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor, AppConstants.Role.Student]
     },
     canActivate: [UserRouteAccessService]
   },
