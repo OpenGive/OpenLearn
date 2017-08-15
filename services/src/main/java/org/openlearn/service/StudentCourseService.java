@@ -48,6 +48,13 @@ public class StudentCourseService {
 		return courseStudents;
 	}
 
+	@Transactional(readOnly =  true)
+	public Page<CourseStudent> findByCourseIdNot(final Long courseId, final Pageable pageable){
+		log.debug("Request to get students not in course id : {}", courseId);
+		final Page<CourseStudent> courseStudents = courseStudentRepository.findAllByCourseIdNot(courseId, pageable);
+		return courseStudents;
+	}
+
 	@Transactional(readOnly = true)
 	public Page<StudentCourse> findByLogin(final String login, final Pageable pageable){
 		log.debug("Request to get courses for user with login : {}", login);

@@ -156,6 +156,21 @@ public class CourseResource {
 	}
 
 	/**
+	 * Get students not in course
+	 *
+	 * @param id the id of the course to search
+	 * @return the students not in the course
+	 */
+	@GetMapping("/courses/{id}/studentsNot/")
+	@Timed
+	public ResponseEntity<List<CourseStudent>> studentsNotInCourse(@PathVariable final Long id, @ApiParam final Pageable pageable) {
+		log.debug("REST request to get students not in course with id {}", id);
+		final Page<CourseStudent> page = studentCourseService.findByCourseId(id, pageable);
+		final HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/courses"+id+"/studentsNot");
+		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+	}
+
+	/**
 	 * Add Student to course  /courses/{id}/students?student_id={studentId}
 	 *
 	 * @param id the id of the course to add the student to

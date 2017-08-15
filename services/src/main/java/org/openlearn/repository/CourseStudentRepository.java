@@ -10,5 +10,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface CourseStudentRepository extends JpaRepository<CourseStudent, Long> {
 	Page<CourseStudent> findAllByCourseId(Long courseId, Pageable pageable);
+	Page<CourseStudent> findAllByCourseIdNot(Long courseId, Pageable pageable);
 	CourseStudent findOneByCourseIdAndUserId(Long courseId, Long studentId);
 }
