@@ -85,17 +85,17 @@ export class CourseDialogComponent implements OnInit {
               private courseService: CourseService,
               private notify: NotifyService) {}
 
-  // private getStudents(): void {
-  //   this.userService.getStudents().subscribe(resp => {
-  //     this.students = resp;
-  //     console.log("RESP: " + resp);
-  //   })
-  // }
   private getStudents(): void {
-    this.courseService.getCourseStudentsNot(this.data.course.id).subscribe(students => {
-      this.students = students;
+    this.userService.getStudents().subscribe(resp => {
+      this.students = resp;
+      console.log("RESP: " + resp);
     })
   }
+  // private getStudents(): void {
+  //   this.courseService.getCourseStudentsNot(this.data.course.id).subscribe(students => {
+  //     this.students = students;
+  //   })
+  // }
 
 
 
