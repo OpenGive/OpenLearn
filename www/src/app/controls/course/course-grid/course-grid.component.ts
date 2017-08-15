@@ -5,7 +5,7 @@ import * as _ from "lodash";
 import {Course} from '../../../models/course';
 import {CourseDialogComponent} from "../course-dialog.component";
 import {GradeDialogComponent} from "../grade-dialog.component";
-import {AdminDialogComponent} from "../../admin/admin-dialog.component";
+import {CourseStudentDialogComponent} from "../course-student-dialog.component";
 import {CourseService} from "../../../services/course.service";
 
 @Component({
@@ -86,15 +86,18 @@ export class CourseGridComponent implements OnInit {
     })
   }
 
-  viewStudentDetails(row): void {
-    this.dialog.open(AdminDialogComponent, {
+  viewStudentDetails(student): void {
+    this.dialog.open(CourseStudentDialogComponent, {
       data: {
-        tab: "students",
-        item: row,
+        item: student,
         adding: false
       },
       disableClose: true
     });
+    // Handle response
+    //.afterClosed().subscribe(resp => {
+    //this.handleDialogResponse(resp)
+    //});
   }
 
   private handleAddStudentResponse(resp): void {

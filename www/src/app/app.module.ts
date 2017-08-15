@@ -45,7 +45,6 @@ import {OLCourseModule} from "./controls/course/course.module";
 import {DashboardPageComponent} from "./pages/dashboard-page/dashboard-page.component";
 import {PasswordService} from "./shared/auth/password.service";
 import {ResetPasswordPageComponent} from "./pages/reset-password-page/reset-password-page.component";
-import {CourseStudentFormComponent} from "./controls/course/course-student-form/course-student-form.component";
 
 @NgModule({
   declarations: [
@@ -67,8 +66,7 @@ import {CourseStudentFormComponent} from "./controls/course/course-student-form/
     CourseResourceGridComponent,
     ProfilePageComponent,
     DashboardPageComponent,
-    ResetPasswordPageComponent,
-    CourseStudentFormComponent
+    ResetPasswordPageComponent
   ],
   imports: [
     AppRoutingModule,
