@@ -60,7 +60,7 @@ export class CourseGridComponent implements OnInit {
   }
 
   editGrade(student, e): void {
-    e.stopPropagation();
+    this.stopPropagation(e);
     this.dialog.open(GradeDialogComponent, {
       data: {
         course: this.course,
@@ -98,6 +98,10 @@ export class CourseGridComponent implements OnInit {
     //.afterClosed().subscribe(resp => {
     //this.handleDialogResponse(resp)
     //});
+  }
+
+  stopPropagation(e): void {
+    e.stopPropagation();
   }
 
   private handleAddStudentResponse(resp): void {
