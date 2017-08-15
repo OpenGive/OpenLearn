@@ -345,6 +345,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
   }
 
   displayOrganization(organization: any): string {
+    console.log("displayOrganization:  "+ organization);
     return organization ? organization.name : '';
   }
 
