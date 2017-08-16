@@ -10,6 +10,7 @@ import javax.validation.Valid;
 
 import org.openlearn.domain.Course;
 import org.openlearn.domain.CourseStudent;
+import org.openlearn.domain.User;
 import org.openlearn.domain.ItemLink;
 import org.openlearn.service.CourseService;
 import org.openlearn.service.StudentCourseService;
@@ -163,11 +164,12 @@ public class CourseResource {
 	 */
 	@GetMapping("/courses/{id}/studentsNot")
 	@Timed
-	public ResponseEntity<List<CourseStudent>> studentsNotInCourse(@PathVariable final Long id, @ApiParam final Pageable pageable) {
+	public ResponseEntity<List<User>> studentsNotInCourse(@PathVariable final Long id) {
 		log.debug("REST request to get students not in course with id {}", id);
-		final Page<CourseStudent> page = studentCourseService.findByCourseIdNot(id, pageable);
-		final HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/courses"+id+"/studentsNot");
-		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+		final List<User> students = studentCourseService.findByCourseIdNot(id);
+		//Left over from pagination removal
+		//final HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/courses"+id+"/studentsNot");
+		return new ResponseEntity<>(students, HttpStatus.OK);
 	}
 
 	/**

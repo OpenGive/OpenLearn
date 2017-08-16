@@ -72,7 +72,7 @@ export class CourseService {
       .catch(this.handleError);
   }
 
-  getCourseStudentsNot(id: Number): Observable<User[]> {
+  getCourseStudentsNot(id: Number): Observable<User []> {
     return this._http.get(this.endpoint + '/' + id + '/studentsNot')
       .map(resp => resp.json())
       .catch(this.handleError);

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -49,10 +50,9 @@ public class StudentCourseService {
 	}
 
 	@Transactional(readOnly =  true)
-	public Page<CourseStudent> findByCourseIdNot(final Long courseId, final Pageable pageable){
+	public List<User> findByCourseIdNot(final Long courseId){
 		log.debug("Request to get students not in course id : {}", courseId);
-		final Page<CourseStudent> courseStudents = courseStudentRepository.findAllByCourseIdNot(courseId, pageable);
-		return courseStudents;
+		return userRepository.findAllByCourseIdNot(courseId);
 	}
 
 	@Transactional(readOnly = true)

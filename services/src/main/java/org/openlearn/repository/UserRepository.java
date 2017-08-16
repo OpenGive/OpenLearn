@@ -43,4 +43,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
   Set<User> findAllByOrganizationIds(Long organizationId);
 
   Page<User> findAllByOrganizationIdsIn(Pageable pageable,Set<Long> organizationIds);
+
+	/**
+	 * Finds all students not in course
+	 * @param id course id to filter by
+	 * @return List<User> of students
+	 */
+	@Query(value = "Select * from user left join user_authority ua on ua.user_id = user.id where ua.AUTHORITY_NAME = 'ROLE_STUDENT'  and user.id not in (select user_id from student_course where course_id= ?1);", nativeQuery = true)
+	List<User> findAllByCourseIdNot(Long id);
 }
