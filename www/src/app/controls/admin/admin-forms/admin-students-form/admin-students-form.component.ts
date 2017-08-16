@@ -230,13 +230,11 @@ export class AdminStudentsFormComponent implements OnInit {
   }
 
   private add(): void {
-    console.log("STUDENT FORM = " + JSON.stringify(this.studentForm.value));
     this.userService.create(this.studentForm.value).subscribe(resp => {
       this.dialogRef.close({
         type: 'ADD',
         data: resp
       });
-      console.log("Respone from backend = " + JSON.stringify(resp));
       this.notify.success('Successfully added student');
     }, error => {
       this.notify.error('Failed to add student');

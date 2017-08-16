@@ -140,26 +140,15 @@ public class UserService {
     if (userDTO.getAuthorities() != null) {
 
       Set<Authority> authorities = new HashSet<>();
-
-      // AUTHORITY OBJECT GETS SET HERE WHEN USER IS CREATED
-
-
-      log.debug("IF BRANCH: Before setting authorities: " + authorities);
       userDTO.getAuthorities().forEach(
         authority -> authorities.add(authorityRepository.findOne(authority))
       );
       user.setAuthorities(authorities);
-
-
-
-
     } else {
       Set<Authority> authorities = new HashSet<>();
-      log.debug("ELSE BRANCH: Before setting authorities: " + authorities);
       authorities.add(authorityRepository.findOne(AuthoritiesConstants.STUDENT));
       user.setAuthorities(authorities);
     }
-    log.debug("After setting authorities: " + user.getAuthorities());
 
     String encryptedPassword = passwordEncoder.encode(password);
     user.setPassword(encryptedPassword);
