@@ -74,8 +74,6 @@ export class AdminGridComponent implements OnInit {
         _.remove(this.grid.rows, row => row.id === resp.data.id);
       }
       this.sort(_.find(this.grid.columns, {'property': this.sortColumn}), this.reverse);
-      // Retrieve users again from the DB so the grid doesn't break (change later)
-      this.getRows();
     }
   }
 
