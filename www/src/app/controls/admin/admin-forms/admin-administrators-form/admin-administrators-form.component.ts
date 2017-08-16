@@ -345,13 +345,40 @@ export class AdminAdministratorsFormComponent implements OnInit {
   }
 
   displayOrganization(organization: any): string {
-    console.log("displayOrganization:  "+ organization);
     return organization ? organization.name : '';
+  }
+
+  private correctOrgName(){
+    let id = this.administratorForm.get('organizationIds').value
+    console.log("organizationIds before change: " + id);
+    if(_.isNil(id) || id < 0 ){
+      return '';
+    } else{
+      console.log("id valid going to change to name");
+      return this.convertOrgIdToName(id);
+    }
+  }
+
+  private convertOrgIdToName(id: any): string {
+    id = parseFloat(id);
+    for (var i = 0; i < this.organizations.length; i++) {
+      if(this.organizations[i].id === id){
+        console.log("REturning a name: " + this.organizations[i].name);
+        return this.organizations[i].name;
+      }
+    }
+    console.log("REturning empty after coming up empty");
+    return '';
   }
 
   private getOrganizations(): void {
     this.adminService.getAll(AdminModel.Organization.route).subscribe(resp => {
+      console.log("I got the orgs!!!!");
       this.organizations = resp;
+      console.log("about to change id to name");
+      this.administratorForm.get('organizationIds').setValue(this.correctOrgName()) ;
+      console.log("should be differnet");
+      console.log("this.administratorForm.get('organizationIds')" + this.administratorForm.get('organizationIds').value);
       this.filteredOrganizations = this.administratorForm.get('organizationIds')
         .valueChanges
         .startWith(null)
