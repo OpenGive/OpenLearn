@@ -29,7 +29,6 @@ export class AdminAdministratorsFormComponent implements OnInit {
 
 
   filteredStates: Observable<any[]>;
-  filteredOrganizations: Observable<any[]>;
 
   administratorForm: FormGroup;
   formErrors = {
@@ -115,7 +114,6 @@ export class AdminAdministratorsFormComponent implements OnInit {
     this.setEditing(this.adding);
     this.getRoles();
     this.getStates();
-    // this.getOrganizations();
   }
 
   private buildForm(): void {
@@ -344,38 +342,4 @@ export class AdminAdministratorsFormComponent implements OnInit {
   displayState(stateValue: string): string {
     return stateValue ? _.filter(AppConstants.States, {value: stateValue})[0].name : '';
   }
-
-  displayOrganization(organization: any): string {
-    return organization ? organization.name : '';
-  }
-
-  private correctOrgName() {
-    let id = this.administratorForm.get('organizationIds').value;
-    console.log("organizationIds before change: " + id);
-    if (_.isNil(id) || id < 0) {
-      return '';
-    } else {
-      this.administratorForm.get('organizationIds').setValue([this.convertOrgIdToOrgObject(id)]);
-      this.onValueChanged()
-    }
-  }
-
-  private convertOrgIdToOrgObject(id: any): string {
-    id = parseFloat(id);
-    for (var i = 0; i < this.organizations.length; i++) {
-      if(this.organizations[i].id === id){
-        console.log("REturning an org: " + JSON.stringify(this.organizations[i]));
-        return this.organizations[i];
-      }
-    }
-    return '';
-  }
-
-  // private getOrganizations(): void {
-  //   this.adminService.getAll(AdminModel.Organization.route).subscribe(resp => {
-  //     this.organizations = resp;
-  //     this.correctOrgName();
-  //
-  //   });
-  // }
 }

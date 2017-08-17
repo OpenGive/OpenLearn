@@ -20,14 +20,13 @@ export class AdminInstructorsFormComponent implements OnInit {
 
   @Input('item') formInstructor: any;
   @Input() adding: boolean;
+  @Input('organizations') organizations: any[];
   editing: boolean;
 
   roles: string[];
   states: any[];
-  organizations: any[];
 
   filteredStates: Observable<any[]>;
-  filteredOrganizations: Observable<any[]>;
 
   instructorForm: FormGroup;
   formErrors = {
@@ -112,7 +111,6 @@ export class AdminInstructorsFormComponent implements OnInit {
     this.setEditing(this.adding);
     this.getRoles();
     this.getStates();
-    this.getOrganizations();
   }
 
   private buildForm(): void {
@@ -231,10 +229,8 @@ export class AdminInstructorsFormComponent implements OnInit {
   }
 
   private setOrganizationID(): void {
-    console.log("here");
     if (this.instructorForm.valid && this.instructorForm.get('organizationIds').value != null) {
-      console.log("here2");
-      this.instructorForm.get('organizationIds').setValue([this.instructorForm.get('organizationIds').value['id']])
+      this.instructorForm.get('organizationIds').setValue([this.instructorForm.get('organizationIds').value[0]])
     }
   }
 
@@ -335,21 +331,5 @@ export class AdminInstructorsFormComponent implements OnInit {
 
   displayState(stateValue: string): string {
     return stateValue ? _.filter(AppConstants.States, {value: stateValue})[0].name : '';
-  }
-  displayOrganization(organization: any): string {
-    return organization ? organization.name : '';
-  }
-  private getOrganizations(): void {
-    this.adminService.getAll(AdminModel.Organization.route).subscribe(resp => {
-      this.organizations = resp;
-      this.filteredOrganizations = this.instructorForm.get('organizationIds')
-        .valueChanges
-        .startWith(null)
-        .map(val => val ? this.filterOrganizations(val) : this.organizations.slice());
-    });
-  }
-
-  private filterOrganizations(val: string): any[] {
-    return this.organizations.filter(organization => new RegExp(`${val}`, 'gi').test(organization.name));
   }
 }
