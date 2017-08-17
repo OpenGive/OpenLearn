@@ -12,6 +12,7 @@ import org.openlearn.domain.Course;
 import org.openlearn.domain.CourseStudent;
 import org.openlearn.domain.User;
 import org.openlearn.domain.ItemLink;
+import org.openlearn.service.dto.CourseStudentDTO;
 import org.openlearn.service.CourseService;
 import org.openlearn.service.StudentCourseService;
 import org.openlearn.web.rest.util.HeaderUtil;
@@ -149,9 +150,9 @@ public class CourseResource {
 	 */
 	@GetMapping("/courses/{id}/students")
 	@Timed
-	public ResponseEntity<List<CourseStudent>> studentsInCourse(@PathVariable final Long id, @ApiParam final Pageable pageable) {
+	public ResponseEntity<List<CourseStudentDTO>> studentsInCourse(@PathVariable final Long id, @ApiParam final Pageable pageable) {
 		log.debug("REST request to get students in course with id {}", id);
-		final Page<CourseStudent> page = studentCourseService.findByCourseId(id, pageable);
+		final Page<CourseStudentDTO> page = studentCourseService.findByCourseId(id, pageable);
 		final HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/courses"+id+"/students");
 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 	}

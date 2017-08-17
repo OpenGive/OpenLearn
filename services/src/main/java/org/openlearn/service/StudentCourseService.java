@@ -5,6 +5,7 @@ import org.openlearn.domain.Course;
 import org.openlearn.domain.CourseStudent;
 import org.openlearn.domain.StudentCourse;
 import org.openlearn.domain.User;
+import org.openlearn.service.dto.CourseStudentDTO;
 import org.openlearn.repository.CourseRepository;
 import org.openlearn.repository.CourseStudentRepository;
 import org.openlearn.repository.StudentCourseRepostory;
@@ -43,9 +44,9 @@ public class StudentCourseService {
 	}
 
 	@Transactional(readOnly =  true)
-	public Page<CourseStudent> findByCourseId(final Long courseId, final Pageable pageable){
+	public Page<CourseStudentDTO> findByCourseId(final Long courseId, final Pageable pageable){
 		log.debug("Request to get students for course id : {}", courseId);
-		final Page<CourseStudent> courseStudents = courseStudentRepository.findAllByCourseId(courseId, pageable);
+		final Page<CourseStudentDTO> courseStudents = courseStudentRepository.findAllByCourseId(courseId, pageable).map(CourseStudentDTO::new);
 		return courseStudents;
 	}
 
