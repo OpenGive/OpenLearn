@@ -234,7 +234,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
 
   private setOrganizationID(): void {
     if (this.administratorForm.valid && this.administratorForm.get('organizationIds').value != null) {
-        this.administratorForm.get('organizationIds').setValue([this.administratorForm.get('organizationIds').value['id']])
+      this.administratorForm.get('organizationIds').setValue([this.administratorForm.get('organizationIds').value[0]])
     }
   }
 
@@ -348,45 +348,33 @@ export class AdminAdministratorsFormComponent implements OnInit {
     return organization ? organization.name : '';
   }
 
-  private correctOrgName(){
-    let id = this.administratorForm.get('organizationIds').value
+  private correctOrgName() {
+    let id = this.administratorForm.get('organizationIds').value;
     console.log("organizationIds before change: " + id);
-    if(_.isNil(id) || id < 0 ){
+    if (_.isNil(id) || id < 0) {
       return '';
-    } else{
-      console.log("id valid going to change to name");
-      return this.convertOrgIdToName(id);
+    } else {
+      this.administratorForm.get('organizationIds').setValue([this.convertOrgIdToOrgObject(id)]);
+      this.onValueChanged()
     }
   }
 
-  private convertOrgIdToName(id: any): string {
+  private convertOrgIdToOrgObject(id: any): string {
     id = parseFloat(id);
     for (var i = 0; i < this.organizations.length; i++) {
       if(this.organizations[i].id === id){
-        console.log("REturning a name: " + this.organizations[i].name);
-        return this.organizations[i].name;
+        console.log("REturning an org: " + JSON.stringify(this.organizations[i]));
+        return this.organizations[i];
       }
     }
-    console.log("REturning empty after coming up empty");
     return '';
   }
 
   private getOrganizations(): void {
     this.adminService.getAll(AdminModel.Organization.route).subscribe(resp => {
-      console.log("I got the orgs!!!!");
       this.organizations = resp;
-      console.log("about to change id to name");
-      this.administratorForm.get('organizationIds').setValue(this.correctOrgName()) ;
-      console.log("should be differnet");
-      console.log("this.administratorForm.get('organizationIds')" + this.administratorForm.get('organizationIds').value);
-      this.filteredOrganizations = this.administratorForm.get('organizationIds')
-        .valueChanges
-        .startWith(null)
-        .map(val => val ? this.filterOrganizations(val) : this.organizations.slice());
-    });
-  }
+      this.correctOrgName();
 
-  private filterOrganizations(val: string): any[] {
-    return this.organizations.filter(organization => new RegExp(`${val}`, 'gi').test(organization.name));
+    });
   }
 }
