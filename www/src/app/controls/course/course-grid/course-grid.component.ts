@@ -93,15 +93,26 @@ export class CourseGridComponent implements OnInit {
         adding: false
       },
       disableClose: true
+    }).afterClosed().subscribe(resp => {
+      this.handleEditStudentResponse(resp);
     });
-    // Handle response
-    //.afterClosed().subscribe(resp => {
-    //this.handleDialogResponse(resp)
-    //});
   }
 
   stopPropagation(e): void {
     e.stopPropagation();
+  }
+
+   private handleEditStudentResponse(resp): void {
+    if (resp) {
+      console.log("Response from edit student", resp);
+
+      for (var i = 0; i < this.students.length; i++) {
+         let student = this.students[i];
+         if (student.student.id == resp.data.id) {
+           this.students[i].student = resp.data;
+         }
+      }
+    }
   }
 
   private handleAddStudentResponse(resp): void {
