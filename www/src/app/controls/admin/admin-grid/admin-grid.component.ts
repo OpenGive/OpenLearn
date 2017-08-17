@@ -58,6 +58,7 @@ export class AdminGridComponent implements OnInit {
       data: {
         tab: this.grid.route,
         item: row,
+        organizations: this.organizations,
         adding: false
       },
       disableClose: true

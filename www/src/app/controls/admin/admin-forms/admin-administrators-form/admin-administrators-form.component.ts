@@ -21,11 +21,12 @@ export class AdminAdministratorsFormComponent implements OnInit {
 
   @Input('item') formAdministrator: any;
   @Input() adding: boolean;
+  @Input('organizations') organizations: any[];
   editing: boolean;
 
   roles: string[];
   states: any[];
-  organizations: any[];
+
 
   filteredStates: Observable<any[]>;
   filteredOrganizations: Observable<any[]>;
@@ -114,7 +115,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
     this.setEditing(this.adding);
     this.getRoles();
     this.getStates();
-    this.getOrganizations();
+    // this.getOrganizations();
   }
 
   private buildForm(): void {
@@ -370,11 +371,11 @@ export class AdminAdministratorsFormComponent implements OnInit {
     return '';
   }
 
-  private getOrganizations(): void {
-    this.adminService.getAll(AdminModel.Organization.route).subscribe(resp => {
-      this.organizations = resp;
-      this.correctOrgName();
-
-    });
-  }
+  // private getOrganizations(): void {
+  //   this.adminService.getAll(AdminModel.Organization.route).subscribe(resp => {
+  //     this.organizations = resp;
+  //     this.correctOrgName();
+  //
+  //   });
+  // }
 }
