@@ -161,7 +161,7 @@ export class AdminGridComponent implements OnInit {
   }
 
   private getOrganizations(): void {
-    this.adminService.getAll(AdminModel.Organization.route).subscribe(resp => {this.organizations = resp;console.log("Trying to print orgs: " + JSON.stringify(this.organizations));});
+    this.adminService.getAll(AdminModel.Organization.route).subscribe(resp => {this.organizations = resp;});
 
   }
 }
