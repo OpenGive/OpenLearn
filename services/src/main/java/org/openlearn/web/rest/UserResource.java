@@ -133,11 +133,12 @@ public class UserResource {
 					.body(null);
 		else {
 			final User newUser = userService.createUser(managedUserVM, managedUserVM.getPassword());
+			final UserDTO newUserDTO = new UserDTO(newUser);
 
 			mailService.sendCreationEmail(newUser);
-			return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
-					.headers(HeaderUtil.createAlert( "userManagement.created", newUser.getLogin()))
-					.body(newUser);
+			return ResponseEntity.created(new URI("/api/users/" + newUserDTO.getLogin()))
+					.headers(HeaderUtil.createAlert( "userManagement.created", newUserDTO.getLogin()))
+					.body(newUserDTO);
 		}
 	}
 
