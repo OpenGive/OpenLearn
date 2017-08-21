@@ -44,7 +44,6 @@ export class PortfolioPageComponent {
 
     this.courseService.getStudentsCourses(this.principal.getId()).subscribe(courses => {
       this.courses = courses;
-      console.log(this.courses);
     })
   }
 }
