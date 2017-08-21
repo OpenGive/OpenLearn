@@ -268,6 +268,28 @@ public class UserService {
     return userRepository.findAllByOrganizationIdsIn(pageable,user.get().getOrganizationIds()).map(UserDTO::new);
   }
 
+
+	@Transactional(readOnly = true)
+	public Page<UserDTO> getAllOrgAdmins(final Pageable pageable) {
+		if (!SecurityUtils.isAuthenticated()) {
+			return null;
+		}
+		Page<UserDTO> response = null;
+		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+			log.debug("User has ADMIN authority");
+			response = userRepository.findAllWithAuthoritiesByAuthorities(pageable, AuthoritiesConstants.ORG_ADMIN).map(UserDTO::new);
+		} if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ORG_ADMIN) || true) { //user is org admin and org admin has an org id
+			log.debug("User has ORG ADMIN authority");
+			//get requester orgID to only get results with that org
+			int orgID = userRepository.findOrgIDByLogin(SecurityUtils.getCurrentUserLogin());
+			response = userRepository.findAllWithAuthoritiesAndByOrganizationIdsAndAuthoritiesIs(pageable, AuthoritiesConstants.ORG_ADMIN, new Long(1)).map(UserDTO::new);
+		} else {
+			log.debug("User does not have ADMIN authority or ORG ADMIN authority  with a valid ORG ID");
+			return response;
+		}
+		return response;
+	}
+
   @Transactional(readOnly = true)
   public Optional<User> getUserWithAuthoritiesByLogin(final String login) {
     return userRepository.findOneWithAuthoritiesByLogin(login);

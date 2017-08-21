@@ -40,7 +40,40 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
   Page<User> findAllByLoginNot(Pageable pageable, String login);
 
+//  @EntityGraph(attributePaths = "authorities")
+//  Page<User> findOneWithAuthoritiesByAuthorities(Pageable pageable, String authority);
+
+//  @EntityGraph(attributePaths = "authorities")
+//  Page<User> findAllWithAuthoritiesAndByOrganizationIdsAAndAuthoritiesIs(Pageable pageable, Long organizationId, String Authority);
+
   Set<User> findAllByOrganizationIds(Long organizationId);
 
   Page<User> findAllByOrganizationIdsIn(Pageable pageable,Set<Long> organizationIds);
+
+	/**
+	 * Finds all users of Role role
+	 * @param role role to filter by
+	 * @return Page<User> of role
+	 */
+	@Query(value = "Select * from user left join user_authority on user_authority.user_id = user.id where user_authority.AUTHORITY_NAME = ?1 ORDER BY /*#pageable*/;", nativeQuery = true)
+	Page<User> findAllWithAuthoritiesByAuthorities(Pageable pageable, String role);
+
+	/**
+	 * Finds all users of Role role in org_id
+	 * @param role role to filter by
+	 * @param orgID ID of Org to filter by
+	 * @return Page<User> of role
+	 */
+	@Query(value = "Select * from user  left join user_authority on user_authority.user_id = user.id "
+		+" left join user_org on user_org.user_id = user.id "
+		+"where user_authority.AUTHORITY_NAME = ?1 and user_org.org_id = ?2 ORDER BY /*#pageable*/;", nativeQuery = true)
+	Page<User> findAllWithAuthoritiesAndByOrganizationIdsAndAuthoritiesIs(Pageable pageable, String role, Long orgID);
+
+	/**
+	 * Finds org_id of user
+	 * @param login role to filter by
+	 * @return Page<User> of role
+	 */
+	@Query(value = "Select * from user left join user_org uo on uo.user_id = user.id where user.login = ?1;", nativeQuery = true)
+	Integer findOrgIDByLogin(String login);
 }

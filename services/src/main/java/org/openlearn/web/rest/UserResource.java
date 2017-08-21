@@ -2,6 +2,7 @@ package org.openlearn.web.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -179,6 +180,23 @@ public class UserResource {
 		final Page<UserDTO> page = userService.getAllManagedUsers(pageable);
 		final HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users");
 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+	}
+
+	/**
+	 * GET  /users : get all org admins or if requester is an org admin return only org admins from requester's org
+	 *
+	 * @param pageable the pagination information
+	 * @return the ResponseEntity with status 200 (OK) and with body all users
+	 */
+	@GetMapping("/users/org-admins")
+	@Timed
+	@Secured({ AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN })
+	public ResponseEntity<List<UserDTO>> getAllOrgAdmins(Authentication authentication, @ApiParam final Pageable pageable) {
+		final Page<UserDTO> page = userService.getAllOrgAdmins(pageable);
+		final HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users");
+		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+
+
 	}
 
 	/**
