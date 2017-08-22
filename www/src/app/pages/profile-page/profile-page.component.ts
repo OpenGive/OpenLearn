@@ -13,8 +13,13 @@ export class ProfilePageComponent {
   @Input() profile: any = {};
   @Input() editing: boolean;
 
+  roles: string[];
+
   constructor(private userService: UserService, private accountService: AccountService, private principal: Principal) {
-    this.accountService.get().subscribe(resp => {this.profile = resp});
+    this.accountService.get().subscribe(resp => {
+      this.profile = resp;
+      this.adjustRoles(this.profile.authorities);
+    });
   }
 
   edit(): void {
@@ -39,6 +44,12 @@ export class ProfilePageComponent {
 
   ageAllowed(): boolean {
     return this.profile['14Plus'];
+  }
+
+  adjustRoles(roles: string[]): void {
+    this.roles = roles.map(val => {
+      return val.split('_').slice(1).map(str => str.charAt(0) + str.slice(1).toLowerCase()).join(' ');
+    });
   }
 
 }

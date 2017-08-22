@@ -33,7 +33,7 @@
       </div>
       <div fxLayout="row" fxLayoutAlign="space-between">
         <md-input-container fxFlex="47%">
-          <input mdInput [disabled]="!editing" name="authorities" [(ngModel)]="profile.authorities" placeholder="Role"/>
+          <input mdInput [disabled]="true" name="roles" [(ngModel)]="roles" placeholder="Role"/>
         </md-input-container>
         <md-input-container fxFlex="47%" *ngIf="profile.organization">
           <input mdInput [disabled]="!editing" name="organization" [(ngModel)]="profile.organization" placeholder="Organization"/>
