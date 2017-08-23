@@ -187,7 +187,7 @@ public class UserService {
    * @param userDTO user to update
    * @return updated user
    */
-  public Optional<UserDTO> updateUser(final UserDTO userDTO) {
+  public Optional<UserDTO> updateUser(final UserDTO userDTO, String password) {
 	  return Optional.of(userRepository
 	  .findOne(userDTO.getId()))
 	  .map(user -> {
@@ -210,6 +210,11 @@ public class UserService {
 			addressRepository.delete(user.getAddress().getId());
 		}
 		user.setImageUrl(userDTO.getImageUrl());
+    boolean adminOrOrgAdmin = SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ORG_ADMIN);
+    if ((password != null) && adminOrOrgAdmin) {
+      String encryptedPassword = passwordEncoder.encode(password);
+      user.setPassword(encryptedPassword);
+    }
 		user.setActivated(userDTO.isActivated());
 		user.setBiography(userDTO.getBiography());
 		user.setIs14Plus(userDTO.is14Plus());
