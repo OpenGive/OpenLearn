@@ -137,6 +137,7 @@ public class UserService {
     user.setImageUrl(userDTO.getImageUrl());
     user.setBiography(userDTO.getBiography());
     user.setIs14Plus(userDTO.getIs14Plus());
+    user.setOrganizationIds(userDTO.getOrganizationIds());
     if (userDTO.getAuthorities() != null) {
 
       Set<Authority> authorities = new HashSet<>();
@@ -213,6 +214,7 @@ public class UserService {
 		user.setActivated(userDTO.isActivated());
 		user.setBiography(userDTO.getBiography());
 		user.setIs14Plus(userDTO.is14Plus());
+		user.setOrganizationIds(userDTO.getOrganizationIds());
 		final Set<Authority> managedAuthorities = user.getAuthorities();
 		managedAuthorities.clear();
 		userDTO.getAuthorities().stream()
@@ -359,7 +361,7 @@ public class UserService {
 				SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.INSTRUCTOR))) {
 			Optional<User> currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
 			Optional<User> changeUser = userRepository.findOneByLogin(user.getLogin());
-			if (!changeUser.get().getOrganizationIds().contains(currentUser.get().organizationIds)) {
+			if (!changeUser.get().getOrganizationIds().contains(currentUser.get().getOrganizationIds())) {
 				return false;
 			}
 		}
