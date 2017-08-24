@@ -3,6 +3,7 @@ import {MdDialog} from "@angular/material";
 import {Router} from "@angular/router";
 
 import {LoginService} from "../../services/login.service";
+import {NotifyService} from "../../services/notify.service";
 import {ForgotPasswordDialogComponent} from "../../controls/forgot-password-dialog/forgot-password-dialog.component";
 
 @Component({
@@ -21,6 +22,7 @@ export class LoginPageComponent implements OnInit /*, AfterViewInit*/ {
 
   constructor(private loginService: LoginService,
 //              private stateStorageService: StateStorageService,
+              private notify: NotifyService,
               private router: Router,
               private dialog: MdDialog) {
     this.credentials = {};
@@ -55,7 +57,7 @@ export class LoginPageComponent implements OnInit /*, AfterViewInit*/ {
       // }
     }).catch(() => {
       this.authenticationError = true;
-
+      this.notify.error('Incorrect username or password');
       this.failureCount++;
       if (this.failureCount > 2) {
         this.isOverLimit = true;

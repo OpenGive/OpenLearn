@@ -39,8 +39,8 @@
         <md-icon>keyboard_arrow_down</md-icon>
       </div>
     </button>
-    <md-menu #profileMenu="mdMenu" yPosition="above">
-      <button routerLink="/profile" md-menu-item>
+    <md-menu #profileMenu="mdMenu" [overlapTrigger]="false">
+      <button *ngIf="!roles.student" routerLink="/profile" md-menu-item>
         <md-icon aria-hidden="true" class="user-menu-icon">person</md-icon>
         <span>Profile</span>
       </button>

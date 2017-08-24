@@ -96,9 +96,13 @@
         <!-- [disabled] used as workaround for angular material bug -->
         <md-checkbox fxFlex="50%" formControlName="is14Plus" [disabled]="!editing">is 14+</md-checkbox>
       </div>
-      <div fxFlex="30%" *ngIf="!adding && editing">
-        <button md-raised-button (click)="resetPassword()" class="reset-password">Reset Password</button>
+      <div fxFlex="30%" *ngIf="!adding && editing && !changingPassword">
+        <button md-raised-button (click)="resetPassword(true)" class="reset-password">Change Password</button>
       </div>
+      <md-input-container fxFlex="30%" *ngIf="changingPassword">
+        <input mdInput formControlName="password" placeholder="New Password"/>
+        <md-error *ngIf="formErrors.password">{{formErrors.password}}</md-error>
+      </md-input-container>
     </div>
   </div>
 </form>

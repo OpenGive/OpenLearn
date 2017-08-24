@@ -23,6 +23,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
   @Input() adding: boolean;
   @Input('organizations') organizations: any[];
   editing: boolean;
+  changingPassword: boolean;
 
   roles: string[];
   states: any[];
@@ -112,6 +113,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
   ngOnInit(): void {
     this.buildForm();
     this.setEditing(this.adding);
+    this.resetPassword(false);
     this.getRoles();
     this.getStates();
   }
@@ -327,12 +329,8 @@ export class AdminAdministratorsFormComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  resetPassword(): void {
-    this.passwordService.resetPassword(this.formAdministrator.login).subscribe(resp => {
-      this.notify.success('Password reset email sent');
-    }, error => {
-      this.notify.error('Failed to send password reset email');
-    });
+  resetPassword(changingPassword: boolean): void {
+    this.changingPassword = changingPassword;
   }
 
   displayRole(role: string): string { // Convert "ROLE_ONE_TWO" to "One Two"
