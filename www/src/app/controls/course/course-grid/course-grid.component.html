@@ -18,12 +18,14 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let row of students">
+        <tr *ngFor="let row of students" (click)="viewStudentDetails(row.student)">
           <td>{{row.student.firstName}}</td>
           <td>{{row.student.lastName}}</td>
-          <td (click)="editGrade(row)">{{row.grade}}</td>
+          <td>{{row.grade}}
+            <md-icon (click)="editGrade(row, $event)" class="edit-icon" mdTooltip="Edit">edit</md-icon>
+          </td>
           <td style="text-align: right;">
-            <button md-raised-button type="button" *ngIf="!editing" [mdMenuTriggerFor]="deleteMenu" class="ol-dialog-button pink-button" mdTooltip="Delete">
+            <button md-raised-button type="button" (click)="stopPropagation($event)" *ngIf="!editing" [mdMenuTriggerFor]="deleteMenu" class="ol-dialog-button pink-button" mdTooltip="Delete">
               <md-icon>delete</md-icon>
             </button>
             <md-menu #deleteMenu="mdMenu">

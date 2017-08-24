@@ -55,10 +55,11 @@ import {NotifyService} from "../../services/notify.service";
 })
 export class CourseDialogComponent implements OnInit {
 
-  students: any[];
+  private students: any [];
   columns: any[];
 
   ngOnInit(): void {
+    console.log("Start Students:" + this.students);
     this.columns = [
       {
         id: "firstName",
@@ -75,6 +76,7 @@ export class CourseDialogComponent implements OnInit {
     ];
 
     this.getStudents();
+    console.log("After Students: " + this.students);
   }
 
   constructor(private dialog: MdDialogRef<CourseDialogComponent>,
@@ -83,11 +85,14 @@ export class CourseDialogComponent implements OnInit {
               private courseService: CourseService,
               private notify: NotifyService) {}
 
-  getStudents(): void {
-    this.userService.getStudents().subscribe(students => {
+  
+  private getStudents(): void {
+    this.courseService.getCourseStudentsNot(this.data.course.id).subscribe(students => {
       this.students = students;
     })
   }
+
+
 
   close(): void {
     this.dialog.close();

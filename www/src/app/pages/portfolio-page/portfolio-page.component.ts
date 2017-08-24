@@ -5,6 +5,7 @@ import {Course} from '../../models/course';
 import {PortfolioItem} from "../../models/portfolio-item";
 import {PortfolioService} from "../../services/portfolio.service";
 import {CourseService} from "../../services/course.service";
+import {Principal} from "../../shared/auth/principal.service";
 
 @Component({
   selector: 'app-portfolio-page',
@@ -13,7 +14,8 @@ import {CourseService} from "../../services/course.service";
 })
 export class PortfolioPageComponent {
 
-  constructor(private portfolioService: PortfolioService,
+  constructor(private principal: Principal,
+              private portfolioService: PortfolioService,
               private courseService: CourseService) {}
 
   portfolios: PortfolioItem[] = [];
@@ -39,7 +41,8 @@ export class PortfolioPageComponent {
   }
 
   private getCourses(): void {
-    this.courseService.getAll().subscribe(courses => {
+
+    this.courseService.getStudentsCourses(this.principal.getId()).subscribe(courses => {
       this.courses = courses;
     })
   }

@@ -5,6 +5,7 @@ import org.openlearn.domain.Course;
 import org.openlearn.domain.CourseStudent;
 import org.openlearn.domain.StudentCourse;
 import org.openlearn.domain.User;
+import org.openlearn.service.dto.CourseStudentDTO;
 import org.openlearn.repository.CourseRepository;
 import org.openlearn.repository.CourseStudentRepository;
 import org.openlearn.repository.StudentCourseRepostory;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -42,10 +44,16 @@ public class StudentCourseService {
 	}
 
 	@Transactional(readOnly =  true)
-	public Page<CourseStudent> findByCourseId(final Long courseId, final Pageable pageable){
+	public Page<CourseStudentDTO> findByCourseId(final Long courseId, final Pageable pageable){
 		log.debug("Request to get students for course id : {}", courseId);
-		final Page<CourseStudent> courseStudents = courseStudentRepository.findAllByCourseId(courseId, pageable);
+		final Page<CourseStudentDTO> courseStudents = courseStudentRepository.findAllByCourseId(courseId, pageable).map(CourseStudentDTO::new);
 		return courseStudents;
+	}
+
+	@Transactional(readOnly =  true)
+	public List<User> findByCourseIdNot(final Long courseId){
+		log.debug("Request to get students not in course id : {}", courseId);
+		return userRepository.findAllByCourseIdNot(courseId);
 	}
 
 	@Transactional(readOnly = true)

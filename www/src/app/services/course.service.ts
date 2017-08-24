@@ -72,6 +72,18 @@ export class CourseService {
       .catch(this.handleError);
   }
 
+  getStudentsCourses(id: Number): Observable<Course []> {
+    return this._http.get(this.endpoint + '/' + id + '/coursesByStudent')
+      .map(resp => resp.json())
+      .catch(this.handleError);
+  }
+
+  getCourseStudentsNot(id: Number): Observable<User []> {
+    return this._http.get(this.endpoint + '/' + id + '/studentsNot')
+      .map(resp => resp.json())
+      .catch(this.handleError);
+  }
+
   addStudentToCourse(courseId: Number, studentId: Number): Observable<User> {
     return this._http.post(this.endpoint + '/' + courseId + '/students?studentId=' + studentId, null)
       .map(resp => resp.json())

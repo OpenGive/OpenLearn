@@ -135,4 +135,8 @@ export class Principal {
     getRoles(): string[] {
         return this.isIdentityResolved() ? this.userIdentity.authorities : [];
     }
+
+    getId(): Number {
+        return this.isIdentityResolved() ? this.userIdentity.id: null;
+    }
 }

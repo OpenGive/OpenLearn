@@ -5,6 +5,7 @@ import * as _ from "lodash";
 import {Course} from '../../../models/course';
 import {CourseDialogComponent} from "../course-dialog.component";
 import {GradeDialogComponent} from "../grade-dialog.component";
+import {CourseStudentDialogComponent} from "../course-student-dialog.component";
 import {CourseService} from "../../../services/course.service";
 
 @Component({
@@ -58,7 +59,8 @@ export class CourseGridComponent implements OnInit {
     });
   }
 
-  editGrade(student): void {
+  editGrade(student, e): void {
+    this.stopPropagation(e);
     this.dialog.open(GradeDialogComponent, {
       data: {
         course: this.course,
@@ -82,6 +84,35 @@ export class CourseGridComponent implements OnInit {
     this.courseService.getCourseStudents(this.course.id).subscribe(students => {
       this.students = students;
     })
+  }
+
+  viewStudentDetails(student): void {
+    this.dialog.open(CourseStudentDialogComponent, {
+      data: {
+        item: student,
+        adding: false
+      },
+      disableClose: true
+    }).afterClosed().subscribe(resp => {
+      this.handleEditStudentResponse(resp);
+    });
+  }
+
+  stopPropagation(e): void {
+    e.stopPropagation();
+  }
+
+   private handleEditStudentResponse(resp): void {
+    if (resp) {
+      console.log("Response from edit student", resp);
+
+      for (var i = 0; i < this.students.length; i++) {
+         let student = this.students[i];
+         if (student.student.id == resp.data.id) {
+           this.students[i].student = resp.data;
+         }
+      }
+    }
   }
 
   private handleAddStudentResponse(resp): void {
