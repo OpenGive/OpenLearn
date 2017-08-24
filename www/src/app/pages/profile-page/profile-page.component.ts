@@ -2,6 +2,8 @@ import {Component, Input} from "@angular/core";
 import {UserService} from "../../services/user.service";
 import {AccountService} from "../../shared/auth/account.service";
 import {Principal} from "../../shared/auth/principal.service";
+import {AdminService} from "../../services/admin.service";
+import {AdminModel} from "../../controls/admin/admin.constants";
 
 @Component({
   selector: 'profile-form',
@@ -14,10 +16,12 @@ export class ProfilePageComponent {
   @Input() editing: boolean;
 
   roles: string[];
+  organization: string;
 
-  constructor(private userService: UserService, private accountService: AccountService, private principal: Principal) {
+  constructor(private userService: UserService, private accountService: AccountService, private principal: Principal, private adminService: AdminService) {
     this.accountService.get().subscribe(resp => {
       this.profile = resp;
+      this.getOrganization();
       this.adjustRoles(this.profile.authorities);
     });
   }
@@ -44,6 +48,10 @@ export class ProfilePageComponent {
 
   ageAllowed(): boolean {
     return this.profile['14Plus'];
+  }
+
+  private getOrganization(): void {
+    this.adminService.get(AdminModel.Organization.route, this.profile.organizationIds[0]).subscribe(resp => {this.organization = resp.name;});
   }
 
   adjustRoles(roles: string[]): void {
