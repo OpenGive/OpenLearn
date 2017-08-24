@@ -77,6 +77,19 @@ public class CourseService {
 	}
 
 	/**
+	 * Get all courses that a Student is in
+	 *
+	 * @param pageable the pagination info
+	 * @param studentId the id of the student
+	 * @return list of courses
+	 */
+	@Transactional(readOnly = true)
+	public Page<Course> findAllByStudentId(final Pageable pageable, final Long studentId){
+		log.debug("Request to get Courses assigned to studentID: " + studentId);
+		return courseRepository.findCoursesByStudent(pageable ,studentId);
+	}
+
+	/**
 	 *  Get one course by id.
 	 *
 	 *  @param id the id of the entity
@@ -89,7 +102,7 @@ public class CourseService {
 			return courseRepository.findOne(id);
 		}
 		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-		return courseRepository.findOneByIdAndOrganizationId(id, user.get().organizationIds);
+		return courseRepository.findOneByIdAndOrganizationId(id, user.get().getOrganizationIds());
 	}
 
 	/**

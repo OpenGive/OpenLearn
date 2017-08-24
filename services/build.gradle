@@ -95,22 +95,22 @@ if (project.hasProperty('prod')) {              // OpenLearn Prod => JHipster Pr
 	apply from: 'gradle/profile_dev.gradle'
 }
 
-//group = 'org.openlearn'
+group = 'org.openlearn'
 
 // Versioning logic
-//def release = '0.0.0'
-//def versionBuild = 'noVersion'
-//def suffix = 'SNAPSHOT'
-//if (project.hasProperty('releaseNumber')) {
-//	release = releaseNumber
-//}
-//if (project.hasProperty('buildVersion')) {
-//	versionBuild = buildVersion
-//}
-//if (project.hasProperty('buildType')) {
-//	suffix = buildType
-//}
-//version = release.toString() + '-' + versionBuild.toString() + '-' + suffix.toString()
+def release = '0.0.0'
+def versionBuild = 'noVersion'
+def suffix = 'SNAPSHOT'
+if (project.hasProperty('releaseNumber')) {
+	release = releaseNumber
+}
+if (project.hasProperty('buildVersion')) {
+	versionBuild = buildVersion
+}
+if (project.hasProperty('buildType')) {
+	suffix = buildType
+}
+version = release.toString() + '-' + versionBuild.toString() + '-' + suffix.toString()
 
 description = ''
 

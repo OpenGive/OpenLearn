@@ -133,11 +133,12 @@ public class UserResource {
 					.body(null);
 		else {
 			final User newUser = userService.createUser(managedUserVM, managedUserVM.getPassword());
+			final UserDTO newUserDTO = new UserDTO(newUser);
 
 			mailService.sendCreationEmail(newUser);
-			return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
-					.headers(HeaderUtil.createAlert( "userManagement.created", newUser.getLogin()))
-					.body(newUser);
+			return ResponseEntity.created(new URI("/api/users/" + newUserDTO.getLogin()))
+					.headers(HeaderUtil.createAlert( "userManagement.created", newUserDTO.getLogin()))
+					.body(newUserDTO);
 		}
 	}
 
@@ -160,7 +161,7 @@ public class UserResource {
 		existingUser = userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase());
 		if (existingUser.isPresent() && !existingUser.get().getId().equals(managedUserVM.getId()))
 			return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "userexists", "Login already in use")).body(null);
-		final Optional<UserDTO> updatedUser = userService.updateUser(managedUserVM);
+		final Optional<UserDTO> updatedUser = userService.updateUser(managedUserVM, managedUserVM.getPassword());
 
 		return ResponseUtil.wrapOrNotFound(updatedUser,
 				HeaderUtil.createAlert("userManagement.updated", managedUserVM.getLogin()));

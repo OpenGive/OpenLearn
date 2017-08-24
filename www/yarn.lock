@@ -165,9 +165,19 @@
     magic-string "^0.19.0"
     source-map "^0.5.6"
 
+"@types/geojson@*":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@types/geojson/-/geojson-1.0.2.tgz#b02d10ab028e2928ac592a051aaa4981a1941d03"
+
 "@types/jasmine@2.5.38":
   version "2.5.38"
   resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-2.5.38.tgz#a4379124c4921d4e21de54ec74669c9e9b356717"
+
+"@types/leaflet@1.0.67":
+  version "1.0.67"
+  resolved "https://registry.yarnpkg.com/@types/leaflet/-/leaflet-1.0.67.tgz#966f134ef2644b4172a319af042341237dce17a0"
+  dependencies:
+    "@types/geojson" "*"
 
 "@types/lodash@^4.14.65":
   version "4.14.67"
@@ -3001,6 +3011,10 @@ lcid@^1.0.0:
   resolved "https://registry.yarnpkg.com/lcid/-/lcid-1.0.0.tgz#308accafa0bc483a3867b4b6f2b9506251d1b835"
   dependencies:
     invert-kv "^1.0.0"
+
+leaflet@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.2.0.tgz#fd5d93d9cb00091f5f8a69206d0d6744c1c82697"
 
 less-loader@^4.0.2:
   version "4.0.4"

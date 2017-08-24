@@ -66,7 +66,7 @@ public class SessionService {
 			return sessionRepository.findAll(pageable);
 		}
 		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-		return sessionRepository.findAllByOrganizationIds(pageable,user.get().organizationIds);
+		return sessionRepository.findAllByOrganizationIds(pageable,user.get().getOrganizationIds());
     }
 
 	/**

@@ -404,7 +404,8 @@ public class UserResourceIntTest {
 				updatedUser.getLastModifiedDate(),
 				authorities,
 				true,
-				UPDATED_BIOGRAPHY);
+				UPDATED_BIOGRAPHY,
+			null);
 
 		restUserMockMvc.perform(put("/api/users")
 				.contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -451,7 +452,8 @@ public class UserResourceIntTest {
 				updatedUser.getLastModifiedDate(),
 				authorities,
 				true,
-				UPDATED_BIOGRAPHY);
+				UPDATED_BIOGRAPHY,
+			null);
 
 		restUserMockMvc.perform(put("/api/users")
 				.contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -509,7 +511,8 @@ public class UserResourceIntTest {
 				updatedUser.getLastModifiedDate(),
 				authorities,
 				true,
-				updatedUser.getBiography());
+				updatedUser.getBiography(),
+			null);
 
 		restUserMockMvc.perform(put("/api/users")
 				.contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -556,7 +559,8 @@ public class UserResourceIntTest {
 				updatedUser.getLastModifiedDate(),
 				authorities,
 				true,
-				updatedUser.getBiography());
+				updatedUser.getBiography(),
+			null);
 
 		restUserMockMvc.perform(put("/api/users")
 				.contentType(TestUtil.APPLICATION_JSON_UTF8)

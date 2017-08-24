@@ -10,7 +10,9 @@ import javax.validation.Valid;
 
 import org.openlearn.domain.Course;
 import org.openlearn.domain.CourseStudent;
+import org.openlearn.domain.User;
 import org.openlearn.domain.ItemLink;
+import org.openlearn.service.dto.CourseStudentDTO;
 import org.openlearn.service.CourseService;
 import org.openlearn.service.StudentCourseService;
 import org.openlearn.web.rest.util.HeaderUtil;
@@ -148,11 +150,42 @@ public class CourseResource {
 	 */
 	@GetMapping("/courses/{id}/students")
 	@Timed
-	public ResponseEntity<List<CourseStudent>> studentsInCourse(@PathVariable final Long id, @ApiParam final Pageable pageable) {
+	public ResponseEntity<List<CourseStudentDTO>> studentsInCourse(@PathVariable final Long id, @ApiParam final Pageable pageable) {
 		log.debug("REST request to get students in course with id {}", id);
-		final Page<CourseStudent> page = studentCourseService.findByCourseId(id, pageable);
+		final Page<CourseStudentDTO> page = studentCourseService.findByCourseId(id, pageable);
 		final HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/courses"+id+"/students");
 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+	}
+
+	/**
+	 * Get students for course
+	 *
+	 * @param id the id of the course to add the student to
+	 * @return the students in the course
+	 */
+	@GetMapping("/courses/{id}/coursesByStudent")
+	@Timed
+	public ResponseEntity<List<Course>> coursesByStudent(@PathVariable final Long id, @ApiParam final Pageable pageable) {
+		log.debug("REST request to get students in course with id {}", id);
+		final Page<Course> page = courseService.findAllByStudentId(pageable,id);
+		final HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/courses/"+id+"/coursesByStudent");
+		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+	}
+
+	/**
+	 * Get students not in course
+	 *
+	 * @param id the id of the course to search
+	 * @return the students not in the course
+	 */
+	@GetMapping("/courses/{id}/studentsNot")
+	@Timed
+	public ResponseEntity<List<User>> studentsNotInCourse(@PathVariable final Long id) {
+		log.debug("REST request to get students not in course with id {}", id);
+		final List<User> students = studentCourseService.findByCourseIdNot(id);
+		//Left over from pagination removal
+		//final HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/courses"+id+"/studentsNot");
+		return new ResponseEntity<>(students, HttpStatus.OK);
 	}
 
 	/**

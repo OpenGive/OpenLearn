@@ -20,14 +20,14 @@ export class AdminInstructorsFormComponent implements OnInit {
 
   @Input('item') formInstructor: any;
   @Input() adding: boolean;
+  @Input('organizations') organizations: any[];
   editing: boolean;
+  changingPassword: boolean;
 
   roles: string[];
   states: any[];
-  organizations: any[];
 
   filteredStates: Observable<any[]>;
-  filteredOrganizations: Observable<any[]>;
 
   instructorForm: FormGroup;
   formErrors = {
@@ -110,9 +110,9 @@ export class AdminInstructorsFormComponent implements OnInit {
   ngOnInit(): void {
     this.buildForm();
     this.setEditing(this.adding);
+    this.resetPassword(false);
     this.getRoles();
     this.getStates();
-    this.getOrganizations();
   }
 
   private buildForm(): void {
@@ -136,7 +136,7 @@ export class AdminInstructorsFormComponent implements OnInit {
       authorities: [this.formInstructor.authorities, [
         Validators.required
       ]],
-      organization: [this.formInstructor.organization, [
+      organizationIds: [this.formInstructor.organizationIds, [
         Validators.required
       ]],
       biography: [this.formInstructor.biography, [
@@ -230,8 +230,15 @@ export class AdminInstructorsFormComponent implements OnInit {
     return this.states.filter(state => new RegExp(`${val}`, 'gi').test(state.name));
   }
 
+  private setOrganizationID(): void {
+    if (this.instructorForm.valid && this.instructorForm.get('organizationIds').value != null) {
+      this.instructorForm.get('organizationIds').setValue([this.instructorForm.get('organizationIds').value[0]])
+    }
+  }
+
   save(): void {
     if (this.instructorForm.valid) {
+      this.setOrganizationID();
       if (this.adding) {
         this.add();
       } else {
@@ -288,7 +295,7 @@ export class AdminInstructorsFormComponent implements OnInit {
         postalCode: this.instructorForm.get('address').get('postalCode').value
       },
       imageUrl: this.instructorForm.get('imageUrl').value,
-      organization: this.instructorForm.get('organization').value,
+      organizationIds: this.instructorForm.get('organizationIds').value,
       activated: this.instructorForm.get('activated').value,
       is14Plus: this.instructorForm.get('is14Plus').value
     };
@@ -320,27 +327,15 @@ export class AdminInstructorsFormComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  resetPassword(changingPassword: boolean): void {
+    this.changingPassword = changingPassword;
+  }
+
   displayRole(role: string): string { // Convert "ROLE_ONE_TWO" to "One Two"
     return role.split('_').slice(1).map(str => str.charAt(0) + str.slice(1).toLowerCase()).join(' ');
   }
 
   displayState(stateValue: string): string {
     return stateValue ? _.filter(AppConstants.States, {value: stateValue})[0].name : '';
-  }
-  displayOrganization(organization: any): string {
-    return organization ? organization.name : '';
-  }
-  private getOrganizations(): void {
-    this.adminService.getAll(AdminModel.Organization.route).subscribe(resp => {
-      this.organizations = resp;
-      this.filteredOrganizations = this.instructorForm.get('organization')
-        .valueChanges
-        .startWith(null)
-        .map(val => val ? this.filterOrganizations(val) : this.organizations.slice());
-    });
-  }
-
-  private filterOrganizations(val: string): any[] {
-    return this.organizations.filter(organization => new RegExp(`${val}`, 'gi').test(organization.name));
   }
 }

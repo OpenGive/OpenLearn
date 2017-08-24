@@ -4,7 +4,10 @@ import * as _ from "lodash";
 
 import {AdminDialogComponent} from "../admin-dialog.component";
 import {AdminGridModel} from "../../../models/admin-grid.model";
+import {AdminModel} from "../admin.constants";
+import {AdminService} from "../../../services/admin.service";
 import {AdminGridService} from "../../../services/admin-grid.service";
+import {forEach} from "@angular/router/src/utils/collection";
 
 @Component({
   selector: 'app-admin-grid',
@@ -18,12 +21,15 @@ export class AdminGridComponent implements OnInit {
 
   sortColumn: any;
   reverse: boolean;
+  organizations: any[];
 
   constructor(private dialog: MdDialog,
-              private adminGridService: AdminGridService) {}
+              private adminGridService: AdminGridService,
+              private adminService: AdminService) {}
 
   ngOnInit(): void {
     this.getRows();
+    this.getOrganizations();
   }
 
   private getRows(): void {
@@ -39,6 +45,7 @@ export class AdminGridComponent implements OnInit {
       data: {
         tab: this.grid.route,
         item: {},
+        organizations: this.organizations,
         adding: true
       },
       disableClose: true
@@ -52,6 +59,7 @@ export class AdminGridComponent implements OnInit {
       data: {
         tab: this.grid.route,
         item: row,
+        organizations: this.organizations,
         adding: false
       },
       disableClose: true
@@ -79,7 +87,9 @@ export class AdminGridComponent implements OnInit {
       return this.displayAuthorities(row[column.property]);
     } else if (['endDate', 'startDate'].includes(column.property)) {
       return this.displayDate(row[column.property]);
-    } else if (['course', 'milestone', 'organization', 'program', 'school', 'session'].includes(column.property)) {
+    } else if (['organizations', 'organizationIds'].includes(column.property)) {
+      return this.displayOrganization(row[column.property]);
+    } else if (['course', 'milestone', 'program', 'school', 'session'].includes(column.property)) {
       return this.displayObject(row[column.property]);
     } else if (['achievedBy', 'instructor'].includes(column.property)) {
       return this.displayUser(row[column.property]);
@@ -92,6 +102,20 @@ export class AdminGridComponent implements OnInit {
     return authorities.map(role => {
       return role.split('_').slice(1).map(str => str.charAt(0) + str.slice(1).toLowerCase()).join(' ');
     }).sort().join(', ');
+  }
+
+  private displayOrganization(organization): string {
+    if(_.isNil(this.organizations) || _.isNil(organization) || organization[0] < 0 ){
+      return '';
+    } else{
+      let id = parseFloat(organization[0]);
+      for (var i = 0; i < this.organizations.length; i++) {
+        if(this.organizations[i].id === id){
+          return this.organizations[i].name;
+        }
+      }
+      return '';
+    }
   }
 
   private displayDate(date): string {
@@ -134,5 +158,10 @@ export class AdminGridComponent implements OnInit {
     });
     let ndx = _.findIndex(this.grid.columns, {'property': this.sortColumn});
     this.grid.columns[ndx].sortIcon = (this.reverse ? 'keyboard_arrow_up' : 'keyboard_arrow_down');
+  }
+
+  private getOrganizations(): void {
+    this.adminService.getAll(AdminModel.Organization.route).subscribe(resp => {this.organizations = resp;});
+
   }
 }

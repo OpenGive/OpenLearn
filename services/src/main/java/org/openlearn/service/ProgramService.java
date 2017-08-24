@@ -82,7 +82,7 @@ public class ProgramService {
         	return programRepository.findOne(id);
 		}
 		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-        return programRepository.findOneByIdAndOrgIdsWithEagerRelationships(id, user.get().organizationIds);
+        return programRepository.findOneByIdAndOrgIdsWithEagerRelationships(id, user.get().getOrganizationIds());
     }
 
     /**
