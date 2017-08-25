@@ -33,6 +33,7 @@ import {AdminPageComponent} from "./pages/admin-page/admin-page.component";
 import {PortfolioService} from './services/portfolio.service';
 import {PortfolioListComponent} from './controls/portfolio/portfolio-list/portfolio-list.component';
 import {AdminGridService} from "./services/admin-grid.service";
+import {CoursePageComponent} from "./pages/course-page/course-page.component";
 import {AdminService} from "./services/admin.service";
 import {CourseViewComponent} from "./controls/course/course-view/course-view.component";
 import {CourseGridComponent} from "./controls/course/course-grid/course-grid.component";
@@ -55,6 +56,7 @@ import {ResetPasswordPageComponent} from "./pages/reset-password-page/reset-pass
     AdminPageComponent,
     NavigationMenuComponent,
     PortfolioCardComponent,
+    CoursePageComponent,
     CourseCardComponent,
     ParallaxHeaderComponent,
     AccessDeniedPageComponent,

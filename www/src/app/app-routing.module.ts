@@ -7,6 +7,7 @@ import {AdminModel} from "./controls/admin/admin.constants";
 import {AccessDeniedPageComponent} from './pages/access-denied-page/access-denied-page.component';
 import {AdminPageComponent} from "./pages/admin-page/admin-page.component";
 import {DashboardPageComponent} from "./pages/dashboard-page/dashboard-page.component";
+import {CoursePageComponent} from "./pages/course-page/course-page.component";
 import {LandingPageComponent} from "./pages/landing-page/landing-page.component";
 import {LoginPageComponent} from "./pages/login-page/login-page.component";
 import {PortfolioPageComponent} from "./pages/portfolio-page/portfolio-page.component"
@@ -133,6 +134,14 @@ const ROUTES: Routes = [
     component: DashboardPageComponent,
     data: {
       authorities: [AppConstants.Role.Instructor]
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: 'course',
+    component: CoursePageComponent,
+    data: {
+      authorities: []
     },
     canActivate: [UserRouteAccessService]
   },
