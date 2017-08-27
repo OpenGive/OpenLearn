@@ -15,6 +15,20 @@ export const AdminModel = {
     ],
     authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin]
   },
+  OrgAdministrator: {
+    title: 'Org Administrators',
+    route: 'org-administrators',
+    defaultSort: 'login',
+    columns: [
+      {property: 'firstName', display: 'First Name'},
+      {property: 'lastName', display: 'Last Name'},
+      {property: 'login', display: 'Username'},
+      {property: 'authorities', display: 'Roles'},
+      {property: 'organizationIds', display: 'Organizations'},
+      {property: 'activated', display: 'Active'}
+    ],
+    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin]
+  },
   Instructor: {
     title: 'Instructors',
     route: 'instructors',

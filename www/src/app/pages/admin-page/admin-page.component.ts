@@ -12,6 +12,7 @@ export class AdminPageComponent implements OnInit {
 
   tabs = [
     { name: AdminModel.Administrator.title, route: AdminModel.Administrator.route, authorities: AdminModel.Administrator.authorities },
+    { name: AdminModel.OrgAdministrator.title, route: AdminModel.OrgAdministrator.route, authorities: AdminModel.OrgAdministrator.authorities },
     { name: AdminModel.Instructor.title, route: AdminModel.Instructor.route, authorities: AdminModel.Instructor.authorities },
     { name: AdminModel.Student.title, route: AdminModel.Student.route, authorities: AdminModel.Student.authorities },
     { name: AdminModel.Organization.title, route: AdminModel.Organization.route, authorities: AdminModel.Organization.authorities },
