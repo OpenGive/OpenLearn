@@ -46,6 +46,7 @@ import {OLCourseModule} from "./controls/course/course.module";
 import {DashboardPageComponent} from "./pages/dashboard-page/dashboard-page.component";
 import {PasswordService} from "./shared/auth/password.service";
 import {ResetPasswordPageComponent} from "./pages/reset-password-page/reset-password-page.component";
+import {DataService} from "./services/course.data.service";
 
 @NgModule({
   declarations: [
@@ -97,6 +98,7 @@ import {ResetPasswordPageComponent} from "./pages/reset-password-page/reset-pass
     HttpWrapperService,
     PortfolioService,
     AdminService,
+    DataService,
     AdminGridService,
     NotifyService,
     ItemLinkService
