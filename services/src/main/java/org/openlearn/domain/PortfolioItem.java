@@ -33,76 +33,12 @@ public class PortfolioItem implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
-    @NotNull
-    private Portfolio portfolio;
-
-    @ManyToOne
-    private Course course;
-
-    @ManyToMany
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @NotNull
-    @JoinTable(name = "portfolio_item_resource",
-               joinColumns = @JoinColumn(name="portfolio_items_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="resources_id", referencedColumnName="id"))
-    private Set<ItemLink> resources = new HashSet<>();
-
     public Long getId() {
         return id;
     }
 
     public void setId(final Long id) {
         this.id = id;
-    }
-
-    public Portfolio getPortfolio() {
-        return portfolio;
-    }
-
-    public PortfolioItem portfolio(final Portfolio portfolio) {
-        this.portfolio = portfolio;
-        return this;
-    }
-
-    public void setPortfolio(final Portfolio portfolio) {
-        this.portfolio = portfolio;
-    }
-
-    public Course getCourse() {
-        return course;
-    }
-
-    public PortfolioItem course(final Course course) {
-        this.course = course;
-        return this;
-    }
-
-    public void setCourse(final Course course) {
-        this.course = course;
-    }
-
-    public Set<ItemLink> getResources() {
-        return resources;
-    }
-
-    public PortfolioItem resources(final Set<ItemLink> itemLinks) {
-        resources = itemLinks;
-        return this;
-    }
-
-    public PortfolioItem addResource(final ItemLink itemLink) {
-        resources.add(itemLink);
-        return this;
-    }
-
-    public PortfolioItem removeResource(final ItemLink itemLink) {
-        resources.remove(itemLink);
-        return this;
-    }
-
-    public void setResources(final Set<ItemLink> itemLinks) {
-        resources = itemLinks;
     }
 
     @Override

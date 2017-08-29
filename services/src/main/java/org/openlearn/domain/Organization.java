@@ -36,22 +36,10 @@ public class Organization implements Serializable {
 	@Column(name = "description", length = 800)
 	private String description;
 
-//	@ManyToMany(fetch = FetchType.EAGER)
-//	@JoinTable(
-//			name = "user_org",
-//			joinColumns = {@JoinColumn(name = "org_id", referencedColumnName = "id") },
-//			inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id") }
-//			)
-//	// @JsonIgnore
-//	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-//	private Set<User> users = new HashSet<>();
-
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name="user_org", joinColumns = @JoinColumn(name = "org_id", referencedColumnName = "id"))
 	@Column(name = "user_id")
 	public Set<Long> userIds;
-
-
 
 	public Long getId() {
 		return id;

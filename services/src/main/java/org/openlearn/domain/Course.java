@@ -55,18 +55,6 @@ public class Course implements Serializable {
 	@ManyToOne(optional = false)
 	private User instructor;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(
-			name="course_link",
-			joinColumns=@JoinColumn(name="course_id", referencedColumnName="id"),
-			inverseJoinColumns=@JoinColumn(name="link_id", referencedColumnName="id"))
-	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	private Set<ItemLink> resources = new HashSet<>();
-
-	@OneToMany(mappedBy = "course", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	private Set<Milestone> milestones = new HashSet<>();
-
 	public Long getId() {
 		return id;
 	}
@@ -148,79 +136,6 @@ public class Course implements Serializable {
 		instructor = user;
 	}
 
-	public Set<ItemLink> getResources() {
-		return resources;
-	}
-
-	public Course resources(final Set<ItemLink> itemLinks) {
-		resources = itemLinks;
-		return this;
-	}
-
-	public Course addResources(final ItemLink itemLink) {
-		resources.add(itemLink);
-		return this;
-	}
-
-	public Course removeResources(final ItemLink itemLink) {
-		resources.remove(itemLink);
-		return this;
-	}
-
-	public void setResources(final Set<ItemLink> itemLinks) {
-		resources = itemLinks;
-	}
-
-//	public Set<User> getStudents() {
-//	  return students.stream().map(StudentCourse::getStudent).collect(Collectors.toSet());
-//	}
-//
-//	public Course students(final Set<User> users) {
-//	  setStudents(users);
-//		return this;
-//	}
-//
-//	public Course addStudents(final User user) {
-//	  students.add(new StudentCourse(this, user));
-//		return this;
-//	}
-//
-//	public Course removeStudents(final User user) {
-//	  students = students.stream().filter(sc -> !sc.getStudent().equals(user)).collect(Collectors.toSet());
-//		return this;
-//	}
-//
-//	public void setStudents(final Set<User> users) {
-//	  users.forEach(u -> {
-//	    students.add(new StudentCourse(this, u));
-//    });
-//	}
-//
-	public Set<Milestone> getMilestones() {
-		return milestones;
-	}
-
-	public Course milestones(final Set<Milestone> milestones) {
-		this.milestones = milestones;
-		return this;
-	}
-
-	public Course addMilestones(final Milestone milestone) {
-		milestones.add(milestone);
-    milestone.setCourse(this);
-		return this;
-	}
-
-	public Course removeMilestones(final Milestone milestone) {
-		milestones.remove(milestone);
-    milestone.setCourse(null);
-		return this;
-	}
-
-	public void setMilestones(final Set<Milestone> milestones) {
-		this.milestones = milestones;
-	}
-
 	@Override
 	public boolean equals(final Object o) {
 		if (this == o)
@@ -248,9 +163,6 @@ public class Course implements Serializable {
       ", endDate=" + endDate +
       ", session=" + session +
       ", instructor=" + instructor +
-      ", resources=" + resources +
-//      ", students=" + students +
-      ", milestones=" + milestones +
       '}';
   }
 }

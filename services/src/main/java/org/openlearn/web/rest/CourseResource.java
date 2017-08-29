@@ -4,14 +4,12 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import javax.validation.Valid;
 
 import org.openlearn.domain.Course;
 import org.openlearn.domain.CourseStudent;
 import org.openlearn.domain.User;
-import org.openlearn.domain.ItemLink;
 import org.openlearn.service.dto.CourseStudentDTO;
 import org.openlearn.service.CourseService;
 import org.openlearn.service.StudentCourseService;
@@ -231,49 +229,5 @@ public class CourseResource {
 		log.debug("REST request to set student with id {} in course with id {} to have the grade {}", studentId, id, grade);
 		final CourseStudent studentCourse = studentCourseService.addGradeToStudentCourse(id, studentId, grade);
 		return ResponseUtil.wrapOrNotFound(Optional.ofNullable(studentCourse));
-	}
-
-	/**
-	 * Get the resources associated with a course
-	 *
-	 * @param courseId the id of the course to add the item link to
-	 * @return the item links associated with the course
-	 */
-	@GetMapping("/courses/{courseId}/resources")
-	@Timed
-	public ResponseEntity<Set<ItemLink>> getCourseResources(@PathVariable final Long courseId){
-		log.debug("REST request to get resources associated with course id : {}", courseId);
-		final Set<ItemLink> results = courseService.getItemLinksForCourse(courseId);
-		return new ResponseEntity<Set<ItemLink>>(results, HttpStatus.OK);
-	}
-
-	/**
-	 * Add a resource item link to a course
-	 *
-	 * @param courseId the id of the course to add the item link to
-	 * @param itemLinkId the id of the item link to add to the course
-	 * @return the item links that are associated with the course
-	 */
-	@PostMapping("/courses/{courseId}/resources")
-	@Timed
-	public ResponseEntity<Set<ItemLink>> addResourceToCourse(@PathVariable final Long courseId, @RequestParam Long itemLinkId){
-		log.debug("REST request to add item link with id {} to course with id {}", itemLinkId, courseId);
-		final Set<ItemLink> result = courseService.addItemLinkToCourse(courseId, itemLinkId);
-		return new ResponseEntity<Set<ItemLink>>(result, HttpStatus.OK);
-	}
-
-	/**
-	 * Add a resource item link to a course
-	 *
-	 * @param courseId the id of the course to add the item link to
-	 * @param itemLinkId the id of the item link to add to the course
-	 * @return the item links that are associated with the course
-	 */
-	@DeleteMapping("/courses/{courseId}/resources/{itemLinkId}")
-	@Timed
-	public ResponseEntity<Set<ItemLink>> removeItemLinkFromCourse(@PathVariable final Long courseId, @PathVariable final Long itemLinkId){
-		log.debug("REST request to remove item link with id {} from course id {}", itemLinkId, courseId);
-		final Set<ItemLink> result = courseService.removeItemLinkFromCourse(courseId, itemLinkId);
-		return new ResponseEntity<Set<ItemLink>>(result, HttpStatus.OK);
 	}
 }

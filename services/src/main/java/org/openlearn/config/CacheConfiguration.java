@@ -49,26 +49,13 @@ public class CacheConfiguration {
 			cm.createCache(Organization.class.getName() + ".courses", jcacheConfiguration);
 			cm.createCache(Organization.class.getName() + ".users", jcacheConfiguration);
 			cm.createCache(Address.class.getName(), jcacheConfiguration);
-			cm.createCache(Portfolio.class.getName(), jcacheConfiguration);
-			cm.createCache(Portfolio.class.getName() + ".portfolioItems", jcacheConfiguration);
 			cm.createCache(Course.class.getName(), jcacheConfiguration);
-			cm.createCache(Course.class.getName() + ".resources", jcacheConfiguration);
 			cm.createCache(Course.class.getName() + ".students", jcacheConfiguration);
-			cm.createCache(Course.class.getName() + ".milestones", jcacheConfiguration);
-			cm.createCache(Milestone.class.getName(), jcacheConfiguration);
-			cm.createCache(Milestone.class.getName() + ".resources", jcacheConfiguration);
-			cm.createCache(Milestone.class.getName() + ".achievements", jcacheConfiguration);
-			cm.createCache(Achievement.class.getName(), jcacheConfiguration);
-			cm.createCache(Achievement.class.getName() + ".achievedBy", jcacheConfiguration);
-			cm.createCache(ItemLink.class.getName(), jcacheConfiguration);
 			cm.createCache(Program.class.getName(), jcacheConfiguration);
 			cm.createCache(Program.class.getName() + ".sessions", jcacheConfiguration);
 			cm.createCache(Session.class.getName(), jcacheConfiguration);
 			cm.createCache(Session.class.getName() + ".courses", jcacheConfiguration);
-			cm.createCache(School.class.getName(), jcacheConfiguration);
-			cm.createCache(School.class.getName() + ".sessions", jcacheConfiguration);
 			cm.createCache(PortfolioItem.class.getName(), jcacheConfiguration);
-			cm.createCache(PortfolioItem.class.getName() + ".resources", jcacheConfiguration);
 			// jhipster-needle-ehcache-add-entry
 		};
 	}
