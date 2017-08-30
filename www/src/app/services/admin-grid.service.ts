@@ -15,6 +15,8 @@ export class AdminGridService {
     switch (type) {
       case AdminModel.Administrator.route:
         return this.userService.getAdministrators();
+      case AdminModel.OrgAdministrator.route:
+        return this.userService.getOrgAdministrators();
       case AdminModel.Instructor.route:
         return this.userService.getInstructors();
       case AdminModel.Student.route:
