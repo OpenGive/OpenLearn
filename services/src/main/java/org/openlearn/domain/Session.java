@@ -50,24 +50,15 @@ public class Session implements Serializable {
 	@Column(name = "end_date")
 	private ZonedDateTime endDate;
 
-	@NotNull
-	@Column(name = "active", nullable = false)
-	private Boolean active;
-
 	@ManyToOne(optional = false)
+	@NotNull
 	private Program program;
-
-	@OneToMany(mappedBy = "session")
-	@JsonIgnore
-	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	private Set<Course> courses = new HashSet<>();
-
 
 	public Long getId() {
 		return id;
 	}
 
-	public void setId(final Long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -75,66 +66,15 @@ public class Session implements Serializable {
 		return name;
 	}
 
-	public Session name(final String name) {
+	public void setName(String name) {
 		this.name = name;
-		return this;
-	}
-
-	public Program getProgram() {
-		return program;
-	}
-
-	public void setProgram(final Program program) {
-		this.program = program;
-	}
-
-	public void setName(final String name) {
-		this.name = name;
-	}
-
-	public Boolean isActive() {
-		return active;
-	}
-
-	public Session active(final Boolean active) {
-		this.active = active;
-		return this;
-	}
-
-	public void setActive(final Boolean active) {
-		this.active = active;
-	}
-
-	public Set<Course> getCourses() {
-		return courses;
-	}
-
-	public Session courses(final Set<Course> courses) {
-		this.courses = courses;
-		return this;
-	}
-
-	public Session addCourse(final Course course) {
-		courses.add(course);
-		course.setSession(this);
-		return this;
-	}
-
-	public Session removeCourse(final Course course) {
-		courses.remove(course);
-		course.setSession(null);
-		return this;
-	}
-
-	public void setCourses(final Set<Course> courses) {
-		this.courses = courses;
 	}
 
 	public String getDescription() {
 		return description;
 	}
 
-	public void setDescription(final String description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 
@@ -142,7 +82,7 @@ public class Session implements Serializable {
 		return startDate;
 	}
 
-	public void setStartDate(final ZonedDateTime startDate) {
+	public void setStartDate(ZonedDateTime startDate) {
 		this.startDate = startDate;
 	}
 
@@ -150,33 +90,53 @@ public class Session implements Serializable {
 		return endDate;
 	}
 
-	public void setEndDate(final ZonedDateTime endDate) {
+	public void setEndDate(ZonedDateTime endDate) {
 		this.endDate = endDate;
 	}
 
+	public Program getProgram() {
+		return program;
+	}
+
+	public void setProgram(Program program) {
+		this.program = program;
+	}
+
 	@Override
-	public boolean equals(final Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
-		final Session session = (Session) o;
-		if (session.id == null || id == null)
-			return false;
-		return Objects.equals(id, session.id);
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Session session = (Session) o;
+
+		if (id != null ? !id.equals(session.id) : session.id != null) return false;
+		if (!name.equals(session.name)) return false;
+		if (description != null ? !description.equals(session.description) : session.description != null) return false;
+		if (startDate != null ? !startDate.equals(session.startDate) : session.startDate != null) return false;
+		if (endDate != null ? !endDate.equals(session.endDate) : session.endDate != null) return false;
+		return program.equals(session.program);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(id);
+		int result = id != null ? id.hashCode() : 0;
+		result = 31 * result + name.hashCode();
+		result = 31 * result + (description != null ? description.hashCode() : 0);
+		result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
+		result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
+		result = 31 * result + program.hashCode();
+		return result;
 	}
 
 	@Override
 	public String toString() {
 		return "Session{" +
-				"id=" + id +
-				", name='" + name + "'" +
-				", active='" + active + "'" +
-				'}';
+			"id=" + id +
+			", name='" + name + '\'' +
+			", description='" + description + '\'' +
+			", startDate=" + startDate +
+			", endDate=" + endDate +
+			", program=" + program +
+			'}';
 	}
 }

@@ -36,28 +36,28 @@ public class StudentCourseService {
 
 	private final StudentCourseRepostory studentCourseRepostory;
 
-	public StudentCourseService(final CourseStudentRepository courseStudentRepository, final UserRepository userRepository, final CourseRepository courseRepository, final StudentCourseRepostory studentCourseRepostory){
+	public StudentCourseService(final CourseStudentRepository courseStudentRepository, final UserRepository userRepository, final CourseRepository courseRepository, final StudentCourseRepostory studentCourseRepostory) {
 		this.courseStudentRepository = courseStudentRepository;
 		this.studentCourseRepostory = studentCourseRepostory;
 		this.userRepository = userRepository;
 		this.courseRepository = courseRepository;
 	}
 
-	@Transactional(readOnly =  true)
-	public Page<CourseStudentDTO> findByCourseId(final Long courseId, final Pageable pageable){
+	@Transactional(readOnly = true)
+	public Page<CourseStudentDTO> findByCourseId(final Long courseId, final Pageable pageable) {
 		log.debug("Request to get students for course id : {}", courseId);
 		final Page<CourseStudentDTO> courseStudents = courseStudentRepository.findAllByCourseId(courseId, pageable).map(CourseStudentDTO::new);
 		return courseStudents;
 	}
 
-	@Transactional(readOnly =  true)
-	public List<User> findByCourseIdNot(final Long courseId){
+	@Transactional(readOnly = true)
+	public List<User> findByCourseIdNot(final Long courseId) {
 		log.debug("Request to get students not in course id : {}", courseId);
 		return userRepository.findAllByCourseIdNot(courseId);
 	}
 
 	@Transactional(readOnly = true)
-	public Page<StudentCourse> findByLogin(final String login, final Pageable pageable){
+	public Page<StudentCourse> findByLogin(final String login, final Pageable pageable) {
 		log.debug("Request to get courses for user with login : {}", login);
 		Optional<User> user = userRepository.findOneWithAuthoritiesByLogin(login);
 		final Page<StudentCourse> studentCourses = studentCourseRepostory.findAllByUserId(user.get().getId(), pageable);
@@ -65,7 +65,7 @@ public class StudentCourseService {
 	}
 
 	@Transactional
-	public CourseStudent addStudentToCourse(final Long courseId, final Long studentId){
+	public CourseStudent addStudentToCourse(final Long courseId, final Long studentId) {
 		log.debug("Request to create StudentCourse with student id of {} and course id of {}", studentId, courseId);
 		Course course = courseRepository.findOne(courseId);
 		log.debug("Found course : {}", course);
@@ -78,7 +78,7 @@ public class StudentCourseService {
 	}
 
 	@Transactional
-	public CourseStudent removeStudentFromCourse(final Long courseId, final Long studentId){
+	public CourseStudent removeStudentFromCourse(final Long courseId, final Long studentId) {
 		log.debug("Request to remove StudentCourse with student id of {} and course id of {}", studentId, courseId);
 		CourseStudent studentCourse = courseStudentRepository.findOneByCourseIdAndUserId(courseId, studentId);
 		courseStudentRepository.delete(studentCourse);
@@ -86,7 +86,7 @@ public class StudentCourseService {
 	}
 
 	@Transactional
-	public CourseStudent addGradeToStudentCourse(final Long courseId, final Long studentId, final String grade){
+	public CourseStudent addGradeToStudentCourse(final Long courseId, final Long studentId, final String grade) {
 		log.debug("Request to set StudentCourse with student id of {} and course id of {} to grade of {}", studentId, courseId, grade);
 		CourseStudent studentCourse = courseStudentRepository.findOneByCourseIdAndUserId(courseId, studentId);
 		studentCourse.setGrade(grade);

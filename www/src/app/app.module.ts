@@ -43,7 +43,6 @@ import {NotifyService} from "./services/notify.service";
 import {OLAdminModule} from "./controls/admin/admin.module";
 import {OLCourseModule} from "./controls/course/course.module";
 import {DashboardPageComponent} from "./pages/dashboard-page/dashboard-page.component";
-import {PasswordService} from "./shared/auth/password.service";
 import {ResetPasswordPageComponent} from "./pages/reset-password-page/reset-password-page.component";
 
 @NgModule({
@@ -87,7 +86,6 @@ import {ResetPasswordPageComponent} from "./pages/reset-password-page/reset-pass
     CourseService,
     UserRouteAccessService,
     Principal,
-    PasswordService,
     AccountService,
     LoginService,
     AuthServerProvider,

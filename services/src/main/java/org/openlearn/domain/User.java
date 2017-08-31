@@ -42,24 +42,26 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	@JsonIgnore
 	@NotNull
 	@Size(min = 60, max = 60)
-	@Column(name = "password_hash",length = 60)
+	@Column(name = "password_hash", length = 60)
 	private String password;
 
+	@NotNull
 	@Size(max = 50)
-	@Column(name = "first_name", length = 50)
+	@Column(length = 50)
 	private String firstName;
 
+	@NotNull
 	@Size(max = 50)
-	@Column(name = "last_name", length = 50)
+	@Column(length = 50)
 	private String lastName;
 
 	@Email
 	@Size(min = 5, max = 100)
-	@Column(length = 100, unique = true)
+	@Column(length = 100)
 	private String email;
 
 	@Size(max = 15)
-	@Column(name = "phone_num", length = 15)
+	@Column(length = 15)
 	private String phoneNumber;
 
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -68,51 +70,24 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
 	@NotNull
 	@Column(nullable = false)
-	private boolean activated = false;
-
-	@Size(max = 256)
-	@Column(name = "image_url", length = 256)
-	private String imageUrl;
-
-    @JsonIgnore
-    @Size(max = 20)
-	@Column(name = "activation_key", length = 20)
-	private String activationKey;
-
-	@Size(max = 20)
-	@Column(name = "reset_key", length = 20)
-	private String resetKey;
-
-	@Column(name = "reset_date")
-	private ZonedDateTime resetDate = null;
-
-	@NotNull
-	@Column(name = "is_14_plus", nullable = false)
-	private boolean is14Plus;
+	private Boolean fourteenPlus;
 
 	@Size(max = 2000)
-	@Column(name = "biography", length = 2000)
+	@Column(length = 2000)
 	private String biography;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.DETACH})
-	@JoinTable(
-			name = "user_authority",
-			joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
-			inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "name")})
-	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	@BatchSize(size = 20)
-	private Set<Authority> authorities = new HashSet<>();
+	@ManyToOne(optional = false)
+	@NotNull
+	private Authority authority;
 
-	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name="user_org", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
-	@Column(name = "org_id")
-	public Set<Long> organizationIds;
+	@ManyToOne(optional = false)
+	private Organization organization;
 
 	public Long getId() {
 		return id;
 	}
 
-	public void setId(final Long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -120,16 +95,15 @@ public class User extends AbstractAuditingEntity implements Serializable {
 		return login;
 	}
 
-	//Lowercase the login before saving it in database
-	public void setLogin(final String login) {
-		this.login = login.toLowerCase(Locale.ENGLISH);
+	public void setLogin(String login) {
+		this.login = login.toLowerCase(Locale.US);
 	}
 
 	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(final String password) {
+	public void setPassword(String password) {
 		this.password = password;
 	}
 
@@ -137,7 +111,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
 		return firstName;
 	}
 
-	public void setFirstName(final String firstName) {
+	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
 
@@ -145,7 +119,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
 		return lastName;
 	}
 
-	public void setLastName(final String lastName) {
+	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 
@@ -153,7 +127,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
 		return email;
 	}
 
-	public void setEmail(final String email) {
+	public void setEmail(String email) {
 		this.email = email;
 	}
 
@@ -161,7 +135,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
 		return phoneNumber;
 	}
 
-	public void setPhoneNumber(final String phoneNumber) {
+	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 
@@ -169,133 +143,94 @@ public class User extends AbstractAuditingEntity implements Serializable {
 		return address;
 	}
 
-	public void setAddress(final Address address) {
+	public void setAddress(Address address) {
 		this.address = address;
 	}
 
-	public String getImageUrl() {
-		return imageUrl;
+	public Boolean isFourteenPlus() {
+		return fourteenPlus;
 	}
 
-	public void setImageUrl(final String imageUrl) {
-		this.imageUrl = imageUrl;
-	}
-
-	public boolean getActivated() {
-		return activated;
-	}
-
-	public void setActivated(final boolean activated) {
-		this.activated = activated;
-	}
-
-	public String getActivationKey() {
-		return activationKey;
-	}
-
-	public void setActivationKey(final String activationKey) {
-		this.activationKey = activationKey;
-	}
-
-	public String getResetKey() {
-		return resetKey;
-	}
-
-	public void setResetKey(final String resetKey) {
-		this.resetKey = resetKey;
-	}
-
-	public ZonedDateTime getResetDate() {
-		return resetDate;
-	}
-
-	public void setResetDate(final ZonedDateTime resetDate) {
-		this.resetDate = resetDate;
-	}
-
-	public Set<Authority> getAuthorities() {
-		return authorities;
-	}
-
-	public void setAuthorities(final Set<Authority> authorities) {
-		this.authorities = authorities;
-	}
-
-	public boolean getIs14Plus()
-	{
-		return is14Plus;
-	}
-
-	public boolean is14Plus() { return is14Plus; }
-
-	public void setIs14Plus(final boolean is14Plus)
-	{
-		this.is14Plus = is14Plus;
+	public void setFourteenPlus(Boolean fourteenPlus) {
+		this.fourteenPlus = fourteenPlus;
 	}
 
 	public String getBiography() {
 		return biography;
 	}
 
-	public void setBiography(final String biography) {
+	public void setBiography(String biography) {
 		this.biography = biography;
 	}
 
-	public Set<Long> getOrganizationIds() {
-		return organizationIds;
+	public Authority getAuthority() {
+		return authority;
 	}
 
-	public void setOrganizationIds(Set<Long> organizationIds) {
-		this.organizationIds = organizationIds;
+	public void setAuthority(Authority authority) {
+		this.authority = authority;
 	}
 
-	//	public Set<Organization> getOrganizations(){
-//		return this.organizations;
-//	}
-//
-//	public void setOrganizations(Set<Organization> organizations){
-//		this.organizations.clear();
-//		this.organizations.addAll(organizations);
-//	}
+	public Organization getOrganization() {
+		return organization;
+	}
+
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
+	}
 
 	@Override
-	public boolean equals(final Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
 
-		final User user = (User) o;
+		User user = (User) o;
 
-		return login.equals(user.login);
+		if (id != null ? !id.equals(user.id) : user.id != null) return false;
+		if (!login.equals(user.login)) return false;
+		if (!password.equals(user.password)) return false;
+		if (!firstName.equals(user.firstName)) return false;
+		if (!lastName.equals(user.lastName)) return false;
+		if (email != null ? !email.equals(user.email) : user.email != null) return false;
+		if (phoneNumber != null ? !phoneNumber.equals(user.phoneNumber) : user.phoneNumber != null) return false;
+		if (address != null ? !address.equals(user.address) : user.address != null) return false;
+		if (!fourteenPlus.equals(user.fourteenPlus)) return false;
+		if (biography != null ? !biography.equals(user.biography) : user.biography != null) return false;
+		if (!authority.equals(user.authority)) return false;
+		return organization != null ? organization.equals(user.organization) : user.organization == null;
 	}
 
 	@Override
 	public int hashCode() {
-		return login.hashCode();
+		int result = id != null ? id.hashCode() : 0;
+		result = 31 * result + login.hashCode();
+		result = 31 * result + password.hashCode();
+		result = 31 * result + firstName.hashCode();
+		result = 31 * result + lastName.hashCode();
+		result = 31 * result + (email != null ? email.hashCode() : 0);
+		result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
+		result = 31 * result + (address != null ? address.hashCode() : 0);
+		result = 31 * result + fourteenPlus.hashCode();
+		result = 31 * result + (biography != null ? biography.hashCode() : 0);
+		result = 31 * result + authority.hashCode();
+		result = 31 * result + (organization != null ? organization.hashCode() : 0);
+		return result;
 	}
 
-  @Override
-  public String toString() {
-    return "User{" +
-      "id=" + id +
-      ", login='" + login + '\'' +
-      ", password='" + password + '\'' +
-      ", firstName='" + firstName + '\'' +
-      ", lastName='" + lastName + '\'' +
-      ", email='" + email + '\'' +
-      ", phoneNumber='" + phoneNumber + '\'' +
-      ", address=" + address +
-      ", activated=" + activated +
-      ", imageUrl='" + imageUrl + '\'' +
-      ", activationKey='" + activationKey + '\'' +
-      ", resetKey='" + resetKey + '\'' +
-      ", resetDate=" + resetDate +
-      ", is14Plus=" + is14Plus +
-      ", biography='" + biography + '\'' +
-      ", authorities=" + authorities +
-// 	  ", organizations=" + organizations +
-      ", organizationIds=" + organizationIds +
-      '}';
-  }
+	@Override
+	public String toString() {
+		return "User{" +
+			"id=" + id +
+			", login='" + login + '\'' +
+			", firstName='" + firstName + '\'' +
+			", lastName='" + lastName + '\'' +
+			", email='" + email + '\'' +
+			", phoneNumber='" + phoneNumber + '\'' +
+			", address=" + address +
+			", fourteenPlus=" + fourteenPlus +
+			", biography='" + biography + '\'' +
+			", authority=" + authority +
+			", organization=" + organization +
+			'}';
+	}
 }

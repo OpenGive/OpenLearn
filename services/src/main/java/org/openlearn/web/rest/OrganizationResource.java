@@ -4,19 +4,16 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import javax.validation.Valid;
 
 import org.openlearn.domain.Organization;
-import org.openlearn.domain.User;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.service.OrganizationService;
 import org.openlearn.web.rest.util.HeaderUtil;
 import org.openlearn.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.actuate.autoconfigure.ShellProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -63,8 +60,8 @@ public class OrganizationResource {
 			return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new organization cannot already have an ID")).body(null);
 		final Organization result = organizationService.save(organization);
 		return ResponseEntity.created(new URI("/api/organizations/" + result.getId()))
-				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-				.body(result);
+			.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+			.body(result);
 	}
 
 	/**
@@ -85,8 +82,8 @@ public class OrganizationResource {
 			return createOrganization(organization);
 		final Organization result = organizationService.save(organization);
 		return ResponseEntity.ok()
-				.headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, organization.getId().toString()))
-				.body(result);
+			.headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, organization.getId().toString()))
+			.body(result);
 	}
 
 	/**
@@ -133,31 +130,5 @@ public class OrganizationResource {
 		log.debug("REST request to delete Organization : {}", id);
 		organizationService.delete(id);
 		return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-	}
-
-	@GetMapping("/organizations/{organizationId}/users")
-	@Timed
-	public ResponseEntity<Set<User>> getUsersForOrganization(@PathVariable final Long organizationId){
-		log.debug("REST request to get users for an organization");
-		final Set<User> orgUsers = organizationService.getUsersForOrganization(organizationId);
-		return new ResponseEntity<Set<User>>(orgUsers, HttpStatus.OK);
-	}
-
-	@PostMapping("/organizations/{organizationId}/users")
-	@Secured(AuthoritiesConstants.ADMIN)
-	@Timed
-	public ResponseEntity<Organization> addUserToOrganization(@PathVariable final Long organizationId, @RequestParam final Long userId){
-		log.debug("REST request to add user with id {} to organization :{}", userId, organizationId);
-		final Organization org = organizationService.addUserToOrganization(organizationId, userId);
-		return new ResponseEntity<Organization>(org, HttpStatus.OK);
-	}
-
-	@DeleteMapping("/organizations/{organizationId}/users/{userId}")
-	@Secured(AuthoritiesConstants.ADMIN)
-	@Timed
-	public ResponseEntity<Organization> deleteUserFromOrganization(@PathVariable final Long organizationId, @PathVariable final Long userId){
-		log.debug("REST request to remove user {} from organization {}", userId, organizationId);
-		Organization organization = organizationService.removeUserFromOrganization(organizationId, userId);
-		return new ResponseEntity<Organization>(organization, HttpStatus.OK);
 	}
 }

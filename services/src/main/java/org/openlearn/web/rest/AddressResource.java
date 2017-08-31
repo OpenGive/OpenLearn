@@ -64,8 +64,8 @@ public class AddressResource {
 			return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new address cannot already have an ID")).body(null);
 		final Address result = addressService.save(address);
 		return ResponseEntity.created(new URI("/api/addresses/" + result.getId()))
-				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-				.body(result);
+			.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+			.body(result);
 	}
 
 	/**
@@ -85,8 +85,8 @@ public class AddressResource {
 			return createAddress(address);
 		final Address result = addressService.save(address);
 		return ResponseEntity.ok()
-				.headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, address.getId().toString()))
-				.body(result);
+			.headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, address.getId().toString()))
+			.body(result);
 	}
 
 	/**

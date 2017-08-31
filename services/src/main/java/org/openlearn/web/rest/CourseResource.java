@@ -72,8 +72,8 @@ public class CourseResource {
 			return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new course cannot already have an ID")).body(null);
 		final Course result = courseService.save(course);
 		return ResponseEntity.created(new URI("/api/courses/" + result.getId()))
-				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-				.body(result);
+			.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+			.body(result);
 	}
 
 	/**
@@ -93,8 +93,8 @@ public class CourseResource {
 			return createCourse(course);
 		final Course result = courseService.save(course);
 		return ResponseEntity.ok()
-				.headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, course.getId().toString()))
-				.body(result);
+			.headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, course.getId().toString()))
+			.body(result);
 	}
 
 	/**
@@ -151,7 +151,7 @@ public class CourseResource {
 	public ResponseEntity<List<CourseStudentDTO>> studentsInCourse(@PathVariable final Long id, @ApiParam final Pageable pageable) {
 		log.debug("REST request to get students in course with id {}", id);
 		final Page<CourseStudentDTO> page = studentCourseService.findByCourseId(id, pageable);
-		final HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/courses"+id+"/students");
+		final HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/courses" + id + "/students");
 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 	}
 
@@ -165,8 +165,8 @@ public class CourseResource {
 	@Timed
 	public ResponseEntity<List<Course>> coursesByStudent(@PathVariable final Long id, @ApiParam final Pageable pageable) {
 		log.debug("REST request to get students in course with id {}", id);
-		final Page<Course> page = courseService.findAllByStudentId(pageable,id);
-		final HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/courses/"+id+"/coursesByStudent");
+		final Page<Course> page = courseService.findAllByStudentId(pageable, id);
+		final HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/courses/" + id + "/coursesByStudent");
 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 	}
 
@@ -189,7 +189,7 @@ public class CourseResource {
 	/**
 	 * Add Student to course  /courses/{id}/students?student_id={studentId}
 	 *
-	 * @param id the id of the course to add the student to
+	 * @param id        the id of the course to add the student to
 	 * @param studentId the id of the student to add to the course
 	 * @return the student added to the course
 	 */
@@ -204,7 +204,7 @@ public class CourseResource {
 	/**
 	 * Remove Student from course  /courses/{id}/students?student_id={studentId}
 	 *
-	 * @param id the id of the course to add the student to
+	 * @param id        the id of the course to add the student to
 	 * @param studentId the id of the student to add to the course
 	 * @return the student added to the course
 	 */
@@ -219,7 +219,7 @@ public class CourseResource {
 	/**
 	 * Assign a grade to a course and student association /courses/{id}/students?student_id={studentId}&grade={grade}
 	 *
-	 * @param id the id of the course to add the student to
+	 * @param id        the id of the course to add the student to
 	 * @param studentId the id of the student to add to the course
 	 * @return the student added to the course
 	 */

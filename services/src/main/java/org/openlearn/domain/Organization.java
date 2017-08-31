@@ -1,9 +1,6 @@
 package org.openlearn.domain;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -11,7 +8,6 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Cascade;
 
 /**
  * A Organization.
@@ -36,16 +32,11 @@ public class Organization implements Serializable {
 	@Column(name = "description", length = 800)
 	private String description;
 
-	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name="user_org", joinColumns = @JoinColumn(name = "org_id", referencedColumnName = "id"))
-	@Column(name = "user_id")
-	public Set<Long> userIds;
-
 	public Long getId() {
 		return id;
 	}
 
-	public void setId(final Long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -53,12 +44,7 @@ public class Organization implements Serializable {
 		return name;
 	}
 
-	public Organization name(final String name) {
-		this.name = name;
-		return this;
-	}
-
-	public void setName(final String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -66,61 +52,36 @@ public class Organization implements Serializable {
 		return description;
 	}
 
-	public Organization description(final String description) {
+	public void setDescription(String description) {
 		this.description = description;
-		return this;
-	}
-
-	public void setDescription(final String description) {
-		this.description = description;
-	}
-
-	public Set<Long> getUserIds() {
-		return userIds;
-	}
-
-	public Organization userIds(final Set<Long> userIds) {
-		this.userIds = userIds;
-		return this;
-	}
-
-	public Organization addUsers(final Long userId) {
-		userIds.add(userId);
-		return this;
-	}
-
-	public Organization removeUsers(final Long userId) {
-		userIds.remove(userId);
-		return this;
-	}
-
-	public void setUserIds(final Set<Long> userIds) {
-		this.userIds = userIds;
 	}
 
 	@Override
-	public boolean equals(final Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
-		final Organization organization = (Organization) o;
-		if (organization.id == null || id == null)
-			return false;
-		return Objects.equals(id, organization.id);
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Organization that = (Organization) o;
+
+		if (id != null ? !id.equals(that.id) : that.id != null) return false;
+		if (!name.equals(that.name)) return false;
+		return description != null ? description.equals(that.description) : that.description == null;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(id);
+		int result = id != null ? id.hashCode() : 0;
+		result = 31 * result + name.hashCode();
+		result = 31 * result + (description != null ? description.hashCode() : 0);
+		return result;
 	}
 
 	@Override
 	public String toString() {
 		return "Organization{" +
-				"id=" + id +
-				", name='" + name + "'" +
-				", description='" + description + "'" +
-				'}';
+			"id=" + id +
+			", name='" + name + '\'' +
+			", description='" + description + '\'' +
+			'}';
 	}
 }

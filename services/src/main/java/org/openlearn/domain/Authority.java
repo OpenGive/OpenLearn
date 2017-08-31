@@ -2,6 +2,7 @@ package org.openlearn.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -18,47 +19,48 @@ import java.io.Serializable;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Authority implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    public Authority(){}
-
-    public Authority(String name){
-    	this.name = name;
+	public Authority() {
 	}
 
-    @NotNull
-    @Size(min = 0, max = 50)
-    @Id
-    @Column(length = 50)
-    private String name;
+	public Authority(String name) {
+		this.name = name;
+	}
 
-    public String getName() {
-        return name;
-    }
+	@NotNull
+	@Size(max = 50)
+	@Id
+	@Column(length = 50)
+	private String name;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof Authority)) return false;
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    Authority authority = (Authority) o;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
 
-    return name.equals(authority.name);
-  }
+		Authority authority = (Authority) o;
 
-  @Override
-  public int hashCode() {
-    return name.hashCode();
-  }
+		return name.equals(authority.name);
+	}
 
-  @Override
-  public String toString() {
-    return "Authority{" +
-      "name='" + name + '\'' +
-      '}';
-  }
+	@Override
+	public int hashCode() {
+		return name.hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return "Authority{" +
+			"name='" + name + '\'' +
+			'}';
+	}
 }

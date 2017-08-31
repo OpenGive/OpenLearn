@@ -41,76 +41,75 @@ public class CourseService {
 	 */
 	public Course save(final Course course) {
 		log.debug("Request to save Course : {}", course);
-		if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
 			return courseRepository.save(course);
 		}
 		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
 		Course origCourse = findOne(course.getId());
-		if(origCourse != null){
+		if (origCourse != null) {
 			return courseRepository.save(course);
 		}
 		return null;
 	}
 
 	/**
-	 *  Get all the courses.
+	 * Get all the courses.
 	 *
-	 *  @param pageable the pagination information
-	 *  @return the list of entities
+	 * @param pageable the pagination information
+	 * @return the list of entities
 	 */
 	@Transactional(readOnly = true)
 	public Page<Course> findAll(final Pageable pageable) {
 		log.debug("Request to get all Courses");
-		if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
-			final Page<Course> result = courseRepository.findAll(pageable);
-			return result;
+		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+			return courseRepository.findAll(pageable);
 		}
 		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-		return courseRepository.findAllByOrganizationId(pageable, user.get().getOrganizationIds());
+		return courseRepository.findAllByOrganizationId(pageable, user.get().getOrganization().getId());
 	}
 
 	/**
 	 * Get all courses that a Student is in
 	 *
-	 * @param pageable the pagination info
+	 * @param pageable  the pagination info
 	 * @param studentId the id of the student
 	 * @return list of courses
 	 */
 	@Transactional(readOnly = true)
-	public Page<Course> findAllByStudentId(final Pageable pageable, final Long studentId){
+	public Page<Course> findAllByStudentId(final Pageable pageable, final Long studentId) {
 		log.debug("Request to get Courses assigned to studentID: " + studentId);
-		return courseRepository.findCoursesByStudent(pageable ,studentId);
+		return courseRepository.findCoursesByStudent(pageable, studentId);
 	}
 
 	/**
-	 *  Get one course by id.
+	 * Get one course by id.
 	 *
-	 *  @param id the id of the entity
-	 *  @return the entity
+	 * @param id the id of the entity
+	 * @return the entity
 	 */
 	@Transactional(readOnly = true)
 	public Course findOne(final Long id) {
 		log.debug("Request to get Course : {}", id);
-		if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
+		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
 			return courseRepository.findOne(id);
 		}
 		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-		return courseRepository.findOneByIdAndOrganizationId(id, user.get().getOrganizationIds());
+		return courseRepository.findOneByIdAndOrganizationId(id, user.get().getOrganization().getId());
 	}
 
 	/**
-	 *  Delete the  course by id.
+	 * Delete the course by id.
 	 *
-	 *  @param id the id of the entity
+	 * @param id the id of the entity
 	 */
 	public void delete(final Long id) {
 		log.debug("Request to delete Course : {}", id);
-		if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
 			courseRepository.delete(id);
 		}
 		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
 		Course origCourse = findOne(id);
-		if(origCourse != null){
+		if (origCourse != null) {
 			courseRepository.delete(id);
 		}
 	}

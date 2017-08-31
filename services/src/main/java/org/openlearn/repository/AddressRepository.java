@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.*;
 /**
  * Spring Data JPA repository for the Address entity.
  */
-@SuppressWarnings("unused")
-public interface AddressRepository extends JpaRepository<Address,Long> {
+public interface AddressRepository extends JpaRepository<Address, Long> {
 
 }

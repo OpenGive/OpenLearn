@@ -40,7 +40,7 @@ import io.swagger.annotations.ApiParam;
 
 /**
  * REST controller for managing users.
- *
+ * <p>
  * <p>This class accesses the User entity, and needs to fetch its collection of authorities.</p>
  * <p>
  * For a normal use-case, it would be better to have an eager relationship between User and Authority,
@@ -79,7 +79,7 @@ public class UserResource {
 	private final StudentCourseService studentCourseService;
 
 	public UserResource(final UserRepository userRepository, final MailService mailService,
-			final UserService userService, final StudentCourseService studentCourseService) {
+	                    final UserService userService, final StudentCourseService studentCourseService) {
 
 		this.userRepository = userRepository;
 		this.mailService = mailService;
@@ -99,46 +99,41 @@ public class UserResource {
 	 * @return the ResponseEntity with status 201 (Created) and with body the new user, or with status 400 (Bad Request) if the login or email is already in use
 	 * @throws URISyntaxException if the Location URI syntax is incorrect
 	 */
-    @PostMapping("/users")
-    @Timed
-    @Secured({ AuthoritiesConstants.ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.ORG_ADMIN })
-    public ResponseEntity<?> createUser(@RequestBody final ManagedUserVM managedUserVM,
-        Authentication authentication) throws URISyntaxException
-    {
-        log.debug("REST request to save User : {}", managedUserVM);
+	@PostMapping("/users")
+	@Timed
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.ORG_ADMIN})
+	public ResponseEntity<?> createUser(@RequestBody final ManagedUserVM managedUserVM,
+	                                    Authentication authentication) throws URISyntaxException {
+		log.debug("REST request to save User : {}", managedUserVM);
 
-        if(managedUserVM.getAuthorities() == null || managedUserVM.getAuthorities().size() == 0)
-        {
-            return ResponseEntity.badRequest()
-                .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "missingAuthority", "A new user must have at least one authority"))
-                .body(null);
-        }
-        else if(!AuthoritiesConstants.hasHigherPermissions(authentication.getAuthorities().stream().map(
-            GrantedAuthority::getAuthority).collect(Collectors.toList()), managedUserVM.getAuthorities()))
-        {
-            return new ResponseEntity<>("Insufficient permissions to create user with selected role", HttpStatus.UNAUTHORIZED);
-        }
-		else if (managedUserVM.getId() != null)
+		if (managedUserVM.getAuthority() == null) {
 			return ResponseEntity.badRequest()
-					.headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new user cannot already have an ID"))
-					.body(null);
-		// Lowercase the user login before comparing with database
+				.headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "missingAuthority", "A new user must have at least one authority"))
+				.body(null);
+		} else if (!AuthoritiesConstants.hasHigherPermissions(authentication.getAuthorities().stream().map(
+			GrantedAuthority::getAuthority).collect(Collectors.toList()), managedUserVM.getAuthority())) {
+			return new ResponseEntity<>("Insufficient permissions to create user with selected role", HttpStatus.UNAUTHORIZED);
+		} else if (managedUserVM.getId() != null)
+			return ResponseEntity.badRequest()
+				.headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new user cannot already have an ID"))
+				.body(null);
+			// Lowercase the user login before comparing with database
 		else if (userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase()).isPresent())
 			return ResponseEntity.badRequest()
-					.headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "userexists", "Login already in use"))
-					.body(null);
+				.headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "userexists", "Login already in use"))
+				.body(null);
 		else if (userRepository.findOneByEmail(managedUserVM.getEmail()).isPresent())
 			return ResponseEntity.badRequest()
-					.headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "emailexists", "Email already in use"))
-					.body(null);
+				.headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "emailexists", "Email already in use"))
+				.body(null);
 		else {
 			final User newUser = userService.createUser(managedUserVM, managedUserVM.getPassword());
 			final UserDTO newUserDTO = new UserDTO(newUser);
 
 			mailService.sendCreationEmail(newUser);
 			return ResponseEntity.created(new URI("/api/users/" + newUserDTO.getLogin()))
-					.headers(HeaderUtil.createAlert( "userManagement.created", newUserDTO.getLogin()))
-					.body(newUserDTO);
+				.headers(HeaderUtil.createAlert("userManagement.created", newUserDTO.getLogin()))
+				.body(newUserDTO);
 		}
 	}
 
@@ -152,7 +147,7 @@ public class UserResource {
 	 */
 	@PutMapping("/users")
 	@Timed
-    @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.STUDENT})
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.STUDENT})
 	public ResponseEntity<UserDTO> updateUser(@RequestBody final ManagedUserVM managedUserVM) {
 		log.debug("REST request to update User : {}", managedUserVM);
 		Optional<User> existingUser = userRepository.findOneByEmail(managedUserVM.getEmail());
@@ -164,7 +159,7 @@ public class UserResource {
 		final Optional<UserDTO> updatedUser = userService.updateUser(managedUserVM, managedUserVM.getPassword());
 
 		return ResponseUtil.wrapOrNotFound(updatedUser,
-				HeaderUtil.createAlert("userManagement.updated", managedUserVM.getLogin()));
+			HeaderUtil.createAlert("userManagement.updated", managedUserVM.getLogin()));
 	}
 
 	/**
@@ -192,7 +187,7 @@ public class UserResource {
 	public ResponseEntity<UserDTO> getUser(@PathVariable final String login) {
 		log.debug("REST request to get User : {}", login);
 		return ResponseUtil.wrapOrNotFound(
-				userService.getUserWithAuthoritiesByLogin(login)
+			userService.getUserWithAuthoritiesByLogin(login)
 				.map(UserDTO::new));
 	}
 
@@ -207,7 +202,7 @@ public class UserResource {
 	public ResponseEntity<List<StudentCourse>> getUserCourses(@PathVariable final String login, Pageable pageable) {
 		log.debug("REST request to get User : {}", login);
 		final Page<StudentCourse> page = studentCourseService.findByLogin(login, pageable);
-		final HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/"+login+"/students");
+		final HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/" + login + "/students");
 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 
 	}
@@ -239,42 +234,16 @@ public class UserResource {
 	public ResponseEntity<Void> deleteUser(@PathVariable final Long id) {
 		log.debug("REST request to delete User: {}", id);
 		userService.deleteUser(id);
-		return ResponseEntity.ok().headers(HeaderUtil.createAlert( "userManagement.deleted", id.toString())).build();
+		return ResponseEntity.ok().headers(HeaderUtil.createAlert("userManagement.deleted", id.toString())).build();
 	}
 
 	@GetMapping("/users/{login:" + Constants.LOGIN_REGEX + "}/instructors")
 	@Timed
 	@Secured(AuthoritiesConstants.INSTRUCTOR)
-	public ResponseEntity<List<Course>> getUserInstructors(@PathVariable final String login, Pageable pageable){
+	public ResponseEntity<List<Course>> getUserInstructors(@PathVariable final String login, Pageable pageable) {
 		log.debug("REST request to get courses instructed by user with login : {}", login);
-		final Page<Course> page = userService.getCoursesInstructedByUser(login,pageable);
-		final HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users/"+login+"/instructors");
+		final Page<Course> page = userService.getCoursesInstructedByUser(login, pageable);
+		final HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users/" + login + "/instructors");
 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-	}
-
-	@GetMapping("/users/{login:" + Constants.LOGIN_REGEX + "}/organizations")
-	@Timed
-	public ResponseEntity<Set<Organization>> getOrganizationsForUser(@PathVariable final String login){
-		log.debug("REST request to get organizations for user : {}", login);
-		final Set<Organization> orgs = userService.getOrganizationsForUser(login);
-		return new ResponseEntity<Set<Organization>>(orgs, HttpStatus.OK);
-	}
-
-	@PostMapping("/users/{login:" + Constants.LOGIN_REGEX + "}/organizations")
-	@Secured(AuthoritiesConstants.ADMIN)
-	@Timed
-	public ResponseEntity<User> addUserToOrganization(@PathVariable final String login, @RequestParam final Long organizationId){
-		log.debug("REST request to add user {} to organization {}", login, organizationId);
-		final User user = userService.addUserToOrganization(login, organizationId);
-		return new ResponseEntity<User>(user, HttpStatus.OK);
-	}
-
-	@DeleteMapping("/users/{login:" + Constants.LOGIN_REGEX + "}/organizations/{organizationId}")
-	@Secured(AuthoritiesConstants.ADMIN)
-	@Timed
-	public ResponseEntity<User> removeUserFromOrganization(@PathVariable final String login, @PathVariable final Long organizationId){
-		log.debug("REST request to remove user {} from organization {}", login, organizationId);
-		final User user = userService.removeUserFromOrganization(login, organizationId);
-		return new ResponseEntity<User>(user, HttpStatus.OK);
 	}
 }

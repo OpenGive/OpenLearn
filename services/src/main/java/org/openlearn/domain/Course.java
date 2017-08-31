@@ -2,9 +2,6 @@ package org.openlearn.domain;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -19,11 +16,10 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 /**
  * A Course.
  */
-//TODO: Set the correct @JsonIgnore Fields
 @Entity
 @Table(name = "course")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class)
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class Course implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -59,7 +55,7 @@ public class Course implements Serializable {
 		return id;
 	}
 
-	public void setId(final Long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -67,12 +63,7 @@ public class Course implements Serializable {
 		return name;
 	}
 
-	public Course name(final String name) {
-		this.name = name;
-		return this;
-	}
-
-	public void setName(final String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -80,12 +71,7 @@ public class Course implements Serializable {
 		return description;
 	}
 
-	public Course description(final String description) {
-		this.description = description;
-		return this;
-	}
-
-	public void setDescription(final String description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 
@@ -93,12 +79,7 @@ public class Course implements Serializable {
 		return startDate;
 	}
 
-	public Course startDate(final ZonedDateTime startDate) {
-		this.startDate = startDate;
-		return this;
-	}
-
-	public void setStartDate(final ZonedDateTime startDate) {
+	public void setStartDate(ZonedDateTime startDate) {
 		this.startDate = startDate;
 	}
 
@@ -106,12 +87,7 @@ public class Course implements Serializable {
 		return endDate;
 	}
 
-	public Course endDate(final ZonedDateTime endDate) {
-		this.endDate = endDate;
-		return this;
-	}
-
-	public void setEndDate(final ZonedDateTime endDate) {
+	public void setEndDate(ZonedDateTime endDate) {
 		this.endDate = endDate;
 	}
 
@@ -119,7 +95,7 @@ public class Course implements Serializable {
 		return session;
 	}
 
-	public void setSession(final Session session) {
+	public void setSession(Session session) {
 		this.session = session;
 	}
 
@@ -127,42 +103,48 @@ public class Course implements Serializable {
 		return instructor;
 	}
 
-	public Course instructor(final User user) {
-		instructor = user;
-		return this;
-	}
-
-	public void setInstructor(final User user) {
-		instructor = user;
+	public void setInstructor(User instructor) {
+		this.instructor = instructor;
 	}
 
 	@Override
-	public boolean equals(final Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
-		final Course course = (Course) o;
-		if (course.id == null || id == null)
-			return false;
-		return Objects.equals(id, course.id);
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Course course = (Course) o;
+
+		if (id != null ? !id.equals(course.id) : course.id != null) return false;
+		if (!name.equals(course.name)) return false;
+		if (description != null ? !description.equals(course.description) : course.description != null) return false;
+		if (startDate != null ? !startDate.equals(course.startDate) : course.startDate != null) return false;
+		if (endDate != null ? !endDate.equals(course.endDate) : course.endDate != null) return false;
+		if (!session.equals(course.session)) return false;
+		return instructor.equals(course.instructor);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(id);
+		int result = id != null ? id.hashCode() : 0;
+		result = 31 * result + name.hashCode();
+		result = 31 * result + (description != null ? description.hashCode() : 0);
+		result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
+		result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
+		result = 31 * result + session.hashCode();
+		result = 31 * result + instructor.hashCode();
+		return result;
 	}
 
-  @Override
-  public String toString() {
-    return "Course{" +
-      "id=" + id +
-      ", name='" + name + '\'' +
-      ", description='" + description + '\'' +
-      ", startDate=" + startDate +
-      ", endDate=" + endDate +
-      ", session=" + session +
-      ", instructor=" + instructor +
-      '}';
-  }
+	@Override
+	public String toString() {
+		return "Course{" +
+			"id=" + id +
+			", name='" + name + '\'' +
+			", description='" + description + '\'' +
+			", startDate=" + startDate +
+			", endDate=" + endDate +
+			", session=" + session +
+			", instructor=" + instructor +
+			'}';
+	}
 }

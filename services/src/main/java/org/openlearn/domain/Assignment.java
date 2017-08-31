@@ -1,24 +1,23 @@
 package org.openlearn.domain;
 
-import java.io.Serializable;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+
 /**
- * A PortfolioItem.
+ * An assignment
  */
 @Entity
-@Table(name = "portfolio_item")
+@Table(name = "assignment")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class PortfolioItem implements Serializable {
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
+public class Assignment implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -27,10 +26,17 @@ public class PortfolioItem implements Serializable {
 	private Long id;
 
 	@NotNull
+	@Size(max = 100)
+	@Column(length = 100, nullable = false)
 	private String name;
 
-	@NotNull
+	@Size(max = 200)
+	@Column(length = 200)
 	private String description;
+
+	@NotNull
+	@ManyToOne(optional = false)
+	private Course course;
 
 	public Long getId() {
 		return id;
@@ -56,32 +62,43 @@ public class PortfolioItem implements Serializable {
 		this.description = description;
 	}
 
+	public Course getCourse() {
+		return course;
+	}
+
+	public void setCourse(Course course) {
+		this.course = course;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 
-		PortfolioItem that = (PortfolioItem) o;
+		Assignment that = (Assignment) o;
 
 		if (id != null ? !id.equals(that.id) : that.id != null) return false;
 		if (!name.equals(that.name)) return false;
-		return description.equals(that.description);
+		if (description != null ? !description.equals(that.description) : that.description != null) return false;
+		return course.equals(that.course);
 	}
 
 	@Override
 	public int hashCode() {
 		int result = id != null ? id.hashCode() : 0;
 		result = 31 * result + name.hashCode();
-		result = 31 * result + description.hashCode();
+		result = 31 * result + (description != null ? description.hashCode() : 0);
+		result = 31 * result + course.hashCode();
 		return result;
 	}
 
 	@Override
 	public String toString() {
-		return "PortfolioItem{" +
+		return "Assignment{" +
 			"id=" + id +
 			", name='" + name + '\'' +
 			", description='" + description + '\'' +
+			", course=" + course +
 			'}';
 	}
 }

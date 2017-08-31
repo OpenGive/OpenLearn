@@ -1,6 +1,5 @@
 package org.openlearn.repository;
 
-import org.openlearn.domain.CourseStudent;
 import org.openlearn.domain.StudentCourse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
