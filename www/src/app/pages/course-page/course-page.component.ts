@@ -9,6 +9,9 @@ import {DataService} from "../../services/course.data.service"
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NotifyService} from "../../services/notify.service";
 import {Observable} from "rxjs/Observable";
+import {Router} from "@angular/router";
+import {Principal} from "../../shared/auth/principal.service";
+import {AppConstants} from "../../app.constants";
 
 @Component({
   selector: 'app-course-page',
@@ -22,10 +25,13 @@ export class CoursePageComponent implements OnInit {
               private adminService: AdminService,
               private userService: UserService,
               private notify: NotifyService,
-              private dataService: DataService) {}
+              private dataService: DataService,
+              private router: Router,
+              private principle: Principal) {}
 
   private adding:boolean = false;
   private editing:boolean = false;
+  private studentView:boolean = false;
 
   private instructors: any[];
   private sessions: any[];
@@ -68,12 +74,15 @@ export class CoursePageComponent implements OnInit {
   };
 
   ngOnInit(): void {
+    this.studentView = this.principle.getRoles().indexOf("ROLE_STUDENT") != -1;
+    console.log(this.studentView);
     this.course = this.dataService.course;
     this.buildForm();
     this.setEditing(this.adding);
     this.getInstructors();
-    this.getSessions();
-    console.log(this.course);
+    if(!this.studentView) {
+      this.getSessions();
+    }
   }
   private buildForm(): void {
     this.courseForm = this.fb.group({
