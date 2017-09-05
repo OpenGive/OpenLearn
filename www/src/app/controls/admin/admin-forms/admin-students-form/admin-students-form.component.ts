@@ -19,6 +19,7 @@ export class AdminStudentsFormComponent implements OnInit {
   @Input('item') formStudent: any;
   @Input() adding: boolean;
   editing: boolean;
+  changingPassword: boolean;
 
   roles: string[];
   states: any[];
@@ -101,6 +102,7 @@ export class AdminStudentsFormComponent implements OnInit {
   ngOnInit(): void {
     this.buildForm();
     this.setEditing(this.adding);
+    this.resetPassword(false);
     this.getRoles();
     this.getStates();
   }
@@ -303,6 +305,10 @@ export class AdminStudentsFormComponent implements OnInit {
 
   close(): void {
     this.dialogRef.close();
+  }
+
+  resetPassword(changingPassword: boolean): void {
+    this.changingPassword = changingPassword;
   }
 
   displayRole(role: string): string { // Convert "ROLE_ONE_TWO" to "One Two"

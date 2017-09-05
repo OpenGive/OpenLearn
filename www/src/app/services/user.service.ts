@@ -19,7 +19,7 @@ export class UserService {
   constructor(private _http: HttpWrapperService, private principal: Principal) {}
 
   getAll(): Observable<User[]> {
-    return this._http.get(this.endpoint)
+    return this._http.get(this.endpoint + "?page=0&size=2000")// TODO: Handle paging on the frontend
       .map(resp => resp.json())
       .catch(this.handleError);
   }
@@ -49,21 +49,21 @@ export class UserService {
   }
 
   getAdministrators(): Observable<User[]> { // TODO: Move to backend
-    return this._http.get(this.endpoint)
+    return this._http.get(this.endpoint + "?page=0&size=2000") // TODO: Handle paging on the frontend
       .map(resp => resp.json()
         .filter(user => user.authorities.includes(AppConstants.Role.Admin) || user.authorities.includes(AppConstants.Role.OrgAdmin)))
       .catch(this.handleError);
   }
 
   getInstructors(): Observable<User[]> { // TODO: Move to backend
-    return this._http.get(this.endpoint)
+    return this._http.get(this.endpoint + "?page=0&size=2000") // TODO: Handle paging on the frontend
       .map(resp => resp.json()
         .filter(user => user.authorities.includes(AppConstants.Role.Instructor)))
       .catch(this.handleError);
   }
 
   getStudents(): Observable<User[]> { // TODO: Move to backend
-    return this._http.get(this.endpoint)
+    return this._http.get(this.endpoint + "?page=0&size=2000")// TODO: Handle paging on the frontend
       .map(resp => resp.json()
         .filter(user => user.authorities.includes(AppConstants.Role.Student)))
       .catch(this.handleError);

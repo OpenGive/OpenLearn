@@ -54,9 +54,6 @@ public class Session implements Serializable {
 	@Column(name = "active", nullable = false)
 	private Boolean active;
 
-	@ManyToOne
-	private School school;
-
 	@ManyToOne(optional = false)
 	private Program program;
 
@@ -131,19 +128,6 @@ public class Session implements Serializable {
 
 	public void setCourses(final Set<Course> courses) {
 		this.courses = courses;
-	}
-
-	public School getSchool() {
-		return school;
-	}
-
-	public Session school(final School school) {
-		this.school = school;
-		return this;
-	}
-
-	public void setSchool(final School school) {
-		this.school = school;
 	}
 
 	public String getDescription() {

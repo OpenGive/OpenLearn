@@ -7,7 +7,7 @@ import * as _ from "lodash";
 import {AppConstants} from "../../../app.constants";
 import {NotifyService} from "../../../services/notify.service";
 import {UserService} from "../../../services/user.service";
-import {CourseDialogComponent} from "../course-dialog.component";
+import {CourseStudentDialogComponent} from "../course-student-dialog.component";
 
 @Component({
   selector: 'course-student-form',
@@ -93,7 +93,7 @@ export class CourseStudentFormComponent implements OnInit {
     }
   };
 
-  constructor(public dialogRef: MdDialogRef<CourseDialogComponent>,
+  constructor(public dialogRef: MdDialogRef<CourseStudentDialogComponent>,
               private fb: FormBuilder,
               private userService: UserService,
               private notify: NotifyService) {}

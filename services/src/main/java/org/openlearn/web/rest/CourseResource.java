@@ -4,13 +4,13 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import javax.validation.Valid;
 
 import org.openlearn.domain.Course;
 import org.openlearn.domain.CourseStudent;
-import org.openlearn.domain.ItemLink;
+import org.openlearn.domain.User;
+import org.openlearn.service.dto.CourseStudentDTO;
 import org.openlearn.service.CourseService;
 import org.openlearn.service.StudentCourseService;
 import org.openlearn.web.rest.util.HeaderUtil;
@@ -148,11 +148,42 @@ public class CourseResource {
 	 */
 	@GetMapping("/courses/{id}/students")
 	@Timed
-	public ResponseEntity<List<CourseStudent>> studentsInCourse(@PathVariable final Long id, @ApiParam final Pageable pageable) {
+	public ResponseEntity<List<CourseStudentDTO>> studentsInCourse(@PathVariable final Long id, @ApiParam final Pageable pageable) {
 		log.debug("REST request to get students in course with id {}", id);
-		final Page<CourseStudent> page = studentCourseService.findByCourseId(id, pageable);
+		final Page<CourseStudentDTO> page = studentCourseService.findByCourseId(id, pageable);
 		final HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/courses"+id+"/students");
 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+	}
+
+	/**
+	 * Get students for course
+	 *
+	 * @param id the id of the course to add the student to
+	 * @return the students in the course
+	 */
+	@GetMapping("/courses/{id}/coursesByStudent")
+	@Timed
+	public ResponseEntity<List<Course>> coursesByStudent(@PathVariable final Long id, @ApiParam final Pageable pageable) {
+		log.debug("REST request to get students in course with id {}", id);
+		final Page<Course> page = courseService.findAllByStudentId(pageable,id);
+		final HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/courses/"+id+"/coursesByStudent");
+		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+	}
+
+	/**
+	 * Get students not in course
+	 *
+	 * @param id the id of the course to search
+	 * @return the students not in the course
+	 */
+	@GetMapping("/courses/{id}/studentsNot")
+	@Timed
+	public ResponseEntity<List<User>> studentsNotInCourse(@PathVariable final Long id) {
+		log.debug("REST request to get students not in course with id {}", id);
+		final List<User> students = studentCourseService.findByCourseIdNot(id);
+		//Left over from pagination removal
+		//final HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/courses"+id+"/studentsNot");
+		return new ResponseEntity<>(students, HttpStatus.OK);
 	}
 
 	/**
@@ -198,49 +229,5 @@ public class CourseResource {
 		log.debug("REST request to set student with id {} in course with id {} to have the grade {}", studentId, id, grade);
 		final CourseStudent studentCourse = studentCourseService.addGradeToStudentCourse(id, studentId, grade);
 		return ResponseUtil.wrapOrNotFound(Optional.ofNullable(studentCourse));
-	}
-
-	/**
-	 * Get the resources associated with a course
-	 *
-	 * @param courseId the id of the course to add the item link to
-	 * @return the item links associated with the course
-	 */
-	@GetMapping("/courses/{courseId}/resources")
-	@Timed
-	public ResponseEntity<Set<ItemLink>> getCourseResources(@PathVariable final Long courseId){
-		log.debug("REST request to get resources associated with course id : {}", courseId);
-		final Set<ItemLink> results = courseService.getItemLinksForCourse(courseId);
-		return new ResponseEntity<Set<ItemLink>>(results, HttpStatus.OK);
-	}
-
-	/**
-	 * Add a resource item link to a course
-	 *
-	 * @param courseId the id of the course to add the item link to
-	 * @param itemLinkId the id of the item link to add to the course
-	 * @return the item links that are associated with the course
-	 */
-	@PostMapping("/courses/{courseId}/resources")
-	@Timed
-	public ResponseEntity<Set<ItemLink>> addResourceToCourse(@PathVariable final Long courseId, @RequestParam Long itemLinkId){
-		log.debug("REST request to add item link with id {} to course with id {}", itemLinkId, courseId);
-		final Set<ItemLink> result = courseService.addItemLinkToCourse(courseId, itemLinkId);
-		return new ResponseEntity<Set<ItemLink>>(result, HttpStatus.OK);
-	}
-
-	/**
-	 * Add a resource item link to a course
-	 *
-	 * @param courseId the id of the course to add the item link to
-	 * @param itemLinkId the id of the item link to add to the course
-	 * @return the item links that are associated with the course
-	 */
-	@DeleteMapping("/courses/{courseId}/resources/{itemLinkId}")
-	@Timed
-	public ResponseEntity<Set<ItemLink>> removeItemLinkFromCourse(@PathVariable final Long courseId, @PathVariable final Long itemLinkId){
-		log.debug("REST request to remove item link with id {} from course id {}", itemLinkId, courseId);
-		final Set<ItemLink> result = courseService.removeItemLinkFromCourse(courseId, itemLinkId);
-		return new ResponseEntity<Set<ItemLink>>(result, HttpStatus.OK);
 	}
 }

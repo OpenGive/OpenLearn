@@ -162,7 +162,7 @@ public class UserResource {
 		existingUser = userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase());
 		if (existingUser.isPresent() && !existingUser.get().getId().equals(managedUserVM.getId()))
 			return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "userexists", "Login already in use")).body(null);
-		final Optional<UserDTO> updatedUser = userService.updateUser(managedUserVM);
+		final Optional<UserDTO> updatedUser = userService.updateUser(managedUserVM, managedUserVM.getPassword());
 
 		return ResponseUtil.wrapOrNotFound(updatedUser,
 				HeaderUtil.createAlert("userManagement.updated", managedUserVM.getLogin()));

@@ -28,7 +28,7 @@
       <button routerLink="/login" md-button *ngIf="!authenticated()">Login</button>
       <button routerLink="/admin" md-button *ngIf="authenticated() && (roles.admin || roles.orgAdmin)">Admin</button>
       <button routerLink="/dashboard" md-button *ngIf="authenticated() && roles.instructor">Dashboard</button>
-      <button routerLink="/portfolio" md-button *ngIf="authenticated() && roles.student">Portfolio</button>
+      <button routerLink="/portfolio" md-button *ngIf="authenticated() && roles.student">Dashboard</button>
     </div>
     <button class="profile-menu" md-button [mdMenuTriggerFor]="profileMenu" *ngIf="authenticated()">
       <div fxLayout="row" fxLayoutAlign="space-between center">
@@ -39,8 +39,8 @@
         <md-icon>keyboard_arrow_down</md-icon>
       </div>
     </button>
-    <md-menu #profileMenu="mdMenu" yPosition="above">
-      <button routerLink="/profile" md-menu-item>
+    <md-menu #profileMenu="mdMenu" [overlapTrigger]="false">
+      <button *ngIf="!roles.student" routerLink="/profile" md-menu-item>
         <md-icon aria-hidden="true" class="user-menu-icon">person</md-icon>
         <span>Profile</span>
       </button>

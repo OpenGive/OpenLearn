@@ -137,6 +137,7 @@ public class UserService {
     user.setImageUrl(userDTO.getImageUrl());
     user.setBiography(userDTO.getBiography());
     user.setIs14Plus(userDTO.getIs14Plus());
+    user.setOrganizationIds(userDTO.getOrganizationIds());
     if (userDTO.getAuthorities() != null) {
 
       Set<Authority> authorities = new HashSet<>();
@@ -187,7 +188,7 @@ public class UserService {
    * @param userDTO user to update
    * @return updated user
    */
-  public Optional<UserDTO> updateUser(final UserDTO userDTO) {
+  public Optional<UserDTO> updateUser(final UserDTO userDTO, String password) {
 	  return Optional.of(userRepository
 	  .findOne(userDTO.getId()))
 	  .map(user -> {
@@ -210,9 +211,15 @@ public class UserService {
 			addressRepository.delete(user.getAddress().getId());
 		}
 		user.setImageUrl(userDTO.getImageUrl());
+    boolean adminOrOrgAdmin = SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ORG_ADMIN);
+    if ((password != null) && adminOrOrgAdmin) {
+      String encryptedPassword = passwordEncoder.encode(password);
+      user.setPassword(encryptedPassword);
+    }
 		user.setActivated(userDTO.isActivated());
 		user.setBiography(userDTO.getBiography());
 		user.setIs14Plus(userDTO.is14Plus());
+		user.setOrganizationIds(userDTO.getOrganizationIds());
 		final Set<Authority> managedAuthorities = user.getAuthorities();
 		managedAuthorities.clear();
 		userDTO.getAuthorities().stream()
@@ -263,7 +270,12 @@ public class UserService {
   		// get users in org
 		return userRepository.findOneByLogin(pageable,SecurityUtils.getCurrentUserLogin()).map(UserDTO::new);
 	}
-	log.debug("User does not have ADMIN or STUDENT authority");
+	if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.INSTRUCTOR)){
+		log.debug("User has Instructor authority");
+		return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER).map(UserDTO::new);
+	}
+
+	log.debug("User does not have ADMIN or STUDENT authority 1");
 	Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
     return userRepository.findAllByOrganizationIdsIn(pageable,user.get().getOrganizationIds()).map(UserDTO::new);
   }
@@ -376,7 +388,7 @@ public class UserService {
 				SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.INSTRUCTOR))) {
 			Optional<User> currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
 			Optional<User> changeUser = userRepository.findOneByLogin(user.getLogin());
-			if (!changeUser.get().getOrganizationIds().contains(currentUser.get().organizationIds)) {
+			if (!changeUser.get().getOrganizationIds().contains(currentUser.get().getOrganizationIds())) {
 				return false;
 			}
 		}

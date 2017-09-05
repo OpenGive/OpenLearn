@@ -10,7 +10,7 @@ export const AdminModel = {
       {property: 'lastName', display: 'Last Name'},
       {property: 'login', display: 'Username'},
       {property: 'authorities', display: 'Roles'},
-      {property: 'organizations', display: 'Organizations'},
+      {property: 'organizationIds', display: 'Organizations'},
       {property: 'activated', display: 'Active'}
     ],
     authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin]

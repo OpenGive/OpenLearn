@@ -1,10 +1,8 @@
 package org.openlearn.service;
 
 import org.openlearn.domain.Course;
-import org.openlearn.domain.ItemLink;
 import org.openlearn.domain.User;
 import org.openlearn.repository.CourseRepository;
-import org.openlearn.repository.ItemLinkRepository;
 import org.openlearn.repository.UserRepository;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.security.SecurityUtils;
@@ -16,8 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
-import java.util.Set;
-import java.util.function.Predicate;
 
 /**
  * Service Implementation for managing Course.
@@ -30,13 +26,10 @@ public class CourseService {
 
 	private final CourseRepository courseRepository;
 
-	private final ItemLinkRepository itemLinkRepository;
-
 	private final UserRepository userRepository;
 
-	public CourseService(final CourseRepository courseRepository, final ItemLinkRepository itemLinkRepository, UserRepository userRepository) {
+	public CourseService(final CourseRepository courseRepository, UserRepository userRepository) {
 		this.courseRepository = courseRepository;
-		this.itemLinkRepository = itemLinkRepository;
 		this.userRepository = userRepository;
 	}
 
@@ -77,6 +70,19 @@ public class CourseService {
 	}
 
 	/**
+	 * Get all courses that a Student is in
+	 *
+	 * @param pageable the pagination info
+	 * @param studentId the id of the student
+	 * @return list of courses
+	 */
+	@Transactional(readOnly = true)
+	public Page<Course> findAllByStudentId(final Pageable pageable, final Long studentId){
+		log.debug("Request to get Courses assigned to studentID: " + studentId);
+		return courseRepository.findCoursesByStudent(pageable ,studentId);
+	}
+
+	/**
 	 *  Get one course by id.
 	 *
 	 *  @param id the id of the entity
@@ -89,7 +95,7 @@ public class CourseService {
 			return courseRepository.findOne(id);
 		}
 		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-		return courseRepository.findOneByIdAndOrganizationId(id, user.get().organizationIds);
+		return courseRepository.findOneByIdAndOrganizationId(id, user.get().getOrganizationIds());
 	}
 
 	/**
@@ -107,62 +113,5 @@ public class CourseService {
 		if(origCourse != null){
 			courseRepository.delete(id);
 		}
-	}
-
-	/**
-	 * Get the item links associatd with a course
-	 *
-	 *  @param id the course id to find item links with
-	 *  @return the set of item links associated with the course id
-	 */
-	@Transactional(readOnly =  true)
-	public Set<ItemLink> getItemLinksForCourse(final Long id) {
-		log.debug("Request to get item links for course id : {}", id);
-		Course course = courseRepository.findOne(id);
-		final Set<ItemLink> result = course.getResources();
-		return result;
-	}
-
-	/**
-	 * Add an item link to a course
-	 *
-	 *  @param courseId the course id associate the item link with
-	 *  @param itemLinkId the id of the item link to associate with the course
-	 *  @return the set of item links associated with the course id after adding the item link
-	 */
-	@Transactional
-	public Set<ItemLink> addItemLinkToCourse(final Long courseId, final Long itemLinkId){
-		log.debug("Request to add item link id {} to course id {}", itemLinkId, courseId);
-		Course course = courseRepository.findOne(courseId);
-		if(course == null){
-			return null;
-		}
-		ItemLink itemLink = itemLinkRepository.findOne(itemLinkId);
-		if(itemLink == null){
-			return null;
-		}
-		course.getResources().add(itemLink);
-		courseRepository.save(course);
-		return course.getResources();
-	}
-
-	/**
-	 * Remove an item link from a course
-	 *
-	 *  @param courseId the course id to remove the item link from
-	 *  @param itemLinkId the id of the item link to remove
-	 *  @return the set of item links associated with the course id after removing the item link
-	 */
-	@Transactional
-	public Set<ItemLink> removeItemLinkFromCourse(Long courseId, Long itemLinkId) {
-		log.debug("Request to remove item link id {} from course id {}", itemLinkId, courseId);
-		Course course = courseRepository.findOne(courseId);
-		if(course == null){
-			return null;
-		}
-		Predicate<ItemLink> itemLinkPredicate = p-> p.getId() == itemLinkId;
-		course.getResources().removeIf(itemLinkPredicate);
-		courseRepository.save(course);
-		return course.getResources();
 	}
 }
