@@ -75,8 +75,11 @@ export class CoursePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.studentView = this.principle.getRoles().indexOf("ROLE_STUDENT") != -1;
-    console.log(this.studentView);
     this.course = this.dataService.course;
+    if(typeof this.course == "undefined")
+    {
+      this.router.navigate(['accessdenied']);
+    }
     this.buildForm();
     this.setEditing(this.adding);
     this.getInstructors();
