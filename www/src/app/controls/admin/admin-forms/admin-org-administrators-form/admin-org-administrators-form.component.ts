@@ -333,10 +333,6 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
     this.changingPassword = changingPassword;
   }
 
-  displayRole(role: string): string { // Convert "ROLE_ONE_TWO" to "One Two"
-    return role.split('_').slice(1).map(str => str.charAt(0) + str.slice(1).toLowerCase()).join(' ');
-  }
-
   displayState(stateValue: string): string {
     return stateValue ? _.filter(AppConstants.States, {value: stateValue})[0].name : '';
   }
