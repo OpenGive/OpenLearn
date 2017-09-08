@@ -6,7 +6,7 @@ import {MD_DIALOG_DATA} from "@angular/material";
   template: `
     <div class="admin-dialog" [ngSwitch]="data.tab">
       <admin-administrators-form *ngSwitchCase="'administrators'" [item]="data.item" [adding]="data.adding" [organizations]="data.organizations"></admin-administrators-form>
-      <admin-administrators-form *ngSwitchCase="'org-administrators'" [item]="data.item" [adding]="data.adding" [organizations]="data.organizations"></admin-administrators-form>
+      <admin-org-administrators-form *ngSwitchCase="'org-administrators'" [item]="data.item" [adding]="data.adding" [organizations]="data.organizations"></admin-org-administrators-form>
       <admin-instructors-form *ngSwitchCase="'instructors'" [item]="data.item" [adding]="data.adding" [organizations]="data.organizations"></admin-instructors-form>
       <admin-students-form *ngSwitchCase="'students'" [item]="data.item" [adding]="data.adding"></admin-students-form>
       <admin-organizations-form *ngSwitchCase="'organizations'" [item]="data.item" [adding]="data.adding"></admin-organizations-form>
