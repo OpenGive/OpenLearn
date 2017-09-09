@@ -1,25 +1,28 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 	<changeSet id="1" author="meverett">
-        <createTable tableName="address">
-	        <column autoIncrement="true" name="id" type="BIGINT">
-		        <constraints primaryKey="true" primaryKeyName="addressPK"/>
-	        </column>
-	        <column name="street_address_1" type="VARCHAR(50)">
-		        <constraints nullable="false"/>
-	        </column>
-	        <column name="street_address_2" type="VARCHAR(50)"/>
-	        <column name="city" type="VARCHAR(50)">
-		        <constraints nullable="false"/>
-	        </column>
-	        <column name="state" type="VARCHAR(255)">
-		        <constraints nullable="false"/>
-	        </column>
-	        <column name="postal_code" type="VARCHAR(10)">
-		        <constraints nullable="false"/>
-	        </column>
-        </createTable>
-    </changeSet>
+		<createTable tableName="address">
+			<column autoIncrement="true" name="id" type="BIGINT">
+				<constraints primaryKey="true" primaryKeyName="addressPK"/>
+			</column>
+			<column name="street_address_1" type="VARCHAR(50)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="street_address_2" type="VARCHAR(50)"/>
+			<column name="city" type="VARCHAR(50)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="state" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="postal_code" type="VARCHAR(10)">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+	</changeSet>
 	<changeSet id="2" author="meverett">
 		<createTable tableName="assignment">
 			<column autoIncrement="true" name="id" type="BIGINT">
@@ -28,7 +31,7 @@
 			<column name="name" type="VARCHAR(100)">
 				<constraints nullable="false"/>
 			</column>
-			<column name="description" type="VARCHAR(200">
+			<column name="description" type="VARCHAR(200)">
 				<constraints nullable="false"/>
 			</column>
 			<column name="course_id" type="BIGINT">
@@ -37,138 +40,138 @@
 		</createTable>
 	</changeSet>
 	<changeSet id="3" author="meverett">
-        <createTable tableName="authority">
-            <column name="name" type="VARCHAR(50)">
-                <constraints primaryKey="true" primaryKeyName="authorityPK"/>
-            </column>
-        </createTable>
-    </changeSet>
+		<createTable tableName="authority">
+			<column name="name" type="VARCHAR(50)">
+				<constraints primaryKey="true" primaryKeyName="authorityPK"/>
+			</column>
+		</createTable>
+	</changeSet>
 	<changeSet id="4" author="meverett">
-        <createTable tableName="course">
-            <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="coursePK"/>
-            </column>
-	        <column name="name" type="VARCHAR(100)">
-		        <constraints nullable="false"/>
-	        </column>
-	        <column name="description" type="VARCHAR(200)">
-		        <constraints nullable="false"/>
-	        </column>
-	        <column name="start_date" type="TIMESTAMP">
-		        <constraints nullable="false"/>
-	        </column>
-	        <column name="end_date" type="TIMESTAMP">
-		        <constraints nullable="false"/>
-	        </column>
-	        <column name="session_id" type="BIGINT">
-		        <constraints nullable="false"/>
-	        </column>
-            <column name="instructor_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-	        <column name="locations" type="VARCHAR(255)"/>
-	        <column name="times" type="VARCHAR(255)"/>
-        </createTable>
-    </changeSet>
+		<createTable tableName="course">
+			<column autoIncrement="true" name="id" type="BIGINT">
+				<constraints primaryKey="true" primaryKeyName="coursePK"/>
+			</column>
+			<column name="name" type="VARCHAR(100)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="description" type="VARCHAR(200)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="start_date" type="TIMESTAMP">
+				<constraints nullable="false"/>
+			</column>
+			<column name="end_date" type="TIMESTAMP">
+				<constraints nullable="false"/>
+			</column>
+			<column name="session_id" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="instructor_id" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="locations" type="VARCHAR(255)"/>
+			<column name="times" type="VARCHAR(255)"/>
+		</createTable>
+	</changeSet>
 	<changeSet id="5" author="meverett">
-        <createTable tableName="organization">
-            <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="organizationPK"/>
-            </column>
-	        <column name="name" type="VARCHAR(100)">
-		        <constraints nullable="false"/>
-	        </column>
-	        <column name="description" type="VARCHAR(800)">
-		        <constraints nullable="false"/>
-	        </column>
-	        <column name="primary_contact_name" type="VARCHAR(255)">
-		        <constraints nullable="false"/>
-	        </column>
-	        <column name="primary_contact_info" type="VARCHAR(255)">
-		        <constraints nullable="false"/>
-	        </column>
-	        <column name="secondary_contact_name" type="VARCHAR(255)"/>
-	        <column name="secondary_contact_info" type="VARCHAR(255)"/>
-        </createTable>
-    </changeSet>
+		<createTable tableName="organization">
+			<column autoIncrement="true" name="id" type="BIGINT">
+				<constraints primaryKey="true" primaryKeyName="organizationPK"/>
+			</column>
+			<column name="name" type="VARCHAR(100)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="description" type="VARCHAR(800)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="primary_contact_name" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="primary_contact_info" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="secondary_contact_name" type="VARCHAR(255)"/>
+			<column name="secondary_contact_info" type="VARCHAR(255)"/>
+		</createTable>
+	</changeSet>
 	<changeSet id="6" author="meverett">
-        <createTable tableName="persistent_audit_event">
-            <column autoIncrement="true" name="event_id" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="persistent_audit_eventPK"/>
-            </column>
-	        <column name="principal" type="VARCHAR(255)">
-		        <constraints nullable="false"/>
-	        </column>
-            <column name="event_date" type="TIMESTAMP"/>
-            <column name="event_type" type="VARCHAR(255)"/>
-        </createTable>
-    </changeSet>
+		<createTable tableName="persistent_audit_event">
+			<column autoIncrement="true" name="event_id" type="BIGINT">
+				<constraints primaryKey="true" primaryKeyName="persistent_audit_eventPK"/>
+			</column>
+			<column name="principal" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="event_date" type="TIMESTAMP"/>
+			<column name="event_type" type="VARCHAR(255)"/>
+		</createTable>
+	</changeSet>
 	<changeSet id="7" author="meverett">
-        <createTable tableName="persistent_audit_event_data">
-            <column name="event_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-	        <column name="name" type="VARCHAR(255)">
-		        <constraints nullable="false"/>
-	        </column>
-            <column name="value" type="VARCHAR(255)"/>
-        </createTable>
-    </changeSet>
+		<createTable tableName="persistent_audit_event_data">
+			<column name="event_id" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="name" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="value" type="VARCHAR(255)"/>
+		</createTable>
+	</changeSet>
 	<changeSet id="8" author="meverett">
-        <createTable tableName="portfolio_item">
-            <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="portfolio_itemPK"/>
-            </column>
-	        <column name="name" type="VARCHAR(255)">
-		        <constraints nullable="false"/>
-	        </column>
-	        <column name="description" type="VARCHAR(500)">
-		        <constraints nullable="false"/>
-	        </column>
-	        <column name="student_id" type="BIGINT">
-		        <constraints nullable="false"/>
-	        </column>
-	        <column name="url" type="VARCHAR(255)"/>
-        </createTable>
-    </changeSet>
+		<createTable tableName="portfolio_item">
+			<column autoIncrement="true" name="id" type="BIGINT">
+				<constraints primaryKey="true" primaryKeyName="portfolio_itemPK"/>
+			</column>
+			<column name="name" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="description" type="VARCHAR(500)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="student_id" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="url" type="VARCHAR(255)"/>
+		</createTable>
+	</changeSet>
 	<changeSet id="9" author="meverett">
-        <createTable tableName="program">
-            <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="programPK"/>
-            </column>
-	        <column name="name" type="VARCHAR(50)">
-		        <constraints nullable="false"/>
-	        </column>
-	        <column name="description" type="VARCHAR(255)">
-		        <constraints nullable="false"/>
-	        </column>
-            <column name="organization_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
+		<createTable tableName="program">
+			<column autoIncrement="true" name="id" type="BIGINT">
+				<constraints primaryKey="true" primaryKeyName="programPK"/>
+			</column>
+			<column name="name" type="VARCHAR(50)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="description" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="organization_id" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+	</changeSet>
 	<changeSet id="10" author="meverett">
-        <createTable tableName="session">
-            <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="sessionPK"/>
-            </column>
-	        <column name="name" type="VARCHAR(100)">
-		        <constraints nullable="false"/>
-	        </column>
-	        <column name="description" type="VARCHAR(200)">
-		        <constraints nullable="false"/>
-	        </column>
-	        <column name="start_date" type="TIMESTAMP">
-		        <constraints nullable="false"/>
-	        </column>
-            <column name="end_date" type="TIMESTAMP">
-	            <constraints nullable="false"/>
-            </column>
-            <column name="program_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
+		<createTable tableName="session">
+			<column autoIncrement="true" name="id" type="BIGINT">
+				<constraints primaryKey="true" primaryKeyName="sessionPK"/>
+			</column>
+			<column name="name" type="VARCHAR(100)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="description" type="VARCHAR(200)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="start_date" type="TIMESTAMP">
+				<constraints nullable="false"/>
+			</column>
+			<column name="end_date" type="TIMESTAMP">
+				<constraints nullable="false"/>
+			</column>
+			<column name="program_id" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+	</changeSet>
 	<changeSet id="11" author="meverett">
 		<createTable tableName="student_assignment">
 			<column autoIncrement="true" name="id" type="BIGINT">
@@ -191,120 +194,148 @@
 			</column>
 		</createTable>
 	</changeSet>
-    <changeSet id="12" author="meverett">
-        <createTable tableName="student_course">
-	        <column autoIncrement="true" name="id" type="BIGINT">
-		        <constraints primaryKey="true" primaryKeyName="student_coursePK"/>
-	        </column>
-	        <column name="student_id" type="BIGINT">
-		        <constraints nullable="false"/>
-	        </column>
-	        <column name="course_id" type="BIGINT">
-		        <constraints nullable="false"/>
-	        </column>
-	        <column name="grade" type="VARCHAR(20)">
-		        <constraints nullable="false"/>
-	        </column>
-	        <column name="enroll_date" type="TIMESTAMP">
-		        <constraints nullable="false"/>
-	        </column>
-	        <column name="drop_date" type="TIMESTAMP"/>
-	        <column name="complete" type="BIT(1)"><!-- TODO: Default to false -->
-		        <constraints nullable="false"/>
-	        </column>
-	        <column name="on_portfolio" type="BIT(1)"><!-- TODO: Default to false -->
-		        <constraints nullable="false"/>
-	        </column>
-        </createTable>
-    </changeSet>
-    <changeSet id="13" author="meverett">
-        <createTable tableName="user">
-            <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="userPK"/>
-            </column>
-	        <column name="login" type="VARCHAR(100)">
-		        <constraints nullable="false" unique="true" uniqueConstraintName="loginUC"/>
-	        </column>
-	        <column name="password_hash" type="VARCHAR(60)">
-		        <constraints nullable="false"/>
-	        </column>
-	        <column name="first_name" type="VARCHAR(50)">
-		        <constraints nullable="false"/>
-	        </column>
-	        <column name="last_name" type="VARCHAR(50)">
-		        <constraints nullable="false"/>
-	        </column>
-	        <column name="authority" type="VARCHAR(50)">
-		        <constraints nullable="false"/>
-	        </column>
-	        <column name="email" type="VARCHAR(100)"/>
-	        <column name="phone_number" type="VARCHAR(100)"/>
-	        <column name="address_id" type="BIGINT"/>
-	        <column name="notes" type="VARCHAR(2000)"/>
+	<changeSet id="12" author="meverett">
+		<createTable tableName="student_course">
+			<column autoIncrement="true" name="id" type="BIGINT">
+				<constraints primaryKey="true" primaryKeyName="student_coursePK"/>
+			</column>
+			<column name="student_id" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="course_id" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="grade" type="VARCHAR(20)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="enroll_date" type="TIMESTAMP">
+				<constraints nullable="false"/>
+			</column>
+			<column name="drop_date" type="TIMESTAMP"/>
+			<column name="complete" type="BIT(1)"><!-- TODO: Default to false -->
+				<constraints nullable="false"/>
+			</column>
+			<column name="on_portfolio" type="BIT(1)"><!-- TODO: Default to false -->
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+	</changeSet>
+	<changeSet id="13" author="meverett">
+		<createTable tableName="user">
+			<column autoIncrement="true" name="id" type="BIGINT">
+				<constraints primaryKey="true" primaryKeyName="userPK"/>
+			</column>
+			<column name="login" type="VARCHAR(100)">
+				<constraints nullable="false" unique="true" uniqueConstraintName="loginUC"/>
+			</column>
+			<column name="password_hash" type="VARCHAR(60)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="first_name" type="VARCHAR(50)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="last_name" type="VARCHAR(50)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="authority" type="VARCHAR(50)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="email" type="VARCHAR(100)"/>
+			<column name="phone_number" type="VARCHAR(100)"/>
+			<column name="address_id" type="BIGINT"/>
+			<column name="notes" type="VARCHAR(2000)"/>
 			<column name="organization_id" type="BIGINT"/>
-	        <column name="org_role" type="VARCHAR(255)"/>
-	        <column name="fourteen_plus" type="BIT(1)"/>
-	        <column name="guardian_first_name" type="VARCHAR(50)"/>
-	        <column name="guardian_last_name" type="VARCHAR(50)"/>
-	        <column name="guardian_email" type="VARCHAR(100)"/>
-	        <column name="guardian_phone" type="VARCHAR(100)"/>
-	        <column name="school" type="VARCHAR(100)"/>
-	        <column name="grade_level" type="VARCHAR(100)"/>
-	        <column name="state_student_id" type="VARCHAR(100)"/>
-	        <column name="org_student_id" type="VARCHAR(100)"/>
-	        <column name="created_by" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_date" type="TIMESTAMP">
-                <constraints nullable="false"/>
-            </column>
-            <column name="last_modified_by" type="VARCHAR(50)"/>
-            <column name="last_modified_date" type="TIMESTAMP"/>
-        </createTable>
-    </changeSet>
-    <changeSet id="14" author="meverett">
-        <addPrimaryKey columnNames="event_id, name" tableName="persistent_audit_event_data"/>
-    </changeSet>
-    <changeSet id="15" author="meverett">
-        <addForeignKeyConstraint baseColumnNames="address_id" baseTableName="user" constraintName="user_addressFK" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="address"/>
-    </changeSet>
+			<column name="org_role" type="VARCHAR(255)"/>
+			<column name="fourteen_plus" type="BIT(1)"/>
+			<column name="guardian_first_name" type="VARCHAR(50)"/>
+			<column name="guardian_last_name" type="VARCHAR(50)"/>
+			<column name="guardian_email" type="VARCHAR(100)"/>
+			<column name="guardian_phone" type="VARCHAR(100)"/>
+			<column name="school" type="VARCHAR(100)"/>
+			<column name="grade_level" type="VARCHAR(100)"/>
+			<column name="state_student_id" type="VARCHAR(100)"/>
+			<column name="org_student_id" type="VARCHAR(100)"/>
+			<column name="created_by" type="VARCHAR(50)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="created_date" type="TIMESTAMP">
+				<constraints nullable="false"/>
+			</column>
+			<column name="last_modified_by" type="VARCHAR(50)"/>
+			<column name="last_modified_date" type="TIMESTAMP"/>
+		</createTable>
+	</changeSet>
+	<changeSet id="14" author="meverett">
+		<addPrimaryKey columnNames="event_id, name" tableName="persistent_audit_event_data"/>
+	</changeSet>
+	<changeSet id="15" author="meverett">
+		<addForeignKeyConstraint baseColumnNames="address_id" baseTableName="user" constraintName="user_addressFK"
+		                         deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+		                         referencedTableName="address"/>
+	</changeSet>
 	<changeSet id="16" author="meverett">
-		<addForeignKeyConstraint baseColumnNames="assignment_id" baseTableName="student_assignment" constraintName="student_assignment_assignmentFK" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="assignment"/>
+		<addForeignKeyConstraint baseColumnNames="assignment_id" baseTableName="student_assignment"
+		                         constraintName="student_assignment_assignmentFK" deferrable="false"
+		                         initiallyDeferred="false" referencedColumnNames="id" referencedTableName="assignment"/>
 	</changeSet>
 	<changeSet id="17" author="meverett">
-		<addForeignKeyConstraint baseColumnNames="authority" baseTableName="user" constraintName="user_authorityFK" deferrable="false" initiallyDeferred="false" referencedColumnNames="name" referencedTableName="authority"/>
+		<addForeignKeyConstraint baseColumnNames="authority" baseTableName="user" constraintName="user_authorityFK"
+		                         deferrable="false" initiallyDeferred="false" referencedColumnNames="name"
+		                         referencedTableName="authority"/>
 	</changeSet>
 	<changeSet id="18" author="meverett">
-		<addForeignKeyConstraint baseColumnNames="course_id" baseTableName="assignment" constraintName="assignment_courseFK" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="course"/>
+		<addForeignKeyConstraint baseColumnNames="course_id" baseTableName="assignment"
+		                         constraintName="assignment_courseFK" deferrable="false" initiallyDeferred="false"
+		                         referencedColumnNames="id" referencedTableName="course"/>
 	</changeSet>
 	<changeSet id="19" author="meverett">
-		<addForeignKeyConstraint baseColumnNames="course_id" baseTableName="student_course" constraintName="student_course_courseFK" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="course"/>
+		<addForeignKeyConstraint baseColumnNames="course_id" baseTableName="student_course"
+		                         constraintName="student_course_courseFK" deferrable="false" initiallyDeferred="false"
+		                         referencedColumnNames="id" referencedTableName="course"/>
 	</changeSet>
-    <changeSet id="20" author="meverett">
-        <addForeignKeyConstraint baseColumnNames="organization_id" baseTableName="program" constraintName="program_organizationFK" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="organization"/>
-    </changeSet>
+	<changeSet id="20" author="meverett">
+		<addForeignKeyConstraint baseColumnNames="organization_id" baseTableName="program"
+		                         constraintName="program_organizationFK" deferrable="false" initiallyDeferred="false"
+		                         referencedColumnNames="id" referencedTableName="organization"/>
+	</changeSet>
 	<changeSet id="21" author="meverett">
-		<addForeignKeyConstraint baseColumnNames="organization_id" baseTableName="user" constraintName="user_organizationFK" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="organization"/>
+		<addForeignKeyConstraint baseColumnNames="organization_id" baseTableName="user"
+		                         constraintName="user_organizationFK" deferrable="false" initiallyDeferred="false"
+		                         referencedColumnNames="id" referencedTableName="organization"/>
 	</changeSet>
-    <changeSet id="22" author="meverett">
-        <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="persistent_audit_event_data" constraintName="persistent_audit_eventFK" deferrable="false" initiallyDeferred="false" referencedColumnNames="event_id" referencedTableName="persistent_audit_event"/>
-    </changeSet>
-    <changeSet id="23" author="meverett">
-        <addForeignKeyConstraint baseColumnNames="program_id" baseTableName="session" constraintName="session_programFK" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="program"/>
-    </changeSet>
+	<changeSet id="22" author="meverett">
+		<addForeignKeyConstraint baseColumnNames="event_id" baseTableName="persistent_audit_event_data"
+		                         constraintName="persistent_audit_eventFK" deferrable="false" initiallyDeferred="false"
+		                         referencedColumnNames="event_id" referencedTableName="persistent_audit_event"/>
+	</changeSet>
+	<changeSet id="23" author="meverett">
+		<addForeignKeyConstraint baseColumnNames="program_id" baseTableName="session" constraintName="session_programFK"
+		                         deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+		                         referencedTableName="program"/>
+	</changeSet>
 	<changeSet id="24" author="meverett">
-		<addForeignKeyConstraint baseColumnNames="session_id" baseTableName="course" constraintName="course_sessionFK" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="session"/>
+		<addForeignKeyConstraint baseColumnNames="session_id" baseTableName="course" constraintName="course_sessionFK"
+		                         deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+		                         referencedTableName="session"/>
 	</changeSet>
 	<changeSet id="25" author="meverett">
-		<addForeignKeyConstraint baseColumnNames="instructor_id" baseTableName="course" constraintName="course_instructorFK" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="user"/>
+		<addForeignKeyConstraint baseColumnNames="instructor_id" baseTableName="course"
+		                         constraintName="course_instructorFK" deferrable="false" initiallyDeferred="false"
+		                         referencedColumnNames="id" referencedTableName="user"/>
 	</changeSet>
 	<changeSet id="26" author="meverett">
-		<addForeignKeyConstraint baseColumnNames="student_id" baseTableName="portfolio_item" constraintName="portfolio_item_studentFK" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="user"/>
+		<addForeignKeyConstraint baseColumnNames="student_id" baseTableName="portfolio_item"
+		                         constraintName="portfolio_item_studentFK" deferrable="false" initiallyDeferred="false"
+		                         referencedColumnNames="id" referencedTableName="user"/>
 	</changeSet>
 	<changeSet id="27" author="meverett">
-		<addForeignKeyConstraint baseColumnNames="student_id" baseTableName="student_assignment" constraintName="student_assignment_studentFK" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="user"/>
+		<addForeignKeyConstraint baseColumnNames="student_id" baseTableName="student_assignment"
+		                         constraintName="student_assignment_studentFK" deferrable="false"
+		                         initiallyDeferred="false" referencedColumnNames="id" referencedTableName="user"/>
 	</changeSet>
 	<changeSet id="28" author="meverett">
-		<addForeignKeyConstraint baseColumnNames="student_id" baseTableName="student_course" constraintName="student_course_studentFK" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="user"/>
+		<addForeignKeyConstraint baseColumnNames="student_id" baseTableName="student_course"
+		                         constraintName="student_course_studentFK" deferrable="false" initiallyDeferred="false"
+		                         referencedColumnNames="id" referencedTableName="user"/>
 	</changeSet>
 </databaseChangeLog>

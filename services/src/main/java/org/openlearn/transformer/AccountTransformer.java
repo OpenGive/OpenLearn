@@ -2,7 +2,9 @@ package org.openlearn.transformer;
 
 import org.openlearn.domain.User;
 import org.openlearn.dto.AccountDTO;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AccountTransformer {
 
 	public AccountTransformer() {
