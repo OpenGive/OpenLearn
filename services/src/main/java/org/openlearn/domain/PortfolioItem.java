@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -12,6 +13,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * A Portfolio Item.
  */
 @Entity
+@Table(name = "portfolio_item")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class PortfolioItem implements Serializable {
 
@@ -22,17 +24,20 @@ public class PortfolioItem implements Serializable {
 	private Long id;
 
 	@NotNull
-	@Column(nullable = false)
+	@Column(name = "name", nullable = false)
 	private String name;
 
 	@NotNull
-	@Column(nullable = false)
+	@Size(max = 500)
+	@Column(name = "description", length = 500, nullable = false)
 	private String description;
 
 	@NotNull
-	@Column(nullable = false)
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "student_id")
 	private User student;
 
+	@Column(name = "url")
 	private String url;
 
 	public Long getId() {

@@ -5,14 +5,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -23,6 +16,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * A Program.
  */
 @Entity
+@Table(name = "program")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Program implements Serializable {
 
@@ -34,15 +28,16 @@ public class Program implements Serializable {
 
 	@NotNull
 	@Size(min = 5, max = 50)
-	@Column(length = 50, nullable = false)
+	@Column(name = "name", length = 50, nullable = false)
 	private String name;
 
 	@NotNull
-	@Column(nullable = false)
+	@Column(name = "description", nullable = false)
 	private String description;
 
 	@NotNull
 	@ManyToOne(optional = false)
+	@JoinColumn(name = "organization_id")
 	private Organization organization;
 
 	public Long getId() {

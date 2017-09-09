@@ -12,6 +12,7 @@ import java.io.Serializable;
  * An assignment
  */
 @Entity
+@Table(name = "assignment")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Assignment implements Serializable {
 
@@ -23,16 +24,17 @@ public class Assignment implements Serializable {
 
 	@NotNull
 	@Size(max = 100)
-	@Column(length = 100, nullable = false)
+	@Column(name = "name", length = 100, nullable = false)
 	private String name;
 
 	@NotNull
 	@Size(max = 200)
-	@Column(length = 200, nullable = false)
+	@Column(name = "description", length = 200, nullable = false)
 	private String description;
 
 	@NotNull
 	@ManyToOne(optional = false)
+	@JoinColumn(name = "course_id")
 	private Course course;
 
 	public Long getId() {

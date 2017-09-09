@@ -12,13 +12,13 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Email;
 import org.openlearn.config.Constants;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.openlearn.domain.enumeration.GradeLevel;
 
 /**
  * A user.
  */
 @Entity
+@Table(name = "user")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class User extends AbstractAuditingEntity implements Serializable {
 
@@ -35,36 +35,36 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	private String login;
 
 	@NotNull
-	@JsonIgnore
 	@Size(min = 60, max = 60)
 	@Column(name = "password_hash", length = 60, nullable = false)
 	private String password;
 
 	@NotNull
 	@Size(max = 50)
-	@Column(length = 50, nullable = false)
+	@Column(name = "first_name", length = 50, nullable = false)
 	private String firstName;
 
 	@NotNull
 	@Size(max = 50)
-	@Column(length = 50, nullable = false)
+	@Column(name = "last_name", length = 50, nullable = false)
 	private String lastName;
 
 	@NotNull
 	@ManyToOne(optional = false)
+	@JoinColumn(name = "authority")
 	private Authority authority;
 
 	@Email
 	@Size(min = 5, max = 100)
-	@Column(length = 100)
+	@Column(name = "email", length = 100)
 	private String email;
 
 	@Size(max = 15)
-	@Column(length = 15)
+	@Column(name = "phone_number", length = 15)
 	private String phoneNumber;
 
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "addr_id")
+	@JoinColumn(name = "address_id")
 	private Address address;
 
 	@Size(max = 2000)
@@ -72,27 +72,38 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	private String notes;
 
 	@ManyToOne
+	@JoinColumn(name = "organization_id")
 	private Organization organization;
 
+	@Column(name = "org_role")
 	private String orgRole;
 
+	@Column(name = "fourteen_plus")
 	private Boolean fourteenPlus;
 
+	@Column(name = "guardian_first_name", length = 50)
 	private String guardianFirstName;
 
+	@Column(name = "guardian_last_name", length = 50)
 	private String guardianLastName;
 
-	private String guardianPhone;
-
+	@Column(name = "guardian_email", length = 100)
 	private String guardianEmail;
 
+	@Column(name = "guardian_phone", length = 100)
+	private String guardianPhone;
+
+	@Column(name = "school", length = 100)
 	private String school;
 
 	@Enumerated(EnumType.STRING)
+	@Column(name = "grade_level", length = 100)
 	private GradeLevel gradeLevel;
 
+	@Column(name = "state_student_id", length = 100)
 	private String stateStudentId;
 
+	@Column(name = "org_student_id", length = 100)
 	private String orgStudentId;
 
 	public Long getId() {
@@ -287,9 +298,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
 			return false;
 		if (guardianLastName != null ? !guardianLastName.equals(user.guardianLastName) : user.guardianLastName != null)
 			return false;
-		if (guardianPhone != null ? !guardianPhone.equals(user.guardianPhone) : user.guardianPhone != null)
-			return false;
 		if (guardianEmail != null ? !guardianEmail.equals(user.guardianEmail) : user.guardianEmail != null)
+			return false;
+		if (guardianPhone != null ? !guardianPhone.equals(user.guardianPhone) : user.guardianPhone != null)
 			return false;
 		if (school != null ? !school.equals(user.school) : user.school != null) return false;
 		if (gradeLevel != user.gradeLevel) return false;
@@ -315,8 +326,8 @@ public class User extends AbstractAuditingEntity implements Serializable {
 		result = 31 * result + (fourteenPlus != null ? fourteenPlus.hashCode() : 0);
 		result = 31 * result + (guardianFirstName != null ? guardianFirstName.hashCode() : 0);
 		result = 31 * result + (guardianLastName != null ? guardianLastName.hashCode() : 0);
-		result = 31 * result + (guardianPhone != null ? guardianPhone.hashCode() : 0);
 		result = 31 * result + (guardianEmail != null ? guardianEmail.hashCode() : 0);
+		result = 31 * result + (guardianPhone != null ? guardianPhone.hashCode() : 0);
 		result = 31 * result + (school != null ? school.hashCode() : 0);
 		result = 31 * result + (gradeLevel != null ? gradeLevel.hashCode() : 0);
 		result = 31 * result + (stateStudentId != null ? stateStudentId.hashCode() : 0);
@@ -341,8 +352,8 @@ public class User extends AbstractAuditingEntity implements Serializable {
 			", fourteenPlus=" + fourteenPlus +
 			", guardianFirstName='" + guardianFirstName + '\'' +
 			", guardianLastName='" + guardianLastName + '\'' +
-			", guardianPhone='" + guardianPhone + '\'' +
 			", guardianEmail='" + guardianEmail + '\'' +
+			", guardianPhone='" + guardianPhone + '\'' +
 			", school='" + school + '\'' +
 			", gradeLevel=" + gradeLevel +
 			", stateStudentId='" + stateStudentId + '\'' +

@@ -6,14 +6,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -25,6 +18,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * A Session.
  */
 @Entity
+@Table(name = "session")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Session implements Serializable {
 
@@ -36,24 +30,25 @@ public class Session implements Serializable {
 
 	@NotNull
 	@Size(min = 5, max = 100)
-	@Column(length = 100, nullable = false)
+	@Column(name = "name", length = 100, nullable = false)
 	private String name;
 
 	@NotNull
 	@Size(min = 5, max = 200)
-	@Column(length = 200)
+	@Column(name = "description", length = 200, nullable = false)
 	private String description;
 
 	@NotNull
-	@Column(nullable = false)
+	@Column(name = "start_date", nullable = false)
 	private ZonedDateTime startDate;
 
 	@NotNull
-	@Column(nullable = false)
+	@Column(name = "end_date", nullable = false)
 	private ZonedDateTime endDate;
 
 	@NotNull
 	@ManyToOne(optional = false)
+	@JoinColumn(name = "program_id")
 	private Program program;
 
 	public Long getId() {

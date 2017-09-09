@@ -12,6 +12,7 @@ import java.io.Serializable;
  * An Address.
  */
 @Entity
+@Table(name = "address")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Address implements Serializable {
 

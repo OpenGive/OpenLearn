@@ -13,6 +13,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * A Organization.
  */
 @Entity
+@Table(name = "organization")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Organization implements Serializable {
 
@@ -24,24 +25,26 @@ public class Organization implements Serializable {
 
 	@NotNull
 	@Size(min = 3, max = 100)
-	@Column(length = 100, nullable = false)
+	@Column(name = "name", length = 100, nullable = false)
 	private String name;
 
 	@NotNull
 	@Size(min = 10, max = 800)
-	@Column(length = 800)
+	@Column(name = "description", length = 800, nullable = false)
 	private String description;
 
 	@NotNull
-	@Column(nullable = false)
+	@Column(name = "primary_contact_method", nullable = false)
 	private String primaryContactName;
 
 	@NotNull
-	@Column(nullable = false)
+	@Column(name = "primary_contact_info", nullable = false)
 	private String primaryContactInfo;
 
+	@Column(name = "secondary_contact_name")
 	private String secondaryContactName;
 
+	@Column(name = "secondary_contact_info")
 	private String secondaryContactInfo;
 
 	public Long getId() {

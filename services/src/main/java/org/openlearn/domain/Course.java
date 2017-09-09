@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
  * A Course.
  */
 @Entity
+@Table(name = "course")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Course implements Serializable {
 
@@ -28,32 +29,36 @@ public class Course implements Serializable {
 
 	@NotNull
 	@Size(min = 3, max = 100)
-	@Column(length = 100, nullable = false)
+	@Column(name = "name", length = 100, nullable = false)
 	private String name;
 
 	@NotNull
 	@Size(min = 5, max = 200)
-	@Column(length = 200, nullable = false)
+	@Column(name = "description", length = 200, nullable = false)
 	private String description;
 
 	@NotNull
-	@Column(nullable = false)
+	@Column(name = "start_date", nullable = false)
 	private ZonedDateTime startDate;
 
 	@NotNull
-	@Column(nullable = false)
+	@Column(name = "end_date", nullable = false)
 	private ZonedDateTime endDate;
 
 	@NotNull
 	@ManyToOne(optional = false)
+	@JoinColumn(name = "session_id")
 	private Session session;
 
 	@NotNull
 	@ManyToOne(optional = false)
+	@JoinColumn(name = "instructor_id")
 	private User instructor;
 
+	@Column(name = "locations")
 	private String locations;
 
+	@Column(name = "times")
 	private String times;
 
 	public Long getId() {

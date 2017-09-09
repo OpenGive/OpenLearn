@@ -10,69 +10,71 @@ import java.util.Map;
 
 /**
  * Persist AuditEvent managed by the Spring Boot actuator
+ *
  * @see org.springframework.boot.actuate.audit.AuditEvent
  */
 @Entity
 @Table(name = "persistent_audit_event")
 public class PersistentAuditEvent implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "event_id")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "event_id")
+	private Long id;
 
-    @NotNull
-    @Column(nullable = false)
-    private String principal;
+	@NotNull
+	@Column(name = "principal", nullable = false)
+	private String principal;
 
-    @Column(name = "event_date")
-    private LocalDateTime auditEventDate;
-    @Column(name = "event_type")
-    private String auditEventType;
+	@Column(name = "event_date")
+	private LocalDateTime auditEventDate;
 
-    @ElementCollection
-    @MapKeyColumn(name = "name")
-    @Column(name = "value")
-    @CollectionTable(name = "persistent_audit_evt_data", joinColumns=@JoinColumn(name="event_id"))
-    private Map<String, String> data = new HashMap<>();
+	@Column(name = "event_type")
+	private String auditEventType;
 
-    public Long getId() {
-        return id;
-    }
+	@ElementCollection
+	@MapKeyColumn(name = "name")
+	@Column(name = "value")
+	@CollectionTable(name = "persistent_audit_event_data", joinColumns = @JoinColumn(name = "event_id"))
+	private Map<String, String> data = new HashMap<>();
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public String getPrincipal() {
-        return principal;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setPrincipal(String principal) {
-        this.principal = principal;
-    }
+	public String getPrincipal() {
+		return principal;
+	}
 
-    public LocalDateTime getAuditEventDate() {
-        return auditEventDate;
-    }
+	public void setPrincipal(String principal) {
+		this.principal = principal;
+	}
 
-    public void setAuditEventDate(LocalDateTime auditEventDate) {
-        this.auditEventDate = auditEventDate;
-    }
+	public LocalDateTime getAuditEventDate() {
+		return auditEventDate;
+	}
 
-    public String getAuditEventType() {
-        return auditEventType;
-    }
+	public void setAuditEventDate(LocalDateTime auditEventDate) {
+		this.auditEventDate = auditEventDate;
+	}
 
-    public void setAuditEventType(String auditEventType) {
-        this.auditEventType = auditEventType;
-    }
+	public String getAuditEventType() {
+		return auditEventType;
+	}
 
-    public Map<String, String> getData() {
-        return data;
-    }
+	public void setAuditEventType(String auditEventType) {
+		this.auditEventType = auditEventType;
+	}
 
-    public void setData(Map<String, String> data) {
-        this.data = data;
-    }
+	public Map<String, String> getData() {
+		return data;
+	}
+
+	public void setData(Map<String, String> data) {
+		this.data = data;
+	}
 }

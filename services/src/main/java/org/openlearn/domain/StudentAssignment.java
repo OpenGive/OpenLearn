@@ -5,11 +5,13 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * An entity representing one student's relationship to one assignment
  */
 @Entity
+@Table(name = "student_course")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class StudentAssignment {
 
@@ -21,16 +23,23 @@ public class StudentAssignment {
 
 	@NotNull
 	@ManyToOne(optional = false)
+	@JoinColumn(name = "student_id")
 	private User student;
 
 	@NotNull
 	@ManyToOne(optional = false)
+	@JoinColumn(name = "assignment_id")
 	private Assignment assignment;
 
 	@NotNull
-	@ManyToOne(optional = false)
+	@Size(max = 20)
+	@Column(name = "grade", length = 20, nullable = false)
 	private String grade;
 
+	@Column(name = "complete", nullable = false)
+	private Boolean complete;
+
+	@Column(name = "on_portfolio")
 	private Boolean onPortfolio;
 
 	public Long getId() {
@@ -65,6 +74,14 @@ public class StudentAssignment {
 		this.grade = grade;
 	}
 
+	public Boolean getComplete() {
+		return complete;
+	}
+
+	public void setComplete(Boolean complete) {
+		this.complete = complete;
+	}
+
 	public Boolean getOnPortfolio() {
 		return onPortfolio;
 	}
@@ -84,6 +101,7 @@ public class StudentAssignment {
 		if (student != null ? !student.equals(that.student) : that.student != null) return false;
 		if (assignment != null ? !assignment.equals(that.assignment) : that.assignment != null) return false;
 		if (grade != null ? !grade.equals(that.grade) : that.grade != null) return false;
+		if (complete != null ? !complete.equals(that.complete) : that.complete != null) return false;
 		return onPortfolio != null ? onPortfolio.equals(that.onPortfolio) : that.onPortfolio == null;
 	}
 
@@ -93,6 +111,7 @@ public class StudentAssignment {
 		result = 31 * result + (student != null ? student.hashCode() : 0);
 		result = 31 * result + (assignment != null ? assignment.hashCode() : 0);
 		result = 31 * result + (grade != null ? grade.hashCode() : 0);
+		result = 31 * result + (complete != null ? complete.hashCode() : 0);
 		result = 31 * result + (onPortfolio != null ? onPortfolio.hashCode() : 0);
 		return result;
 	}
@@ -104,6 +123,7 @@ public class StudentAssignment {
 			", student=" + student +
 			", assignment=" + assignment +
 			", grade='" + grade + '\'' +
+			", complete=" + complete +
 			", onPortfolio=" + onPortfolio +
 			'}';
 	}
