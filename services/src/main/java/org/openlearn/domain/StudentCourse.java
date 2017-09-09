@@ -1,5 +1,8 @@
 package org.openlearn.domain;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -9,6 +12,7 @@ import java.time.ZonedDateTime;
  * An entity representing one student's enrollment in one course
  */
 @Entity
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class StudentCourse implements Serializable {
 
 	private static final long serialVersionUID = 1L;
