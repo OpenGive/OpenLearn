@@ -1,7 +1,5 @@
 package org.openlearn.domain;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -14,9 +12,7 @@ import java.io.Serializable;
  * An assignment
  */
 @Entity
-@Table(name = "assignment")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class Assignment implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -30,8 +26,9 @@ public class Assignment implements Serializable {
 	@Column(length = 100, nullable = false)
 	private String name;
 
+	@NotNull
 	@Size(max = 200)
-	@Column(length = 200)
+	@Column(length = 200, nullable = false)
 	private String description;
 
 	@NotNull
@@ -78,17 +75,17 @@ public class Assignment implements Serializable {
 		Assignment that = (Assignment) o;
 
 		if (id != null ? !id.equals(that.id) : that.id != null) return false;
-		if (!name.equals(that.name)) return false;
+		if (name != null ? !name.equals(that.name) : that.name != null) return false;
 		if (description != null ? !description.equals(that.description) : that.description != null) return false;
-		return course.equals(that.course);
+		return course != null ? course.equals(that.course) : that.course == null;
 	}
 
 	@Override
 	public int hashCode() {
 		int result = id != null ? id.hashCode() : 0;
-		result = 31 * result + name.hashCode();
+		result = 31 * result + (name != null ? name.hashCode() : 0);
 		result = 31 * result + (description != null ? description.hashCode() : 0);
-		result = 31 * result + course.hashCode();
+		result = 31 * result + (course != null ? course.hashCode() : 0);
 		return result;
 	}
 

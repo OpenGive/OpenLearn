@@ -9,10 +9,9 @@ import javax.validation.constraints.*;
 import java.io.Serializable;
 
 /**
- * A Address.
+ * An Address.
  */
 @Entity
-@Table(name = "address")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Address implements Serializable {
 
@@ -22,7 +21,6 @@ public class Address implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull
 	@Size(min = 5, max = 50)
 	@Column(name = "street_address_1", length = 50, nullable = false)
 	private String streetAddress1;
@@ -31,17 +29,14 @@ public class Address implements Serializable {
 	@Column(name = "street_address_2", length = 50)
 	private String streetAddress2;
 
-	@NotNull
 	@Size(max = 50)
 	@Column(name = "city", length = 50, nullable = false)
 	private String city;
 
-	@NotNull
 	@Enumerated(EnumType.STRING)
 	@Column(name = "state", nullable = false)
 	private State state;
 
-	@NotNull
 	@Size(min = 5, max = 10)
 	@Column(name = "postal_code", length = 10, nullable = false)
 	private String postalCode;
@@ -110,22 +105,23 @@ public class Address implements Serializable {
 		Address address = (Address) o;
 
 		if (id != null ? !id.equals(address.id) : address.id != null) return false;
-		if (!streetAddress1.equals(address.streetAddress1)) return false;
+		if (streetAddress1 != null ? !streetAddress1.equals(address.streetAddress1) : address.streetAddress1 != null)
+			return false;
 		if (streetAddress2 != null ? !streetAddress2.equals(address.streetAddress2) : address.streetAddress2 != null)
 			return false;
-		if (!city.equals(address.city)) return false;
+		if (city != null ? !city.equals(address.city) : address.city != null) return false;
 		if (state != address.state) return false;
-		return postalCode.equals(address.postalCode);
+		return postalCode != null ? postalCode.equals(address.postalCode) : address.postalCode == null;
 	}
 
 	@Override
 	public int hashCode() {
 		int result = id != null ? id.hashCode() : 0;
-		result = 31 * result + streetAddress1.hashCode();
+		result = 31 * result + (streetAddress1 != null ? streetAddress1.hashCode() : 0);
 		result = 31 * result + (streetAddress2 != null ? streetAddress2.hashCode() : 0);
-		result = 31 * result + city.hashCode();
-		result = 31 * result + state.hashCode();
-		result = 31 * result + postalCode.hashCode();
+		result = 31 * result + (city != null ? city.hashCode() : 0);
+		result = 31 * result + (state != null ? state.hashCode() : 0);
+		result = 31 * result + (postalCode != null ? postalCode.hashCode() : 0);
 		return result;
 	}
 

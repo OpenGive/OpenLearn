@@ -1,37 +1,30 @@
 package org.openlearn.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import org.openlearn.domain.PortfolioItem;
-import org.openlearn.service.PortfolioItemService;
-import org.openlearn.web.rest.util.HeaderUtil;
-import org.openlearn.web.rest.util.PaginationUtil;
 import io.swagger.annotations.ApiParam;
-import io.github.jhipster.web.util.ResponseUtil;
+import org.openlearn.dto.PortfolioItemDTO;
+import org.openlearn.security.AuthoritiesConstants;
+import org.openlearn.service.PortfolioItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
 
-/**
- * REST controller for managing PortfolioItem.
- */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/portfolio-items")
 public class PortfolioItemResource {
 
-	private final Logger log = LoggerFactory.getLogger(PortfolioItemResource.class);
+	// TODO: Error handling / logging
 
-	private static final String ENTITY_NAME = "portfolioItem";
+	private static final String ENDPOINT = "/api/portfolio-items/";
+
+	private final Logger log = LoggerFactory.getLogger(PortfolioItemResource.class);
 
 	private final PortfolioItemService portfolioItemService;
 
@@ -40,87 +33,78 @@ public class PortfolioItemResource {
 	}
 
 	/**
-	 * POST  /portfolio-items : Create a new portfolioItem.
+	 * GET  /:id : get a single portfolio item by ID
 	 *
-	 * @param portfolioItem the portfolioItem to create
-	 * @return the ResponseEntity with status 201 (Created) and with body the new portfolioItem, or with status 400 (Bad Request) if the portfolioItem has already an ID
-	 * @throws URISyntaxException if the Location URI syntax is incorrect
+	 * @param id the ID of the portfolio item to get
+	 * @return the ResponseEntity with status 200 (OK) and the portfolio item in the body
+	 *      or with ... TODO: Error handling
 	 */
-	@PostMapping("/portfolio-items")
-	@Timed
-	public ResponseEntity<PortfolioItem> createPortfolioItem(@Valid @RequestBody PortfolioItem portfolioItem) throws URISyntaxException {
-		log.debug("REST request to save PortfolioItem : {}", portfolioItem);
-		if (portfolioItem.getId() != null) {
-			return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new portfolioItem cannot already have an ID")).body(null);
-		}
-		PortfolioItem result = portfolioItemService.save(portfolioItem);
-		return ResponseEntity.created(new URI("/api/portfolio-items/" + result.getId()))
-			.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-			.body(result);
+	@GetMapping("/{id}")
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
+	public ResponseEntity get(@PathVariable Long id) {
+		log.debug("GET request to get portfolio item : {}", id);
+		PortfolioItemDTO response = portfolioItemService.findOne(id);
+		return ResponseEntity.ok(response);
 	}
 
 	/**
-	 * PUT  /portfolio-items : Updates an existing portfolioItem.
-	 *
-	 * @param portfolioItem the portfolioItem to update
-	 * @return the ResponseEntity with status 200 (OK) and with body the updated portfolioItem,
-	 * or with status 400 (Bad Request) if the portfolioItem is not valid,
-	 * or with status 500 (Internal Server Error) if the portfolioItem couldnt be updated
-	 * @throws URISyntaxException if the Location URI syntax is incorrect
-	 */
-	@PutMapping("/portfolio-items")
-	@Timed
-	public ResponseEntity<PortfolioItem> updatePortfolioItem(@Valid @RequestBody PortfolioItem portfolioItem) throws URISyntaxException {
-		log.debug("REST request to update PortfolioItem : {}", portfolioItem);
-		if (portfolioItem.getId() == null) {
-			return createPortfolioItem(portfolioItem);
-		}
-		PortfolioItem result = portfolioItemService.save(portfolioItem);
-		return ResponseEntity.ok()
-			.headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, portfolioItem.getId().toString()))
-			.body(result);
-	}
-
-	/**
-	 * GET  /portfolio-items : get all the portfolioItems.
+	 * GET  / : get a list of all portfolio item, filtered by organization
 	 *
 	 * @param pageable the pagination information
-	 * @return the ResponseEntity with status 200 (OK) and the list of portfolioItems in body
+	 * @return the ResponseEntity with status 200 (OK) and a list of portfolio items in the body
+	 *      or with ... TODO: Error handling
 	 */
-	@GetMapping("/portfolio-items")
-	@Timed
-	public ResponseEntity<List<PortfolioItem>> getAllPortfolioItems(@ApiParam Pageable pageable) {
-		log.debug("REST request to get a page of PortfolioItems");
-		Page<PortfolioItem> page = portfolioItemService.findAll(pageable);
-		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/portfolio-items");
-		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+	@GetMapping
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
+	public ResponseEntity get(@ApiParam Pageable pageable) {
+		log.debug("GET request for all portfolio items");
+		Page<PortfolioItemDTO> response = portfolioItemService.findAll(pageable);
+		return ResponseEntity.ok(response);
 	}
 
 	/**
-	 * GET  /portfolio-items/:id : get the "id" portfolioItem.
+	 * POST  / : create a portfolio item
 	 *
-	 * @param id the id of the portfolioItem to retrieve
-	 * @return the ResponseEntity with status 200 (OK) and with body the portfolioItem, or with status 404 (Not Found)
+	 * @param portfolioItemDTO the portfolio item to create
+	 * @return the ResponseEntity with status 200 (OK) and the created portfolio item in the body
+	 *      or with ... TODO: Error handling
+	 * @throws URISyntaxException if the Location URI syntax is incorrect
 	 */
-	@GetMapping("/portfolio-items/{id}")
-	@Timed
-	public ResponseEntity<PortfolioItem> getPortfolioItem(@PathVariable Long id) {
-		log.debug("REST request to get PortfolioItem : {}", id);
-		PortfolioItem portfolioItem = portfolioItemService.findOne(id);
-		return ResponseUtil.wrapOrNotFound(Optional.ofNullable(portfolioItem));
+	@PostMapping
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
+	public ResponseEntity create(@RequestBody @Valid PortfolioItemDTO portfolioItemDTO) throws URISyntaxException {
+		log.debug("POST request to create portfolio item : {}", portfolioItemDTO);
+		PortfolioItemDTO response = portfolioItemService.save(portfolioItemDTO);
+		return ResponseEntity.created(new URI(ENDPOINT + response.getId())).body(response);
 	}
 
 	/**
-	 * DELETE  /portfolio-items/:id : delete the "id" portfolioItem.
+	 * PUT  / : update a portfolio item
 	 *
-	 * @param id the id of the portfolioItem to delete
+	 * @param portfolioItemDTO the portfolio item to update
+	 * @return the ResponseEntity with status 200 (OK) and the updated portfolio item in the body
+	 *      or with ... TODO: Error handling
+	 */
+	@PutMapping
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
+	public ResponseEntity update(@RequestBody @Valid PortfolioItemDTO portfolioItemDTO) {
+		log.debug("PUT request to update portfolio item : {}", portfolioItemDTO);
+		PortfolioItemDTO response = portfolioItemService.save(portfolioItemDTO);
+		return ResponseEntity.ok(response);
+	}
+
+	/**
+	 * DELETE  / : delete a portfolio item
+	 *
+	 * @param id the ID of the portfolio item to delete
 	 * @return the ResponseEntity with status 200 (OK)
+	 *      or with ... TODO: Error handling
 	 */
-	@DeleteMapping("/portfolio-items/{id}")
-	@Timed
-	public ResponseEntity<Void> deletePortfolioItem(@PathVariable Long id) {
-		log.debug("REST request to delete PortfolioItem : {}", id);
+	@DeleteMapping("/{id}")
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
+	public ResponseEntity delete(@PathVariable Long id) {
+		log.debug("DELETE request to delete portfolio item : {}", id);
 		portfolioItemService.delete(id);
-		return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+		return ResponseEntity.ok().build();
 	}
 }

@@ -15,7 +15,6 @@ import java.io.Serializable;
  * An authority (a security role) used by Spring Security.
  */
 @Entity
-@Table(name = "authority")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Authority implements Serializable {
 
@@ -28,9 +27,9 @@ public class Authority implements Serializable {
 		this.name = name;
 	}
 
+	@Id
 	@NotNull
 	@Size(max = 50)
-	@Id
 	@Column(length = 50)
 	private String name;
 
@@ -49,12 +48,12 @@ public class Authority implements Serializable {
 
 		Authority authority = (Authority) o;
 
-		return name.equals(authority.name);
+		return name != null ? name.equals(authority.name) : authority.name == null;
 	}
 
 	@Override
 	public int hashCode() {
-		return name.hashCode();
+		return name != null ? name.hashCode() : 0;
 	}
 
 	@Override

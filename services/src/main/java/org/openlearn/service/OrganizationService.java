@@ -2,18 +2,16 @@ package org.openlearn.service;
 
 import org.openlearn.domain.Organization;
 import org.openlearn.domain.User;
+import org.openlearn.dto.OrganizationDTO;
 import org.openlearn.repository.OrganizationRepository;
-import org.openlearn.repository.UserRepository;
-import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.security.SecurityUtils;
+import org.openlearn.transformer.OrganizationTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service Implementation for managing Organization.
@@ -26,23 +24,30 @@ public class OrganizationService {
 
 	private final OrganizationRepository organizationRepository;
 
-	private final UserRepository userRepository;
+	private final OrganizationTransformer organizationTransformer;
 
-	public OrganizationService(OrganizationRepository organizationRepository, UserRepository userRepository) {
+	private final UserService userService;
+
+	public OrganizationService(OrganizationRepository organizationRepository,
+	                           OrganizationTransformer organizationTransformer, UserService userService) {
 		this.organizationRepository = organizationRepository;
-		this.userRepository = userRepository;
+		this.organizationTransformer = organizationTransformer;
+		this.userService = userService;
 	}
 
 	/**
-	 * Save a organization.
+	 * Save an organization.
 	 *
-	 * @param organization the entity to save
+	 * @param organizationDTO the entity to save
 	 * @return the persisted entity
 	 */
-	public Organization save(Organization organization) {
-		log.debug("Request to save Organization : {}", organization);
-		Organization result = organizationRepository.save(organization);
-		return result;
+	public OrganizationDTO save(OrganizationDTO organizationDTO) {
+		log.debug("Request to save Organization : {}", organizationDTO);
+		if (SecurityUtils.isAdmin() || isOrgOfCurrentUser(organizationDTO)) {
+			return organizationTransformer.transform(organizationRepository.save(organizationTransformer.transform(organizationDTO)));
+		}
+		// TODO: Error handling / logging
+		return null;
 	}
 
 	/**
@@ -52,14 +57,15 @@ public class OrganizationService {
 	 * @return the list of entities
 	 */
 	@Transactional(readOnly = true)
-	public Page<Organization> findAll(Pageable pageable) {
+	public Page<OrganizationDTO> findAll(Pageable pageable) {
 		log.debug("Request to get all Organizations");
-		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
-			Page<Organization> result = organizationRepository.findAll(pageable);
-			return result;
+		User user = userService.getCurrentUser();
+		if (SecurityUtils.isAdmin()) {
+			return organizationRepository.findAll(pageable).map(organizationTransformer::transform);
+		} else {
+			return organizationRepository.findAllById(user.getOrganization().getId())
+				.map(organizationTransformer::transform);
 		}
-		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-		return organizationRepository.findById(user.get().getOrganization().getId(), pageable);
 	}
 
 	/**
@@ -69,22 +75,45 @@ public class OrganizationService {
 	 * @return the entity
 	 */
 	@Transactional(readOnly = true)
-	public Organization findOne(Long id) {
+	public OrganizationDTO findOne(Long id) {
 		log.debug("Request to get Organization : {}", id);
-		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-		if (user.get().getOrganization().getId().equals(id)) {
-			return organizationRepository.findOne(id);
+		Organization organization = organizationRepository.findOne(id);
+		if (organization != null && (SecurityUtils.isAdmin() || isOrgOfCurrentUser(organization))) {
+			return organizationTransformer.transform(organization);
 		}
+		// TODO: Error handling / logging
 		return null;
 	}
 
 	/**
-	 * Delete the  organization by id.
+	 * Delete the organization by id.
 	 *
 	 * @param id the id of the entity
 	 */
 	public void delete(Long id) {
 		log.debug("Request to delete Organization : {}", id);
 		organizationRepository.delete(id);
+	}
+
+	/**
+	 * Determines if a non-admin user is in an organization
+	 *
+	 * @param organizationDTO the organization
+	 * @return true if the current user is in the organization
+	 */
+	private boolean isOrgOfCurrentUser(OrganizationDTO organizationDTO) {
+		User user = userService.getCurrentUser();
+		return user.getOrganization().getId().equals(organizationDTO.getId());
+	}
+
+	/**
+	 * Determines if a non-admin user is in an organization
+	 *
+	 * @param organization the organization
+	 * @return true if the current user is in the organization
+	 */
+	private boolean isOrgOfCurrentUser(Organization organization) {
+		User user = userService.getCurrentUser();
+		return user.getOrganization().equals(organization);
 	}
 }

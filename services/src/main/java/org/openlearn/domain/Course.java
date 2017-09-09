@@ -17,9 +17,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
  * A Course.
  */
 @Entity
-@Table(name = "course")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class Course implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -30,17 +28,20 @@ public class Course implements Serializable {
 
 	@NotNull
 	@Size(min = 3, max = 100)
-	@Column(name = "name", length = 100, nullable = false)
+	@Column(length = 100, nullable = false)
 	private String name;
 
+	@NotNull
 	@Size(min = 5, max = 200)
-	@Column(name = "description", length = 200)
+	@Column(length = 200, nullable = false)
 	private String description;
 
-	@Column(name = "start_date")
+	@NotNull
+	@Column(nullable = false)
 	private ZonedDateTime startDate;
 
-	@Column(name = "end_date")
+	@NotNull
+	@Column(nullable = false)
 	private ZonedDateTime endDate;
 
 	@NotNull
@@ -50,6 +51,10 @@ public class Course implements Serializable {
 	@NotNull
 	@ManyToOne(optional = false)
 	private User instructor;
+
+	private String locations;
+
+	private String times;
 
 	public Long getId() {
 		return id;
@@ -107,6 +112,22 @@ public class Course implements Serializable {
 		this.instructor = instructor;
 	}
 
+	public String getLocations() {
+		return locations;
+	}
+
+	public void setLocations(String locations) {
+		this.locations = locations;
+	}
+
+	public String getTimes() {
+		return times;
+	}
+
+	public void setTimes(String times) {
+		this.times = times;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -115,23 +136,27 @@ public class Course implements Serializable {
 		Course course = (Course) o;
 
 		if (id != null ? !id.equals(course.id) : course.id != null) return false;
-		if (!name.equals(course.name)) return false;
+		if (name != null ? !name.equals(course.name) : course.name != null) return false;
 		if (description != null ? !description.equals(course.description) : course.description != null) return false;
 		if (startDate != null ? !startDate.equals(course.startDate) : course.startDate != null) return false;
 		if (endDate != null ? !endDate.equals(course.endDate) : course.endDate != null) return false;
-		if (!session.equals(course.session)) return false;
-		return instructor.equals(course.instructor);
+		if (session != null ? !session.equals(course.session) : course.session != null) return false;
+		if (instructor != null ? !instructor.equals(course.instructor) : course.instructor != null) return false;
+		if (locations != null ? !locations.equals(course.locations) : course.locations != null) return false;
+		return times != null ? times.equals(course.times) : course.times == null;
 	}
 
 	@Override
 	public int hashCode() {
 		int result = id != null ? id.hashCode() : 0;
-		result = 31 * result + name.hashCode();
+		result = 31 * result + (name != null ? name.hashCode() : 0);
 		result = 31 * result + (description != null ? description.hashCode() : 0);
 		result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
 		result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
-		result = 31 * result + session.hashCode();
-		result = 31 * result + instructor.hashCode();
+		result = 31 * result + (session != null ? session.hashCode() : 0);
+		result = 31 * result + (instructor != null ? instructor.hashCode() : 0);
+		result = 31 * result + (locations != null ? locations.hashCode() : 0);
+		result = 31 * result + (times != null ? times.hashCode() : 0);
 		return result;
 	}
 
@@ -145,6 +170,8 @@ public class Course implements Serializable {
 			", endDate=" + endDate +
 			", session=" + session +
 			", instructor=" + instructor +
+			", locations='" + locations + '\'' +
+			", times='" + times + '\'' +
 			'}';
 	}
 }

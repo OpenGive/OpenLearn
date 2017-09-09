@@ -1,19 +1,19 @@
 package org.openlearn.service;
 
+import org.openlearn.domain.Program;
 import org.openlearn.domain.Session;
 import org.openlearn.domain.User;
+import org.openlearn.dto.SessionDTO;
+import org.openlearn.repository.ProgramRepository;
 import org.openlearn.repository.SessionRepository;
-import org.openlearn.repository.UserRepository;
-import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.security.SecurityUtils;
+import org.openlearn.transformer.SessionTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service Implementation for managing Session.
@@ -24,62 +24,53 @@ public class SessionService {
 
 	private final Logger log = LoggerFactory.getLogger(SessionService.class);
 
+	private final ProgramRepository programRepository;
+
 	private final SessionRepository sessionRepository;
 
-	private final UserRepository userRepository;
+	private final SessionTransformer sessionTransformer;
 
-	public SessionService(SessionRepository sessionRepository, UserRepository userRepository) {
+	private final UserService userService;
+
+	public SessionService(ProgramRepository programRepository, SessionRepository sessionRepository,
+	                      SessionTransformer sessionTransformer, UserService userService) {
+		this.programRepository = programRepository;
 		this.sessionRepository = sessionRepository;
-		this.userRepository = userRepository;
+		this.sessionTransformer = sessionTransformer;
+		this.userService = userService;
 	}
 
 	/**
 	 * Save a session.
 	 *
-	 * @param session the entity to save
+	 * @param sessionDTO the entity to save
 	 * @return the persisted entity
 	 */
-	public Session save(Session session) {
-		log.debug("Request to save Session : {}", session);
-		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
-			return sessionRepository.save(session);
+	public SessionDTO save(SessionDTO sessionDTO) {
+		log.debug("Request to save Session : {}", sessionDTO);
+		if (SecurityUtils.isAdmin() || inOrgOfCurrentUser(sessionDTO)) {
+			return sessionTransformer.transform(sessionRepository.save(sessionTransformer.transform(sessionDTO)));
 		}
-		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-		Session orig = findOne(session.getId());
-		if (orig != null) {
-			return sessionRepository.save(session);
-		}
+		// TODO: Error handling / logging
 		return null;
 	}
 
 	/**
 	 * Get all the sessions.
 	 *
+	 * @param pageable the pagination information
 	 * @return the list of entities
 	 */
 	@Transactional(readOnly = true)
-	public Page<Session> findAll(Pageable pageable) {
+	public Page<SessionDTO> findAll(Pageable pageable) {
 		log.debug("Request to get all Sessions");
-		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
-			return sessionRepository.findAll(pageable);
+		User user = userService.getCurrentUser();
+		if (SecurityUtils.isAdmin()) {
+			return sessionRepository.findAll(pageable).map(sessionTransformer::transform);
+		} else {
+			return sessionRepository.findAllByOrganization(user.getOrganization(), pageable)
+				.map(sessionTransformer::transform);
 		}
-		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-		return sessionRepository.findAllByOrganizationId(pageable, user.get().getOrganization().getId());
-	}
-
-	/**
-	 * Get all the sessions by user orgs
-	 *
-	 * @return the list of entities
-	 */
-	@Transactional(readOnly = true)
-	public Page<Session> findAllOrgSessions(Pageable pageable) {
-		log.debug("Request to get all Sessions");
-		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
-			return sessionRepository.findAll(pageable);
-		}
-		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-		return sessionRepository.findAllByOrganizationId(pageable, user.get().getOrganization().getId());
 	}
 
 	/**
@@ -89,29 +80,51 @@ public class SessionService {
 	 * @return the entity
 	 */
 	@Transactional(readOnly = true)
-	public Session findOne(Long id) {
+	public SessionDTO findOne(Long id) {
 		log.debug("Request to get Session : {}", id);
-		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
-			return sessionRepository.findOne(id);
+		Session session = sessionRepository.findOne(id);
+		if (session != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(session))) {
+			return sessionTransformer.transform(session);
 		}
-		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-		return sessionRepository.findOneByOrganizationId(id, user.get().getOrganization().getId());
+		// TODO: Error handling / logging
+		return null;
 	}
 
 	/**
-	 * Delete the  session by id.
+	 * Delete the session by id.
 	 *
 	 * @param id the id of the entity
 	 */
 	public void delete(Long id) {
 		log.debug("Request to delete Session : {}", id);
-		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+		Session session = sessionRepository.findOne(id);
+		if (session != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(session))) {
 			sessionRepository.delete(id);
+		} else {
+			// TODO: Error handling / logging
 		}
-		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-		Session orig = findOne(id);
-		if (orig != null) {
-			sessionRepository.delete(id);
-		}
+	}
+
+	/**
+	 * Determines if a session is in the organization of current user
+	 *
+	 * @param sessionDTO the session
+	 * @return true if session and current user are in the same org
+	 */
+	private boolean inOrgOfCurrentUser(SessionDTO sessionDTO) {
+		User user = userService.getCurrentUser();
+		Program program = programRepository.findOne(sessionDTO.getProgramId());
+		return program != null && user.getOrganization().equals(program.getOrganization());
+	}
+
+	/**
+	 * Determines if a session is in the organization of current user
+	 *
+	 * @param session the session
+	 * @return true if session and current user are in the same org
+	 */
+	private boolean inOrgOfCurrentUser(Session session) {
+		User user = userService.getCurrentUser();
+		return user.getOrganization().equals(session.getProgram().getOrganization());
 	}
 }

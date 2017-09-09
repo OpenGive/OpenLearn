@@ -25,7 +25,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * A Session.
  */
 @Entity
-@Table(name = "session")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Session implements Serializable {
 
@@ -37,21 +36,24 @@ public class Session implements Serializable {
 
 	@NotNull
 	@Size(min = 5, max = 100)
-	@Column(name = "name", length = 100, nullable = false)
+	@Column(length = 100, nullable = false)
 	private String name;
 
+	@NotNull
 	@Size(min = 5, max = 200)
-	@Column(name = "description", length = 200)
+	@Column(length = 200)
 	private String description;
 
-	@Column(name = "start_date")
+	@NotNull
+	@Column(nullable = false)
 	private ZonedDateTime startDate;
 
-	@Column(name = "end_date")
+	@NotNull
+	@Column(nullable = false)
 	private ZonedDateTime endDate;
 
-	@ManyToOne(optional = false)
 	@NotNull
+	@ManyToOne(optional = false)
 	private Program program;
 
 	public Long getId() {
@@ -110,21 +112,21 @@ public class Session implements Serializable {
 		Session session = (Session) o;
 
 		if (id != null ? !id.equals(session.id) : session.id != null) return false;
-		if (!name.equals(session.name)) return false;
+		if (name != null ? !name.equals(session.name) : session.name != null) return false;
 		if (description != null ? !description.equals(session.description) : session.description != null) return false;
 		if (startDate != null ? !startDate.equals(session.startDate) : session.startDate != null) return false;
 		if (endDate != null ? !endDate.equals(session.endDate) : session.endDate != null) return false;
-		return program.equals(session.program);
+		return program != null ? program.equals(session.program) : session.program == null;
 	}
 
 	@Override
 	public int hashCode() {
 		int result = id != null ? id.hashCode() : 0;
-		result = 31 * result + name.hashCode();
+		result = 31 * result + (name != null ? name.hashCode() : 0);
 		result = 31 * result + (description != null ? description.hashCode() : 0);
 		result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
 		result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
-		result = 31 * result + program.hashCode();
+		result = 31 * result + (program != null ? program.hashCode() : 0);
 		return result;
 	}
 

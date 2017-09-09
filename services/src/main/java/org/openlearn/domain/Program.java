@@ -23,7 +23,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * A Program.
  */
 @Entity
-@Table(name = "program")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Program implements Serializable {
 
@@ -35,14 +34,15 @@ public class Program implements Serializable {
 
 	@NotNull
 	@Size(min = 5, max = 50)
-	@Column(name = "name", length = 50, nullable = false)
+	@Column(length = 50, nullable = false)
 	private String name;
 
-	@Column(name = "description")
+	@NotNull
+	@Column(nullable = false)
 	private String description;
 
-	@ManyToOne(optional = false)
 	@NotNull
+	@ManyToOne(optional = false)
 	private Organization organization;
 
 	public Long getId() {
@@ -85,17 +85,17 @@ public class Program implements Serializable {
 		Program program = (Program) o;
 
 		if (id != null ? !id.equals(program.id) : program.id != null) return false;
-		if (!name.equals(program.name)) return false;
+		if (name != null ? !name.equals(program.name) : program.name != null) return false;
 		if (description != null ? !description.equals(program.description) : program.description != null) return false;
-		return organization.equals(program.organization);
+		return organization != null ? organization.equals(program.organization) : program.organization == null;
 	}
 
 	@Override
 	public int hashCode() {
 		int result = id != null ? id.hashCode() : 0;
-		result = 31 * result + name.hashCode();
+		result = 31 * result + (name != null ? name.hashCode() : 0);
 		result = 31 * result + (description != null ? description.hashCode() : 0);
-		result = 31 * result + organization.hashCode();
+		result = 31 * result + (organization != null ? organization.hashCode() : 0);
 		return result;
 	}
 

@@ -1,19 +1,13 @@
 package org.openlearn.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import org.openlearn.domain.Session;
+import io.swagger.annotations.ApiParam;
+import org.openlearn.dto.SessionDTO;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.service.SessionService;
-import org.openlearn.web.rest.util.HeaderUtil;
-import org.openlearn.web.rest.util.PaginationUtil;
-import io.swagger.annotations.ApiParam;
-import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -21,19 +15,16 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
 
-/**
- * REST controller for managing Session.
- */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/sessions")
 public class SessionResource {
 
-	private final Logger log = LoggerFactory.getLogger(SessionResource.class);
+	// TODO: Error handling / logging
 
-	private static final String ENTITY_NAME = "session";
+	private static final String ENDPOINT = "/api/sessions/";
+
+	private final Logger log = LoggerFactory.getLogger(SessionResource.class);
 
 	private final SessionService sessionService;
 
@@ -42,88 +33,78 @@ public class SessionResource {
 	}
 
 	/**
-	 * POST  /sessions : Create a new session.
+	 * GET  /:id : get a single session by ID
 	 *
-	 * @param session the session to create
-	 * @return the ResponseEntity with status 201 (Created) and with body the new session, or with status 400 (Bad Request) if the session has already an ID
-	 * @throws URISyntaxException if the Location URI syntax is incorrect
+	 * @param id the ID of the session to get
+	 * @return the ResponseEntity with status 200 (OK) and the session in the body
+	 *      or with ... TODO: Error handling
 	 */
-	@PostMapping("/sessions")
-	@Timed
-	public ResponseEntity<Session> createSession(@Valid @RequestBody Session session) throws URISyntaxException {
-		log.debug("REST request to save Session : {}", session);
-		if (session.getId() != null) {
-			return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new session cannot already have an ID")).body(null);
-		}
-		Session result = sessionService.save(session);
-		return ResponseEntity.created(new URI("/api/sessions/" + result.getId()))
-			.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-			.body(result);
+	@GetMapping("/{id}")
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
+	public ResponseEntity get(@PathVariable Long id) {
+		log.debug("GET request to get session : {}", id);
+		SessionDTO response = sessionService.findOne(id);
+		return ResponseEntity.ok(response);
 	}
 
 	/**
-	 * PUT  /sessions : Updates an existing session.
-	 *
-	 * @param session the session to update
-	 * @return the ResponseEntity with status 200 (OK) and with body the updated session,
-	 * or with status 400 (Bad Request) if the session is not valid,
-	 * or with status 500 (Internal Server Error) if the session couldnt be updated
-	 * @throws URISyntaxException if the Location URI syntax is incorrect
-	 */
-	@PutMapping("/sessions")
-	@Timed
-	public ResponseEntity<Session> updateSession(@Valid @RequestBody Session session) throws URISyntaxException {
-		log.debug("REST request to update Session : {}", session);
-		if (session.getId() == null) {
-			return createSession(session);
-		}
-		Session result = sessionService.save(session);
-		return ResponseEntity.ok()
-			.headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, session.getId().toString()))
-			.body(result);
-	}
-
-	/**
-	 * GET  /sessions : get all the sessions.
+	 * GET  / : get a list of all session, filtered by organization
 	 *
 	 * @param pageable the pagination information
-	 * @return the ResponseEntity with status 200 (OK) and the list of sessions in body
+	 * @return the ResponseEntity with status 200 (OK) and a list of sessions in the body
+	 *      or with ... TODO: Error handling
 	 */
-	@GetMapping("/sessions")
-	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.ORG_ADMIN})
-	@Timed
-	public ResponseEntity<List<Session>> getAllSessions(@ApiParam Pageable pageable) {
-		log.debug("REST request to get a page of Sessions");
-		Page<Session> page = sessionService.findAll(pageable);
-		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/sessions");
-		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+	@GetMapping
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
+	public ResponseEntity get(@ApiParam Pageable pageable) {
+		log.debug("GET request for all sessions");
+		Page<SessionDTO> response = sessionService.findAll(pageable);
+		return ResponseEntity.ok(response);
 	}
 
 	/**
-	 * GET  /sessions/:id : get the "id" session.
+	 * POST  / : create a session
 	 *
-	 * @param id the id of the session to retrieve
-	 * @return the ResponseEntity with status 200 (OK) and with body the session, or with status 404 (Not Found)
+	 * @param sessionDTO the session to create
+	 * @return the ResponseEntity with status 200 (OK) and the created session in the body
+	 *      or with ... TODO: Error handling
+	 * @throws URISyntaxException if the Location URI syntax is incorrect
 	 */
-	@GetMapping("/sessions/{id}")
-	@Timed
-	public ResponseEntity<Session> getSession(@PathVariable Long id) {
-		log.debug("REST request to get Session : {}", id);
-		Session session = sessionService.findOne(id);
-		return ResponseUtil.wrapOrNotFound(Optional.ofNullable(session));
+	@PostMapping
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
+	public ResponseEntity create(@RequestBody @Valid SessionDTO sessionDTO) throws URISyntaxException {
+		log.debug("POST request to create session : {}", sessionDTO);
+		SessionDTO response = sessionService.save(sessionDTO);
+		return ResponseEntity.created(new URI(ENDPOINT + response.getId())).body(response);
 	}
 
 	/**
-	 * DELETE  /sessions/:id : delete the "id" session.
+	 * PUT  / : update a session
 	 *
-	 * @param id the id of the session to delete
+	 * @param sessionDTO the session to update
+	 * @return the ResponseEntity with status 200 (OK) and the updated session in the body
+	 *      or with ... TODO: Error handling
+	 */
+	@PutMapping
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
+	public ResponseEntity update(@RequestBody @Valid SessionDTO sessionDTO) {
+		log.debug("PUT request to update session : {}", sessionDTO);
+		SessionDTO response = sessionService.save(sessionDTO);
+		return ResponseEntity.ok(response);
+	}
+
+	/**
+	 * DELETE  / : delete a session
+	 *
+	 * @param id the ID of the session to delete
 	 * @return the ResponseEntity with status 200 (OK)
+	 *      or with ... TODO: Error handling
 	 */
-	@DeleteMapping("/sessions/{id}")
-	@Timed
-	public ResponseEntity<Void> deleteSession(@PathVariable Long id) {
-		log.debug("REST request to delete Session : {}", id);
+	@DeleteMapping("/{id}")
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
+	public ResponseEntity delete(@PathVariable Long id) {
+		log.debug("DELETE request to delete session : {}", id);
 		sessionService.delete(id);
-		return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+		return ResponseEntity.ok().build();
 	}
 }

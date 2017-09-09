@@ -1,19 +1,20 @@
 package org.openlearn.repository;
 
+import org.openlearn.domain.Organization;
 import org.openlearn.domain.Session;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
-import org.springframework.data.repository.query.Param;
 
 /**
- * Spring Data JPA repository for the Program entity.
+ * Spring Data JPA repository for the Session entity.
  */
 public interface SessionRepository extends JpaRepository<Session, Long> {
 
-	@Query("select session from Session session where session.program.organization.id = :organizationId")
-	Page<Session> findAllByOrganizationId(Pageable pageable, @Param("organizationId") Long organizationId);
+	@Query(value = "SELECT s FROM Session s WHERE s.id = ?1 AND s.program.organization = ?2")
+	Session findOneByIdAndOrganization(Long id, Organization organization);
 
-	@Query("select session from Session session where program.id = :id and session.program.organization.id = :organizationId")
-	Session findOneByOrganizationId(@Param("id") Long id, @Param("organizationId") Long organizationId);
+	@Query(value = "SELECT s FROM Session s WHERE s.program.organization = ?1")
+	Page<Session> findAllByOrganization(Organization organization, Pageable pageable);
 }

@@ -1,19 +1,19 @@
 package org.openlearn.service;
 
 import org.openlearn.domain.Course;
+import org.openlearn.domain.Session;
 import org.openlearn.domain.User;
+import org.openlearn.dto.CourseDTO;
 import org.openlearn.repository.CourseRepository;
-import org.openlearn.repository.UserRepository;
-import org.openlearn.security.AuthoritiesConstants;
+import org.openlearn.repository.SessionRepository;
 import org.openlearn.security.SecurityUtils;
+import org.openlearn.transformer.CourseTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 /**
  * Service Implementation for managing Course.
@@ -26,29 +26,32 @@ public class CourseService {
 
 	private final CourseRepository courseRepository;
 
-	private final UserRepository userRepository;
+	private final CourseTransformer courseTransformer;
 
-	public CourseService(final CourseRepository courseRepository, UserRepository userRepository) {
+	private final SessionRepository sessionRepository;
+
+	private final UserService userService;
+
+	public CourseService(CourseRepository courseRepository, CourseTransformer courseTransformer,
+	                     SessionRepository sessionRepository, UserService userService) {
 		this.courseRepository = courseRepository;
-		this.userRepository = userRepository;
+		this.courseTransformer = courseTransformer;
+		this.sessionRepository = sessionRepository;
+		this.userService = userService;
 	}
 
 	/**
 	 * Save a course.
 	 *
-	 * @param course the entity to save
+	 * @param courseDTO the entity to save
 	 * @return the persisted entity
 	 */
-	public Course save(final Course course) {
-		log.debug("Request to save Course : {}", course);
-		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
-			return courseRepository.save(course);
+	public CourseDTO save(CourseDTO courseDTO) {
+		log.debug("Request to save Course : {}", courseDTO);
+		if (SecurityUtils.isAdmin() || inOrgOfCurrentUser(courseDTO)) {
+			return courseTransformer.transform(courseRepository.save(courseTransformer.transform(courseDTO)));
 		}
-		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-		Course origCourse = findOne(course.getId());
-		if (origCourse != null) {
-			return courseRepository.save(course);
-		}
+		// TODO: Error handling / logging
 		return null;
 	}
 
@@ -59,26 +62,15 @@ public class CourseService {
 	 * @return the list of entities
 	 */
 	@Transactional(readOnly = true)
-	public Page<Course> findAll(final Pageable pageable) {
+	public Page<CourseDTO> findAll(Pageable pageable) {
 		log.debug("Request to get all Courses");
-		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
-			return courseRepository.findAll(pageable);
+		User user = userService.getCurrentUser();
+		if (SecurityUtils.isAdmin()) {
+			return courseRepository.findAll(pageable).map(courseTransformer::transform);
+		} else {
+			return courseRepository.findAllByOrganization(user.getOrganization(), pageable)
+				.map(courseTransformer::transform);
 		}
-		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-		return courseRepository.findAllByOrganizationId(pageable, user.get().getOrganization().getId());
-	}
-
-	/**
-	 * Get all courses that a Student is in
-	 *
-	 * @param pageable  the pagination info
-	 * @param studentId the id of the student
-	 * @return list of courses
-	 */
-	@Transactional(readOnly = true)
-	public Page<Course> findAllByStudentId(final Pageable pageable, final Long studentId) {
-		log.debug("Request to get Courses assigned to studentID: " + studentId);
-		return courseRepository.findCoursesByStudent(pageable, studentId);
 	}
 
 	/**
@@ -88,13 +80,14 @@ public class CourseService {
 	 * @return the entity
 	 */
 	@Transactional(readOnly = true)
-	public Course findOne(final Long id) {
+	public CourseDTO findOne(Long id) {
 		log.debug("Request to get Course : {}", id);
-		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
-			return courseRepository.findOne(id);
+		Course course = courseRepository.findOne(id);
+		if (course != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(course))) {
+			return courseTransformer.transform(course);
 		}
-		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-		return courseRepository.findOneByIdAndOrganizationId(id, user.get().getOrganization().getId());
+		// TODO: Error handling / logging
+		return null;
 	}
 
 	/**
@@ -102,15 +95,37 @@ public class CourseService {
 	 *
 	 * @param id the id of the entity
 	 */
-	public void delete(final Long id) {
+	public void delete(Long id) {
 		log.debug("Request to delete Course : {}", id);
-		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+		Course course = courseRepository.findOne(id);
+		if (course != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(course))) {
 			courseRepository.delete(id);
+		} else {
+			// TODO: Error handling / logging
 		}
-		Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-		Course origCourse = findOne(id);
-		if (origCourse != null) {
-			courseRepository.delete(id);
-		}
+	}
+
+	/**
+	 * Determines if a course is in the organization of current user
+	 *
+	 * @param courseDTO the course
+	 * @return true if course and current user are in the same org
+	 */
+	private boolean inOrgOfCurrentUser(CourseDTO courseDTO) {
+		User user = userService.getCurrentUser();
+		Session session = sessionRepository.findOneByIdAndOrganization(courseDTO.getSessionId(),
+			user.getOrganization());
+		return session != null && user.getOrganization().equals(session.getProgram().getOrganization());
+	}
+
+	/**
+	 * Determines if a course is in the organization of current user
+	 *
+	 * @param course the course
+	 * @return true if course and current user are in the same org
+	 */
+	private boolean inOrgOfCurrentUser(Course course) {
+		User user = userService.getCurrentUser();
+		return user.getOrganization().equals(course.getSession().getProgram().getOrganization());
 	}
 }

@@ -2,21 +2,16 @@ package org.openlearn.domain;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
- * A PortfolioItem.
+ * A Portfolio Item.
  */
 @Entity
-@Table(name = "portfolio_item")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class PortfolioItem implements Serializable {
 
@@ -27,10 +22,18 @@ public class PortfolioItem implements Serializable {
 	private Long id;
 
 	@NotNull
+	@Column(nullable = false)
 	private String name;
 
 	@NotNull
+	@Column(nullable = false)
 	private String description;
+
+	@NotNull
+	@Column(nullable = false)
+	private User student;
+
+	private String url;
 
 	public Long getId() {
 		return id;
@@ -56,6 +59,22 @@ public class PortfolioItem implements Serializable {
 		this.description = description;
 	}
 
+	public User getStudent() {
+		return student;
+	}
+
+	public void setStudent(User student) {
+		this.student = student;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -64,15 +83,19 @@ public class PortfolioItem implements Serializable {
 		PortfolioItem that = (PortfolioItem) o;
 
 		if (id != null ? !id.equals(that.id) : that.id != null) return false;
-		if (!name.equals(that.name)) return false;
-		return description.equals(that.description);
+		if (name != null ? !name.equals(that.name) : that.name != null) return false;
+		if (description != null ? !description.equals(that.description) : that.description != null) return false;
+		if (student != null ? !student.equals(that.student) : that.student != null) return false;
+		return url != null ? url.equals(that.url) : that.url == null;
 	}
 
 	@Override
 	public int hashCode() {
 		int result = id != null ? id.hashCode() : 0;
-		result = 31 * result + name.hashCode();
-		result = 31 * result + description.hashCode();
+		result = 31 * result + (name != null ? name.hashCode() : 0);
+		result = 31 * result + (description != null ? description.hashCode() : 0);
+		result = 31 * result + (student != null ? student.hashCode() : 0);
+		result = 31 * result + (url != null ? url.hashCode() : 0);
 		return result;
 	}
 
@@ -82,6 +105,8 @@ public class PortfolioItem implements Serializable {
 			"id=" + id +
 			", name='" + name + '\'' +
 			", description='" + description + '\'' +
+			", student=" + student +
+			", url='" + url + '\'' +
 			'}';
 	}
 }
