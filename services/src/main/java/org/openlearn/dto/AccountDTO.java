@@ -8,6 +8,15 @@ import javax.validation.constraints.NotNull;
 public class AccountDTO {
 
 	@NotNull
+	private Long id;
+
+	@NotNull
+	private String authority;
+
+	@NotNull
+	private String login;
+
+	@NotNull
 	private String firstName;
 
 	@NotNull
@@ -31,6 +40,30 @@ public class AccountDTO {
 	private String notes;
 
 	private String orgRole;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getAuthority() {
+		return authority;
+	}
+
+	public void setAuthority(String authority) {
+		this.authority = authority;
+	}
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
 
 	public String getFirstName() {
 		return firstName;
@@ -127,6 +160,9 @@ public class AccountDTO {
 
 		AccountDTO that = (AccountDTO) o;
 
+		if (id != null ? !id.equals(that.id) : that.id != null) return false;
+		if (authority != null ? !authority.equals(that.authority) : that.authority != null) return false;
+		if (login != null ? !login.equals(that.login) : that.login != null) return false;
 		if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) return false;
 		if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) return false;
 		if (email != null ? !email.equals(that.email) : that.email != null) return false;
@@ -144,7 +180,10 @@ public class AccountDTO {
 
 	@Override
 	public int hashCode() {
-		int result = firstName != null ? firstName.hashCode() : 0;
+		int result = id != null ? id.hashCode() : 0;
+		result = 31 * result + (authority != null ? authority.hashCode() : 0);
+		result = 31 * result + (login != null ? login.hashCode() : 0);
+		result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
 		result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
 		result = 31 * result + (email != null ? email.hashCode() : 0);
 		result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
@@ -161,7 +200,10 @@ public class AccountDTO {
 	@Override
 	public String toString() {
 		return "AccountDTO{" +
-			"firstName='" + firstName + '\'' +
+			"id='" + id + '\'' +
+			", authority='" + authority + '\'' +
+			", login='" + login + '\'' +
+			", firstName='" + firstName + '\'' +
 			", lastName='" + lastName + '\'' +
 			", email='" + email + '\'' +
 			", phoneNumber='" + phoneNumber + '\'' +

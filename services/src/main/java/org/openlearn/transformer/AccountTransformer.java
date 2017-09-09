@@ -12,6 +12,9 @@ public class AccountTransformer {
 
 	public AccountDTO transform(final User user) {
 		AccountDTO accountDTO = new AccountDTO();
+		accountDTO.setId(user.getId());
+		accountDTO.setAuthority(user.getAuthority().getName());
+		accountDTO.setLogin(user.getLogin());
 		accountDTO.setFirstName(user.getFirstName());
 		accountDTO.setLastName(user.getLastName());
 		accountDTO.setEmail(user.getEmail());
@@ -26,6 +29,7 @@ public class AccountTransformer {
 		return accountDTO;
 	}
 
+	// Never updates the id, authority, or login, needs to be done via other resources
 	public User transform(final AccountDTO accountDTO) {
 		User user = new User();
 		user.setFirstName(accountDTO.getFirstName());

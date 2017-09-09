@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  * REST controller for managing the current user's account information.
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/account")
 public class AccountResource {
 
 	private final Logger log = LoggerFactory.getLogger(AccountResource.class);
