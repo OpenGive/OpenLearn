@@ -31,10 +31,10 @@ public class StudentAssignment {
 	private String grade;
 
 	@Column(name = "complete", nullable = false)
-	private Boolean complete;
+	private Boolean complete = false;
 
-	@Column(name = "on_portfolio")
-	private Boolean onPortfolio;
+	@Column(name = "on_portfolio", nullable = false)
+	private Boolean onPortfolio = false;
 
 	public Long getId() {
 		return id;

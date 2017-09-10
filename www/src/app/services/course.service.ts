@@ -15,56 +15,7 @@ export class CourseService {
 
   constructor(private _http: HttpWrapperService) {}
 
-  getAll(): Observable<Course[]> {
-    return this._http.get(this.endpoint)
-      .map(resp => resp.json())
-      .catch(this.handleError);
-  }
 
-  create(user: User): Observable<User> {
-    return this._http.post(this.endpoint, this.nullifyBlanks(user))
-      .map(resp => resp.json())
-      .catch(this.handleError);
-  }
-
-  update(user: User): Observable<User> {
-    return this._http.put(this.endpoint, this.nullifyBlanks(user))
-      .map(resp => resp.json())
-      .catch(this.handleError);
-  }
-
-  delete(id: Number) {
-    return this._http.delete(this.endpoint + '/' + id)
-      .map(resp => resp)
-      .catch(this.handleError);
-  }
-
-  get(id: Number): Observable<Course> {
-    return this._http.get(this.endpoint + '/' + id)
-      .map(resp => resp.json())
-      .catch(this.handleError);
-  }
-
-  getAdministrators(): Observable<User[]> { // TODO: Move to backend
-    return this._http.get(this.endpoint)
-      .map(resp => resp.json()
-        .filter(user => user.authorities.includes(AppConstants.Role.Admin) || user.authorities.includes(AppConstants.Role.OrgAdmin)))
-      .catch(this.handleError);
-  }
-
-  getInstructors(): Observable<User[]> { // TODO: Move to backend
-    return this._http.get(this.endpoint)
-      .map(resp => resp.json()
-        .filter(user => user.authorities.includes(AppConstants.Role.Instructor)))
-      .catch(this.handleError);
-  }
-
-  getStudents(): Observable<User[]> { // TODO: Move to backend
-    return this._http.get(this.endpoint)
-      .map(resp => resp.json()
-        .filter(user => user.authorities.includes(AppConstants.Role.Student)))
-      .catch(this.handleError);
-  }
 
   getCourseStudents(id: Number): Observable<User[]> {
     return this._http.get(this.endpoint + '/' + id + '/students')

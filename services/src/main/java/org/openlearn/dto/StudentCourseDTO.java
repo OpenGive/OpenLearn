@@ -1,48 +1,31 @@
-package org.openlearn.domain;
+package org.openlearn.dto;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
 
-/**
- * An entity representing one student's enrollment in one course
- */
-@Entity
-@Table(name = "student_course")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class StudentCourse implements Serializable {
+public class StudentCourseDTO {
 
-	private static final long serialVersionUID = 1L;
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "student_id")
-	private User student;
+	@NotNull
+	private Long studentId;
 
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "course_id")
-	private Course course;
+	@NotNull
+	private Long courseId;
 
-	@Column(name = "grade", length = 20, nullable = false)
+	@NotNull
+	@Size(max = 20)
 	private String grade;
 
-	@Column(name = "enroll_date", nullable = false)
+	@NotNull
 	private ZonedDateTime enrollDate;
 
-	@Column(name = "drop_date")
 	private ZonedDateTime dropDate;
 
-	@Column(name = "complete", nullable = false)
-	private Boolean complete = false;
+	private Boolean complete;
 
-	@Column(name = "on_portfolio", nullable = false)
-	private Boolean onPortfolio = false;
+	private Boolean onPortfolio;
 
 	public Long getId() {
 		return id;
@@ -52,20 +35,20 @@ public class StudentCourse implements Serializable {
 		this.id = id;
 	}
 
-	public User getStudent() {
-		return student;
+	public Long getStudentId() {
+		return studentId;
 	}
 
-	public void setStudent(User student) {
-		this.student = student;
+	public void setStudentId(Long studentId) {
+		this.studentId = studentId;
 	}
 
-	public Course getCourse() {
-		return course;
+	public Long getCourseId() {
+		return courseId;
 	}
 
-	public void setCourse(Course course) {
-		this.course = course;
+	public void setCourseId(Long courseId) {
+		this.courseId = courseId;
 	}
 
 	public String getGrade() {
@@ -113,11 +96,11 @@ public class StudentCourse implements Serializable {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 
-		StudentCourse that = (StudentCourse) o;
+		StudentCourseDTO that = (StudentCourseDTO) o;
 
 		if (id != null ? !id.equals(that.id) : that.id != null) return false;
-		if (student != null ? !student.equals(that.student) : that.student != null) return false;
-		if (course != null ? !course.equals(that.course) : that.course != null) return false;
+		if (studentId != null ? !studentId.equals(that.studentId) : that.studentId != null) return false;
+		if (courseId != null ? !courseId.equals(that.courseId) : that.courseId != null) return false;
 		if (grade != null ? !grade.equals(that.grade) : that.grade != null) return false;
 		if (enrollDate != null ? !enrollDate.equals(that.enrollDate) : that.enrollDate != null) return false;
 		if (dropDate != null ? !dropDate.equals(that.dropDate) : that.dropDate != null) return false;
@@ -128,8 +111,8 @@ public class StudentCourse implements Serializable {
 	@Override
 	public int hashCode() {
 		int result = id != null ? id.hashCode() : 0;
-		result = 31 * result + (student != null ? student.hashCode() : 0);
-		result = 31 * result + (course != null ? course.hashCode() : 0);
+		result = 31 * result + (studentId != null ? studentId.hashCode() : 0);
+		result = 31 * result + (courseId != null ? courseId.hashCode() : 0);
 		result = 31 * result + (grade != null ? grade.hashCode() : 0);
 		result = 31 * result + (enrollDate != null ? enrollDate.hashCode() : 0);
 		result = 31 * result + (dropDate != null ? dropDate.hashCode() : 0);
@@ -140,10 +123,10 @@ public class StudentCourse implements Serializable {
 
 	@Override
 	public String toString() {
-		return "StudentCourse{" +
+		return "StudentCourseDTO{" +
 			"id=" + id +
-			", student=" + student +
-			", course=" + course +
+			", studentId=" + studentId +
+			", courseId=" + courseId +
 			", grade='" + grade + '\'' +
 			", enrollDate=" + enrollDate +
 			", dropDate=" + dropDate +

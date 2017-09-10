@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 
 import {AdminModel} from "../../controls/admin/admin.constants";
 import {AdminService} from "../../services/admin.service";
-import {UserService} from "../../services/user.service";
 import {Course} from '../../models/course';
 import {DataService} from "../../services/data.service"
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
@@ -22,15 +21,15 @@ export class CoursePageComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private adminService: AdminService,
-              private userService: UserService,
               private notify: NotifyService,
               private dataService: DataService,
               private router: Router,
-              private principal: Principal) {}
+              private principal: Principal) {
+  }
 
-  private adding:boolean = false;
-  private editing:boolean = false;
-  private studentView:boolean = false;
+  private adding: boolean = false;
+  private editing: boolean = false;
+  private studentView: boolean = false;
 
   private instructors: any[];
   private sessions: any[];
@@ -38,7 +37,7 @@ export class CoursePageComponent implements OnInit {
   filteredInstructors: Observable<any[]>;
   filteredSessions: Observable<any[]>;
 
-  private course:Course;
+  private course: Course;
   courseForm: FormGroup;
   formErrors = {
     name: '',
@@ -75,17 +74,17 @@ export class CoursePageComponent implements OnInit {
   ngOnInit(): void {
     this.studentView = this.principal.hasAuthority(AppConstants.Role.Student);
     this.course = this.dataService.getCourse();
-    if(typeof this.course == "undefined")
-    {
+    if (typeof this.course == "undefined") {
       this.router.navigate(['access-denied']);
     }
     this.buildForm();
     this.setEditing(this.adding);
     this.getInstructors();
-    if(!this.studentView) {
+    if (!this.studentView) {
       this.getSessions();
     }
   }
+
   private buildForm(): void {
     this.courseForm = this.fb.group({
       name: [this.course.name, [
@@ -165,6 +164,7 @@ export class CoursePageComponent implements OnInit {
         .map(val => val ? this.filterSessions(val) : this.sessions.slice());
     });
   }
+
   private filterSessions(val: string): any[] {
     return this.sessions.filter(session => new RegExp(`${val}`, 'gi').test(session.name));
   }
@@ -231,6 +231,4 @@ export class CoursePageComponent implements OnInit {
   displaySession(session: any): string {
     return session ? session.name : '';
   }
-
-
 }
