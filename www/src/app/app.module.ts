@@ -16,7 +16,6 @@ import {FlexLayoutModule} from "@angular/flex-layout";
 import "hammerjs";
 import {PortfolioCardComponent} from "./controls/portfolio/portfolio-card/portfolio-card.component";
 import {CourseCardComponent} from "./controls/course/course-card/course-card.component";
-import {ParallaxHeaderComponent} from "./controls/layout/parallax-header/parallax-header.component";
 import {UserService} from "./services/user.service";
 import {CourseService} from "./services/course.service";
 import {UserRouteAccessService} from "./shared/auth/user-route-access-service";
@@ -45,9 +44,8 @@ import {NotifyService} from "./services/notify.service";
 import {OLAdminModule} from "./controls/admin/admin.module";
 import {OLCourseModule} from "./controls/course/course.module";
 import {DashboardPageComponent} from "./pages/dashboard-page/dashboard-page.component";
-import {PasswordService} from "./shared/auth/password.service";
 import {ResetPasswordPageComponent} from "./pages/reset-password-page/reset-password-page.component";
-import {DataService} from "./services/course.data.service";
+import {DataService} from "./services/data.service";
 
 @NgModule({
   declarations: [
@@ -61,7 +59,6 @@ import {DataService} from "./services/course.data.service";
     CoursePageComponent,
     StudentPageComponent,
     CourseCardComponent,
-    ParallaxHeaderComponent,
     AccessDeniedPageComponent,
     CourseListComponent,
     PortfolioPageComponent,
@@ -92,7 +89,6 @@ import {DataService} from "./services/course.data.service";
     CourseService,
     UserRouteAccessService,
     Principal,
-    PasswordService,
     AccountService,
     LoginService,
     AuthServerProvider,

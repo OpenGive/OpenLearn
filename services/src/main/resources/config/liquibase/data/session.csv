@@ -1,5 +1,2 @@
-id,name,active,program_id, school_id
-1,Winter 2016,TRUE,1,1
-2,Summer 2015,FALSE,2,2
-3,Ongoing,TRUE,1,1
-4,Summer 2017,FALSE,3,2
+id,name,description,start_date,end_date,program_id,organization_id
+1,"Fall 2017","The Fall 2017 session of Credera U.",2017-09-04T12:00:00Z,2017-09-08T12:00:00Z,1,1

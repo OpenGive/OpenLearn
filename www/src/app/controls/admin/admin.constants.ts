@@ -6,12 +6,22 @@ export const AdminModel = {
     route: 'administrators',
     defaultSort: 'login',
     columns: [
+      {property: 'login', display: 'Username'},
       {property: 'firstName', display: 'First Name'},
       {property: 'lastName', display: 'Last Name'},
+      {property: 'email', display: 'Email'}
+    ],
+    authorities: [AppConstants.Role.Admin]
+  },
+  OrgAdministrator: {
+    title: 'Org Administrators',
+    route: 'org-administrators',
+    defaultSort: 'login',
+    columns: [
       {property: 'login', display: 'Username'},
-      {property: 'authorities', display: 'Roles'},
-      {property: 'organizationIds', display: 'Organizations'},
-      {property: 'activated', display: 'Active'}
+      {property: 'firstName', display: 'First Name'},
+      {property: 'lastName', display: 'Last Name'},
+      {property: 'organizationId', display: 'Organization'}
     ],
     authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin]
   },
@@ -20,11 +30,10 @@ export const AdminModel = {
     route: 'instructors',
     defaultSort: 'login',
     columns: [
+      {property: 'login', display: 'Username'},
       {property: 'firstName', display: 'First Name'},
       {property: 'lastName', display: 'Last Name'},
-      {property: 'login', display: 'Username'},
-      {property: 'authorities', display: 'Roles'},
-      {property: 'activated', display: 'Active'}
+      {property: 'organizationId', display: 'Organization'}
     ],
     authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin]
   },
@@ -33,11 +42,10 @@ export const AdminModel = {
     route: 'students',
     defaultSort: 'login',
     columns: [
+      {property: 'login', display: 'Username'},
       {property: 'firstName', display: 'First Name'},
       {property: 'lastName', display: 'Last Name'},
-      {property: 'login', display: 'Username'},
-      {property: 'authorities', display: 'Roles'},
-      {property: 'activated', display: 'Active'}
+      {property: 'organizationId', display: 'Organization'}
     ],
     authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin]
   },
@@ -46,9 +54,11 @@ export const AdminModel = {
     route: 'organizations',
     defaultSort: 'name',
     columns: [
-      {property: 'name', display: 'Name'}
+      {property: 'name', display: 'Name'},
+      {property: 'primaryContactName', display: 'Primary Contact Name'},
+      {property: 'primaryContactInfo', display: 'Primary Contact Info'}
     ],
-    authorities: [AppConstants.Role.Admin]
+    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin]
   },
   Program: {
     title: 'Programs',
@@ -56,11 +66,9 @@ export const AdminModel = {
     defaultSort: 'name',
     columns: [
       {property: 'name', display: 'Name'},
-      // {property: 'program', display: 'Program'},
-      {property: 'organization', display: 'Organization'},
-      {property: 'active', display: 'Active'}
+      {property: 'organizationId', display: 'Organization'},
     ],
-    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin]
+    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor]
   },
   Session: {
     title: 'Sessions',
@@ -68,12 +76,11 @@ export const AdminModel = {
     defaultSort: 'name',
     columns: [
       {property: 'name', display: 'Name'},
-      {property: 'program', display: 'Program'},
       {property: 'startDate', display: 'Start Date'},
       {property: 'endDate', display: 'End Date'},
-      {property: 'active', display: 'Active'}
+      {property: 'programId', display: 'Program'}
     ],
-    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin]
+    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor]
   },
   Course: {
     title: 'Courses',
@@ -81,37 +88,11 @@ export const AdminModel = {
     defaultSort: 'name',
     columns: [
       {property: 'name', display: 'Name'},
-      {property: 'organization', display: 'Organization'},
-      {property: 'session', display: 'Session'},
-      {property: 'instructor', display: 'Instructor'},
       {property: 'startDate', display: 'Start Date'},
-      {property: 'endDate', display: 'End Date'}
+      {property: 'endDate', display: 'End Date'},
+      {property: 'sessionId', display: 'Session'},
+      {property: 'instructorId', display: 'Instructor'}
     ],
-    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin]
-  },
-  // Milestone: {
-  //   title: 'Milestones',
-  //   route: 'milestones',
-  //   defaultSort: 'name',
-  //   columns: [
-  //     {property: 'name', display: 'Name'},
-  //     {property: 'course', display: 'Course'},
-  //     {property: 'points', display: 'Points'}
-  //   ],
-  //   authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin]
-  // },
-  // Achievement: {
-  //   title: 'Achievements',
-  //   route: 'achievements',
-  //   defaultSort: 'name',
-  //   columns: [
-  //     {property: 'name', display: 'Name'},
-  //     {property: 'milestone', display: 'Milestone'},
-  //     {property: 'achievedBy', display: 'Achieved By'}
-  //   ],
-  //   authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin]
-  // },
-  School: {
-    route: 'schools'
+    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor]
   }
 };

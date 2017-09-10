@@ -7,7 +7,8 @@ import {AdminGridModel} from "../../../models/admin-grid.model";
 import {AdminModel} from "../admin.constants";
 import {AdminService} from "../../../services/admin.service";
 import {AdminGridService} from "../../../services/admin-grid.service";
-import {DataService} from "../../../services/course.data.service";
+import {DataService} from "../../../services/data.service";
+
 @Component({
   selector: 'app-admin-grid',
   templateUrl: './admin-grid.component.html',
@@ -20,24 +21,70 @@ export class AdminGridComponent implements OnInit {
 
   sortColumn: any;
   reverse: boolean;
+
   organizations: any[];
+  programs: any[];
+  sessions: any[];
+  instructors: any[];
 
   constructor(private dialog: MdDialog,
               private adminGridService: AdminGridService,
               private adminService: AdminService,
-              private dataService: DataService) {}
+              private dataService: DataService) {
+  }
 
   ngOnInit(): void {
     this.getRows();
-    this.getOrganizations();
   }
 
   private getRows(): void {
     this.adminGridService.query(this.grid.route)
       .subscribe(resp => {
         this.grid.rows = resp;
+        this.getAndMapEntities();
         this.sort(_.find(this.grid.columns, {'property': this.grid.defaultSort}), false);
       });
+  }
+
+  // Only make the calls to the backend that you need for the tab you are on
+  private getAndMapEntities(): void {
+    if ([AdminModel.OrgAdministrator.route, AdminModel.Instructor.route, AdminModel.Student.route,
+        AdminModel.Program.route].includes(this.grid.route)) {
+      this.adminService.getAll(AdminModel.Organization.route).subscribe(resp => {
+        this.organizations = resp;
+        this.grid.rows.forEach(row => {
+          let organization = _.find(this.organizations, ['id', row.organizationId]);
+          row.organization = organization === undefined ? '' : organization;
+        });
+      });
+    }
+    if (AdminModel.Session.route === this.grid.route) {
+      this.adminService.getAll(AdminModel.Program.route).subscribe(resp => {
+        this.programs = resp;
+        this.grid.rows.forEach(row => {
+          let program = _.find(this.programs, ['id', row.programId]);
+          row.program = program === undefined ? '' : program;
+        });
+      });
+    }
+    if (AdminModel.Course.route === this.grid.route) {
+      this.adminService.getAll(AdminModel.Session.route).subscribe(resp => {
+        this.sessions = resp;
+        this.grid.rows.forEach(row => {
+          let session = _.find(this.sessions, ['id', row.sessionId]);
+          row.session = session === undefined ? '' : session;
+        });
+      });
+    }
+    if (AdminModel.Course.route === this.grid.route) {
+      this.adminService.getAll(AdminModel.Instructor.route).subscribe(resp => {
+        this.instructors = resp;
+        this.grid.rows.forEach(row => {
+          let instructor = _.find(this.instructors, ['id', row.instructorId]);
+          row.instructor = instructor === undefined ? '' : instructor;
+        });
+      });
+    }
   }
 
   add(): void {
@@ -55,18 +102,16 @@ export class AdminGridComponent implements OnInit {
   }
 
   viewDetails(row): void {
-    switch(this.grid.route) {
-      case "courses": {
+    switch (this.grid.route) {
+      case "courses":
         console.log(row.id);
         this.dataService.setCourseById(+row.id);
         break;
-      }
-      case "students": {
+      case "students":
         console.log("Got to students route");
         this.dataService.setStudentByLogin(row.login);
         break;
-      }
-      default: {
+      default:
         this.dialog.open(AdminDialogComponent, {
           data: {
             tab: this.grid.route,
@@ -79,7 +124,6 @@ export class AdminGridComponent implements OnInit {
           this.handleDialogResponse(resp)
         });
         break;
-      }
     }
   }
 
@@ -98,38 +142,14 @@ export class AdminGridComponent implements OnInit {
   }
 
   displayCell(row, column): string {
-    if (['authorities'].includes(column.property)) {
-      return this.displayAuthorities(row[column.property]);
-    } else if (['endDate', 'startDate'].includes(column.property)) {
+    if (['endDate', 'startDate'].includes(column.property)) {
       return this.displayDate(row[column.property]);
-    } else if (['organizations', 'organizationIds'].includes(column.property)) {
-      return this.displayOrganization(row[column.property]);
-    } else if (['course', 'milestone', 'program', 'school', 'session'].includes(column.property)) {
-      return this.displayObject(row[column.property]);
-    } else if (['achievedBy', 'instructor'].includes(column.property)) {
-      return this.displayUser(row[column.property]);
+    // } else if (['organizationId', 'programId', 'sessionId'].includes(column.property)) {
+    //   return this.displayObject(row[column.property]);
+    // } else if (['instructorId'].includes(column.property)) {
+    //   return this.displayUser(row[column.property]);
     } else {
       return row[column.property];
-    }
-  }
-
-  private displayAuthorities(authorities): string { // Convert "ROLE_ONE_TWO" to "One Two"
-    return authorities.map(role => {
-      return role.split('_').slice(1).map(str => str.charAt(0) + str.slice(1).toLowerCase()).join(' ');
-    }).sort().join(', ');
-  }
-
-  private displayOrganization(organization): string {
-    if(_.isNil(this.organizations) || _.isNil(organization) || organization[0] < 0 ){
-      return '';
-    } else{
-      let id = parseFloat(organization[0]);
-      for (var i = 0; i < this.organizations.length; i++) {
-        if(this.organizations[i].id === id){
-          return this.organizations[i].name;
-        }
-      }
-      return '';
     }
   }
 
@@ -137,30 +157,28 @@ export class AdminGridComponent implements OnInit {
     return date ? new Date(date).toLocaleDateString() : '';
   }
 
-  private displayObject(object): string {
-    return _.isNil(object) ? '' : object.name;
-  }
+  // private displayObject(object): string {
+  //   return _.isNil(object) ? '' : object.name;
+  // }
+  //
+  // private displayUser(user): string {
+  //   return user.lastName + ', ' + user.firstName;
+  // }
 
-  private displayUser(user): string {
-    return user.lastName + ', ' + user.firstName;
-  }
-
-  sort(column: any, reverse?: boolean): void {
+  sort(column: any, reverse ?: boolean): void {
     if (!_.isNil(reverse)) { // use reverse parameter if available
       this.reverse = reverse;
     } else {
       this.reverse = (this.sortColumn === column.property ? !this.reverse : false);
     }
     this.sortColumn = column.property;
-    if (['authorities'].includes(column.property)) {
-      this.filteredRows = _.sortBy(this.grid.rows, [row => this.displayAuthorities(row[column.property])]);
-    } else if (['course', 'milestone', 'organization', 'program', 'school', 'session'].includes(column.property)) {
-      this.filteredRows = _.sortBy(this.grid.rows, [row => this.displayObject(row[column.property])]);
-    } else if (['achievedBy', 'instructor'].includes(column.property)) {
-      this.filteredRows = _.sortBy(this.grid.rows, [row => this.displayUser(row[column.property])]);
-    } else {
-      this.filteredRows = _.sortBy(this.grid.rows, [row => row[column.property]]);
-    }
+    // if (['organizationId', 'programId', 'sessionId'].includes(column.property)) {
+    //   this.filteredRows = _.sortBy(this.grid.rows, [row => this.displayObject(row[column.property])]);
+    // } else if (['instructorId'].includes(column.property)) {
+    //   this.filteredRows = _.sortBy(this.grid.rows, [row => this.displayUser(row[column.property])]);
+    // } else {
+    this.filteredRows = _.sortBy(this.grid.rows, [row => row[column.property]]);
+    // }
     if (this.reverse) {
       this.filteredRows.reverse();
     }
@@ -173,10 +191,5 @@ export class AdminGridComponent implements OnInit {
     });
     let ndx = _.findIndex(this.grid.columns, {'property': this.sortColumn});
     this.grid.columns[ndx].sortIcon = (this.reverse ? 'keyboard_arrow_up' : 'keyboard_arrow_down');
-  }
-
-  private getOrganizations(): void {
-    this.adminService.getAll(AdminModel.Organization.route).subscribe(resp => {this.organizations = resp;});
-
   }
 }

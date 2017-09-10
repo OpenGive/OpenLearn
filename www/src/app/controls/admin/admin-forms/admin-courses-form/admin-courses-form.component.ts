@@ -68,7 +68,6 @@ export class AdminCoursesFormComponent implements OnInit {
   constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
               private fb: FormBuilder,
               private adminService: AdminService,
-              private userService: UserService,
               private notify: NotifyService) {}
 
   ngOnInit(): void {
@@ -135,7 +134,7 @@ export class AdminCoursesFormComponent implements OnInit {
   }
 
   private getInstructors(): void {
-    this.userService.getInstructors().subscribe(resp => {
+    this.adminService.getAll(AdminModel.Instructor.route).subscribe(resp => {
       this.instructors = resp;
       this.filteredInstructors = this.courseForm.get('instructor')
         .valueChanges

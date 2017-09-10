@@ -10,6 +10,7 @@ import {AdminAdministratorsFormComponent} from "./admin-administrators-form/admi
 import {AdminCoursesFormComponent} from "./admin-courses-form/admin-courses-form.component";
 import {AdminInstructorsFormComponent} from "./admin-instructors-form/admin-instructors-form.component";
 // import {AdminMilestonesFormComponent} from "./admin-milestones-form/admin-milestones-form.component";
+import {AdminOrgAdministratorsFormComponent} from "./admin-org-administrators-form/admin-org-administrators-form.component";
 import {AdminOrganizationsFormComponent} from "./admin-organizations-form/admin-organizations-form.component";
 import {AdminProgramsFormComponent} from "./admin-programs-form/admin-programs-form.component";
 import {AdminSessionsFormComponent} from "./admin-sessions-form/admin-sessions-form.component";
@@ -22,6 +23,7 @@ import {AdminStudentsFormComponent} from "./admin-students-form/admin-students-f
     AdminCoursesFormComponent,
     AdminInstructorsFormComponent,
     // AdminMilestonesFormComponent,
+    AdminOrgAdministratorsFormComponent,
     AdminOrganizationsFormComponent,
     AdminProgramsFormComponent,
     AdminSessionsFormComponent,
@@ -48,6 +50,7 @@ import {AdminStudentsFormComponent} from "./admin-students-form/admin-students-f
     AdminCoursesFormComponent,
     AdminInstructorsFormComponent,
     // AdminMilestonesFormComponent,
+    AdminOrgAdministratorsFormComponent,
     AdminOrganizationsFormComponent,
     AdminProgramsFormComponent,
     AdminSessionsFormComponent,

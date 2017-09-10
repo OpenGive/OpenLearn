@@ -3,7 +3,7 @@ import {Component, OnInit, Inject, Input} from '@angular/core';
 import {AdminModel} from "../../controls/admin/admin.constants";
 import {AdminService} from "../../services/admin.service";
 import {UserService} from "../../services/user.service";
-import {DataService} from "../../services/course.data.service";
+import {DataService} from "../../services/data.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NotifyService} from "../../services/notify.service";
 import {Observable} from "rxjs/Observable";
@@ -110,7 +110,7 @@ export class StudentPageComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    this.studentView = this.principle.getRoles().indexOf("ROLE_STUDENT") != -1;
+    this.studentView = this.principle.getRole() === AppConstants.Role.Student;
     this.student = this.dataService.getStudent();
     this.studentId = this.student.id;
     console.log("StudentID: " + this.studentId);
@@ -294,6 +294,4 @@ export class StudentPageComponent implements OnInit {
   displaySession(session: any): string {
     return session ? session.name : '';
   }
-
-
 }

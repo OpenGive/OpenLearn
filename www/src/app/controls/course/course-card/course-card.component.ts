@@ -3,7 +3,7 @@ import {MdDialog} from '@angular/material';
 
 import {Course} from '../../../models/course';
 import {CourseViewComponent} from '../course-view/course-view.component'
-import {DataService} from "../../../services/course.data.service"
+import {DataService} from "../../../services/data.service"
 
 @Component({
   selector: 'app-course-card',

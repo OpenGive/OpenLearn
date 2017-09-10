@@ -1,23 +1,10 @@
 package org.openlearn.domain;
 
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * A Program.
@@ -33,31 +20,21 @@ public class Program implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull
-	@Size(min = 5, max = 50)
 	@Column(name = "name", length = 50, nullable = false)
 	private String name;
 
-	@Column(name = "description")
+	@Column(name = "description", nullable = false)
 	private String description;
 
-	@Column(name = "active", nullable = false)
-	private boolean active;
-
 	@ManyToOne(optional = false)
-	@NotNull
+	@JoinColumn(name = "organization_id")
 	private Organization organization;
-
-	@OneToMany(mappedBy = "program")
-	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	private Set<Session> sessions = new HashSet<>();
-
 
 	public Long getId() {
 		return id;
 	}
 
-	public void setId(final Long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -65,12 +42,7 @@ public class Program implements Serializable {
 		return name;
 	}
 
-	public Program name(final String name) {
-		this.name = name;
-		return this;
-	}
-
-	public void setName(final String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -78,90 +50,47 @@ public class Program implements Serializable {
 		return description;
 	}
 
-	public Program description(final String description) {
+	public void setDescription(String description) {
 		this.description = description;
-		return this;
-	}
-
-	public void setDescription(final String description) {
-		this.description = description;
-	}
-
-	public Boolean isActive() {
-		return active;
-	}
-
-	public Program active(final Boolean active) {
-		this.active = active;
-		return this;
-	}
-
-	public void setActive(final Boolean active) {
-		this.active = active;
 	}
 
 	public Organization getOrganization() {
 		return organization;
 	}
 
-	public Program organization(final Organization organization) {
+	public void setOrganization(Organization organization) {
 		this.organization = organization;
-		return this;
-	}
-
-	public void setOrganization(final Organization organization) {
-		this.organization = organization;
-	}
-
-	public Set<Session> getSessions() {
-		return sessions;
-	}
-
-	public Program sessions(final Set<Session> sessions) {
-		this.sessions = sessions;
-		return this;
-	}
-
-	public Program addSession(final Session session) {
-		sessions.add(session);
-		session.setProgram(this);
-		return this;
-	}
-
-	public Program removeSession(final Session session) {
-		sessions.remove(sessions);
-		session.setProgram(null);
-		return this;
-	}
-
-	public void setSessions(final Set<Session> sessions) {
-		this.sessions = sessions;
 	}
 
 	@Override
-	public boolean equals(final Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
-		final Program program = (Program) o;
-		if (program.id == null || id == null)
-			return false;
-		return Objects.equals(id, program.id);
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Program program = (Program) o;
+
+		if (id != null ? !id.equals(program.id) : program.id != null) return false;
+		if (name != null ? !name.equals(program.name) : program.name != null) return false;
+		if (description != null ? !description.equals(program.description) : program.description != null) return false;
+		return organization != null ? organization.equals(program.organization) : program.organization == null;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(id);
+		int result = id != null ? id.hashCode() : 0;
+		result = 31 * result + (name != null ? name.hashCode() : 0);
+		result = 31 * result + (description != null ? description.hashCode() : 0);
+		result = 31 * result + (organization != null ? organization.hashCode() : 0);
+		return result;
 	}
 
 	@Override
 	public String toString() {
 		return "Program{" +
-				"id=" + id +
-				", name='" + name + "'" +
-				", description='" + description + "'" +
-				", active='" + active + "'" +
-				'}';
+			"id=" + id +
+			", name='" + name + '\'' +
+			", description='" + description + '\'' +
+			", organization=" + organization +
+			'}';
 	}
 }

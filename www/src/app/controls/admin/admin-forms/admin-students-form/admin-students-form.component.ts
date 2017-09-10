@@ -61,7 +61,7 @@ export class AdminStudentsFormComponent implements OnInit {
       maxlength: 'Password cannot be more than 50 characters long'
     },
     authorities: {
-      required: 'Student must have at least 1 role'
+      required: 'Student must have 1 role'
     },
     biography: {
       maxlength: 'Biography cannot be more than 2000 characters long'
@@ -125,7 +125,7 @@ export class AdminStudentsFormComponent implements OnInit {
         Validators.minLength(6),
         Validators.maxLength(50)
       ] : []],
-      authorities: [this.formStudent.authorities, [
+      authorities: [[AppConstants.Role.Student], [
         Validators.required
       ]],
       biography: [this.formStudent.biography, [
@@ -263,7 +263,7 @@ export class AdminStudentsFormComponent implements OnInit {
       lastName: this.studentForm.get('lastName').value,
       login: this.studentForm.get('login').value,
       password: this.studentForm.get('password').value,
-      authorities: this.studentForm.get('authorities').value,
+      authorities: [AppConstants.Role.Student],
       biography: this.studentForm.get('biography').value,
       email: this.studentForm.get('email').value,
       phoneNumber: this.studentForm.get('phoneNumber').value,
@@ -309,10 +309,6 @@ export class AdminStudentsFormComponent implements OnInit {
 
   resetPassword(changingPassword: boolean): void {
     this.changingPassword = changingPassword;
-  }
-
-  displayRole(role: string): string { // Convert "ROLE_ONE_TWO" to "One Two"
-    return role.split('_').slice(1).map(str => str.charAt(0) + str.slice(1).toLowerCase()).join(' ');
   }
 
   displayState(stateValue: string): string {

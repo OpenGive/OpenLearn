@@ -1,29 +1,19 @@
 package org.openlearn.domain;
 
-import java.io.Serializable;
-import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.time.ZonedDateTime;
 
 /**
  * A Course.
  */
-//TODO: Set the correct @JsonIgnore Fields
 @Entity
 @Table(name = "course")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class)
 public class Course implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -32,46 +22,44 @@ public class Course implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull
-	@Size(min = 3, max = 100)
 	@Column(name = "name", length = 100, nullable = false)
 	private String name;
 
-	@Size(min = 5, max = 200)
-	@Column(name = "description", length = 200)
+	@Column(name = "description", length = 200, nullable = false)
 	private String description;
 
-	@Column(name = "start_date")
+	@Column(name = "start_date", nullable = false)
 	private ZonedDateTime startDate;
 
-	@Column(name = "end_date")
+	@NotNull
+	@Column(name = "end_date", nullable = false)
 	private ZonedDateTime endDate;
 
 	@NotNull
 	@ManyToOne(optional = false)
+	@JoinColumn(name = "session_id")
 	private Session session;
 
 	@NotNull
 	@ManyToOne(optional = false)
+	@JoinColumn(name = "instructor_id")
 	private User instructor;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(
-			name="course_link",
-			joinColumns=@JoinColumn(name="course_id", referencedColumnName="id"),
-			inverseJoinColumns=@JoinColumn(name="link_id", referencedColumnName="id"))
-	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	private Set<ItemLink> resources = new HashSet<>();
+	@Column(name = "locations")
+	private String locations;
 
-	@OneToMany(mappedBy = "course", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	private Set<Milestone> milestones = new HashSet<>();
+	@Column(name = "times")
+	private String times;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "organization_id")
+	private Organization organization;
 
 	public Long getId() {
 		return id;
 	}
 
-	public void setId(final Long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -79,12 +67,7 @@ public class Course implements Serializable {
 		return name;
 	}
 
-	public Course name(final String name) {
-		this.name = name;
-		return this;
-	}
-
-	public void setName(final String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -92,12 +75,7 @@ public class Course implements Serializable {
 		return description;
 	}
 
-	public Course description(final String description) {
-		this.description = description;
-		return this;
-	}
-
-	public void setDescription(final String description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 
@@ -105,12 +83,7 @@ public class Course implements Serializable {
 		return startDate;
 	}
 
-	public Course startDate(final ZonedDateTime startDate) {
-		this.startDate = startDate;
-		return this;
-	}
-
-	public void setStartDate(final ZonedDateTime startDate) {
+	public void setStartDate(ZonedDateTime startDate) {
 		this.startDate = startDate;
 	}
 
@@ -118,12 +91,7 @@ public class Course implements Serializable {
 		return endDate;
 	}
 
-	public Course endDate(final ZonedDateTime endDate) {
-		this.endDate = endDate;
-		return this;
-	}
-
-	public void setEndDate(final ZonedDateTime endDate) {
+	public void setEndDate(ZonedDateTime endDate) {
 		this.endDate = endDate;
 	}
 
@@ -131,7 +99,7 @@ public class Course implements Serializable {
 		return session;
 	}
 
-	public void setSession(final Session session) {
+	public void setSession(Session session) {
 		this.session = session;
 	}
 
@@ -139,118 +107,81 @@ public class Course implements Serializable {
 		return instructor;
 	}
 
-	public Course instructor(final User user) {
-		instructor = user;
-		return this;
+	public void setInstructor(User instructor) {
+		this.instructor = instructor;
 	}
 
-	public void setInstructor(final User user) {
-		instructor = user;
+	public String getLocations() {
+		return locations;
 	}
 
-	public Set<ItemLink> getResources() {
-		return resources;
+	public void setLocations(String locations) {
+		this.locations = locations;
 	}
 
-	public Course resources(final Set<ItemLink> itemLinks) {
-		resources = itemLinks;
-		return this;
+	public String getTimes() {
+		return times;
 	}
 
-	public Course addResources(final ItemLink itemLink) {
-		resources.add(itemLink);
-		return this;
+	public void setTimes(String times) {
+		this.times = times;
 	}
 
-	public Course removeResources(final ItemLink itemLink) {
-		resources.remove(itemLink);
-		return this;
+	public Organization getOrganization() {
+		return organization;
 	}
 
-	public void setResources(final Set<ItemLink> itemLinks) {
-		resources = itemLinks;
-	}
-
-//	public Set<User> getStudents() {
-//	  return students.stream().map(StudentCourse::getStudent).collect(Collectors.toSet());
-//	}
-//
-//	public Course students(final Set<User> users) {
-//	  setStudents(users);
-//		return this;
-//	}
-//
-//	public Course addStudents(final User user) {
-//	  students.add(new StudentCourse(this, user));
-//		return this;
-//	}
-//
-//	public Course removeStudents(final User user) {
-//	  students = students.stream().filter(sc -> !sc.getStudent().equals(user)).collect(Collectors.toSet());
-//		return this;
-//	}
-//
-//	public void setStudents(final Set<User> users) {
-//	  users.forEach(u -> {
-//	    students.add(new StudentCourse(this, u));
-//    });
-//	}
-//
-	public Set<Milestone> getMilestones() {
-		return milestones;
-	}
-
-	public Course milestones(final Set<Milestone> milestones) {
-		this.milestones = milestones;
-		return this;
-	}
-
-	public Course addMilestones(final Milestone milestone) {
-		milestones.add(milestone);
-    milestone.setCourse(this);
-		return this;
-	}
-
-	public Course removeMilestones(final Milestone milestone) {
-		milestones.remove(milestone);
-    milestone.setCourse(null);
-		return this;
-	}
-
-	public void setMilestones(final Set<Milestone> milestones) {
-		this.milestones = milestones;
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
 	}
 
 	@Override
-	public boolean equals(final Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
-		final Course course = (Course) o;
-		if (course.id == null || id == null)
-			return false;
-		return Objects.equals(id, course.id);
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Course course = (Course) o;
+
+		if (id != null ? !id.equals(course.id) : course.id != null) return false;
+		if (name != null ? !name.equals(course.name) : course.name != null) return false;
+		if (description != null ? !description.equals(course.description) : course.description != null) return false;
+		if (startDate != null ? !startDate.equals(course.startDate) : course.startDate != null) return false;
+		if (endDate != null ? !endDate.equals(course.endDate) : course.endDate != null) return false;
+		if (session != null ? !session.equals(course.session) : course.session != null) return false;
+		if (instructor != null ? !instructor.equals(course.instructor) : course.instructor != null) return false;
+		if (locations != null ? !locations.equals(course.locations) : course.locations != null) return false;
+		if (times != null ? !times.equals(course.times) : course.times != null) return false;
+		return organization != null ? organization.equals(course.organization) : course.organization == null;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(id);
+		int result = id != null ? id.hashCode() : 0;
+		result = 31 * result + (name != null ? name.hashCode() : 0);
+		result = 31 * result + (description != null ? description.hashCode() : 0);
+		result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
+		result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
+		result = 31 * result + (session != null ? session.hashCode() : 0);
+		result = 31 * result + (instructor != null ? instructor.hashCode() : 0);
+		result = 31 * result + (locations != null ? locations.hashCode() : 0);
+		result = 31 * result + (times != null ? times.hashCode() : 0);
+		result = 31 * result + (organization != null ? organization.hashCode() : 0);
+		return result;
 	}
 
-  @Override
-  public String toString() {
-    return "Course{" +
-      "id=" + id +
-      ", name='" + name + '\'' +
-      ", description='" + description + '\'' +
-      ", startDate=" + startDate +
-      ", endDate=" + endDate +
-      ", session=" + session +
-      ", instructor=" + instructor +
-      ", resources=" + resources +
-//      ", students=" + students +
-      ", milestones=" + milestones +
-      '}';
-  }
+	@Override
+	public String toString() {
+		return "Course{" +
+			"id=" + id +
+			", name='" + name + '\'' +
+			", description='" + description + '\'' +
+			", startDate=" + startDate +
+			", endDate=" + endDate +
+			", session=" + session +
+			", instructor=" + instructor +
+			", locations='" + locations + '\'' +
+			", times='" + times + '\'' +
+			", organization=" + organization +
+			'}';
+	}
 }

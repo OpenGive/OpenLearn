@@ -15,9 +15,4 @@ export class AccountService {
     return this.http.get(this.endpoint)
       .map((resp: Response) => resp.json());
   }
-
-  resetPassword(login: string): Observable<any> {
-    return this.http.post(this.endpoint + '/reset_password/init', login)
-      .map((resp: Response) => resp.json());
-  }
 }
