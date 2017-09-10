@@ -1,18 +1,11 @@
 package org.openlearn.domain;
 
-import java.io.Serializable;
-import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.time.ZonedDateTime;
 
 /**
  * A Session.
@@ -28,25 +21,18 @@ public class Session implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull
-	@Size(min = 5, max = 100)
 	@Column(name = "name", length = 100, nullable = false)
 	private String name;
 
-	@NotNull
-	@Size(min = 5, max = 200)
 	@Column(name = "description", length = 200, nullable = false)
 	private String description;
 
-	@NotNull
 	@Column(name = "start_date", nullable = false)
 	private ZonedDateTime startDate;
 
-	@NotNull
 	@Column(name = "end_date", nullable = false)
 	private ZonedDateTime endDate;
 
-	@NotNull
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "program_id")
 	private Program program;

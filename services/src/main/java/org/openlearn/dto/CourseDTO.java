@@ -1,5 +1,7 @@
 package org.openlearn.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
 
 /**
@@ -9,16 +11,24 @@ public class CourseDTO {
 
 	private Long id;
 
+	@NotNull
+	@Size(min = 3, max = 100)
 	private String name;
 
+	@NotNull
+	@Size(min = 5, max = 200)
 	private String description;
 
+	@NotNull
 	private ZonedDateTime startDate;
 
+	@NotNull
 	private ZonedDateTime endDate;
 
+	@NotNull
 	private Long sessionId;
 
+	@NotNull
 	private Long instructorId;
 
 	private String locations;

@@ -1,6 +1,10 @@
 package org.openlearn.dto;
 
+import org.openlearn.config.Constants;
+
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 /**
  * A DTO representing account info for a user
@@ -14,29 +18,39 @@ public class AccountDTO {
 	private String authority;
 
 	@NotNull
+	@Pattern(regexp = Constants.LOGIN_REGEX)
+	@Size(min = 1, max = 100)
 	private String login;
 
 	@NotNull
+	@Size(max = 50)
 	private String firstName;
 
 	@NotNull
+	@Size(max = 50)
 	private String lastName;
 
-	@NotNull
+	@Size(min = 5, max = 100)
 	private String email;
 
+	@Size(max = 15)
 	private String phoneNumber;
 
+	@Size(min = 5, max = 50)
 	private String streetAddress1;
 
+	@Size(min = 5, max = 50)
 	private String streetAddress2;
 
+	@Size(max = 50)
 	private String city;
 
 	private String state;
 
+	@Size(min = 5, max = 10)
 	private String postalCode;
 
+	@Size(max = 2000)
 	private String notes;
 
 	private String orgRole;

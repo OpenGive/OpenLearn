@@ -1,13 +1,20 @@
 package org.openlearn.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class PortfolioItemDTO {
 
 	private Long id;
 
+	@NotNull
 	private String name;
 
+	@NotNull
+	@Size(max  = 500)
 	private String description;
 
+	@NotNull
 	private Long studentId;
 
 	private String url;

@@ -4,8 +4,6 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  * An entity representing one student's relationship to one assignment
@@ -21,18 +19,14 @@ public class StudentAssignment {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "student_id")
 	private User student;
 
-	@NotNull
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "assignment_id")
 	private Assignment assignment;
 
-	@NotNull
-	@Size(max = 20)
 	@Column(name = "grade", length = 20, nullable = false)
 	private String grade;
 

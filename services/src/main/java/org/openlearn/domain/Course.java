@@ -1,17 +1,12 @@
 package org.openlearn.domain;
 
-import java.io.Serializable;
-import java.time.ZonedDateTime;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.time.ZonedDateTime;
 
 /**
  * A Course.
@@ -27,17 +22,12 @@ public class Course implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull
-	@Size(min = 3, max = 100)
 	@Column(name = "name", length = 100, nullable = false)
 	private String name;
 
-	@NotNull
-	@Size(min = 5, max = 200)
 	@Column(name = "description", length = 200, nullable = false)
 	private String description;
 
-	@NotNull
 	@Column(name = "start_date", nullable = false)
 	private ZonedDateTime startDate;
 

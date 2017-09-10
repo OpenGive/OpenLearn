@@ -1,13 +1,10 @@
 package org.openlearn.domain;
 
-import java.io.Serializable;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * A Organization.
@@ -23,21 +20,15 @@ public class Organization implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull
-	@Size(min = 3, max = 100)
 	@Column(name = "name", length = 100, nullable = false)
 	private String name;
 
-	@NotNull
-	@Size(min = 10, max = 800)
 	@Column(name = "description", length = 800, nullable = false)
 	private String description;
 
-	@NotNull
 	@Column(name = "primary_contact_name", nullable = false)
 	private String primaryContactName;
 
-	@NotNull
 	@Column(name = "primary_contact_info", nullable = false)
 	private String primaryContactInfo;
 

@@ -1,19 +1,28 @@
 package org.openlearn.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
 
 public class SessionDTO {
 
 	private Long id;
 
+	@NotNull
+	@Size(min = 5, max = 100)
 	private String name;
 
+	@NotNull
+	@Size(min = 5, max = 200)
 	private String description;
 
+	@NotNull
 	private ZonedDateTime startDate;
 
+	@NotNull
 	private ZonedDateTime endDate;
 
+	@NotNull
 	private Long programId;
 
 	public Long getId() {

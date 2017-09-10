@@ -1,6 +1,5 @@
 package org.openlearn.domain;
 
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import javax.persistence.*;

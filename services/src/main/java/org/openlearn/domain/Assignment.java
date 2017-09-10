@@ -4,8 +4,6 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 /**
@@ -22,17 +20,12 @@ public class Assignment implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull
-	@Size(max = 100)
 	@Column(name = "name", length = 100, nullable = false)
 	private String name;
 
-	@NotNull
-	@Size(max = 200)
 	@Column(name = "description", length = 200, nullable = false)
 	private String description;
 
-	@NotNull
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "course_id")
 	private Course course;

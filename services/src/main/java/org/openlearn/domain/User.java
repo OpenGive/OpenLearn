@@ -1,18 +1,14 @@
 package org.openlearn.domain;
 
-import java.io.Serializable;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Email;
-import org.openlearn.config.Constants;
-
 import org.openlearn.domain.enumeration.GradeLevel;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 /**
  * A user.
@@ -28,9 +24,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull
-	@Pattern(regexp = Constants.LOGIN_REGEX)
-	@Size(min = 1, max = 100)
 	@Column(length = 100, unique = true, nullable = false)
 	private String login;
 
@@ -39,27 +32,20 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	@Column(name = "password_hash", length = 60, nullable = false)
 	private String password;
 
-	@NotNull
-	@Size(max = 50)
 	@Column(name = "first_name", length = 50, nullable = false)
 	private String firstName;
 
-	@NotNull
-	@Size(max = 50)
 	@Column(name = "last_name", length = 50, nullable = false)
 	private String lastName;
 
-	@NotNull
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "authority")
 	private Authority authority;
 
 	@Email
-	@Size(min = 5, max = 100)
 	@Column(name = "email", length = 100)
 	private String email;
 
-	@Size(max = 15)
 	@Column(name = "phone_number", length = 15)
 	private String phoneNumber;
 
@@ -67,7 +53,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	@JoinColumn(name = "address_id")
 	private Address address;
 
-	@Size(max = 2000)
 	@Column(length = 2000)
 	private String notes;
 

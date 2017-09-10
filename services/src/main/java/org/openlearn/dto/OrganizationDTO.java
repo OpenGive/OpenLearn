@@ -1,15 +1,24 @@
 package org.openlearn.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class OrganizationDTO {
 
 	private Long id;
 
+	@NotNull
+	@Size(min = 3, max = 100)
 	private String name;
 
+	@NotNull
+	@Size(min = 10, max = 800)
 	private String description;
 
+	@NotNull
 	private String primaryContactName;
 
+	@NotNull
 	private String primaryContactInfo;
 
 	private String secondaryContactName;

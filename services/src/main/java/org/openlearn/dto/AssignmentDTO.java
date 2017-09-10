@@ -1,5 +1,8 @@
 package org.openlearn.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  * A DTO representing an assignment
  */
@@ -7,10 +10,15 @@ public class AssignmentDTO {
 
 	private Long id;
 
+	@NotNull
+	@Size(max = 100)
 	private String name;
 
+	@NotNull
+	@Size(max = 200)
 	private String description;
 
+	@NotNull
 	private Long courseId;
 
 	public Long getId() {

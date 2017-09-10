@@ -5,7 +5,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.openlearn.domain.enumeration.State;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
 import java.io.Serializable;
 
 /**
@@ -22,15 +21,12 @@ public class Address implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Size(min = 5, max = 50)
 	@Column(name = "street_address_1", length = 50, nullable = false)
 	private String streetAddress1;
 
-	@Size(min = 5, max = 50)
 	@Column(name = "street_address_2", length = 50)
 	private String streetAddress2;
 
-	@Size(max = 50)
 	@Column(name = "city", length = 50, nullable = false)
 	private String city;
 
@@ -38,7 +34,6 @@ public class Address implements Serializable {
 	@Column(name = "state", nullable = false)
 	private State state;
 
-	@Size(min = 5, max = 10)
 	@Column(name = "postal_code", length = 10, nullable = false)
 	private String postalCode;
 

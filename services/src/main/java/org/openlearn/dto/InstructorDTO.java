@@ -1,12 +1,16 @@
 package org.openlearn.dto;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * A DTO representing an instructor user
  */
 public class InstructorDTO extends UserDTO {
 
+	@NotNull
 	private Long organizationId;
 
+	@NotNull
 	private String orgRole;
 
 	public Long getOrganizationId() {
