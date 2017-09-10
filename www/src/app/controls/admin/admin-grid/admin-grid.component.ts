@@ -7,8 +7,7 @@ import {AdminGridModel} from "../../../models/admin-grid.model";
 import {AdminModel} from "../admin.constants";
 import {AdminService} from "../../../services/admin.service";
 import {AdminGridService} from "../../../services/admin-grid.service";
-import {forEach} from "@angular/router/src/utils/collection";
-
+import {DataService} from "../../../services/course.data.service";
 @Component({
   selector: 'app-admin-grid',
   templateUrl: './admin-grid.component.html',
@@ -25,7 +24,8 @@ export class AdminGridComponent implements OnInit {
 
   constructor(private dialog: MdDialog,
               private adminGridService: AdminGridService,
-              private adminService: AdminService) {}
+              private adminService: AdminService,
+              private dataService: DataService) {}
 
   ngOnInit(): void {
     this.getRows();
@@ -55,17 +55,23 @@ export class AdminGridComponent implements OnInit {
   }
 
   viewDetails(row): void {
-    this.dialog.open(AdminDialogComponent, {
-      data: {
-        tab: this.grid.route,
-        item: row,
-        organizations: this.organizations,
-        adding: false
-      },
-      disableClose: true
-    }).afterClosed().subscribe(resp => {
-      this.handleDialogResponse(resp)
-    });
+    if(this.grid.route == "courses"){
+      console.log(row.id);
+      this.dataService.setCourseById(+row.id);
+    }
+    else {
+      this.dialog.open(AdminDialogComponent, {
+        data: {
+          tab: this.grid.route,
+          item: row,
+          organizations: this.organizations,
+          adding: false
+        },
+        disableClose: true
+      }).afterClosed().subscribe(resp => {
+        this.handleDialogResponse(resp)
+      });
+    }
   }
 
   private handleDialogResponse(resp): void {
