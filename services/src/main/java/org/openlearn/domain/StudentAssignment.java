@@ -4,14 +4,15 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
- * An entity representing one student's relationship to one assignment
+ * An entity representing one student's enrollment in one assignment
  */
 @Entity
-@Table(name = "student_course")
+@Table(name = "student_assignment")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class StudentAssignment {
+public class StudentAssignment implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
