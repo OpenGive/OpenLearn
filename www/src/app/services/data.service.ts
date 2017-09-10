@@ -3,41 +3,41 @@ import {Router} from "@angular/router"
 
 import {Course} from "../models/course";
 import {User} from "../models/user.model";
-import {CourseService} from "./course.service";
-import {UserService} from "./user.service";
+import {AdminService} from "./admin.service";
+import {AdminModel} from "../controls/admin/admin.constants";
 
 @Injectable()
 export class DataService {
-  public course: Course;
+  private course: Course;
   private student: User;
 
-  constructor(private courseService: CourseService,
-              private router: Router,
-              private userService: UserService) {
+  constructor(private router: Router,
+              private adminService: AdminService) {
   }
 
-  public setCourseByCourse(c: Course) {
-    this.course = c;
+  public getCourse(): Course {
+    return this.course;
   }
 
-  public setCourseById(c: Number) {
-    this.courseService.get(c).subscribe(resp => {
+  public getStudent(): User {
+    return this.student;
+  }
+
+  public setCourse(course: Course) {
+    this.course = course;
+  }
+
+  public setCourseById(id: Number) {
+    this.adminService.get(AdminModel.Course.route, id).subscribe(resp => {
       this.course = resp;
       this.router.navigate(['/course'])
     });
   }
 
-  public setStudentByLogin(login: String) {
-    this.userService.get(login).subscribe(resp => {
-      console.log("Got to service call");
-      console.log(resp);
+  public setStudentById(id: Number) {
+    this.adminService.get(AdminModel.Student.route, id).subscribe(resp => {
       this.student = resp;
       this.router.navigate(['/student'])
-    })
+    });
   }
-
-  public getStudent() {
-    return this.student;
-  }
-
 }

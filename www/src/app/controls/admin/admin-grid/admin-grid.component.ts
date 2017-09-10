@@ -104,12 +104,10 @@ export class AdminGridComponent implements OnInit {
   viewDetails(row): void {
     switch (this.grid.route) {
       case "courses":
-        console.log(row.id);
-        this.dataService.setCourseById(+row.id);
+        this.dataService.setCourseById(row.id);
         break;
       case "students":
-        console.log("Got to students route");
-        this.dataService.setStudentByLogin(row.login);
+        this.dataService.setStudentById(row.id);
         break;
       default:
         this.dialog.open(AdminDialogComponent, {

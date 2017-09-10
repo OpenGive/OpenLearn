@@ -12,13 +12,13 @@ import {DataService} from "../../../services/data.service"
 })
 export class CourseCardComponent {
 
-  @Input() course:Course;
+  @Input() course: Course;
   @Input() studentView: boolean = false;
 
   constructor(public dialog: MdDialog, private dataService: DataService) {}
 
   viewCourse() {
-    this.dataService.course = this.course;
+    this.dataService.setCourse(this.course);
     //let dialogRef = this.dialog.open(CourseViewComponent, { data: {course: this.course, studentView: this.studentView} });
   }
 

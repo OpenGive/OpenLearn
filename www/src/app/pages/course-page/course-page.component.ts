@@ -74,7 +74,7 @@ export class CoursePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.studentView = this.principal.hasAuthority(AppConstants.Role.Student);
-    this.course = this.dataService.course;
+    this.course = this.dataService.getCourse();
     if(typeof this.course == "undefined")
     {
       this.router.navigate(['access-denied']);
