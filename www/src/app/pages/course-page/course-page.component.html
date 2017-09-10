@@ -65,15 +65,12 @@
 </form>
 <div class="course-form" fxLayout="row" *ngIf="!studentView">
 <div *ngIf="!studentView" fxFlex="50%">
-  <h2 fxLayout="row">Students</h2>
   <app-course-grid [course]="course"></app-course-grid>
 </div>
 <div fxFlex="50%">
-  <h2 fxLayout="row">Assignments</h2>
   <app-course-resource-grid [course]="course"></app-course-resource-grid>
 </div>
 </div>
 <div class="course-form" fxLayout="row" fxFlex="100%" *ngIf="studentView">
-  <h2 fxLayout="row">Assignments</h2>
   <app-course-resource-grid [course]="course"></app-course-resource-grid>
 </div>

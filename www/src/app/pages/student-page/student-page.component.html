@@ -103,16 +103,13 @@
 </form>
 
 <div class="student-form" fxLayout="row" *ngIf="!studentView">
-<div fxFlex="50%">
-<h2 fxLayout="row">Courses</h2>
-<app-course-grid [course]="course"></app-course-grid>
-</div>
-<div fxFlex="50%">
-<h2 fxLayout="row">Portfolio</h2>
-<app-course-resource-grid [course]="course"></app-course-resource-grid>
-</div>
+  <div fxFlex="50%">
+    <app-course-grid [course]="course"></app-course-grid>
+  </div>
+  <div fxFlex="50%">
+    <app-course-resource-grid [course]="course"></app-course-resource-grid>
+  </div>
 </div>
 <div class="course-form" fxLayout="row" fxFlex="100%" *ngIf="studentView">
-<h2 fxLayout="row">Assignments</h2>
-<app-course-resource-grid [course]="course"></app-course-resource-grid>
+  <app-course-resource-grid [course]="course"></app-course-resource-grid>
 </div>
