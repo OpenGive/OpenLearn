@@ -16,7 +16,6 @@ import {FlexLayoutModule} from "@angular/flex-layout";
 import "hammerjs";
 import {PortfolioCardComponent} from "./controls/portfolio/portfolio-card/portfolio-card.component";
 import {CourseCardComponent} from "./controls/course/course-card/course-card.component";
-import {ParallaxHeaderComponent} from "./controls/layout/parallax-header/parallax-header.component";
 import {UserService} from "./services/user.service";
 import {CourseService} from "./services/course.service";
 import {UserRouteAccessService} from "./shared/auth/user-route-access-service";
@@ -58,7 +57,6 @@ import {DataService} from "./services/course.data.service";
     PortfolioCardComponent,
     CoursePageComponent,
     CourseCardComponent,
-    ParallaxHeaderComponent,
     AccessDeniedPageComponent,
     CourseListComponent,
     PortfolioPageComponent,
