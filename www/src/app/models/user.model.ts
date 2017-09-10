@@ -9,6 +9,7 @@ export class User {
   public activated?: Boolean;
   public authorities?: any[];
   public organizations?: any[];
+  public biography?: string;
   public createdBy?: string;
   public createdDate?: Date;
   public lastModifiedBy?: string;
@@ -30,7 +31,8 @@ export class User {
               lastModifiedBy?: string,
               lastModifiedDate?: Date,
               password?: string,
-              organizations?: any[]) {
+              organizations?: any[],
+              biography?: string) {
     this.id = id ? id : null;
     this.login = login ? login : null;
     this.firstName = firstName ? firstName : null;
@@ -46,5 +48,6 @@ export class User {
     this.lastModifiedDate = lastModifiedDate ? lastModifiedDate : null;
     this.password = password ? password : null;
     this.organizations = organizations;
+    this.biography = biography;
   }
 }

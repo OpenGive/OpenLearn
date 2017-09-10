@@ -55,22 +55,31 @@ export class AdminGridComponent implements OnInit {
   }
 
   viewDetails(row): void {
-    if(this.grid.route == "courses"){
-      console.log(row.id);
-      this.dataService.setCourseById(+row.id);
-    }
-    else {
-      this.dialog.open(AdminDialogComponent, {
-        data: {
-          tab: this.grid.route,
-          item: row,
-          organizations: this.organizations,
-          adding: false
-        },
-        disableClose: true
-      }).afterClosed().subscribe(resp => {
-        this.handleDialogResponse(resp)
-      });
+    switch(this.grid.route) {
+      case "courses": {
+        console.log(row.id);
+        this.dataService.setCourseById(+row.id);
+        break;
+      }
+      case "students": {
+        console.log("Got to students route");
+        this.dataService.setStudentByLogin(row.login);
+        break;
+      }
+      default: {
+        this.dialog.open(AdminDialogComponent, {
+          data: {
+            tab: this.grid.route,
+            item: row,
+            organizations: this.organizations,
+            adding: false
+          },
+          disableClose: true
+        }).afterClosed().subscribe(resp => {
+          this.handleDialogResponse(resp)
+        });
+        break;
+      }
     }
   }
 

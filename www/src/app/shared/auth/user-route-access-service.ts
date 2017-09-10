@@ -33,7 +33,7 @@ export class UserRouteAccessService implements CanActivate {
                     if (hasAuth) {
                         return Promise.resolve(true);
                     }
-
+                    console.log(authorities);
 //                    this.stateStorageService.storeUrl(url);
                     this.router.navigate(['access-denied']);
 

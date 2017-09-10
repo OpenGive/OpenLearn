@@ -2,7 +2,6 @@
   <div class="course-form" [ngClass]="{edit: editing}" fxLayout="row" fxLayoutAlign="space-between center">
     <div fxLayout="row" fxLayoutAlign="space-between center">
       <h2 class="ol-dialog-title" *ngIf="!editing">Course Details</h2>
-      <h2 class="ol-dialog-title edit" *ngIf="adding">New Course</h2>
       <h2 class="ol-dialog-title edit" *ngIf="editing && !adding">Edit Course</h2>
     </div>
     <div fxLayout="row" *ngIf="!studentView">

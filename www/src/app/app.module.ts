@@ -35,6 +35,7 @@ import {PortfolioListComponent} from './controls/portfolio/portfolio-list/portfo
 import {AdminGridService} from "./services/admin-grid.service";
 import {CoursePageComponent} from "./pages/course-page/course-page.component";
 import {AdminService} from "./services/admin.service";
+import {StudentPageComponent} from "./pages/student-page/student-page.component";
 import {CourseViewComponent} from "./controls/course/course-view/course-view.component";
 import {CourseGridComponent} from "./controls/course/course-grid/course-grid.component";
 import {CourseResourceGridComponent} from "./controls/course/course-resource-grid/course-resource-grid.component";
@@ -58,6 +59,7 @@ import {DataService} from "./services/course.data.service";
     NavigationMenuComponent,
     PortfolioCardComponent,
     CoursePageComponent,
+    StudentPageComponent,
     CourseCardComponent,
     ParallaxHeaderComponent,
     AccessDeniedPageComponent,

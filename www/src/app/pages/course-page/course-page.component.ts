@@ -78,7 +78,7 @@ export class CoursePageComponent implements OnInit {
     this.course = this.dataService.course;
     if(typeof this.course == "undefined")
     {
-      this.router.navigate(['accessdenied']);
+      this.router.navigate(['access-denied']);
     }
     this.buildForm();
     this.setEditing(this.adding);

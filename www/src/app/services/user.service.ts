@@ -42,8 +42,8 @@ export class UserService {
       .catch(this.handleError);
   }
 
-  get(id: Number): Observable<User> {
-    return this._http.get(this.endpoint + '/' + id)
+  get(login: String): Observable<User> {
+    return this._http.get(this.endpoint + '/' + login)
       .map(resp => resp.json())
       .catch(this.handleError);
   }

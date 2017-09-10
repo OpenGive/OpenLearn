@@ -10,6 +10,7 @@ import {DashboardPageComponent} from "./pages/dashboard-page/dashboard-page.comp
 import {CoursePageComponent} from "./pages/course-page/course-page.component";
 import {LandingPageComponent} from "./pages/landing-page/landing-page.component";
 import {LoginPageComponent} from "./pages/login-page/login-page.component";
+import {StudentPageComponent} from "./pages/student-page/student-page.component";
 import {PortfolioPageComponent} from "./pages/portfolio-page/portfolio-page.component"
 import {ProfilePageComponent} from "./pages/profile-page/profile-page.component";
 // import {AdminAchievementsComponent} from "./controls/admin/admin-tabs/admin-achievements.component";
@@ -146,10 +147,10 @@ const ROUTES: Routes = [
     canActivate: [UserRouteAccessService]
   },
   {
-    path: 'portfolio',
-    component: PortfolioPageComponent,
+    path: 'student',
+    component: StudentPageComponent,
     data: {
-       authorities: [AppConstants.Role.Student]
+       authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor, AppConstants.Role.Student]
     },
     canActivate: [UserRouteAccessService]
   },
