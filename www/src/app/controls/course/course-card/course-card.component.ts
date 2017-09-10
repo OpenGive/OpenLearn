@@ -3,6 +3,7 @@ import {MdDialog} from '@angular/material';
 
 import {Course} from '../../../models/course';
 import {CourseViewComponent} from '../course-view/course-view.component'
+import {DataService} from "../../../services/course.data.service"
 
 @Component({
   selector: 'app-course-card',
@@ -14,9 +15,12 @@ export class CourseCardComponent {
   @Input() course:Course;
   @Input() studentView: boolean = false;
 
-  constructor(public dialog: MdDialog) {}
+  constructor(public dialog: MdDialog, private dataService: DataService) {}
 
   viewCourse() {
-    let dialogRef = this.dialog.open(CourseViewComponent, { data: {course: this.course, studentView: this.studentView} });
+    this.dataService.course = this.course;
+    //let dialogRef = this.dialog.open(CourseViewComponent, { data: {course: this.course, studentView: this.studentView} });
   }
+
 }
+
