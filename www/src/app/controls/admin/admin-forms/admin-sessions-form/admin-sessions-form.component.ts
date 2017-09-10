@@ -19,10 +19,8 @@ export class AdminSessionsFormComponent implements OnInit {
   @Input() adding: boolean;
   editing: boolean;
 
-  schools: any[];
   programs: any[];
 
-  filteredSchools: Observable<any[]>;
   filteredPrograms: Observable<any[]>;
 
   sessionForm: FormGroup;
@@ -57,7 +55,6 @@ export class AdminSessionsFormComponent implements OnInit {
   ngOnInit(): void {
     this.buildForm();
     this.setEditing(this.adding);
-    this.getSchools();
     this.getPrograms();
   }
 
@@ -72,7 +69,6 @@ export class AdminSessionsFormComponent implements OnInit {
       program: [this.formSession.program, [
         Validators.required
       ]],
-      school: [this.formSession.school],
       startDate: [this.formSession.startDate],
       endDate: [this.formSession.endDate],
       active: [this.formSession.active || false]
@@ -107,20 +103,6 @@ export class AdminSessionsFormComponent implements OnInit {
         this.editing = false;
       }
     }
-  }
-
-  private getSchools(): void {
-    this.adminService.getAll(AdminModel.School.route).subscribe(resp => {
-      this.schools = resp;
-      this.filteredSchools = this.sessionForm.get('school')
-        .valueChanges
-        .startWith(null)
-        .map(val => val ? this.filterSchools(val) : this.schools.slice());
-    });
-  }
-
-  private filterSchools(val: string): any[] {
-    return this.schools.filter(school => new RegExp(`${val}`, 'gi').test(school.name));
   }
 
   private getPrograms(): void {
@@ -180,7 +162,6 @@ export class AdminSessionsFormComponent implements OnInit {
       name: this.sessionForm.get('name').value,
       description: this.sessionForm.get('description').value,
       program: this.sessionForm.get('program').value,
-      school: this.sessionForm.get('school').value,
       startDate: this.sessionForm.get('startDate').value,
       endDate: this.sessionForm.get('endDate').value,
       active: this.sessionForm.get('active').value
@@ -211,10 +192,6 @@ export class AdminSessionsFormComponent implements OnInit {
 
   close(): void {
     this.dialogRef.close();
-  }
-
-  displaySchool(school: any): string {
-    return school ? school.name : '';
   }
 
   displayProgram(program: any): string {
