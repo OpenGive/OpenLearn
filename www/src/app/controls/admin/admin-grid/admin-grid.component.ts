@@ -103,10 +103,10 @@ export class AdminGridComponent implements OnInit {
 
   viewDetails(row): void {
     switch (this.grid.route) {
-      case "courses":
+      case AdminModel.Course.route:
         this.dataService.setCourseById(row.id);
         break;
-      case "students":
+      case AdminModel.Student.route:
         this.dataService.setStudentById(row.id);
         break;
       default:
