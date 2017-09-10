@@ -23,11 +23,13 @@ public class UserTransformer {
 		userDTO.setEmail(user.getEmail());
 		userDTO.setPhoneNumber(user.getPhoneNumber());
 		userDTO.setNotes(user.getNotes());
-		userDTO.setStreetAddress1(user.getAddress().getStreetAddress1());
-		userDTO.setStreetAddress2(user.getAddress().getStreetAddress2());
-		userDTO.setCity(user.getAddress().getCity());
-		userDTO.setState(user.getAddress().getState().name());
-		userDTO.setPostalCode(user.getAddress().getPostalCode());
+		if (user.getAddress() != null) {
+			userDTO.setStreetAddress1(user.getAddress().getStreetAddress1());
+			userDTO.setStreetAddress2(user.getAddress().getStreetAddress2());
+			userDTO.setCity(user.getAddress().getCity());
+			userDTO.setState(user.getAddress().getState().name());
+			userDTO.setPostalCode(user.getAddress().getPostalCode());
+		}
 	}
 
 	public void transformDTOToUser(final User user, final UserDTO userDTO) {
