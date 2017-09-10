@@ -59,7 +59,7 @@ public class StudentResource {
 	public ResponseEntity get(@ApiParam Pageable pageable) {
 		log.debug("GET request for all students");
 		Page<StudentDTO> response = studentService.findAll(pageable);
-		return ResponseEntity.ok(response);
+		return ResponseEntity.ok(response.getContent());
 	}
 
 	/**

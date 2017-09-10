@@ -47,6 +47,7 @@ public class CourseTransformer {
 		course.setInstructor(userRepository.findOneByIdAndAuthority(courseDTO.getInstructorId(), INSTRUCTOR));
 		course.setLocations(courseDTO.getLocations());
 		course.setTimes(courseDTO.getTimes());
+		course.setOrganization(course.getSession().getOrganization());
 		return course;
 	}
 }

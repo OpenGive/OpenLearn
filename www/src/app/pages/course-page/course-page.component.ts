@@ -1,5 +1,4 @@
-import {Component, OnInit, Inject, Input} from '@angular/core';
-import {MD_DIALOG_DATA} from '@angular/material';
+import {Component, OnInit} from '@angular/core';
 
 import {AdminModel} from "../../controls/admin/admin.constants";
 import {AdminService} from "../../services/admin.service";
@@ -27,7 +26,7 @@ export class CoursePageComponent implements OnInit {
               private notify: NotifyService,
               private dataService: DataService,
               private router: Router,
-              private principle: Principal) {}
+              private principal: Principal) {}
 
   private adding:boolean = false;
   private editing:boolean = false;
@@ -74,7 +73,7 @@ export class CoursePageComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    this.studentView = this.principle.getRoles().indexOf("ROLE_STUDENT") != -1;
+    this.studentView = this.principal.hasAuthority(AppConstants.Role.Student);
     this.course = this.dataService.course;
     if(typeof this.course == "undefined")
     {

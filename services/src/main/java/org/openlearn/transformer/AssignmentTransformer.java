@@ -29,6 +29,7 @@ public class AssignmentTransformer {
 		assignment.setName(assignmentDTO.getName());
 		assignment.setDescription(assignmentDTO.getDescription());
 		assignment.setCourse(courseRepository.findOne(assignmentDTO.getCourseId()));
+		assignment.setOrganization(assignment.getCourse().getOrganization());
 		return assignment;
 	}
 }

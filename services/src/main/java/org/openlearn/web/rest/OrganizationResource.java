@@ -59,7 +59,7 @@ public class OrganizationResource {
 	public ResponseEntity get(@ApiParam Pageable pageable) {
 		log.debug("GET request for all organizations");
 		Page<OrganizationDTO> response = organizationService.findAll(pageable);
-		return ResponseEntity.ok(response);
+		return ResponseEntity.ok(response.getContent());
 	}
 
 	/**

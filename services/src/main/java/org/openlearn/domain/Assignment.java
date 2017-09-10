@@ -37,6 +37,10 @@ public class Assignment implements Serializable {
 	@JoinColumn(name = "course_id")
 	private Course course;
 
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "organization_id")
+	private Organization organization;
+
 	public Long getId() {
 		return id;
 	}
@@ -69,6 +73,14 @@ public class Assignment implements Serializable {
 		this.course = course;
 	}
 
+	public Organization getOrganization() {
+		return organization;
+	}
+
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -79,7 +91,8 @@ public class Assignment implements Serializable {
 		if (id != null ? !id.equals(that.id) : that.id != null) return false;
 		if (name != null ? !name.equals(that.name) : that.name != null) return false;
 		if (description != null ? !description.equals(that.description) : that.description != null) return false;
-		return course != null ? course.equals(that.course) : that.course == null;
+		if (course != null ? !course.equals(that.course) : that.course != null) return false;
+		return organization != null ? organization.equals(that.organization) : that.organization == null;
 	}
 
 	@Override
@@ -88,6 +101,7 @@ public class Assignment implements Serializable {
 		result = 31 * result + (name != null ? name.hashCode() : 0);
 		result = 31 * result + (description != null ? description.hashCode() : 0);
 		result = 31 * result + (course != null ? course.hashCode() : 0);
+		result = 31 * result + (organization != null ? organization.hashCode() : 0);
 		return result;
 	}
 
@@ -98,6 +112,7 @@ public class Assignment implements Serializable {
 			", name='" + name + '\'' +
 			", description='" + description + '\'' +
 			", course=" + course +
+			", organization=" + organization +
 			'}';
 	}
 }

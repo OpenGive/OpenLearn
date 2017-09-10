@@ -1,2 +1,2 @@
-id,name,description,student_id,url
-1,"Went to College Fair","Attended the local college fair and started numerous applications.",4,null
+id,name,description,student_id,url,organization_id
+1,"Went to College Fair","Attended the local college fair and started numerous applications.",4,null,1

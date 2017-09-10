@@ -113,8 +113,7 @@ public class AssignmentService {
 	 */
 	private boolean inOrgOfCurrentUser(AssignmentDTO assignmentDTO) {
 		User user = userService.getCurrentUser();
-		Course course = courseRepository.findOneByIdAndOrganization(assignmentDTO.getCourseId(),
-			user.getOrganization());
+		Course course = courseRepository.findOne(assignmentDTO.getCourseId());
 		return course != null && user.getOrganization().equals(course.getSession().getProgram().getOrganization());
 	}
 

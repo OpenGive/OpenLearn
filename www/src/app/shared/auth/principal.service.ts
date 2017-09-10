@@ -55,12 +55,12 @@ export class Principal {
     }
   }
 
-  hasAuthority(authority: string): Promise<boolean> {
+  hasAuthority(authority: string): boolean {
     if (!this.authenticated || !this.userIdentity || !this.userIdentity.authority) {
-      return Promise.resolve(false);
+      return false;
     }
 
-    return Promise.resolve(this.userIdentity.authority === authority);
+    return this.userIdentity.authority === authority;
   }
 
   identity(force?: boolean): Promise<AccountModel> {

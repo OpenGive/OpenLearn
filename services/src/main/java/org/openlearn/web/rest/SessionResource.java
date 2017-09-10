@@ -59,7 +59,7 @@ public class SessionResource {
 	public ResponseEntity get(@ApiParam Pageable pageable) {
 		log.debug("GET request for all sessions");
 		Page<SessionDTO> response = sessionService.findAll(pageable);
-		return ResponseEntity.ok(response);
+		return ResponseEntity.ok(response.getContent());
 	}
 
 	/**

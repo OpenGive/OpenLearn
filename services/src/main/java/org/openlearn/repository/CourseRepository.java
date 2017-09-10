@@ -12,9 +12,5 @@ import org.springframework.data.jpa.repository.*;
  */
 public interface CourseRepository extends JpaRepository<Course, Long> {
 
-	@Query(value = "SELECT c FROM Course c WHERE c.id = ?1 AND c.session.program.organization = ?2")
-	Course findOneByIdAndOrganization(Long id, Organization organization);
-
-	@Query(value = "SELECT c FROM Course c WHERE c.session.program.organization = ?1")
 	Page<Course> findAllByOrganization(Organization organization, Pageable pageable);
 }

@@ -59,7 +59,7 @@ public class OrgAdminResource {
 	public ResponseEntity get(@ApiParam Pageable pageable) {
 		log.debug("GET request for all org admins");
 		Page<OrgAdminDTO> response = orgAdminService.findAll(pageable);
-		return ResponseEntity.ok(response);
+		return ResponseEntity.ok(response.getContent());
 	}
 
 	/**

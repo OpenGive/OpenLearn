@@ -59,7 +59,7 @@ public class ProgramResource {
 	public ResponseEntity get(@ApiParam Pageable pageable) {
 		log.debug("GET request for all programs");
 		Page<ProgramDTO> response = programService.findAll(pageable);
-		return ResponseEntity.ok(response);
+		return ResponseEntity.ok(response.getContent());
 	}
 
 	/**

@@ -34,7 +34,7 @@ public class Organization implements Serializable {
 	private String description;
 
 	@NotNull
-	@Column(name = "primary_contact_method", nullable = false)
+	@Column(name = "primary_contact_name", nullable = false)
 	private String primaryContactName;
 
 	@NotNull

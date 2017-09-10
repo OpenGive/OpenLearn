@@ -40,6 +40,10 @@ public class PortfolioItem implements Serializable {
 	@Column(name = "url")
 	private String url;
 
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "organization_id")
+	private Organization organization;
+
 	public Long getId() {
 		return id;
 	}
@@ -80,6 +84,14 @@ public class PortfolioItem implements Serializable {
 		this.url = url;
 	}
 
+	public Organization getOrganization() {
+		return organization;
+	}
+
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -91,7 +103,8 @@ public class PortfolioItem implements Serializable {
 		if (name != null ? !name.equals(that.name) : that.name != null) return false;
 		if (description != null ? !description.equals(that.description) : that.description != null) return false;
 		if (student != null ? !student.equals(that.student) : that.student != null) return false;
-		return url != null ? url.equals(that.url) : that.url == null;
+		if (url != null ? !url.equals(that.url) : that.url != null) return false;
+		return organization != null ? organization.equals(that.organization) : that.organization == null;
 	}
 
 	@Override
@@ -101,6 +114,7 @@ public class PortfolioItem implements Serializable {
 		result = 31 * result + (description != null ? description.hashCode() : 0);
 		result = 31 * result + (student != null ? student.hashCode() : 0);
 		result = 31 * result + (url != null ? url.hashCode() : 0);
+		result = 31 * result + (organization != null ? organization.hashCode() : 0);
 		return result;
 	}
 
@@ -112,6 +126,7 @@ public class PortfolioItem implements Serializable {
 			", description='" + description + '\'' +
 			", student=" + student +
 			", url='" + url + '\'' +
+			", organization=" + organization +
 			'}';
 	}
 }

@@ -12,7 +12,5 @@ import org.springframework.data.jpa.repository.*;
  */
 public interface ProgramRepository extends JpaRepository<Program, Long> {
 
-	Program findOneByIdAndOrganization(Long id, Organization organization);
-
 	Page<Program> findAllByOrganization(Organization organization, Pageable pageable);
 }

@@ -59,7 +59,7 @@ public class AssignmentResource {
 	public ResponseEntity get(@ApiParam Pageable pageable) {
 		log.debug("GET request for all assignments");
 		Page<AssignmentDTO> response = assignmentService.findAll(pageable);
-		return ResponseEntity.ok(response);
+		return ResponseEntity.ok(response.getContent());
 	}
 
 	/**

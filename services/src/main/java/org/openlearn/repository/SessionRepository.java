@@ -12,9 +12,5 @@ import org.springframework.data.jpa.repository.*;
  */
 public interface SessionRepository extends JpaRepository<Session, Long> {
 
-	@Query(value = "SELECT s FROM Session s WHERE s.id = ?1 AND s.program.organization = ?2")
-	Session findOneByIdAndOrganization(Long id, Organization organization);
-
-	@Query(value = "SELECT s FROM Session s WHERE s.program.organization = ?1")
 	Page<Session> findAllByOrganization(Organization organization, Pageable pageable);
 }

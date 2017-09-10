@@ -33,6 +33,7 @@ public class SessionTransformer {
 		session.setStartDate(sessionDTO.getStartDate());
 		session.setEndDate(sessionDTO.getEndDate());
 		session.setProgram(programRepository.findOne(sessionDTO.getProgramId()));
+		session.setOrganization(session.getProgram().getOrganization());
 		return session;
 	}
 }

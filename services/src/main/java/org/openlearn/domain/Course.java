@@ -61,6 +61,10 @@ public class Course implements Serializable {
 	@Column(name = "times")
 	private String times;
 
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "organization_id")
+	private Organization organization;
+
 	public Long getId() {
 		return id;
 	}
@@ -133,6 +137,14 @@ public class Course implements Serializable {
 		this.times = times;
 	}
 
+	public Organization getOrganization() {
+		return organization;
+	}
+
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -148,7 +160,8 @@ public class Course implements Serializable {
 		if (session != null ? !session.equals(course.session) : course.session != null) return false;
 		if (instructor != null ? !instructor.equals(course.instructor) : course.instructor != null) return false;
 		if (locations != null ? !locations.equals(course.locations) : course.locations != null) return false;
-		return times != null ? times.equals(course.times) : course.times == null;
+		if (times != null ? !times.equals(course.times) : course.times != null) return false;
+		return organization != null ? organization.equals(course.organization) : course.organization == null;
 	}
 
 	@Override
@@ -162,6 +175,7 @@ public class Course implements Serializable {
 		result = 31 * result + (instructor != null ? instructor.hashCode() : 0);
 		result = 31 * result + (locations != null ? locations.hashCode() : 0);
 		result = 31 * result + (times != null ? times.hashCode() : 0);
+		result = 31 * result + (organization != null ? organization.hashCode() : 0);
 		return result;
 	}
 
@@ -177,6 +191,7 @@ public class Course implements Serializable {
 			", instructor=" + instructor +
 			", locations='" + locations + '\'' +
 			", times='" + times + '\'' +
+			", organization=" + organization +
 			'}';
 	}
 }

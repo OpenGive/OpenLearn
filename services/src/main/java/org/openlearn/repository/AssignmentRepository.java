@@ -13,8 +13,5 @@ import org.springframework.data.jpa.repository.*;
  */
 public interface AssignmentRepository extends JpaRepository<Assignment, Long> {
 
-	@Query(value = "SELECT a FROM Assignment a WHERE a.course.session.program.organization = ?1")
 	Page<Assignment> findAllByOrganization(Organization organization, Pageable pageable);
-
-	Page<Assignment> findAllByCourse(Course course, Pageable pageable);
 }

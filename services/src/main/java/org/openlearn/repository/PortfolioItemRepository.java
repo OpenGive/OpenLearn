@@ -12,6 +12,5 @@ import org.springframework.data.jpa.repository.*;
  */
 public interface PortfolioItemRepository extends JpaRepository<PortfolioItem, Long> {
 
-	@Query(value = "SELECT pi FROM PortfolioItem pi WHERE pi.student.organization = ?1")
 	Page<PortfolioItem> findAllByOrganization(Organization organization, Pageable pageable);
 }
