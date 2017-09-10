@@ -7,4 +7,6 @@ export interface Course {
   endDate?: Date;
   id?: number;
   instructor?: User;
+  organization?: any;
+  session?: any;
 }

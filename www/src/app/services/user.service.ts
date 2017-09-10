@@ -14,8 +14,6 @@ export class UserService {
 
   private endpoint = '/api/users';
 
-
-
   constructor(private _http: HttpWrapperService, private principal: Principal) {}
 
   getAll(): Observable<User[]> {

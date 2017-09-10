@@ -1,17 +1,10 @@
 package org.openlearn.domain;
 
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Cascade;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * A Organization.
@@ -27,37 +20,29 @@ public class Organization implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull
-	@Size(min = 3, max = 100)
 	@Column(name = "name", length = 100, nullable = false)
 	private String name;
 
-	@Size(min = 10, max = 800)
-	@Column(name = "description", length = 800)
+	@Column(name = "description", length = 800, nullable = false)
 	private String description;
 
-//	@ManyToMany(fetch = FetchType.EAGER)
-//	@JoinTable(
-//			name = "user_org",
-//			joinColumns = {@JoinColumn(name = "org_id", referencedColumnName = "id") },
-//			inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id") }
-//			)
-//	// @JsonIgnore
-//	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-//	private Set<User> users = new HashSet<>();
+	@Column(name = "primary_contact_name", nullable = false)
+	private String primaryContactName;
 
-	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name="user_org", joinColumns = @JoinColumn(name = "org_id", referencedColumnName = "id"))
-	@Column(name = "user_id")
-	public Set<Long> userIds;
+	@Column(name = "primary_contact_info", nullable = false)
+	private String primaryContactInfo;
 
+	@Column(name = "secondary_contact_name")
+	private String secondaryContactName;
 
+	@Column(name = "secondary_contact_info")
+	private String secondaryContactInfo;
 
 	public Long getId() {
 		return id;
 	}
 
-	public void setId(final Long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -65,12 +50,7 @@ public class Organization implements Serializable {
 		return name;
 	}
 
-	public Organization name(final String name) {
-		this.name = name;
-		return this;
-	}
-
-	public void setName(final String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -78,61 +58,83 @@ public class Organization implements Serializable {
 		return description;
 	}
 
-	public Organization description(final String description) {
-		this.description = description;
-		return this;
-	}
-
-	public void setDescription(final String description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	public Set<Long> getUserIds() {
-		return userIds;
+	public String getPrimaryContactName() {
+		return primaryContactName;
 	}
 
-	public Organization userIds(final Set<Long> userIds) {
-		this.userIds = userIds;
-		return this;
+	public void setPrimaryContactName(String primaryContactName) {
+		this.primaryContactName = primaryContactName;
 	}
 
-	public Organization addUsers(final Long userId) {
-		userIds.add(userId);
-		return this;
+	public String getPrimaryContactInfo() {
+		return primaryContactInfo;
 	}
 
-	public Organization removeUsers(final Long userId) {
-		userIds.remove(userId);
-		return this;
+	public void setPrimaryContactInfo(String primaryContactInfo) {
+		this.primaryContactInfo = primaryContactInfo;
 	}
 
-	public void setUserIds(final Set<Long> userIds) {
-		this.userIds = userIds;
+	public String getSecondaryContactName() {
+		return secondaryContactName;
+	}
+
+	public void setSecondaryContactName(String secondaryContactName) {
+		this.secondaryContactName = secondaryContactName;
+	}
+
+	public String getSecondaryContactInfo() {
+		return secondaryContactInfo;
+	}
+
+	public void setSecondaryContactInfo(String secondaryContactInfo) {
+		this.secondaryContactInfo = secondaryContactInfo;
 	}
 
 	@Override
-	public boolean equals(final Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Organization that = (Organization) o;
+
+		if (id != null ? !id.equals(that.id) : that.id != null) return false;
+		if (name != null ? !name.equals(that.name) : that.name != null) return false;
+		if (description != null ? !description.equals(that.description) : that.description != null) return false;
+		if (primaryContactName != null ? !primaryContactName.equals(that.primaryContactName) : that.primaryContactName != null)
 			return false;
-		final Organization organization = (Organization) o;
-		if (organization.id == null || id == null)
+		if (primaryContactInfo != null ? !primaryContactInfo.equals(that.primaryContactInfo) : that.primaryContactInfo != null)
 			return false;
-		return Objects.equals(id, organization.id);
+		if (secondaryContactName != null ? !secondaryContactName.equals(that.secondaryContactName) : that.secondaryContactName != null)
+			return false;
+		return secondaryContactInfo != null ? secondaryContactInfo.equals(that.secondaryContactInfo) : that.secondaryContactInfo == null;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(id);
+		int result = id != null ? id.hashCode() : 0;
+		result = 31 * result + (name != null ? name.hashCode() : 0);
+		result = 31 * result + (description != null ? description.hashCode() : 0);
+		result = 31 * result + (primaryContactName != null ? primaryContactName.hashCode() : 0);
+		result = 31 * result + (primaryContactInfo != null ? primaryContactInfo.hashCode() : 0);
+		result = 31 * result + (secondaryContactName != null ? secondaryContactName.hashCode() : 0);
+		result = 31 * result + (secondaryContactInfo != null ? secondaryContactInfo.hashCode() : 0);
+		return result;
 	}
 
 	@Override
 	public String toString() {
 		return "Organization{" +
-				"id=" + id +
-				", name='" + name + "'" +
-				", description='" + description + "'" +
-				'}';
+			"id=" + id +
+			", name='" + name + '\'' +
+			", description='" + description + '\'' +
+			", primaryContactName='" + primaryContactName + '\'' +
+			", primaryContactInfo='" + primaryContactInfo + '\'' +
+			", secondaryContactName='" + secondaryContactName + '\'' +
+			", secondaryContactInfo='" + secondaryContactInfo + '\'' +
+			'}';
 	}
 }

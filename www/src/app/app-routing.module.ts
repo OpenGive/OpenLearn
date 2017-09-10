@@ -7,16 +7,15 @@ import {AdminModel} from "./controls/admin/admin.constants";
 import {AccessDeniedPageComponent} from './pages/access-denied-page/access-denied-page.component';
 import {AdminPageComponent} from "./pages/admin-page/admin-page.component";
 import {DashboardPageComponent} from "./pages/dashboard-page/dashboard-page.component";
+import {CoursePageComponent} from "./pages/course-page/course-page.component";
 import {LandingPageComponent} from "./pages/landing-page/landing-page.component";
 import {LoginPageComponent} from "./pages/login-page/login-page.component";
 import {PortfolioPageComponent} from "./pages/portfolio-page/portfolio-page.component"
 import {ProfilePageComponent} from "./pages/profile-page/profile-page.component";
-// import {AdminAchievementsComponent} from "./controls/admin/admin-tabs/admin-achievements.component";
 import {AdminAdministratorsComponent} from "./controls/admin/admin-tabs/admin-administrators.component";
 import {AdminOrgAdministratorsComponent} from "./controls/admin/admin-tabs/admin-org-administrators.component";
 import {AdminCoursesComponent} from "./controls/admin/admin-tabs/admin-courses.component";
 import {AdminInstructorsComponent} from "./controls/admin/admin-tabs/admin-instructors.component";
-// import {AdminMilestonesComponent} from "./controls/admin/admin-tabs/admin-milestones.component";
 import {AdminOrganizationsComponent} from "./controls/admin/admin-tabs/admin-organizations.component";
 import {AdminProgramsComponent} from "./controls/admin/admin-tabs/admin-programs.component";
 import {AdminSessionsComponent} from "./controls/admin/admin-tabs/admin-sessions.component";
@@ -110,22 +109,6 @@ const ROUTES: Routes = [
         },
         canActivate: [UserRouteAccessService]
       },
-      // {
-      //   path: AdminModel.Milestone.route,
-      //   component: AdminMilestonesComponent,
-      //   data: {
-      //     authorities: AdminModel.Milestone.authorities
-      //   },
-      //   canActivate: [UserRouteAccessService]
-      // },
-      // {
-      //   path: AdminModel.Achievement.route,
-      //   component: AdminAchievementsComponent,
-      //   data: {
-      //     authorities: AdminModel.Achievement.authorities
-      //   },
-      //   canActivate: [UserRouteAccessService]
-      // },
       {
         path: '',
         pathMatch: 'full',
@@ -142,6 +125,14 @@ const ROUTES: Routes = [
     component: DashboardPageComponent,
     data: {
       authorities: [AppConstants.Role.Instructor]
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: 'course',
+    component: CoursePageComponent,
+    data: {
+      authorities: []
     },
     canActivate: [UserRouteAccessService]
   },

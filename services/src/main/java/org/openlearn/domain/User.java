@@ -1,23 +1,14 @@
 package org.openlearn.domain;
 
-import java.io.Serializable;
-import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-
-import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Email;
-import org.openlearn.config.Constants;
+import org.openlearn.domain.enumeration.GradeLevel;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 /**
  * A user.
@@ -33,86 +24,78 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull
-	@Pattern(regexp = Constants.LOGIN_REGEX)
-	@Size(min = 1, max = 100)
 	@Column(length = 100, unique = true, nullable = false)
 	private String login;
 
-	@JsonIgnore
 	@NotNull
 	@Size(min = 60, max = 60)
-	@Column(name = "password_hash",length = 60)
+	@Column(name = "password_hash", length = 60, nullable = false)
 	private String password;
 
-	@Size(max = 50)
-	@Column(name = "first_name", length = 50)
+	@Column(name = "first_name", length = 50, nullable = false)
 	private String firstName;
 
-	@Size(max = 50)
-	@Column(name = "last_name", length = 50)
+	@Column(name = "last_name", length = 50, nullable = false)
 	private String lastName;
 
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "authority")
+	private Authority authority;
+
 	@Email
-	@Size(min = 5, max = 100)
-	@Column(length = 100, unique = true)
+	@Column(name = "email", length = 100)
 	private String email;
 
-	@Size(max = 15)
-	@Column(name = "phone_num", length = 15)
+	@Column(name = "phone_number", length = 15)
 	private String phoneNumber;
 
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "addr_id")
+	@JoinColumn(name = "address_id")
 	private Address address;
 
-	@NotNull
-	@Column(nullable = false)
-	private boolean activated = false;
+	@Column(length = 2000)
+	private String notes;
 
-	@Size(max = 256)
-	@Column(name = "image_url", length = 256)
-	private String imageUrl;
+	@ManyToOne
+	@JoinColumn(name = "organization_id")
+	private Organization organization;
 
-    @JsonIgnore
-    @Size(max = 20)
-	@Column(name = "activation_key", length = 20)
-	private String activationKey;
+	@Column(name = "org_role")
+	private String orgRole;
 
-	@Size(max = 20)
-	@Column(name = "reset_key", length = 20)
-	private String resetKey;
+	@Column(name = "fourteen_plus")
+	private Boolean fourteenPlus;
 
-	@Column(name = "reset_date")
-	private ZonedDateTime resetDate = null;
+	@Column(name = "guardian_first_name", length = 50)
+	private String guardianFirstName;
 
-	@NotNull
-	@Column(name = "is_14_plus", nullable = false)
-	private boolean is14Plus;
+	@Column(name = "guardian_last_name", length = 50)
+	private String guardianLastName;
 
-	@Size(max = 2000)
-	@Column(name = "biography", length = 2000)
-	private String biography;
+	@Column(name = "guardian_email", length = 100)
+	private String guardianEmail;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.DETACH})
-	@JoinTable(
-			name = "user_authority",
-			joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
-			inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "name")})
-	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	@BatchSize(size = 20)
-	private Set<Authority> authorities = new HashSet<>();
+	@Column(name = "guardian_phone", length = 100)
+	private String guardianPhone;
 
-	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name="user_org", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
-	@Column(name = "org_id")
-	public Set<Long> organizationIds;
+	@Column(name = "school", length = 100)
+	private String school;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "grade_level", length = 100)
+	private GradeLevel gradeLevel;
+
+	@Column(name = "state_student_id", length = 100)
+	private String stateStudentId;
+
+	@Column(name = "org_student_id", length = 100)
+	private String orgStudentId;
 
 	public Long getId() {
 		return id;
 	}
 
-	public void setId(final Long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -120,16 +103,15 @@ public class User extends AbstractAuditingEntity implements Serializable {
 		return login;
 	}
 
-	//Lowercase the login before saving it in database
-	public void setLogin(final String login) {
-		this.login = login.toLowerCase(Locale.ENGLISH);
+	public void setLogin(String login) {
+		this.login = login;
 	}
 
 	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(final String password) {
+	public void setPassword(String password) {
 		this.password = password;
 	}
 
@@ -137,7 +119,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
 		return firstName;
 	}
 
-	public void setFirstName(final String firstName) {
+	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
 
@@ -145,15 +127,31 @@ public class User extends AbstractAuditingEntity implements Serializable {
 		return lastName;
 	}
 
-	public void setLastName(final String lastName) {
+	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+
+	public Authority getAuthority() {
+		return authority;
+	}
+
+	public void setAuthority(Authority authority) {
+		this.authority = authority;
+	}
+
+	public String getNotes() {
+		return notes;
+	}
+
+	public void setNotes(String notes) {
+		this.notes = notes;
 	}
 
 	public String getEmail() {
 		return email;
 	}
 
-	public void setEmail(final String email) {
+	public void setEmail(String email) {
 		this.email = email;
 	}
 
@@ -161,7 +159,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
 		return phoneNumber;
 	}
 
-	public void setPhoneNumber(final String phoneNumber) {
+	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 
@@ -169,133 +167,182 @@ public class User extends AbstractAuditingEntity implements Serializable {
 		return address;
 	}
 
-	public void setAddress(final Address address) {
+	public void setAddress(Address address) {
 		this.address = address;
 	}
 
-	public String getImageUrl() {
-		return imageUrl;
+	public Organization getOrganization() {
+		return organization;
 	}
 
-	public void setImageUrl(final String imageUrl) {
-		this.imageUrl = imageUrl;
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
 	}
 
-	public boolean getActivated() {
-		return activated;
+	public String getOrgRole() {
+		return orgRole;
 	}
 
-	public void setActivated(final boolean activated) {
-		this.activated = activated;
+	public void setOrgRole(String orgRole) {
+		this.orgRole = orgRole;
 	}
 
-	public String getActivationKey() {
-		return activationKey;
+	public Boolean getFourteenPlus() {
+		return fourteenPlus;
 	}
 
-	public void setActivationKey(final String activationKey) {
-		this.activationKey = activationKey;
+	public void setFourteenPlus(Boolean fourteenPlus) {
+		this.fourteenPlus = fourteenPlus;
 	}
 
-	public String getResetKey() {
-		return resetKey;
+	public String getGuardianFirstName() {
+		return guardianFirstName;
 	}
 
-	public void setResetKey(final String resetKey) {
-		this.resetKey = resetKey;
+	public void setGuardianFirstName(String guardianFirstName) {
+		this.guardianFirstName = guardianFirstName;
 	}
 
-	public ZonedDateTime getResetDate() {
-		return resetDate;
+	public String getGuardianLastName() {
+		return guardianLastName;
 	}
 
-	public void setResetDate(final ZonedDateTime resetDate) {
-		this.resetDate = resetDate;
+	public void setGuardianLastName(String guardianLastName) {
+		this.guardianLastName = guardianLastName;
 	}
 
-	public Set<Authority> getAuthorities() {
-		return authorities;
+	public String getGuardianPhone() {
+		return guardianPhone;
 	}
 
-	public void setAuthorities(final Set<Authority> authorities) {
-		this.authorities = authorities;
+	public void setGuardianPhone(String guardianPhone) {
+		this.guardianPhone = guardianPhone;
 	}
 
-	public boolean getIs14Plus()
-	{
-		return is14Plus;
+	public String getGuardianEmail() {
+		return guardianEmail;
 	}
 
-	public boolean is14Plus() { return is14Plus; }
-
-	public void setIs14Plus(final boolean is14Plus)
-	{
-		this.is14Plus = is14Plus;
+	public void setGuardianEmail(String guardianEmail) {
+		this.guardianEmail = guardianEmail;
 	}
 
-	public String getBiography() {
-		return biography;
+	public String getSchool() {
+		return school;
 	}
 
-	public void setBiography(final String biography) {
-		this.biography = biography;
+	public void setSchool(String school) {
+		this.school = school;
 	}
 
-	public Set<Long> getOrganizationIds() {
-		return organizationIds;
+	public GradeLevel getGradeLevel() {
+		return gradeLevel;
 	}
 
-	public void setOrganizationIds(Set<Long> organizationIds) {
-		this.organizationIds = organizationIds;
+	public void setGradeLevel(GradeLevel gradeLevel) {
+		this.gradeLevel = gradeLevel;
 	}
 
-	//	public Set<Organization> getOrganizations(){
-//		return this.organizations;
-//	}
-//
-//	public void setOrganizations(Set<Organization> organizations){
-//		this.organizations.clear();
-//		this.organizations.addAll(organizations);
-//	}
+	public String getStateStudentId() {
+		return stateStudentId;
+	}
+
+	public void setStateStudentId(String stateStudentId) {
+		this.stateStudentId = stateStudentId;
+	}
+
+	public String getOrgStudentId() {
+		return orgStudentId;
+	}
+
+	public void setOrgStudentId(String orgStudentId) {
+		this.orgStudentId = orgStudentId;
+	}
 
 	@Override
-	public boolean equals(final Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		User user = (User) o;
+
+		if (id != null ? !id.equals(user.id) : user.id != null) return false;
+		if (login != null ? !login.equals(user.login) : user.login != null) return false;
+		if (password != null ? !password.equals(user.password) : user.password != null) return false;
+		if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
+		if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) return false;
+		if (authority != null ? !authority.equals(user.authority) : user.authority != null) return false;
+		if (email != null ? !email.equals(user.email) : user.email != null) return false;
+		if (phoneNumber != null ? !phoneNumber.equals(user.phoneNumber) : user.phoneNumber != null) return false;
+		if (address != null ? !address.equals(user.address) : user.address != null) return false;
+		if (notes != null ? !notes.equals(user.notes) : user.notes != null) return false;
+		if (organization != null ? !organization.equals(user.organization) : user.organization != null) return false;
+		if (orgRole != null ? !orgRole.equals(user.orgRole) : user.orgRole != null) return false;
+		if (fourteenPlus != null ? !fourteenPlus.equals(user.fourteenPlus) : user.fourteenPlus != null) return false;
+		if (guardianFirstName != null ? !guardianFirstName.equals(user.guardianFirstName) : user.guardianFirstName != null)
 			return false;
-
-		final User user = (User) o;
-
-		return login.equals(user.login);
+		if (guardianLastName != null ? !guardianLastName.equals(user.guardianLastName) : user.guardianLastName != null)
+			return false;
+		if (guardianEmail != null ? !guardianEmail.equals(user.guardianEmail) : user.guardianEmail != null)
+			return false;
+		if (guardianPhone != null ? !guardianPhone.equals(user.guardianPhone) : user.guardianPhone != null)
+			return false;
+		if (school != null ? !school.equals(user.school) : user.school != null) return false;
+		if (gradeLevel != user.gradeLevel) return false;
+		if (stateStudentId != null ? !stateStudentId.equals(user.stateStudentId) : user.stateStudentId != null)
+			return false;
+		return orgStudentId != null ? orgStudentId.equals(user.orgStudentId) : user.orgStudentId == null;
 	}
 
 	@Override
 	public int hashCode() {
-		return login.hashCode();
+		int result = id != null ? id.hashCode() : 0;
+		result = 31 * result + (login != null ? login.hashCode() : 0);
+		result = 31 * result + (password != null ? password.hashCode() : 0);
+		result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+		result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+		result = 31 * result + (authority != null ? authority.hashCode() : 0);
+		result = 31 * result + (email != null ? email.hashCode() : 0);
+		result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
+		result = 31 * result + (address != null ? address.hashCode() : 0);
+		result = 31 * result + (notes != null ? notes.hashCode() : 0);
+		result = 31 * result + (organization != null ? organization.hashCode() : 0);
+		result = 31 * result + (orgRole != null ? orgRole.hashCode() : 0);
+		result = 31 * result + (fourteenPlus != null ? fourteenPlus.hashCode() : 0);
+		result = 31 * result + (guardianFirstName != null ? guardianFirstName.hashCode() : 0);
+		result = 31 * result + (guardianLastName != null ? guardianLastName.hashCode() : 0);
+		result = 31 * result + (guardianEmail != null ? guardianEmail.hashCode() : 0);
+		result = 31 * result + (guardianPhone != null ? guardianPhone.hashCode() : 0);
+		result = 31 * result + (school != null ? school.hashCode() : 0);
+		result = 31 * result + (gradeLevel != null ? gradeLevel.hashCode() : 0);
+		result = 31 * result + (stateStudentId != null ? stateStudentId.hashCode() : 0);
+		result = 31 * result + (orgStudentId != null ? orgStudentId.hashCode() : 0);
+		return result;
 	}
 
-  @Override
-  public String toString() {
-    return "User{" +
-      "id=" + id +
-      ", login='" + login + '\'' +
-      ", password='" + password + '\'' +
-      ", firstName='" + firstName + '\'' +
-      ", lastName='" + lastName + '\'' +
-      ", email='" + email + '\'' +
-      ", phoneNumber='" + phoneNumber + '\'' +
-      ", address=" + address +
-      ", activated=" + activated +
-      ", imageUrl='" + imageUrl + '\'' +
-      ", activationKey='" + activationKey + '\'' +
-      ", resetKey='" + resetKey + '\'' +
-      ", resetDate=" + resetDate +
-      ", is14Plus=" + is14Plus +
-      ", biography='" + biography + '\'' +
-      ", authorities=" + authorities +
-// 	  ", organizations=" + organizations +
-      ", organizationIds=" + organizationIds +
-      '}';
-  }
+	@Override
+	public String toString() {
+		return "User{" +
+			"id=" + id +
+			", login='" + login + '\'' +
+			", firstName='" + firstName + '\'' +
+			", lastName='" + lastName + '\'' +
+			", authority=" + authority +
+			", notes='" + notes + '\'' +
+			", email='" + email + '\'' +
+			", phoneNumber='" + phoneNumber + '\'' +
+			", address=" + address +
+			", organization=" + organization +
+			", orgRole='" + orgRole + '\'' +
+			", fourteenPlus=" + fourteenPlus +
+			", guardianFirstName='" + guardianFirstName + '\'' +
+			", guardianLastName='" + guardianLastName + '\'' +
+			", guardianEmail='" + guardianEmail + '\'' +
+			", guardianPhone='" + guardianPhone + '\'' +
+			", school='" + school + '\'' +
+			", gradeLevel=" + gradeLevel +
+			", stateStudentId='" + stateStudentId + '\'' +
+			", orgStudentId='" + orgStudentId + '\'' +
+			'}';
+	}
 }

@@ -45,22 +45,22 @@ export class NavigationMenuComponent {
   }
 
   private setRoles(): void {
-    let roles = this.principal.getRoles();
-    this.roles.admin = roles.includes(AppConstants.Role.Admin);
-    this.roles.orgAdmin = roles.includes(AppConstants.Role.OrgAdmin);
-    this.roles.instructor = roles.includes(AppConstants.Role.Instructor);
-    this.roles.student = roles.includes(AppConstants.Role.Student);
+    let role = this.principal.getRole();
+    this.roles.admin = role === AppConstants.Role.Admin;
+    this.roles.orgAdmin = role === AppConstants.Role.OrgAdmin;
+    this.roles.instructor = role === AppConstants.Role.Instructor;
+    this.roles.student = role === AppConstants.Role.Student;
   }
 
   private setRoleDescription(): void {
-    let roles = this.principal.getRoles();
-    if (roles.includes(AppConstants.Role.Admin)) {
+    let role = this.principal.getRole();
+    if (role === AppConstants.Role.Admin) {
       this.roleDescription = this.roleDescriptions.Admin;
-    } else if (roles.includes(AppConstants.Role.OrgAdmin)) {
+    } else if (role === AppConstants.Role.OrgAdmin) {
       this.roleDescription = this.roleDescriptions.OrgAdmin;
-    } else if (roles.includes(AppConstants.Role.Instructor)) {
+    } else if (role === AppConstants.Role.Instructor) {
       this.roleDescription = this.roleDescriptions.Instructor;
-    } else if (roles.includes(AppConstants.Role.Student)) {
+    } else if (role === AppConstants.Role.Student) {
       this.roleDescription = this.roleDescriptions.Student;
     } else {
       this.roleDescription = 'UNAUTHORIZED';

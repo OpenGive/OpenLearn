@@ -6,7 +6,7 @@
       <span class="ol-dialog-title edit" *ngIf="adding">New Student</span>
       <span class="ol-dialog-title edit" *ngIf="editing && !adding">Edit Student</span>
     </div>
-    <div fxLayout="row">
+    <div fxLayout="row" *ngIf="!studentView">
       <button md-raised-button type="submit" *ngIf="editing" class="ol-dialog-button grey-button" mdTooltip="Save">
         <md-icon>save</md-icon>
       </button>

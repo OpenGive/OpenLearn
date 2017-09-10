@@ -5,11 +5,9 @@ import {Observable} from "rxjs/Observable";
 import * as _ from "lodash";
 
 import {AdminDialogComponent} from "../../admin-dialog.component";
-import {AdminModel} from "../../admin.constants";
 import {AdminService} from "../../../../services/admin.service";
 import {AppConstants} from "../../../../app.constants";
 import {NotifyService} from "../../../../services/notify.service";
-import {PasswordService} from "../../../../shared/auth/password.service";
 import {UserService} from "../../../../services/user.service";
 
 @Component({
@@ -106,9 +104,7 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
   constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
               private fb: FormBuilder,
               private userService: UserService,
-              private notify: NotifyService,
-              private passwordService: PasswordService,
-              private adminService: AdminService) {}
+              private notify: NotifyService) {}
 
   ngOnInit(): void {
     this.buildForm();

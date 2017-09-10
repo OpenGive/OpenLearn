@@ -1,8 +1,6 @@
 package org.openlearn.security;
 
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Constants for Spring Security authorities.
@@ -57,4 +55,9 @@ public final class AuthoritiesConstants
                 && greatestRequestedRole.get() == AuthorityEnum.ROLE_ADMIN)
             || authoritiesComparator().compare(greatestCurrentRole.get(), greatestRequestedRole.get()) > 0;
     }
+
+	public static boolean hasHigherPermissions(Collection<String> requesterAuthorities, String requestedAuthority)
+	{
+		return hasHigherPermissions(requesterAuthorities, Collections.singletonList(requestedAuthority));
+	}
 }

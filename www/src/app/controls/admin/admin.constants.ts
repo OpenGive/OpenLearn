@@ -103,28 +103,6 @@ export const AdminModel = {
     ],
     authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin]
   },
-  // Milestone: {
-  //   title: 'Milestones',
-  //   route: 'milestones',
-  //   defaultSort: 'name',
-  //   columns: [
-  //     {property: 'name', display: 'Name'},
-  //     {property: 'course', display: 'Course'},
-  //     {property: 'points', display: 'Points'}
-  //   ],
-  //   authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin]
-  // },
-  // Achievement: {
-  //   title: 'Achievements',
-  //   route: 'achievements',
-  //   defaultSort: 'name',
-  //   columns: [
-  //     {property: 'name', display: 'Name'},
-  //     {property: 'milestone', display: 'Milestone'},
-  //     {property: 'achievedBy', display: 'Achieved By'}
-  //   ],
-  //   authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin]
-  // },
   School: {
     route: 'schools'
   }

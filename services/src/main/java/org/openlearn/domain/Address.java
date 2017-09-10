@@ -5,158 +5,131 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.openlearn.domain.enumeration.State;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
- * A Address.
+ * An Address.
  */
 @Entity
 @Table(name = "address")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Address implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @NotNull
-    @Size(min = 5, max = 50)
-    @Column(name = "street_address_1", length = 50, nullable = false)
-    private String streetAddress1;
+	@Column(name = "street_address_1", length = 50, nullable = false)
+	private String streetAddress1;
 
-    @Size(min = 5, max = 50)
-    @Column(name = "street_address_2", length = 50)
-    private String streetAddress2;
+	@Column(name = "street_address_2", length = 50)
+	private String streetAddress2;
 
-    @NotNull
-    @Size(max = 50)
-    @Column(name = "city", length = 50, nullable = false)
-    private String city;
+	@Column(name = "city", length = 50, nullable = false)
+	private String city;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "state", nullable = false)
-    private State state;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "state", nullable = false)
+	private State state;
 
-    @NotNull
-    @Size(min = 5, max = 10)
-    @Column(name = "postal_code", length = 10, nullable = false)
-    private String postalCode;
+	@Column(name = "postal_code", length = 10, nullable = false)
+	private String postalCode;
 
-    public Long getId() {
-        return id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getStreetAddress1() {
-        return streetAddress1;
-    }
+	public String getStreetAddress1() {
+		return streetAddress1;
+	}
 
-    public Address streetAddress1(String streetAddress1) {
-        this.streetAddress1 = streetAddress1;
-        return this;
-    }
+	public void setStreetAddress1(String streetAddress1) {
+		this.streetAddress1 = streetAddress1;
+	}
 
-    public void setStreetAddress1(String streetAddress1) {
-        this.streetAddress1 = streetAddress1;
-    }
+	public String getStreetAddress2() {
+		return streetAddress2;
+	}
 
-    public String getStreetAddress2() {
-        return streetAddress2;
-    }
+	public void setStreetAddress2(String streetAddress2) {
+		this.streetAddress2 = streetAddress2;
+	}
 
-    public Address streetAddress2(String streetAddress2) {
-        this.streetAddress2 = streetAddress2;
-        return this;
-    }
+	public String getCity() {
+		return city;
+	}
 
-    public void setStreetAddress2(String streetAddress2) {
-        this.streetAddress2 = streetAddress2;
-    }
+	public void setCity(String city) {
+		this.city = city;
+	}
 
-    public String getCity() {
-        return city;
-    }
+	public State getState() {
+		return state;
+	}
 
-    public Address city(String city) {
-        this.city = city;
-        return this;
-    }
+	public void setState(State state) {
+		this.state = state;
+	}
 
-    public void setCity(String city) {
-        this.city = city;
-    }
+	public String getPostalCode() {
+		return postalCode;
+	}
 
-    public State getState() {
-        return state;
-    }
+	public void setPostalCode(String postalCode) {
+		this.postalCode = postalCode;
+	}
 
-    public Address state(State state) {
-        this.state = state;
-        return this;
-    }
-
-    public void setState(State state) {
-        this.state = state;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public Address postalCode(String postalCode) {
-        this.postalCode = postalCode;
-        return this;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Address address = (Address) o;
-        if (address.id == null || id == null) {
-            return false;
-        }
-        return Objects.equals(id, address.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
-
-    @Override
-    public String toString() {
-        return "Address{" +
-            "id=" + id +
-            ", streetAddress1='" + streetAddress1 + "'" +
-            ", streetAddress2='" + streetAddress2 + "'" +
-            ", city='" + city + "'" +
-            ", state='" + state + "'" +
-            ", postalCode='" + postalCode + "'" +
-            '}';
-    }
-
-	public Boolean isEmpty(){
-		return ( (getStreetAddress1() == null || getStreetAddress1().isEmpty()) &&
+	public boolean isEmpty() {
+		return ((getStreetAddress1() == null || getStreetAddress1().isEmpty()) &&
 			(getStreetAddress2() == null || getStreetAddress2().isEmpty()) &&
 			(getCity() == null || getCity().isEmpty()) &&
 			(getPostalCode() == null || getPostalCode().isEmpty())
 		);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Address address = (Address) o;
+
+		if (id != null ? !id.equals(address.id) : address.id != null) return false;
+		if (streetAddress1 != null ? !streetAddress1.equals(address.streetAddress1) : address.streetAddress1 != null)
+			return false;
+		if (streetAddress2 != null ? !streetAddress2.equals(address.streetAddress2) : address.streetAddress2 != null)
+			return false;
+		if (city != null ? !city.equals(address.city) : address.city != null) return false;
+		if (state != address.state) return false;
+		return postalCode != null ? postalCode.equals(address.postalCode) : address.postalCode == null;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = id != null ? id.hashCode() : 0;
+		result = 31 * result + (streetAddress1 != null ? streetAddress1.hashCode() : 0);
+		result = 31 * result + (streetAddress2 != null ? streetAddress2.hashCode() : 0);
+		result = 31 * result + (city != null ? city.hashCode() : 0);
+		result = 31 * result + (state != null ? state.hashCode() : 0);
+		result = 31 * result + (postalCode != null ? postalCode.hashCode() : 0);
+		return result;
+	}
+
+	@Override
+	public String toString() {
+		return "Address{" +
+			"id=" + id +
+			", streetAddress1='" + streetAddress1 + '\'' +
+			", streetAddress2='" + streetAddress2 + '\'' +
+			", city='" + city + '\'' +
+			", state=" + state +
+			", postalCode='" + postalCode + '\'' +
+			'}';
 	}
 }

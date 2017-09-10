@@ -1,25 +1,11 @@
 package org.openlearn.domain;
 
-import java.io.Serializable;
-import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.time.ZonedDateTime;
 
 /**
  * A Session.
@@ -35,42 +21,31 @@ public class Session implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull
-	@Size(min = 5, max = 100)
 	@Column(name = "name", length = 100, nullable = false)
 	private String name;
 
-	@Size(min = 5, max = 200)
-	@Column(name = "description", length = 200)
+	@Column(name = "description", length = 200, nullable = false)
 	private String description;
 
-	@Column(name = "start_date")
+	@Column(name = "start_date", nullable = false)
 	private ZonedDateTime startDate;
 
-	@Column(name = "end_date")
+	@Column(name = "end_date", nullable = false)
 	private ZonedDateTime endDate;
 
-	@NotNull
-	@Column(name = "active", nullable = false)
-	private Boolean active;
-
-	@ManyToOne
-	private School school;
-
 	@ManyToOne(optional = false)
+	@JoinColumn(name = "program_id")
 	private Program program;
 
-	@OneToMany(mappedBy = "session")
-	@JsonIgnore
-	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	private Set<Course> courses = new HashSet<>();
-
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "organization_id")
+	private Organization organization;
 
 	public Long getId() {
 		return id;
 	}
 
-	public void setId(final Long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -78,79 +53,15 @@ public class Session implements Serializable {
 		return name;
 	}
 
-	public Session name(final String name) {
+	public void setName(String name) {
 		this.name = name;
-		return this;
-	}
-
-	public Program getProgram() {
-		return program;
-	}
-
-	public void setProgram(final Program program) {
-		this.program = program;
-	}
-
-	public void setName(final String name) {
-		this.name = name;
-	}
-
-	public Boolean isActive() {
-		return active;
-	}
-
-	public Session active(final Boolean active) {
-		this.active = active;
-		return this;
-	}
-
-	public void setActive(final Boolean active) {
-		this.active = active;
-	}
-
-	public Set<Course> getCourses() {
-		return courses;
-	}
-
-	public Session courses(final Set<Course> courses) {
-		this.courses = courses;
-		return this;
-	}
-
-	public Session addCourse(final Course course) {
-		courses.add(course);
-		course.setSession(this);
-		return this;
-	}
-
-	public Session removeCourse(final Course course) {
-		courses.remove(course);
-		course.setSession(null);
-		return this;
-	}
-
-	public void setCourses(final Set<Course> courses) {
-		this.courses = courses;
-	}
-
-	public School getSchool() {
-		return school;
-	}
-
-	public Session school(final School school) {
-		this.school = school;
-		return this;
-	}
-
-	public void setSchool(final School school) {
-		this.school = school;
 	}
 
 	public String getDescription() {
 		return description;
 	}
 
-	public void setDescription(final String description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 
@@ -158,7 +69,7 @@ public class Session implements Serializable {
 		return startDate;
 	}
 
-	public void setStartDate(final ZonedDateTime startDate) {
+	public void setStartDate(ZonedDateTime startDate) {
 		this.startDate = startDate;
 	}
 
@@ -166,33 +77,64 @@ public class Session implements Serializable {
 		return endDate;
 	}
 
-	public void setEndDate(final ZonedDateTime endDate) {
+	public void setEndDate(ZonedDateTime endDate) {
 		this.endDate = endDate;
 	}
 
+	public Program getProgram() {
+		return program;
+	}
+
+	public void setProgram(Program program) {
+		this.program = program;
+	}
+
+	public Organization getOrganization() {
+		return organization;
+	}
+
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
+	}
+
 	@Override
-	public boolean equals(final Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
-		final Session session = (Session) o;
-		if (session.id == null || id == null)
-			return false;
-		return Objects.equals(id, session.id);
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Session session = (Session) o;
+
+		if (id != null ? !id.equals(session.id) : session.id != null) return false;
+		if (name != null ? !name.equals(session.name) : session.name != null) return false;
+		if (description != null ? !description.equals(session.description) : session.description != null) return false;
+		if (startDate != null ? !startDate.equals(session.startDate) : session.startDate != null) return false;
+		if (endDate != null ? !endDate.equals(session.endDate) : session.endDate != null) return false;
+		if (program != null ? !program.equals(session.program) : session.program != null) return false;
+		return organization != null ? organization.equals(session.organization) : session.organization == null;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(id);
+		int result = id != null ? id.hashCode() : 0;
+		result = 31 * result + (name != null ? name.hashCode() : 0);
+		result = 31 * result + (description != null ? description.hashCode() : 0);
+		result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
+		result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
+		result = 31 * result + (program != null ? program.hashCode() : 0);
+		result = 31 * result + (organization != null ? organization.hashCode() : 0);
+		return result;
 	}
 
 	@Override
 	public String toString() {
 		return "Session{" +
-				"id=" + id +
-				", name='" + name + "'" +
-				", active='" + active + "'" +
-				'}';
+			"id=" + id +
+			", name='" + name + '\'' +
+			", description='" + description + '\'' +
+			", startDate=" + startDate +
+			", endDate=" + endDate +
+			", program=" + program +
+			", organization=" + organization +
+			'}';
 	}
 }

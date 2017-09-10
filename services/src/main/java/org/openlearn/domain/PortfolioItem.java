@@ -1,131 +1,125 @@
 package org.openlearn.domain;
 
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import javax.persistence.*;
+import java.io.Serializable;
+
 /**
- * A PortfolioItem.
+ * A Portfolio Item.
  */
 @Entity
 @Table(name = "portfolio_item")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class PortfolioItem implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @ManyToOne(optional = false)
-    @NotNull
-    private Portfolio portfolio;
+	@Column(name = "name", nullable = false)
+	private String name;
 
-    @ManyToOne
-    private Course course;
+	@Column(name = "description", length = 500, nullable = false)
+	private String description;
 
-    @ManyToMany
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @NotNull
-    @JoinTable(name = "portfolio_item_resource",
-               joinColumns = @JoinColumn(name="portfolio_items_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="resources_id", referencedColumnName="id"))
-    private Set<ItemLink> resources = new HashSet<>();
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "student_id")
+	private User student;
 
-    public Long getId() {
-        return id;
-    }
+	@Column(name = "url")
+	private String url;
 
-    public void setId(final Long id) {
-        this.id = id;
-    }
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "organization_id")
+	private Organization organization;
 
-    public Portfolio getPortfolio() {
-        return portfolio;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public PortfolioItem portfolio(final Portfolio portfolio) {
-        this.portfolio = portfolio;
-        return this;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setPortfolio(final Portfolio portfolio) {
-        this.portfolio = portfolio;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public Course getCourse() {
-        return course;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public PortfolioItem course(final Course course) {
-        this.course = course;
-        return this;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public void setCourse(final Course course) {
-        this.course = course;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public Set<ItemLink> getResources() {
-        return resources;
-    }
+	public User getStudent() {
+		return student;
+	}
 
-    public PortfolioItem resources(final Set<ItemLink> itemLinks) {
-        resources = itemLinks;
-        return this;
-    }
+	public void setStudent(User student) {
+		this.student = student;
+	}
 
-    public PortfolioItem addResource(final ItemLink itemLink) {
-        resources.add(itemLink);
-        return this;
-    }
+	public String getUrl() {
+		return url;
+	}
 
-    public PortfolioItem removeResource(final ItemLink itemLink) {
-        resources.remove(itemLink);
-        return this;
-    }
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
-    public void setResources(final Set<ItemLink> itemLinks) {
-        resources = itemLinks;
-    }
+	public Organization getOrganization() {
+		return organization;
+	}
 
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o)
-			return true;
-        if (o == null || getClass() != o.getClass())
-			return false;
-        final PortfolioItem portfolioItem = (PortfolioItem) o;
-        if (portfolioItem.id == null || id == null)
-			return false;
-        return Objects.equals(id, portfolioItem.id);
-    }
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
 
-    @Override
-    public String toString() {
-        return "PortfolioItem{" +
-            "id=" + id +
-            '}';
-    }
+		PortfolioItem that = (PortfolioItem) o;
+
+		if (id != null ? !id.equals(that.id) : that.id != null) return false;
+		if (name != null ? !name.equals(that.name) : that.name != null) return false;
+		if (description != null ? !description.equals(that.description) : that.description != null) return false;
+		if (student != null ? !student.equals(that.student) : that.student != null) return false;
+		if (url != null ? !url.equals(that.url) : that.url != null) return false;
+		return organization != null ? organization.equals(that.organization) : that.organization == null;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = id != null ? id.hashCode() : 0;
+		result = 31 * result + (name != null ? name.hashCode() : 0);
+		result = 31 * result + (description != null ? description.hashCode() : 0);
+		result = 31 * result + (student != null ? student.hashCode() : 0);
+		result = 31 * result + (url != null ? url.hashCode() : 0);
+		result = 31 * result + (organization != null ? organization.hashCode() : 0);
+		return result;
+	}
+
+	@Override
+	public String toString() {
+		return "PortfolioItem{" +
+			"id=" + id +
+			", name='" + name + '\'' +
+			", description='" + description + '\'' +
+			", student=" + student +
+			", url='" + url + '\'' +
+			", organization=" + organization +
+			'}';
+	}
 }
