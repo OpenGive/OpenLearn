@@ -1,7 +1,10 @@
 package org.openlearn.transformer;
 
+import org.openlearn.domain.Address;
 import org.openlearn.domain.User;
+import org.openlearn.domain.enumeration.State;
 import org.openlearn.dto.AccountDTO;
+import org.openlearn.repository.AddressRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -11,7 +14,10 @@ public class AccountTransformer {
 
 	private static final Logger log = LoggerFactory.getLogger(AccountTransformer.class);
 
-	public AccountTransformer() {
+	private final AddressRepository addressRepository;
+
+	public AccountTransformer(final AddressRepository addressRepository) {
+		this.addressRepository = addressRepository;
 	}
 
 	/**
@@ -30,12 +36,13 @@ public class AccountTransformer {
 		accountDTO.setLastName(user.getLastName());
 		accountDTO.setEmail(user.getEmail());
 		accountDTO.setPhoneNumber(user.getPhoneNumber());
-		if (user.getAddress() != null) {
-			accountDTO.setStreetAddress1(user.getAddress().getStreetAddress1());
-			accountDTO.setStreetAddress2(user.getAddress().getStreetAddress2());
-			accountDTO.setCity(user.getAddress().getCity());
-			accountDTO.setState(user.getAddress().getState().name());
-			accountDTO.setPostalCode(user.getAddress().getPostalCode());
+		if (!user.getAddresses().isEmpty()) {
+			Address address = user.getAddresses().get(0);
+			accountDTO.setStreetAddress1(address.getStreetAddress1());
+			accountDTO.setStreetAddress2(address.getStreetAddress2());
+			accountDTO.setCity(address.getCity());
+			accountDTO.setState(address.getState().name());
+			accountDTO.setPostalCode(address.getPostalCode());
 		}
 		accountDTO.setNotes(user.getNotes());
 		accountDTO.setOrgRole(user.getOrgRole());
@@ -57,9 +64,26 @@ public class AccountTransformer {
 		user.setLastName(accountDTO.getLastName());
 		user.setEmail(accountDTO.getEmail());
 		user.setPhoneNumber(accountDTO.getPhoneNumber());
-		// TODO: Save address
+		if (!isAddressEmpty(accountDTO)) {
+			Address address = (user.getAddresses().isEmpty() ? new Address() : user.getAddresses().get(0));
+			address.setStreetAddress1(accountDTO.getStreetAddress1());
+			address.setStreetAddress2(accountDTO.getStreetAddress2());
+			address.setCity(accountDTO.getCity());
+			address.setState(State.valueOf(accountDTO.getState()));
+			address.setPostalCode(accountDTO.getPostalCode());
+			address.setUser(user);
+			addressRepository.save(address);
+		}
 		user.setNotes(accountDTO.getNotes());
 		user.setOrgRole(accountDTO.getOrgRole());
 		return user;
+	}
+
+	private boolean isAddressEmpty(AccountDTO accountDTO) {
+		return accountDTO.getStreetAddress1() == null
+			&& accountDTO.getStreetAddress2() == null
+			&& accountDTO.getCity() == null
+			&& accountDTO.getState() == null
+			&& accountDTO.getPostalCode() == null;
 	}
 }

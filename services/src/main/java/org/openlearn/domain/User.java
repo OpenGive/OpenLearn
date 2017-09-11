@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * A user.
@@ -49,10 +50,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	@Column(name = "phone_number", length = 15)
 	private String phoneNumber;
 
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "address_id")
-	private Address address;
-
 	@Column(length = 2000)
 	private String notes;
 
@@ -90,6 +87,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
 	@Column(name = "org_student_id", length = 100)
 	private String orgStudentId;
+
+	@OneToMany(mappedBy = "user")
+	private List<Address> addresses;
 
 	public Long getId() {
 		return id;
@@ -161,14 +161,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
-	}
-
-	public Address getAddress() {
-		return address;
-	}
-
-	public void setAddress(Address address) {
-		this.address = address;
 	}
 
 	public Organization getOrganization() {
@@ -259,6 +251,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
 		this.orgStudentId = orgStudentId;
 	}
 
+	public List<Address> getAddresses() {
+		return addresses;
+	}
+
+	public void setAddresses(List<Address> addresses) {
+		this.addresses = addresses;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -274,7 +274,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
 		if (authority != null ? !authority.equals(user.authority) : user.authority != null) return false;
 		if (email != null ? !email.equals(user.email) : user.email != null) return false;
 		if (phoneNumber != null ? !phoneNumber.equals(user.phoneNumber) : user.phoneNumber != null) return false;
-		if (address != null ? !address.equals(user.address) : user.address != null) return false;
 		if (notes != null ? !notes.equals(user.notes) : user.notes != null) return false;
 		if (organization != null ? !organization.equals(user.organization) : user.organization != null) return false;
 		if (orgRole != null ? !orgRole.equals(user.orgRole) : user.orgRole != null) return false;
@@ -291,7 +290,8 @@ public class User extends AbstractAuditingEntity implements Serializable {
 		if (gradeLevel != user.gradeLevel) return false;
 		if (stateStudentId != null ? !stateStudentId.equals(user.stateStudentId) : user.stateStudentId != null)
 			return false;
-		return orgStudentId != null ? orgStudentId.equals(user.orgStudentId) : user.orgStudentId == null;
+		if (orgStudentId != null ? !orgStudentId.equals(user.orgStudentId) : user.orgStudentId != null) return false;
+		return addresses != null ? addresses.equals(user.addresses) : user.addresses == null;
 	}
 
 	@Override
@@ -304,7 +304,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
 		result = 31 * result + (authority != null ? authority.hashCode() : 0);
 		result = 31 * result + (email != null ? email.hashCode() : 0);
 		result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
-		result = 31 * result + (address != null ? address.hashCode() : 0);
 		result = 31 * result + (notes != null ? notes.hashCode() : 0);
 		result = 31 * result + (organization != null ? organization.hashCode() : 0);
 		result = 31 * result + (orgRole != null ? orgRole.hashCode() : 0);
@@ -317,6 +316,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
 		result = 31 * result + (gradeLevel != null ? gradeLevel.hashCode() : 0);
 		result = 31 * result + (stateStudentId != null ? stateStudentId.hashCode() : 0);
 		result = 31 * result + (orgStudentId != null ? orgStudentId.hashCode() : 0);
+		result = 31 * result + (addresses != null ? addresses.hashCode() : 0);
 		return result;
 	}
 
@@ -325,13 +325,13 @@ public class User extends AbstractAuditingEntity implements Serializable {
 		return "User{" +
 			"id=" + id +
 			", login='" + login + '\'' +
+			", password='" + password + '\'' +
 			", firstName='" + firstName + '\'' +
 			", lastName='" + lastName + '\'' +
 			", authority=" + authority +
-			", notes='" + notes + '\'' +
 			", email='" + email + '\'' +
 			", phoneNumber='" + phoneNumber + '\'' +
-			", address=" + address +
+			", notes='" + notes + '\'' +
 			", organization=" + organization +
 			", orgRole='" + orgRole + '\'' +
 			", fourteenPlus=" + fourteenPlus +
@@ -343,6 +343,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
 			", gradeLevel=" + gradeLevel +
 			", stateStudentId='" + stateStudentId + '\'' +
 			", orgStudentId='" + orgStudentId + '\'' +
-			'}';
+			"} " + super.toString();
 	}
 }

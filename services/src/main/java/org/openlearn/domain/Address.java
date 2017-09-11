@@ -37,6 +37,10 @@ public class Address implements Serializable {
 	@Column(name = "postal_code", length = 10, nullable = false)
 	private String postalCode;
 
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "user_id")
+	private User user;
+
 	public Long getId() {
 		return id;
 	}
@@ -85,12 +89,12 @@ public class Address implements Serializable {
 		this.postalCode = postalCode;
 	}
 
-	public boolean isEmpty() {
-		return ((getStreetAddress1() == null || getStreetAddress1().isEmpty()) &&
-			(getStreetAddress2() == null || getStreetAddress2().isEmpty()) &&
-			(getCity() == null || getCity().isEmpty()) &&
-			(getPostalCode() == null || getPostalCode().isEmpty())
-		);
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override
@@ -107,7 +111,8 @@ public class Address implements Serializable {
 			return false;
 		if (city != null ? !city.equals(address.city) : address.city != null) return false;
 		if (state != address.state) return false;
-		return postalCode != null ? postalCode.equals(address.postalCode) : address.postalCode == null;
+		if (postalCode != null ? !postalCode.equals(address.postalCode) : address.postalCode != null) return false;
+		return user != null ? user.equals(address.user) : address.user == null;
 	}
 
 	@Override
@@ -118,6 +123,7 @@ public class Address implements Serializable {
 		result = 31 * result + (city != null ? city.hashCode() : 0);
 		result = 31 * result + (state != null ? state.hashCode() : 0);
 		result = 31 * result + (postalCode != null ? postalCode.hashCode() : 0);
+		result = 31 * result + (user != null ? user.hashCode() : 0);
 		return result;
 	}
 
@@ -130,6 +136,7 @@ public class Address implements Serializable {
 			", city='" + city + '\'' +
 			", state=" + state +
 			", postalCode='" + postalCode + '\'' +
+			", user=" + user +
 			'}';
 	}
 }

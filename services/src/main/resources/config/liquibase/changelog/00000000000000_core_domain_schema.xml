@@ -21,6 +21,9 @@
 			<column name="postal_code" type="VARCHAR(10)">
 				<constraints nullable="false"/>
 			</column>
+			<column name="user_id" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
 		</createTable>
 	</changeSet>
 	<changeSet id="2" author="meverett">
@@ -198,10 +201,10 @@
 			<column name="grade" type="VARCHAR(20)">
 				<constraints nullable="false"/>
 			</column>
-			<column name="complete" type="BIT(1)"><!-- TODO: Default to false -->
+			<column name="complete" type="BIT(1)">
 				<constraints nullable="false"/>
 			</column>
-			<column name="on_portfolio" type="BIT(1)"><!-- TODO: Default to false -->
+			<column name="on_portfolio" type="BIT(1)">
 				<constraints nullable="false"/>
 			</column>
 		</createTable>
@@ -224,10 +227,10 @@
 				<constraints nullable="false"/>
 			</column>
 			<column name="drop_date" type="TIMESTAMP"/>
-			<column name="complete" type="BIT(1)"><!-- TODO: Default to false -->
+			<column name="complete" type="BIT(1)">
 				<constraints nullable="false"/>
 			</column>
-			<column name="on_portfolio" type="BIT(1)"><!-- TODO: Default to false -->
+			<column name="on_portfolio" type="BIT(1)">
 				<constraints nullable="false"/>
 			</column>
 		</createTable>
@@ -254,7 +257,6 @@
 			</column>
 			<column name="email" type="VARCHAR(100)"/>
 			<column name="phone_number" type="VARCHAR(100)"/>
-			<column name="address_id" type="BIGINT"/>
 			<column name="notes" type="VARCHAR(2000)"/>
 			<column name="organization_id" type="BIGINT"/>
 			<column name="org_role" type="VARCHAR(255)"/>
@@ -281,75 +283,75 @@
 		<addPrimaryKey columnNames="event_id, name" tableName="persistent_audit_event_data"/>
 	</changeSet>
 	<changeSet id="15" author="meverett">
-		<addForeignKeyConstraint baseColumnNames="address_id" baseTableName="user" constraintName="user_addressFK"
-		                         deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
-		                         referencedTableName="address"/>
-	</changeSet>
-	<changeSet id="16" author="meverett">
 		<addForeignKeyConstraint baseColumnNames="assignment_id" baseTableName="student_assignment"
 		                         constraintName="student_assignment_assignmentFK" deferrable="false"
 		                         initiallyDeferred="false" referencedColumnNames="id" referencedTableName="assignment"/>
 	</changeSet>
-	<changeSet id="17" author="meverett">
+	<changeSet id="16" author="meverett">
 		<addForeignKeyConstraint baseColumnNames="authority" baseTableName="user" constraintName="user_authorityFK"
 		                         deferrable="false" initiallyDeferred="false" referencedColumnNames="name"
 		                         referencedTableName="authority"/>
 	</changeSet>
-	<changeSet id="18" author="meverett">
+	<changeSet id="17" author="meverett">
 		<addForeignKeyConstraint baseColumnNames="course_id" baseTableName="assignment"
 		                         constraintName="assignment_courseFK" deferrable="false" initiallyDeferred="false"
 		                         referencedColumnNames="id" referencedTableName="course"/>
 	</changeSet>
-	<changeSet id="19" author="meverett">
+	<changeSet id="18" author="meverett">
 		<addForeignKeyConstraint baseColumnNames="course_id" baseTableName="student_course"
 		                         constraintName="student_course_courseFK" deferrable="false" initiallyDeferred="false"
 		                         referencedColumnNames="id" referencedTableName="course"/>
 	</changeSet>
-	<changeSet id="20" author="meverett">
+	<changeSet id="19" author="meverett">
 		<addForeignKeyConstraint baseColumnNames="organization_id" baseTableName="assignment"
 		                         constraintName="assignment_organizationFK" deferrable="false" initiallyDeferred="false"
 		                         referencedColumnNames="id" referencedTableName="organization"/>
 	</changeSet>
-	<changeSet id="21" author="meverett">
+	<changeSet id="20" author="meverett">
 		<addForeignKeyConstraint baseColumnNames="organization_id" baseTableName="course"
 		                         constraintName="course_organizationFK" deferrable="false" initiallyDeferred="false"
 		                         referencedColumnNames="id" referencedTableName="organization"/>
 	</changeSet>
-	<changeSet id="22" author="meverett">
+	<changeSet id="21" author="meverett">
 		<addForeignKeyConstraint baseColumnNames="organization_id" baseTableName="portfolio_item"
 		                         constraintName="portfolio_item_organizationFK" deferrable="false"
 		                         initiallyDeferred="false" referencedColumnNames="id"
 		                         referencedTableName="organization"/>
 	</changeSet>
-	<changeSet id="23" author="meverett">
+	<changeSet id="22" author="meverett">
 		<addForeignKeyConstraint baseColumnNames="organization_id" baseTableName="program"
 		                         constraintName="program_organizationFK" deferrable="false" initiallyDeferred="false"
 		                         referencedColumnNames="id" referencedTableName="organization"/>
 	</changeSet>
-	<changeSet id="24" author="meverett">
+	<changeSet id="23" author="meverett">
 		<addForeignKeyConstraint baseColumnNames="organization_id" baseTableName="session"
 		                         constraintName="session_organizationFK" deferrable="false" initiallyDeferred="false"
 		                         referencedColumnNames="id" referencedTableName="organization"/>
 	</changeSet>
-	<changeSet id="25" author="meverett">
+	<changeSet id="24" author="meverett">
 		<addForeignKeyConstraint baseColumnNames="organization_id" baseTableName="user"
 		                         constraintName="user_organizationFK" deferrable="false" initiallyDeferred="false"
 		                         referencedColumnNames="id" referencedTableName="organization"/>
 	</changeSet>
-	<changeSet id="26" author="meverett">
+	<changeSet id="25" author="meverett">
 		<addForeignKeyConstraint baseColumnNames="event_id" baseTableName="persistent_audit_event_data"
 		                         constraintName="persistent_audit_eventFK" deferrable="false" initiallyDeferred="false"
 		                         referencedColumnNames="event_id" referencedTableName="persistent_audit_event"/>
 	</changeSet>
-	<changeSet id="27" author="meverett">
+	<changeSet id="26" author="meverett">
 		<addForeignKeyConstraint baseColumnNames="program_id" baseTableName="session" constraintName="session_programFK"
 		                         deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
 		                         referencedTableName="program"/>
 	</changeSet>
-	<changeSet id="28" author="meverett">
+	<changeSet id="27" author="meverett">
 		<addForeignKeyConstraint baseColumnNames="session_id" baseTableName="course" constraintName="course_sessionFK"
 		                         deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
 		                         referencedTableName="session"/>
+	</changeSet>
+	<changeSet id="28" author="meverett">
+		<addForeignKeyConstraint baseColumnNames="user_id" baseTableName="address"
+		                         constraintName="address_userFK" deferrable="false" initiallyDeferred="false"
+		                         referencedColumnNames="id" referencedTableName="user"/>
 	</changeSet>
 	<changeSet id="29" author="meverett">
 		<addForeignKeyConstraint baseColumnNames="instructor_id" baseTableName="course"
