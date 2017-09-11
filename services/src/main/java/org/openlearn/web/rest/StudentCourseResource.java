@@ -1,11 +1,13 @@
 package org.openlearn.web.rest;
 
-import org.openlearn.domain.StudentCourse;
+import io.swagger.annotations.ApiParam;
 import org.openlearn.dto.StudentCourseDTO;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.service.StudentCourseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +45,36 @@ public class StudentCourseResource {
 		log.debug("GET request to get studentCourse : {}", id);
 		StudentCourseDTO response = studentCourseService.findOne(id);
 		return ResponseEntity.ok(response);
+	}
+
+	/**
+	 * GET  /student/:id : get a list of studentCourse by student
+	 *
+	 * @param id the ID of the student
+	 * @return the ResponseEntity with status 200 (OK) and a list of studentCourse with course objects in the body
+	 *      or with ... TODO: Error handling
+	 */
+	@GetMapping("/student/{id}")
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
+	public ResponseEntity getByStudent(@PathVariable Long id, @ApiParam Pageable pageable) {
+		log.debug("GET request to get studentCourses by student : {}", id);
+		Page<StudentCourseDTO> response = studentCourseService.findByStudent(id, pageable);
+		return ResponseEntity.ok(response.getContent());
+	}
+
+	/**
+	 * GET  /course/:id : get a list of studentCourse by course
+	 *
+	 * @param id the ID of the course
+	 * @return the ResponseEntity with status 200 (OK) and a list of studentCourse with student objects in the body
+	 *      or with ... TODO: Error handling
+	 */
+	@GetMapping("/course/{id}")
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
+	public ResponseEntity getByCourse(@PathVariable Long id, @ApiParam Pageable pageable) {
+		log.debug("GET request to get studentCourses by course : {}", id);
+		Page<StudentCourseDTO> response = studentCourseService.findByCourse(id, pageable);
+		return ResponseEntity.ok(response.getContent());
 	}
 
 	/**

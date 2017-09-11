@@ -29,7 +29,7 @@ public class StudentAssignment implements Serializable {
 	private Assignment assignment;
 
 	@Column(name = "grade", length = 20, nullable = false)
-	private String grade;
+	private String grade = "-";
 
 	@Column(name = "complete", nullable = false)
 	private Boolean complete = false;

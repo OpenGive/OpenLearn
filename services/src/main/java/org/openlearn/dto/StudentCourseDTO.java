@@ -14,11 +14,13 @@ public class StudentCourseDTO {
 	@NotNull
 	private Long courseId;
 
-	@NotNull
+	private StudentDTO student;
+
+	private CourseDTO course;
+
 	@Size(max = 20)
 	private String grade;
 
-	@NotNull
 	private ZonedDateTime enrollDate;
 
 	private ZonedDateTime dropDate;
@@ -49,6 +51,22 @@ public class StudentCourseDTO {
 
 	public void setCourseId(Long courseId) {
 		this.courseId = courseId;
+	}
+
+	public StudentDTO getStudent() {
+		return student;
+	}
+
+	public void setStudent(StudentDTO student) {
+		this.student = student;
+	}
+
+	public CourseDTO getCourse() {
+		return course;
+	}
+
+	public void setCourse(CourseDTO course) {
+		this.course = course;
 	}
 
 	public String getGrade() {
@@ -101,6 +119,8 @@ public class StudentCourseDTO {
 		if (id != null ? !id.equals(that.id) : that.id != null) return false;
 		if (studentId != null ? !studentId.equals(that.studentId) : that.studentId != null) return false;
 		if (courseId != null ? !courseId.equals(that.courseId) : that.courseId != null) return false;
+		if (student != null ? !student.equals(that.student) : that.student != null) return false;
+		if (course != null ? !course.equals(that.course) : that.course != null) return false;
 		if (grade != null ? !grade.equals(that.grade) : that.grade != null) return false;
 		if (enrollDate != null ? !enrollDate.equals(that.enrollDate) : that.enrollDate != null) return false;
 		if (dropDate != null ? !dropDate.equals(that.dropDate) : that.dropDate != null) return false;
@@ -113,6 +133,8 @@ public class StudentCourseDTO {
 		int result = id != null ? id.hashCode() : 0;
 		result = 31 * result + (studentId != null ? studentId.hashCode() : 0);
 		result = 31 * result + (courseId != null ? courseId.hashCode() : 0);
+		result = 31 * result + (student != null ? student.hashCode() : 0);
+		result = 31 * result + (course != null ? course.hashCode() : 0);
 		result = 31 * result + (grade != null ? grade.hashCode() : 0);
 		result = 31 * result + (enrollDate != null ? enrollDate.hashCode() : 0);
 		result = 31 * result + (dropDate != null ? dropDate.hashCode() : 0);
@@ -127,6 +149,8 @@ public class StudentCourseDTO {
 			"id=" + id +
 			", studentId=" + studentId +
 			", courseId=" + courseId +
+			", student=" + student +
+			", course=" + course +
 			", grade='" + grade + '\'' +
 			", enrollDate=" + enrollDate +
 			", dropDate=" + dropDate +

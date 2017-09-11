@@ -96,7 +96,7 @@ public class StudentAssignmentService {
 		User student = userRepository.findOneByIdAndAuthority(id, STUDENT);
 		if (student != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(student))) {
 			return studentAssignmentRepository.findByStudent(student, pageable)
-				.map(studentAssignmentTransformer::transform);
+				.map((StudentAssignment studentAssignment) -> studentAssignmentTransformer.transform(studentAssignment, false, true));
 		}
 		// TODO: Error handling / logging
 		return null;
@@ -115,7 +115,7 @@ public class StudentAssignmentService {
 		Assignment assignment = assignmentRepository.findOne(id);
 		if (assignment != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(assignment))) {
 			return studentAssignmentRepository.findByAssignment(assignment, pageable)
-				.map(studentAssignmentTransformer::transform);
+				.map((StudentAssignment studentAssignment) -> studentAssignmentTransformer.transform(studentAssignment, true, false));
 		}
 		// TODO: Error handling / logging
 		return null;

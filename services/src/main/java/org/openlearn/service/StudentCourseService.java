@@ -93,7 +93,8 @@ public class StudentCourseService {
 		log.debug("Request to get StudentCourses by Student : {}", id);
 		User student = userRepository.findOneByIdAndAuthority(id, STUDENT);
 		if (student != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(student))) {
-			return studentCourseRepository.findByStudent(student, pageable).map(studentCourseTransformer::transform);
+			return studentCourseRepository.findByStudent(student, pageable)
+				.map((StudentCourse studentCourse) -> studentCourseTransformer.transform(studentCourse, false, true));
 		}
 		// TODO: Error handling / logging
 		return null;
@@ -111,7 +112,8 @@ public class StudentCourseService {
 		log.debug("Request to get StudentCourses by Course : {}", id);
 		Course course = courseRepository.findOne(id);
 		if (course != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(course))) {
-			return studentCourseRepository.findByCourse(course, pageable).map(studentCourseTransformer::transform);
+			return studentCourseRepository.findByCourse(course, pageable)
+				.map((StudentCourse studentCourse) -> studentCourseTransformer.transform(studentCourse, true, false));
 		}
 		// TODO: Error handling / logging
 		return null;

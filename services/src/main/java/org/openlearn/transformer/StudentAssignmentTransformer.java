@@ -15,18 +15,37 @@ public class StudentAssignmentTransformer {
 
 	private final AssignmentRepository assignmentRepository;
 
+	private final AssignmentTransformer assignmentTransformer;
+
+	private final StudentTransformer studentTransformer;
+
 	private final UserRepository userRepository;
 
-	public StudentAssignmentTransformer(AssignmentRepository assignmentRepository, UserRepository userRepository) {
+	public StudentAssignmentTransformer(AssignmentRepository assignmentRepository,
+	                                    AssignmentTransformer assignmentTransformer,
+	                                    StudentTransformer studentTransformer, UserRepository userRepository) {
 		this.assignmentRepository = assignmentRepository;
+		this.assignmentTransformer = assignmentTransformer;
+		this.studentTransformer = studentTransformer;
 		this.userRepository = userRepository;
 	}
 
 	public StudentAssignmentDTO transform(StudentAssignment studentAssignment) {
+		return transform(studentAssignment, false, false);
+	}
+
+	public StudentAssignmentDTO transform(StudentAssignment studentAssignment, boolean withStudent,
+	                                      boolean withAssignment) {
 		StudentAssignmentDTO studentAssignmentDTO = new StudentAssignmentDTO();
 		studentAssignmentDTO.setId(studentAssignment.getId());
 		studentAssignmentDTO.setStudentId(studentAssignment.getStudent().getId());
 		studentAssignmentDTO.setAssignmentId(studentAssignment.getAssignment().getId());
+		if (withStudent) {
+			studentAssignmentDTO.setStudent(studentTransformer.transform(studentAssignment.getStudent()));
+		}
+		if (withAssignment) {
+			studentAssignmentDTO.setAssignment(assignmentTransformer.transform(studentAssignment.getAssignment()));
+		}
 		studentAssignmentDTO.setGrade(studentAssignment.getGrade());
 		studentAssignmentDTO.setComplete(studentAssignment.getComplete());
 		studentAssignmentDTO.setOnPortfolio(studentAssignment.getOnPortfolio());

@@ -30,10 +30,10 @@ public class StudentCourse implements Serializable {
 	private Course course;
 
 	@Column(name = "grade", length = 20, nullable = false)
-	private String grade;
+	private String grade = "-";
 
 	@Column(name = "enroll_date", nullable = false)
-	private ZonedDateTime enrollDate;
+	private ZonedDateTime enrollDate = ZonedDateTime.now();
 
 	@Column(name = "drop_date")
 	private ZonedDateTime dropDate;
