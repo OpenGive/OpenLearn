@@ -38,7 +38,6 @@ import {StudentPageComponent} from "./pages/student-page/student-page.component"
 import {CourseViewComponent} from "./controls/course/course-view/course-view.component";
 import {CourseGridComponent} from "./controls/course/course-grid/course-grid.component";
 import {CourseResourceGridComponent} from "./controls/course/course-resource-grid/course-resource-grid.component";
-import {ItemLinkService} from "./services/itemlink.service";
 import {ProfilePageComponent} from "./pages/profile-page/profile-page.component";
 import {NotifyService} from "./services/notify.service";
 import {OLAdminModule} from "./controls/admin/admin.module";
@@ -98,8 +97,7 @@ import {DataService} from "./services/data.service";
     AdminService,
     DataService,
     AdminGridService,
-    NotifyService,
-    ItemLinkService
+    NotifyService
   ],
   bootstrap: [AppComponent],
   entryComponents: [

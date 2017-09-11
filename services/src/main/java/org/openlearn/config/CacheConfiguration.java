@@ -1,7 +1,6 @@
 package org.openlearn.config;
 
-import java.util.concurrent.TimeUnit;
-
+import io.github.jhipster.config.JHipsterProperties;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
 import org.ehcache.config.builders.ResourcePoolsBuilder;
 import org.ehcache.expiry.Duration;
@@ -15,7 +14,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import io.github.jhipster.config.JHipsterProperties;
+import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableCaching

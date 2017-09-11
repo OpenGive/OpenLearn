@@ -51,17 +51,9 @@ export class UserService {
     return Observable.throw(error.json() || {message: 'Server Error'});
   }
 
-  private nullifyBlanks(user: User) {
-    // Convert empty state to null
-    if (user.address && user.address.state === '') {
-      user.address.state = null;
-    }
-    // Convert empty address to null
-    if (_.every(user.address, field => _.isNil(field))) {
-      user.address = null;
-    }
+  private nullifyBlanks(object: any) {
     // Convert empty strings to null
-    return _.mapValues(user, field => {
+    return _.mapValues(object, field => {
       if (field === '') {
         field = null;
       }

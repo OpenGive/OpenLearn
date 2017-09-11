@@ -1,7 +1,6 @@
 package org.openlearn.config.audit;
 
 import org.openlearn.domain.PersistentAuditEvent;
-
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;

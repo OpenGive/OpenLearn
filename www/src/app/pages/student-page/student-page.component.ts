@@ -139,12 +139,6 @@ export class StudentPageComponent implements OnInit {
         Validators.minLength(6),
         Validators.maxLength(50)
       ] : []],
-      authorities: [this.student.authorities, [
-        Validators.required
-      ]],
-      biography: [this.student.biography, [
-        Validators.maxLength(2000)
-      ]],
       email: [this.student.email, [
         // Validators.email, TODO: This forces email to be required, https://github.com/angular/angular/pull/16902 is the fix, pattern below is the workaround
         Validators.pattern(AppConstants.OLValidators.Email),
@@ -155,25 +149,21 @@ export class StudentPageComponent implements OnInit {
         // TODO: Pattern
         Validators.maxLength(15)
       ]],
-      address: this.fb.group({
-        streetAddress1: [this.student.address ? this.student.address.streetAddress1 : null, [
-          Validators.minLength(5),
-          Validators.maxLength(50)
-        ]],
-        streetAddress2: [this.student.address ? this.student.address.streetAddress2 : null, [
-          Validators.minLength(5),
-          Validators.maxLength(50)
-        ]],
-        city: [this.student.address ? this.student.address.city : null, [
-          Validators.maxLength(50)
-        ]],
-        state: [this.student.address ? this.student.address.state : null],
-        postalCode: [this.student.address ? this.student.address.postalCode : null, [
-          Validators.pattern(AppConstants.OLValidators.PostalCode)
-        ]]
-      }),
-      activated: [this.student.activated || false],
-      is14Plus: [this.student.is14Plus || false]
+      streetAddress1: [this.student.streetAddress1, [
+        Validators.minLength(5),
+        Validators.maxLength(50)
+      ]],
+      streetAddress2: [this.student.streetAddress2, [
+        Validators.minLength(5),
+        Validators.maxLength(50)
+      ]],
+      city: [this.student.city, [
+        Validators.maxLength(50)
+      ]],
+      state: [this.student.state],
+      postalCode: [this.student.postalCode, [
+        Validators.pattern(AppConstants.OLValidators.PostalCode)
+      ]]
     });
     this.studentForm.valueChanges.subscribe(data => this.onValueChanged());
     this.onValueChanged();
@@ -262,14 +252,11 @@ export class StudentPageComponent implements OnInit {
       biography: this.studentForm.get('biography').value,
       email: this.studentForm.get('email').value,
       phoneNumber: this.studentForm.get('phoneNumber').value,
-      address: {
-        id: this.student.address ? this.student.address.id : null,
-        streetAddress1: this.studentForm.get('address').get('streetAddress1').value,
-        streetAddress2: this.studentForm.get('address').get('streetAddress2').value,
-        city: this.studentForm.get('address').get('city').value,
-        state: this.studentForm.get('address').get('state').value,
-        postalCode: this.studentForm.get('address').get('postalCode').value
-      },
+      streetAddress1: this.studentForm.get('streetAddress1').value,
+      streetAddress2: this.studentForm.get('streetAddress2').value,
+      city: this.studentForm.get('city').value,
+      state: this.studentForm.get('state').value,
+      postalCode: this.studentForm.get('postalCode').value,
       activated: this.studentForm.get('activated').value,
       is14Plus: this.studentForm.get('is14Plus').value
     };

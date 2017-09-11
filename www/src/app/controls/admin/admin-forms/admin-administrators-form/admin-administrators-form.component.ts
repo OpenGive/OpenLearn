@@ -26,7 +26,6 @@ export class AdminAdministratorsFormComponent implements OnInit {
   roles: string[];
   states: any[];
 
-
   filteredStates: Observable<any[]>;
 
   administratorForm: FormGroup;
@@ -35,17 +34,13 @@ export class AdminAdministratorsFormComponent implements OnInit {
     lastName: '',
     login: '',
     password: '',
-    authorities: '',
-    biography: '',
+    notes: '',
     email: '',
     phoneNumber: '',
-    organization: '',
-    address: {
-      streetAddress1: '',
-      streetAddress2: '',
-      city: '',
-      postalCode: ''
-    }
+    streetAddress1: '',
+    streetAddress2: '',
+    city: '',
+    postalCode: ''
   };
   validationMessages = {
     firstName: {
@@ -67,8 +62,8 @@ export class AdminAdministratorsFormComponent implements OnInit {
     authorities: {
       required: 'Administrator must have 1 role'
     },
-    biography: {
-      maxlength: 'Biography cannot be more than 2000 characters long'
+    notes: {
+      maxlength: 'Notes cannot be more than 2000 characters long'
     },
     email: {
       // email: 'Email is not formatted correctly', TODO: See comment in buildForm()
@@ -80,24 +75,19 @@ export class AdminAdministratorsFormComponent implements OnInit {
       pattern: 'Phone is not formatted correctly',
       maxlength: 'Phone cannot be more than 15 characters long'
     },
-    organization: {
-      required: 'Organization is required'
+    streetAddress1: {
+      minlength: 'Street Address 1 must be at least 5 characters long',
+      maxlength: 'Street Address 1 cannot be more than 50 characters long'
     },
-    address: {
-      streetAddress1: {
-        minlength: 'Street Address 1 must be at least 5 characters long',
-        maxlength: 'Street Address 1 cannot be more than 50 characters long'
-      },
-      streetAddress2: {
-        minlength: 'Street Address 2 must be at least 5 characters long',
-        maxlength: 'Street Address 2 cannot be more than 50 characters long'
-      },
-      city: {
-        maxlength: 'City cannot be more than 50 characters long'
-      },
-      postalCode: {
-        pattern: 'Postal Code is not formatted correctly'
-      }
+    streetAddress2: {
+      minlength: 'Street Address 2 must be at least 5 characters long',
+      maxlength: 'Street Address 2 cannot be more than 50 characters long'
+    },
+    city: {
+      maxlength: 'City cannot be more than 50 characters long'
+    },
+    postalCode: {
+      pattern: 'Postal Code is not formatted correctly'
     }
   };
 
@@ -133,13 +123,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
         Validators.minLength(6),
         Validators.maxLength(50)
       ] : []],
-      authorities: [[AppConstants.Role.Admin], [
-        Validators.required
-      ]],
-      organizationIds: [this.formAdministrator.organizationIds, [
-        Validators.required
-      ]],
-      biography: [this.formAdministrator.biography, [
+      notes: [this.formAdministrator.notes, [
         Validators.maxLength(2000)
       ]],
       email: [this.formAdministrator.email, [
@@ -152,26 +136,21 @@ export class AdminAdministratorsFormComponent implements OnInit {
         // TODO: Pattern
         Validators.maxLength(15)
       ]],
-      address: this.fb.group({
-        streetAddress1: [this.formAdministrator.address ? this.formAdministrator.address.streetAddress1 : null, [
-          Validators.minLength(5),
-          Validators.maxLength(50)
-        ]],
-        streetAddress2: [this.formAdministrator.address ? this.formAdministrator.address.streetAddress2 : null, [
-          Validators.minLength(5),
-          Validators.maxLength(50)
-        ]],
-        city: [this.formAdministrator.address ? this.formAdministrator.address.city : null, [
-          Validators.maxLength(50)
-        ]],
-        state: [this.formAdministrator.address ? this.formAdministrator.address.state : null],
-        postalCode: [this.formAdministrator.address ? this.formAdministrator.address.postalCode : null, [
-          Validators.pattern(AppConstants.OLValidators.PostalCode)
-        ]]
-      }),
-      imageUrl: [this.formAdministrator.imageUrl],
-      activated: [this.formAdministrator.activated || false],
-      is14Plus: [this.formAdministrator.is14Plus || false]
+      streetAddress1: [this.formAdministrator.streetAddress1, [
+        Validators.minLength(5),
+        Validators.maxLength(50)
+      ]],
+      streetAddress2: [this.formAdministrator.streetAddress2, [
+        Validators.minLength(5),
+        Validators.maxLength(50)
+      ]],
+      city: [this.formAdministrator.city, [
+        Validators.maxLength(50)
+      ]],
+      state: [this.formAdministrator.state],
+      postalCode: [this.formAdministrator.postalCode, [
+        Validators.pattern(AppConstants.OLValidators.PostalCode)
+      ]]
     });
     this.administratorForm.valueChanges.subscribe(data => this.onValueChanged());
     this.onValueChanged();
@@ -184,19 +163,14 @@ export class AdminAdministratorsFormComponent implements OnInit {
     }
   }
 
-  // Recursive method to account for nested FormGroups
   private updateFormErrors(form: FormGroup, formErrors: any, validationMessages: any): void {
     for (const field in formErrors) {
       const control = form.get(field);
-      if (control instanceof FormGroup) {
-        this.updateFormErrors(control, formErrors[field], validationMessages[field]);
-      } else {
-        formErrors[field] = '';
-        if (control && control.dirty && !control.valid) {
-          const messages = validationMessages[field];
-          for (const key in control.errors) {
-            formErrors[field] += messages[key] + ' ';
-          }
+      formErrors[field] = '';
+      if (control && control.dirty && !control.valid) {
+        const messages = validationMessages[field];
+        for (const key in control.errors) {
+          formErrors[field] += messages[key] + ' ';
         }
       }
     }
@@ -281,22 +255,15 @@ export class AdminAdministratorsFormComponent implements OnInit {
       lastName: this.administratorForm.get('lastName').value,
       login: this.administratorForm.get('login').value,
       password: this.administratorForm.get('password').value,
-      authorities: [AppConstants.Role.Admin],
-      biography: this.administratorForm.get('biography').value,
+      authority: AppConstants.Role.Admin,
+      notes: this.administratorForm.get('notes').value,
       email: this.administratorForm.get('email').value,
       phoneNumber: this.administratorForm.get('phoneNumber').value,
-      address: {
-        id: this.formAdministrator.address ? this.formAdministrator.address.id : null,
-        streetAddress1: this.administratorForm.get('address').get('streetAddress1').value,
-        streetAddress2: this.administratorForm.get('address').get('streetAddress2').value,
-        city: this.administratorForm.get('address').get('city').value,
-        state: this.administratorForm.get('address').get('state').value,
-        postalCode: this.administratorForm.get('address').get('postalCode').value
-      },
-      imageUrl: this.administratorForm.get('imageUrl').value,
-      organizationIds: this.administratorForm.get('organizationIds').value,
-      activated: this.administratorForm.get('activated').value,
-      is14Plus: this.administratorForm.get('is14Plus').value
+      streetAddress1: this.administratorForm.get('streetAddress1').value,
+      streetAddress2: this.administratorForm.get('streetAddress2').value,
+      city: this.administratorForm.get('city').value,
+      state: this.administratorForm.get('state').value,
+      postalCode: this.administratorForm.get('postalCode').value
     };
   }
 

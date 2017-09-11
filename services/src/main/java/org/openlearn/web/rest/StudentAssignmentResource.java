@@ -1,6 +1,5 @@
 package org.openlearn.web.rest;
 
-import org.openlearn.domain.StudentAssignment;
 import org.openlearn.dto.StudentAssignmentDTO;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.service.StudentAssignmentService;

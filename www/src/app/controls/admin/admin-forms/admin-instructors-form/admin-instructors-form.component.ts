@@ -35,17 +35,14 @@ export class AdminInstructorsFormComponent implements OnInit {
     lastName: '',
     login: '',
     password: '',
-    authorities: '',
-    biography: '',
+    notes: '',
     email: '',
     phoneNumber: '',
-    organization: '',
-    address: {
-      streetAddress1: '',
-      streetAddress2: '',
-      city: '',
-      postalCode: ''
-    }
+    organizationId: '',
+    streetAddress1: '',
+    streetAddress2: '',
+    city: '',
+    postalCode: ''
   };
   validationMessages = {
     firstName: {
@@ -64,11 +61,8 @@ export class AdminInstructorsFormComponent implements OnInit {
       minlength: 'Password must be at least 6 characters long',
       maxlength: 'Password cannot be more than 50 characters long'
     },
-    authorities: {
-      required: 'Instructor must have 1 role'
-    },
-    biography: {
-      maxlength: 'Biography cannot be more than 2000 characters long'
+    notes: {
+      maxlength: 'Notes cannot be more than 2000 characters long'
     },
     email: {
       // email: 'Email is not formatted correctly', TODO: See comment in buildForm()
@@ -80,24 +74,22 @@ export class AdminInstructorsFormComponent implements OnInit {
       pattern: 'Phone is not formatted correctly',
       maxlength: 'Phone cannot be more than 15 characters long'
     },
-    organization: {
+    organizationId: {
       required: 'Organization is required'
     },
-    address: {
-      streetAddress1: {
-        minlength: 'Street Address 1 must be at least 5 characters long',
-        maxlength: 'Street Address 1 cannot be more than 50 characters long'
-      },
-      streetAddress2: {
-        minlength: 'Street Address 2 must be at least 5 characters long',
-        maxlength: 'Street Address 2 cannot be more than 50 characters long'
-      },
-      city: {
-        maxlength: 'City cannot be more than 50 characters long'
-      },
-      postalCode: {
-        pattern: 'Postal Code is not formatted correctly'
-      }
+    streetAddress1: {
+      minlength: 'Street Address 1 must be at least 5 characters long',
+      maxlength: 'Street Address 1 cannot be more than 50 characters long'
+    },
+    streetAddress2: {
+      minlength: 'Street Address 2 must be at least 5 characters long',
+      maxlength: 'Street Address 2 cannot be more than 50 characters long'
+    },
+    city: {
+      maxlength: 'City cannot be more than 50 characters long'
+    },
+    postalCode: {
+      pattern: 'Postal Code is not formatted correctly'
     }
   };
 
@@ -133,13 +125,10 @@ export class AdminInstructorsFormComponent implements OnInit {
         Validators.minLength(6),
         Validators.maxLength(50)
       ] : []],
-      authorities: [[AppConstants.Role.Instructor], [
+      organizationId: [this.formInstructor.organizationId, [
         Validators.required
       ]],
-      organizationIds: [this.formInstructor.organizationIds, [
-        Validators.required
-      ]],
-      biography: [this.formInstructor.biography, [
+      notes: [this.formInstructor.notes, [
         Validators.maxLength(2000)
       ]],
       email: [this.formInstructor.email, [
@@ -152,26 +141,21 @@ export class AdminInstructorsFormComponent implements OnInit {
         // TODO: Pattern
         Validators.maxLength(15)
       ]],
-      address: this.fb.group({
-        streetAddress1: [this.formInstructor.address ? this.formInstructor.address.streetAddress1 : null, [
-          Validators.minLength(5),
-          Validators.maxLength(50)
-        ]],
-        streetAddress2: [this.formInstructor.address ? this.formInstructor.address.streetAddress2 : null, [
-          Validators.minLength(5),
-          Validators.maxLength(50)
-        ]],
-        city: [this.formInstructor.address ? this.formInstructor.address.city : null, [
-          Validators.maxLength(50)
-        ]],
-        state: [this.formInstructor.address ? this.formInstructor.address.state : null],
-        postalCode: [this.formInstructor.address ? this.formInstructor.address.postalCode : null, [
-          Validators.pattern(AppConstants.OLValidators.PostalCode)
-        ]]
-      }),
-      imageUrl: [this.formInstructor.imageUrl],
-      activated: [this.formInstructor.activated || false],
-      is14Plus: [this.formInstructor.is14Plus || false]
+      streetAddress1: [this.formInstructor.streetAddress1, [
+        Validators.minLength(5),
+        Validators.maxLength(50)
+      ]],
+      streetAddress2: [this.formInstructor.streetAddress2, [
+        Validators.minLength(5),
+        Validators.maxLength(50)
+      ]],
+      city: [this.formInstructor.city, [
+        Validators.maxLength(50)
+      ]],
+      state: [this.formInstructor.state],
+      postalCode: [this.formInstructor.postalCode, [
+        Validators.pattern(AppConstants.OLValidators.PostalCode)
+      ]]
     });
     this.instructorForm.valueChanges.subscribe(data => this.onValueChanged());
     this.onValueChanged();
@@ -282,22 +266,16 @@ export class AdminInstructorsFormComponent implements OnInit {
       lastName: this.instructorForm.get('lastName').value,
       login: this.instructorForm.get('login').value,
       password: this.instructorForm.get('password').value,
-      authorities: [AppConstants.Role.Instructor],
-      biography: this.instructorForm.get('biography').value,
+      authority: AppConstants.Role.Instructor,
+      notes: this.instructorForm.get('notes').value,
       email: this.instructorForm.get('email').value,
       phoneNumber: this.instructorForm.get('phoneNumber').value,
-      address: {
-        id: this.formInstructor.address ? this.formInstructor.address.id : null,
-        streetAddress1: this.instructorForm.get('address').get('streetAddress1').value,
-        streetAddress2: this.instructorForm.get('address').get('streetAddress2').value,
-        city: this.instructorForm.get('address').get('city').value,
-        state: this.instructorForm.get('address').get('state').value,
-        postalCode: this.instructorForm.get('address').get('postalCode').value
-      },
-      imageUrl: this.instructorForm.get('imageUrl').value,
-      organizationIds: this.instructorForm.get('organizationIds').value,
-      activated: this.instructorForm.get('activated').value,
-      is14Plus: this.instructorForm.get('is14Plus').value
+      streetAddress1: this.instructorForm.get('streetAddress1').value,
+      streetAddress2: this.instructorForm.get('streetAddress2').value,
+      city: this.instructorForm.get('city').value,
+      state: this.instructorForm.get('state').value,
+      postalCode: this.instructorForm.get('postalCode').value,
+      organizationId: this.instructorForm.get('organizationId').value,
     };
   }
 

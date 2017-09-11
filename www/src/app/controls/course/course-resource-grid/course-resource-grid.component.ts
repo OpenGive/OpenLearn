@@ -1,10 +1,8 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {MdDialog} from "@angular/material";
-import * as _ from "lodash";
 
 import {Course} from '../../../models/course.model';
 import {StudentCourseService} from "../../../services/student-course.service";
-import {ResourceDialogComponent} from "../resource-dialog.component"
 
 @Component({
   selector: 'app-course-resource-grid',
@@ -16,7 +14,7 @@ export class CourseResourceGridComponent implements OnInit {
   @Input() course: Course;
   @Input() resource: any;
   resources: any[];
-  columns: any[]
+  columns: any[];
 
   sortColumn: any;
   reverse: boolean;
@@ -50,16 +48,18 @@ export class CourseResourceGridComponent implements OnInit {
   }
 
   add(): void {
-    this.dialog.open(ResourceDialogComponent, {
-      data: {
-        course: this.course
-      },
-      width: "400px",
-      height: "600px",
-      disableClose: true
-    }).afterClosed().subscribe(resp => {
-      this.handleAddResourceResponse(resp)
-    });
+    console.log('added');
+    // TODO: No longer using ResourceDialogComponent
+    // this.dialog.open(ResourceDialogComponent, {
+    //   data: {
+    //     course: this.course
+    //   },
+    //   width: "400px",
+    //   height: "600px",
+    //   disableClose: true
+    // }).afterClosed().subscribe(resp => {
+    //   this.handleAddResourceResponse(resp)
+    // });
   }
 
 

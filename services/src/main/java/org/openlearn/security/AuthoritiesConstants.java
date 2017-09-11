@@ -1,6 +1,9 @@
 package org.openlearn.security;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Optional;
 
 /**
  * Constants for Spring Security authorities.

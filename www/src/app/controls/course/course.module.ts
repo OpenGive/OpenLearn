@@ -3,12 +3,11 @@ import {NgModule} from "@angular/core";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {MdAutocompleteModule, MdButtonModule, MdCheckboxModule, MdDatepickerModule, MdIconModule, MdInputModule,
   MdMenuModule, MdNativeDateModule, MdSelectModule, MdTooltipModule} from "@angular/material";
-import {FormBuilder, FormsModule, FormGroup, Validators, ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 import {CourseDialogComponent} from "./course-dialog.component";
 import {GradeDialogComponent} from "./grade-dialog.component";
 import {CourseStudentDialogComponent} from "./course-student-dialog.component";
-import {ResourceDialogComponent} from "./resource-dialog.component"
 
 import {CourseStudentFormComponent} from "./course-student-form/course-student-form.component";
 
@@ -17,7 +16,6 @@ import {CourseStudentFormComponent} from "./course-student-form/course-student-f
     CourseDialogComponent,
     GradeDialogComponent,
     CourseStudentDialogComponent,
-    ResourceDialogComponent,
     CourseStudentFormComponent
   ],
   imports: [
@@ -40,7 +38,6 @@ import {CourseStudentFormComponent} from "./course-student-form/course-student-f
     CourseDialogComponent,
     GradeDialogComponent,
     CourseStudentDialogComponent,
-    ResourceDialogComponent,
     CourseStudentFormComponent
   ]
 })

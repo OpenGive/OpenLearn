@@ -139,23 +139,21 @@ export class CourseStudentFormComponent implements OnInit {
         // TODO: Pattern
         Validators.maxLength(15)
       ]],
-      address: this.fb.group({
-        streetAddress1: [this.formStudent.address ? this.formStudent.address.streetAddress1 : null, [
-          Validators.minLength(5),
-          Validators.maxLength(50)
-        ]],
-        streetAddress2: [this.formStudent.address ? this.formStudent.address.streetAddress2 : null, [
-          Validators.minLength(5),
-          Validators.maxLength(50)
-        ]],
-        city: [this.formStudent.address ? this.formStudent.address.city : null, [
-          Validators.maxLength(50)
-        ]],
-        state: [this.formStudent.address ? this.formStudent.address.state : null],
-        postalCode: [this.formStudent.address ? this.formStudent.address.postalCode : null, [
-          Validators.pattern(AppConstants.OLValidators.PostalCode)
-        ]]
-      }),
+      streetAddress1: [this.formStudent.streetAddress1, [
+        Validators.minLength(5),
+        Validators.maxLength(50)
+      ]],
+      streetAddress2: [this.formStudent.streetAddress2, [
+        Validators.minLength(5),
+        Validators.maxLength(50)
+      ]],
+      city: [this.formStudent.city, [
+        Validators.maxLength(50)
+      ]],
+      state: [this.formStudent.state],
+      postalCode: [this.formStudent.postalCode, [
+        Validators.pattern(AppConstants.OLValidators.PostalCode)
+      ]],
       imageUrl: [this.formStudent.imageUrl],
       activated: [this.formStudent.activated || false],
       is14Plus: [this.formStudent.is14Plus || false]
@@ -265,13 +263,11 @@ export class CourseStudentFormComponent implements OnInit {
       biography: this.studentForm.get('biography').value,
       email: this.studentForm.get('email').value,
       phoneNumber: this.studentForm.get('phoneNumber').value,
-      address: {
-        streetAddress1: this.studentForm.get('address').get('streetAddress1').value,
-        streetAddress2: this.studentForm.get('address').get('streetAddress2').value,
-        city: this.studentForm.get('address').get('city').value,
-        state: this.studentForm.get('address').get('state').value,
-        postalCode: this.studentForm.get('address').get('postalCode').value
-      },
+      streetAddress1: this.studentForm.get('streetAddress1').value,
+      streetAddress2: this.studentForm.get('streetAddress2').value,
+      city: this.studentForm.get('city').value,
+      state: this.studentForm.get('state').value,
+      postalCode: this.studentForm.get('postalCode').value,
       imageUrl: this.studentForm.get('imageUrl').value,
       activated: this.studentForm.get('activated').value,
       is14Plus: this.studentForm.get('is14Plus').value

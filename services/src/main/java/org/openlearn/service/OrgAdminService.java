@@ -1,13 +1,12 @@
 package org.openlearn.service;
 
 import org.openlearn.domain.Authority;
-import org.openlearn.domain.Organization;
 import org.openlearn.domain.User;
 import org.openlearn.dto.OrgAdminDTO;
+import org.openlearn.repository.UserRepository;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.security.SecurityUtils;
 import org.openlearn.transformer.OrgAdminTransformer;
-import org.openlearn.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;

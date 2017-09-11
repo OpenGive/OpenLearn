@@ -1,8 +1,5 @@
-import {Component, OnInit, Inject} from '@angular/core';
-import {MD_DIALOG_DATA} from '@angular/material';
+import {Component, OnInit} from '@angular/core';
 
-import {AdminTabs} from "../../controls/admin/admin.constants";
-import {AdminService} from "../../services/admin.service";
 import {UserService} from "../../services/user.service";
 import {Course} from '../../models/course.model';
 
@@ -13,9 +10,8 @@ import {Course} from '../../models/course.model';
 })
 export class DashboardPageComponent implements OnInit {
 
-  constructor(private adminService: AdminService,
-              private userService: UserService) {}
-  courses: Course[] = [];
+  constructor(private userService: UserService) {}
+  courses: Course[];
 
   ngOnInit(): void {
     this.getCourses();

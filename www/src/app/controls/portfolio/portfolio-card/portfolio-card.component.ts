@@ -12,7 +12,7 @@ export class PortfolioCardComponent {
   @Input() portfolioItem: PortfolioItem;
 
   share() {
-    alert(this.portfolioItem.filename);
+    alert(this.portfolioItem);
   }
 
 }

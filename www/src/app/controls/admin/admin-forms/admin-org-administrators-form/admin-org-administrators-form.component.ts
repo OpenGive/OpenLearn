@@ -26,7 +26,6 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
   roles: string[];
   states: any[];
 
-
   filteredStates: Observable<any[]>;
 
   orgAdministratorForm: FormGroup;
@@ -35,17 +34,14 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
     lastName: '',
     login: '',
     password: '',
-    authorities: '',
-    biography: '',
+    notes: '',
     email: '',
     phoneNumber: '',
-    organization: '',
-    address: {
-      streetAddress1: '',
-      streetAddress2: '',
-      city: '',
-      postalCode: ''
-    }
+    organizationId: '',
+    streetAddress1: '',
+    streetAddress2: '',
+    city: '',
+    postalCode: ''
   };
   validationMessages = {
     firstName: {
@@ -64,11 +60,8 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
       minlength: 'Password must be at least 6 characters long',
       maxlength: 'Password cannot be more than 50 characters long'
     },
-    authorities: {
-      required: 'Org Administrator must have 1 role'
-    },
-    biography: {
-      maxlength: 'Biography cannot be more than 2000 characters long'
+    notes: {
+      maxlength: 'Notes cannot be more than 2000 characters long'
     },
     email: {
       // email: 'Email is not formatted correctly', TODO: See comment in buildForm()
@@ -80,24 +73,22 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
       pattern: 'Phone is not formatted correctly',
       maxlength: 'Phone cannot be more than 15 characters long'
     },
-    organization: {
+    organizationId: {
       required: 'Organization is required'
     },
-    address: {
-      streetAddress1: {
-        minlength: 'Street Address 1 must be at least 5 characters long',
-        maxlength: 'Street Address 1 cannot be more than 50 characters long'
-      },
-      streetAddress2: {
-        minlength: 'Street Address 2 must be at least 5 characters long',
-        maxlength: 'Street Address 2 cannot be more than 50 characters long'
-      },
-      city: {
-        maxlength: 'City cannot be more than 50 characters long'
-      },
-      postalCode: {
-        pattern: 'Postal Code is not formatted correctly'
-      }
+    streetAddress1: {
+      minlength: 'Street Address 1 must be at least 5 characters long',
+      maxlength: 'Street Address 1 cannot be more than 50 characters long'
+    },
+    streetAddress2: {
+      minlength: 'Street Address 2 must be at least 5 characters long',
+      maxlength: 'Street Address 2 cannot be more than 50 characters long'
+    },
+    city: {
+      maxlength: 'City cannot be more than 50 characters long'
+    },
+    postalCode: {
+      pattern: 'Postal Code is not formatted correctly'
     }
   };
 
@@ -132,13 +123,10 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
         Validators.minLength(6),
         Validators.maxLength(50)
       ] : []],
-      authorities: [[AppConstants.Role.OrgAdmin], [
+      organizationId: [this.formOrgAdministrator.organizationId, [
         Validators.required
       ]],
-      organizationIds: [this.formOrgAdministrator.organizationIds, [
-        Validators.required
-      ]],
-      biography: [this.formOrgAdministrator.biography, [
+      notes: [this.formOrgAdministrator.notes, [
         Validators.maxLength(2000)
       ]],
       email: [this.formOrgAdministrator.email, [
@@ -151,26 +139,21 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
         // TODO: Pattern
         Validators.maxLength(15)
       ]],
-      address: this.fb.group({
-        streetAddress1: [this.formOrgAdministrator.address ? this.formOrgAdministrator.address.streetAddress1 : null, [
-          Validators.minLength(5),
-          Validators.maxLength(50)
-        ]],
-        streetAddress2: [this.formOrgAdministrator.address ? this.formOrgAdministrator.address.streetAddress2 : null, [
-          Validators.minLength(5),
-          Validators.maxLength(50)
-        ]],
-        city: [this.formOrgAdministrator.address ? this.formOrgAdministrator.address.city : null, [
-          Validators.maxLength(50)
-        ]],
-        state: [this.formOrgAdministrator.address ? this.formOrgAdministrator.address.state : null],
-        postalCode: [this.formOrgAdministrator.address ? this.formOrgAdministrator.address.postalCode : null, [
-          Validators.pattern(AppConstants.OLValidators.PostalCode)
-        ]]
-      }),
-      imageUrl: [this.formOrgAdministrator.imageUrl],
-      activated: [this.formOrgAdministrator.activated || false],
-      is14Plus: [this.formOrgAdministrator.is14Plus || false]
+      streetAddress1: [this.formOrgAdministrator.streetAddress1, [
+        Validators.minLength(5),
+        Validators.maxLength(50)
+      ]],
+      streetAddress2: [this.formOrgAdministrator.streetAddress2, [
+        Validators.minLength(5),
+        Validators.maxLength(50)
+      ]],
+      city: [this.formOrgAdministrator.city, [
+        Validators.maxLength(50)
+      ]],
+      state: [this.formOrgAdministrator.state],
+      postalCode: [this.formOrgAdministrator.postalCode, [
+        Validators.pattern(AppConstants.OLValidators.PostalCode)
+      ]]
     });
     this.orgAdministratorForm.valueChanges.subscribe(data => this.onValueChanged());
     this.onValueChanged();
@@ -280,22 +263,16 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
       lastName: this.orgAdministratorForm.get('lastName').value,
       login: this.orgAdministratorForm.get('login').value,
       password: this.orgAdministratorForm.get('password').value,
-      authorities: [AppConstants.Role.OrgAdmin],
+      authority: AppConstants.Role.OrgAdmin,
       biography: this.orgAdministratorForm.get('biography').value,
       email: this.orgAdministratorForm.get('email').value,
       phoneNumber: this.orgAdministratorForm.get('phoneNumber').value,
-      address: {
-        id: this.formOrgAdministrator.address ? this.formOrgAdministrator.address.id : null,
-        streetAddress1: this.orgAdministratorForm.get('address').get('streetAddress1').value,
-        streetAddress2: this.orgAdministratorForm.get('address').get('streetAddress2').value,
-        city: this.orgAdministratorForm.get('address').get('city').value,
-        state: this.orgAdministratorForm.get('address').get('state').value,
-        postalCode: this.orgAdministratorForm.get('address').get('postalCode').value
-      },
-      imageUrl: this.orgAdministratorForm.get('imageUrl').value,
-      organizationIds: this.orgAdministratorForm.get('organizationIds').value,
-      activated: this.orgAdministratorForm.get('activated').value,
-      is14Plus: this.orgAdministratorForm.get('is14Plus').value
+      streetAddress1: this.orgAdministratorForm.get('streetAddress1').value,
+      streetAddress2: this.orgAdministratorForm.get('streetAddress2').value,
+      city: this.orgAdministratorForm.get('city').value,
+      state: this.orgAdministratorForm.get('state').value,
+      postalCode: this.orgAdministratorForm.get('postalCode').value,
+      organizationId: this.orgAdministratorForm.get('organizationId').value,
     };
   }
 

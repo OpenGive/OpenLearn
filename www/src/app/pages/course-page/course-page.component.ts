@@ -96,10 +96,10 @@ export class CoursePageComponent implements OnInit {
         Validators.minLength(5),
         Validators.maxLength(200)
       ]],
-      session: [this.course.session, [
+      sessionId: [this.course.sessionId, [
         Validators.required
       ]],
-      instructor: [this.course.instructor, [
+      instructorId: [this.course.instructorId, [
         Validators.required
       ]],
       startDate: [this.course.startDate],

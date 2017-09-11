@@ -45,8 +45,8 @@
         <md-error *ngIf="formErrors.password">{{formErrors.password}}</md-error>
       </md-input-container>
       <md-input-container fxFlex="30%">
-        <textarea mdInput formControlName="biography" placeholder="Biography"></textarea>
-        <md-error *ngIf="formErrors.biography">{{formErrors.biography}}</md-error>
+        <textarea mdInput formControlName="notes" placeholder="Notes"></textarea>
+        <md-error *ngIf="formErrors.notes">{{formErrors.notes}}</md-error>
       </md-input-container>
       <md-input-container fxFlex="30%">
         <input mdInput formControlName="email" placeholder="Email"/>
@@ -56,46 +56,28 @@
         <input mdInput formControlName="phoneNumber" placeholder="Phone"/>
         <md-error *ngIf="formErrors.phoneNumber">{{formErrors.phoneNumber}}</md-error>
       </md-input-container>
-      <div formGroupName="address" fxLayout="row" fxFlex="70%">
-        <md-input-container fxFlex="20%">
-          <input mdInput formControlName="streetAddress1" placeholder="Address 1"/>
-          <md-error *ngIf="formErrors.address.streetAddress1">{{formErrors.address.streetAddress1}}</md-error>
-        </md-input-container>
-        <md-input-container fxFlex="20%">
-          <input mdInput formControlName="streetAddress2" placeholder="Address 2"/>
-          <md-error *ngIf="formErrors.address.streetAddress2">{{formErrors.address.streetAddress2}}</md-error>
-        </md-input-container>
-        <md-input-container fxFlex="20%">
-          <input mdInput formControlName="city" placeholder="City"/>
-          <md-error *ngIf="formErrors.address.city">{{formErrors.address.city}}</md-error>
-        </md-input-container>
-        <md-input-container fxFlex="20%">
-          <input mdInput formControlName="state" placeholder="State" [mdAutocomplete]="state"/>
-          <md-autocomplete #state="mdAutocomplete" [displayWith]="displayState">
-            <md-option *ngFor="let state of filteredStates | async" [value]="state.value">{{state.name}}</md-option>
-          </md-autocomplete>
-        </md-input-container>
-        <md-input-container fxFlex="20%">
-          <input mdInput formControlName="postalCode" placeholder="Postal Code"/>
-          <md-error *ngIf="formErrors.address.postalCode">{{formErrors.address.postalCode}}</md-error>
-        </md-input-container>
-      </div>
-      <md-input-container fxFlex="30%">
-        <input mdInput formControlName="imageUrl" placeholder="Image URL"/>
+      <md-input-container fxFlex="20%">
+        <input mdInput formControlName="streetAddress1" placeholder="Address 1"/>
+        <md-error *ngIf="formErrors.streetAddress1">{{formErrors.streetAddress1}}</md-error>
       </md-input-container>
-      <div fxLayout="column" fxFlex="30%">
-        <!-- [disabled] used as workaround for angular material bug -->
-        <md-select formControlName="organizationIds" placeholder="Organization" multiple [disabled]="!editing">
-          <md-option *ngFor="let organization of organizations" [(value)]="organization.id">{{organization.name}}</md-option>
-        </md-select>
-        <md-error *ngIf="formErrors.organization">{{formErrors.organization}}</md-error>
-      </div>
-      <div fxLayout="row" fxFlex="30%">
-        <!-- [disabled] used as workaround for angular material bug -->
-        <md-checkbox fxFlex="50%" formControlName="activated" [disabled]="!editing">Activated</md-checkbox>
-        <!-- [disabled] used as workaround for angular material bug -->
-        <md-checkbox fxFlex="50%" formControlName="is14Plus" [disabled]="!editing">is 14+</md-checkbox>
-      </div>
+      <md-input-container fxFlex="20%">
+        <input mdInput formControlName="streetAddress2" placeholder="Address 2"/>
+        <md-error *ngIf="formErrors.streetAddress2">{{formErrors.streetAddress2}}</md-error>
+      </md-input-container>
+      <md-input-container fxFlex="20%">
+        <input mdInput formControlName="city" placeholder="City"/>
+        <md-error *ngIf="formErrors.city">{{formErrors.city}}</md-error>
+      </md-input-container>
+      <md-input-container fxFlex="20%">
+        <input mdInput formControlName="state" placeholder="State" [mdAutocomplete]="state"/>
+        <md-autocomplete #state="mdAutocomplete" [displayWith]="displayState">
+          <md-option *ngFor="let state of filteredStates | async" [value]="state.value">{{state.name}}</md-option>
+        </md-autocomplete>
+      </md-input-container>
+      <md-input-container fxFlex="20%">
+        <input mdInput formControlName="postalCode" placeholder="Postal Code"/>
+        <md-error *ngIf="formErrors.postalCode">{{formErrors.postalCode}}</md-error>
+      </md-input-container>
       <div fxFlex="30%" *ngIf="!adding && editing && !changingPassword">
         <button md-raised-button (click)="resetPassword(true)" class="reset-password">Change Password</button>
       </div>

@@ -32,16 +32,13 @@ export class AdminStudentsFormComponent implements OnInit {
     lastName: '',
     login: '',
     password: '',
-    authorities: '',
-    biography: '',
+    notes: '',
     email: '',
     phoneNumber: '',
-    address: {
-      streetAddress1: '',
-      streetAddress2: '',
-      city: '',
-      postalCode: ''
-    }
+    streetAddress1: '',
+    streetAddress2: '',
+    city: '',
+    postalCode: ''
   };
   validationMessages = {
     firstName: {
@@ -60,11 +57,8 @@ export class AdminStudentsFormComponent implements OnInit {
       minlength: 'Password must be at least 6 characters long',
       maxlength: 'Password cannot be more than 50 characters long'
     },
-    authorities: {
-      required: 'Student must have 1 role'
-    },
-    biography: {
-      maxlength: 'Biography cannot be more than 2000 characters long'
+    notes: {
+      maxlength: 'Notes cannot be more than 2000 characters long'
     },
     email: {
       // email: 'Email is not formatted correctly', TODO: See comment in buildForm()
@@ -76,21 +70,19 @@ export class AdminStudentsFormComponent implements OnInit {
       pattern: 'Phone is not formatted correctly',
       maxlength: 'Phone cannot be more than 15 characters long'
     },
-    address: {
-      streetAddress1: {
-        minlength: 'Street Address 1 must be at least 5 characters long',
-        maxlength: 'Street Address 1 cannot be more than 50 characters long'
-      },
-      streetAddress2: {
-        minlength: 'Street Address 2 must be at least 5 characters long',
-        maxlength: 'Street Address 2 cannot be more than 50 characters long'
-      },
-      city: {
-        maxlength: 'City cannot be more than 50 characters long'
-      },
-      postalCode: {
-        pattern: 'Postal Code is not formatted correctly'
-      }
+    streetAddress1: {
+      minlength: 'Street Address 1 must be at least 5 characters long',
+      maxlength: 'Street Address 1 cannot be more than 50 characters long'
+    },
+    streetAddress2: {
+      minlength: 'Street Address 2 must be at least 5 characters long',
+      maxlength: 'Street Address 2 cannot be more than 50 characters long'
+    },
+    city: {
+      maxlength: 'City cannot be more than 50 characters long'
+    },
+    postalCode: {
+      pattern: 'Postal Code is not formatted correctly'
     }
   };
 
@@ -125,10 +117,7 @@ export class AdminStudentsFormComponent implements OnInit {
         Validators.minLength(6),
         Validators.maxLength(50)
       ] : []],
-      authorities: [[AppConstants.Role.Student], [
-        Validators.required
-      ]],
-      biography: [this.formStudent.biography, [
+      notes: [this.formStudent.notes, [
         Validators.maxLength(2000)
       ]],
       email: [this.formStudent.email, [
@@ -141,26 +130,22 @@ export class AdminStudentsFormComponent implements OnInit {
         // TODO: Pattern
         Validators.maxLength(15)
       ]],
-      address: this.fb.group({
-        streetAddress1: [this.formStudent.address ? this.formStudent.address.streetAddress1 : null, [
-          Validators.minLength(5),
-          Validators.maxLength(50)
-        ]],
-        streetAddress2: [this.formStudent.address ? this.formStudent.address.streetAddress2 : null, [
-          Validators.minLength(5),
-          Validators.maxLength(50)
-        ]],
-        city: [this.formStudent.address ? this.formStudent.address.city : null, [
-          Validators.maxLength(50)
-        ]],
-        state: [this.formStudent.address ? this.formStudent.address.state : null],
-        postalCode: [this.formStudent.address ? this.formStudent.address.postalCode : null, [
-          Validators.pattern(AppConstants.OLValidators.PostalCode)
-        ]]
-      }),
-      imageUrl: [this.formStudent.imageUrl],
-      activated: [this.formStudent.activated || false],
-      is14Plus: [this.formStudent.is14Plus || false]
+      streetAddress1: [this.formStudent.streetAddress1, [
+        Validators.minLength(5),
+        Validators.maxLength(50)
+      ]],
+      streetAddress2: [this.formStudent.streetAddress2, [
+        Validators.minLength(5),
+        Validators.maxLength(50)
+      ]],
+      city: [this.formStudent.city, [
+        Validators.maxLength(50)
+      ]],
+      state: [this.formStudent.state],
+      postalCode: [this.formStudent.postalCode, [
+        Validators.pattern(AppConstants.OLValidators.PostalCode)
+      ]],
+      fourteenPlus: [this.formStudent.fourteenPlus || false]
     });
     this.studentForm.valueChanges.subscribe(data => this.onValueChanged());
     this.onValueChanged();
@@ -263,21 +248,16 @@ export class AdminStudentsFormComponent implements OnInit {
       lastName: this.studentForm.get('lastName').value,
       login: this.studentForm.get('login').value,
       password: this.studentForm.get('password').value,
-      authorities: [AppConstants.Role.Student],
-      biography: this.studentForm.get('biography').value,
+      authority: AppConstants.Role.Student,
+      notes: this.studentForm.get('notes').value,
       email: this.studentForm.get('email').value,
       phoneNumber: this.studentForm.get('phoneNumber').value,
-      address: {
-        id: this.formStudent.address ? this.formStudent.address.id : null,
-        streetAddress1: this.studentForm.get('address').get('streetAddress1').value,
-        streetAddress2: this.studentForm.get('address').get('streetAddress2').value,
-        city: this.studentForm.get('address').get('city').value,
-        state: this.studentForm.get('address').get('state').value,
-        postalCode: this.studentForm.get('address').get('postalCode').value
-      },
-      imageUrl: this.studentForm.get('imageUrl').value,
-      activated: this.studentForm.get('activated').value,
-      is14Plus: this.studentForm.get('is14Plus').value
+      streetAddress1: this.studentForm.get('streetAddress1').value,
+      streetAddress2: this.studentForm.get('streetAddress2').value,
+      city: this.studentForm.get('city').value,
+      state: this.studentForm.get('state').value,
+      postalCode: this.studentForm.get('postalCode').value,
+      fourteenPlus: this.studentForm.get('fourteenPlus').value
     };
   }
 

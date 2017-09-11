@@ -1,7 +1,7 @@
 package org.openlearn.service;
 
-import org.openlearn.domain.Authority;
 import org.openlearn.domain.Assignment;
+import org.openlearn.domain.Authority;
 import org.openlearn.domain.StudentAssignment;
 import org.openlearn.domain.User;
 import org.openlearn.dto.StudentAssignmentDTO;

@@ -2,11 +2,10 @@ package org.openlearn.repository;
 
 import org.openlearn.domain.Course;
 import org.openlearn.domain.StudentCourse;
-
 import org.openlearn.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * Spring Data JPA repository for the StudentCourse entity.

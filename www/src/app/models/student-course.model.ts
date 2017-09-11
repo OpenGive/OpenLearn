@@ -1,7 +1,7 @@
 import {Student} from "./student.model";
 import {Course} from "./course.model";
 
-export class StudentAssignment {
+export class StudentCourse {
   public id?: number;
   public studentId: number;
   public courseId: number;

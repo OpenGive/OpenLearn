@@ -17,7 +17,7 @@ export class CourseGridComponent implements OnInit {
 
   @Input() course: Course;
   students: any[];
-  columns: any[]
+  columns: any[];
 
   sortColumn: any;
   reverse: boolean;

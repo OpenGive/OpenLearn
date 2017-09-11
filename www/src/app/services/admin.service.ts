@@ -47,15 +47,6 @@ export class AdminService {
 
   // Converts empty strings to nulls
   private nullifyBlanks(object: any) {
-    // Convert empty state to null
-    if (object.address && object.address.state === '') {
-      object.address.state = null;
-    }
-    // Convert empty address to null
-    if (_.every(object.address, field => _.isNil(field))) {
-      object.address = null;
-    }
-    // Convert empty strings to null
     return _.mapValues(object, field => {
       if (field === '') {
         field = null;
