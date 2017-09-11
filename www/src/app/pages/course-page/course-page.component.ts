@@ -10,6 +10,9 @@ import {Observable} from "rxjs/Observable";
 import {Router} from "@angular/router";
 import {Principal} from "../../shared/auth/principal.service";
 import {AppConstants} from "../../app.constants";
+import {User} from "../../models/user.model";
+import {Session} from "../../models/session.model";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-course-page',
@@ -23,6 +26,7 @@ export class CoursePageComponent implements OnInit {
               private adminService: AdminService,
               private notify: NotifyService,
               private dataService: DataService,
+              private userService: UserService,
               private router: Router,
               private principal: Principal) {
   }
@@ -38,6 +42,8 @@ export class CoursePageComponent implements OnInit {
   filteredSessions: Observable<any[]>;
 
   private course: Course;
+  private session: Session;
+  private instructor: User;
   courseForm: FormGroup;
   formErrors = {
     name: '',
@@ -73,16 +79,23 @@ export class CoursePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.studentView = this.principal.hasAuthority(AppConstants.Role.Student);
-    this.course = this.dataService.getCourse();
-    if (typeof this.course == "undefined") {
-      this.router.navigate(['access-denied']);
-    }
+    this.getData();
     this.buildForm();
     this.setEditing(this.adding);
     this.getInstructors();
     if (!this.studentView) {
       this.getSessions();
     }
+  }
+
+  private getData(): void {
+    this.course = this.dataService.getCourse();
+    console.log(this.course);
+    if (typeof this.course == "undefined") {
+      this.router.navigate(['access-denied']);
+    }
+    this.adminService.get(AdminTabs.Session.route, this.course.sessionId).subscribe(resp => {this.session = resp; this.courseForm.patchValue({sessionId: this.session})});
+    this.adminService.get(AdminTabs.Instructor.route, this.course.instructorId).subscribe(resp => {this.instructor = resp; this.courseForm.patchValue({instructorId: this.instructor})});
   }
 
   private buildForm(): void {
@@ -96,10 +109,10 @@ export class CoursePageComponent implements OnInit {
         Validators.minLength(5),
         Validators.maxLength(200)
       ]],
-      sessionId: [this.course.sessionId, [
+      sessionId: [this.session, [
         Validators.required
       ]],
-      instructorId: [this.course.instructorId, [
+      instructorId: [this.instructor, [
         Validators.required
       ]],
       startDate: [this.course.startDate],
@@ -140,7 +153,7 @@ export class CoursePageComponent implements OnInit {
   private getInstructors(): void {
     this.adminService.getAll(AdminTabs.Instructor.route).subscribe(resp => {
       this.instructors = resp;
-      this.filteredInstructors = this.courseForm.get('instructor')
+      this.filteredInstructors = this.courseForm.get('instructorId')
         .valueChanges
         .startWith(null)
         .map(val => val ? this.filterInstructors(val) : this.instructors.slice());
@@ -158,7 +171,7 @@ export class CoursePageComponent implements OnInit {
   private getSessions(): void {
     this.adminService.getAll(AdminTabs.Session.route).subscribe(resp => {
       this.sessions = resp;
-      this.filteredSessions = this.courseForm.get('session')
+      this.filteredSessions = this.courseForm.get('sessionId')
         .valueChanges
         .startWith(null)
         .map(val => val ? this.filterSessions(val) : this.sessions.slice());
@@ -196,8 +209,8 @@ export class CoursePageComponent implements OnInit {
       id: this.course.id,
       name: this.courseForm.get('name').value,
       description: this.courseForm.get('description').value,
-      session: this.courseForm.get('session').value,
-      instructor: this.courseForm.get('instructor').value,
+      session: this.courseForm.get('sessionId').value.id,
+      instructor: this.courseForm.get('instructorId').value.id,
       startDate: this.courseForm.get('startDate').value,
       endDate: this.courseForm.get('endDate').value
     };
@@ -225,6 +238,7 @@ export class CoursePageComponent implements OnInit {
   }
 
   displayInstructor(instructor: any): string {
+    console.log(instructor);
     return instructor ? instructor.lastName + ', ' + instructor.firstName : '';
   }
 
