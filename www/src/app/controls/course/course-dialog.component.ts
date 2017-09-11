@@ -3,7 +3,7 @@ import {MdDialog, MdDialogRef, MD_DIALOG_DATA} from "@angular/material";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs/Observable";
 import {UserService} from "../../services/user.service";
-import {CourseService} from "../../services/course.service";
+import {StudentCourseService} from "../../services/student-course.service";
 import {NotifyService} from "../../services/notify.service";
 
 @Component({
@@ -82,10 +82,10 @@ export class CourseDialogComponent implements OnInit {
   constructor(private dialog: MdDialogRef<CourseDialogComponent>,
               @Inject(MD_DIALOG_DATA) public data: any,
               private userService: UserService,
-              private courseService: CourseService,
+              private courseService: StudentCourseService,
               private notify: NotifyService) {}
 
-  
+
   private getStudents(): void {
     this.courseService.getCourseStudentsNot(this.data.course.id).subscribe(students => {
       this.students = students;
@@ -99,7 +99,7 @@ export class CourseDialogComponent implements OnInit {
   }
 
   add(student): void {
-    this.courseService.addStudentToCourse(this.data.course.id, student.id).subscribe(resp => {
+    this.courseService.createStudentCourse(student.id, this.data.course.id).subscribe(resp => {
       this.dialog.close({
         type: 'ADD',
         data: resp

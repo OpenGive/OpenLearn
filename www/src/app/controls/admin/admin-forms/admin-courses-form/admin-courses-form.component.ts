@@ -4,7 +4,7 @@ import {MdDialogRef} from "@angular/material";
 import {Observable} from "rxjs/Observable";
 
 import {AdminDialogComponent} from "../../admin-dialog.component";
-import {AdminModel} from "../../admin.constants";
+import {AdminTabs} from "../../admin.constants";
 import {AdminService} from "../../../../services/admin.service";
 import {NotifyService} from "../../../../services/notify.service";
 import {UserService} from "../../../../services/user.service";
@@ -134,7 +134,7 @@ export class AdminCoursesFormComponent implements OnInit {
   }
 
   private getInstructors(): void {
-    this.adminService.getAll(AdminModel.Instructor.route).subscribe(resp => {
+    this.adminService.getAll(AdminTabs.Instructor.route).subscribe(resp => {
       this.instructors = resp;
       this.filteredInstructors = this.courseForm.get('instructor')
         .valueChanges
@@ -152,7 +152,7 @@ export class AdminCoursesFormComponent implements OnInit {
   }
 
   private getOrganizations(): void {
-    this.adminService.getAll(AdminModel.Organization.route).subscribe(resp => {
+    this.adminService.getAll(AdminTabs.Organization.route).subscribe(resp => {
       this.organizations = resp;
       this.filteredOrganizations = this.courseForm.get('organization')
         .valueChanges
@@ -166,7 +166,7 @@ export class AdminCoursesFormComponent implements OnInit {
   }
 
   private getSessions(): void {
-    this.adminService.getAll(AdminModel.Session.route).subscribe(resp => {
+    this.adminService.getAll(AdminTabs.Session.route).subscribe(resp => {
       this.sessions = resp;
       this.filteredSessions = this.courseForm.get('session')
         .valueChanges
@@ -192,7 +192,7 @@ export class AdminCoursesFormComponent implements OnInit {
   }
 
   private add(): void {
-    this.adminService.create(AdminModel.Course.route, this.courseForm.value).subscribe(resp => {
+    this.adminService.create(AdminTabs.Course.route, this.courseForm.value).subscribe(resp => {
       this.dialogRef.close({
         type: 'ADD',
         data: resp
@@ -205,7 +205,7 @@ export class AdminCoursesFormComponent implements OnInit {
 
   private update(): void {
     const toUpdate = this.prepareToUpdate();
-    this.adminService.update(AdminModel.Course.route, toUpdate).subscribe(resp => {
+    this.adminService.update(AdminTabs.Course.route, toUpdate).subscribe(resp => {
       this.dialogRef.close({
         type: 'UPDATE',
         data: resp
@@ -230,7 +230,7 @@ export class AdminCoursesFormComponent implements OnInit {
   }
 
   delete(): void {
-    this.adminService.delete(AdminModel.Course.route, this.formCourse.id).subscribe(resp => {
+    this.adminService.delete(AdminTabs.Course.route, this.formCourse.id).subscribe(resp => {
       this.dialogRef.close({
         type: 'DELETE',
         data: {

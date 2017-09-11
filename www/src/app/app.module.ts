@@ -17,7 +17,7 @@ import "hammerjs";
 import {PortfolioCardComponent} from "./controls/portfolio/portfolio-card/portfolio-card.component";
 import {CourseCardComponent} from "./controls/course/course-card/course-card.component";
 import {UserService} from "./services/user.service";
-import {CourseService} from "./services/course.service";
+import {StudentCourseService} from "./services/student-course.service";
 import {UserRouteAccessService} from "./shared/auth/user-route-access-service";
 import {Principal} from "./shared/auth/principal.service";
 import {AccountService} from "./shared/auth/account.service";
@@ -86,7 +86,7 @@ import {DataService} from "./services/data.service";
   ],
   providers: [
     UserService,
-    CourseService,
+    StudentCourseService,
     UserRouteAccessService,
     Principal,
     AccountService,

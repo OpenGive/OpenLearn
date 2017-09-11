@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 
 import {AdminGridModel} from "../../../models/admin-grid.model";
-import {AdminModel} from "../admin.constants";
+import {AdminTabs} from "../admin.constants";
 
 @Component({
   selector: 'app-admin-programs',
@@ -9,9 +9,9 @@ import {AdminModel} from "../admin.constants";
 })
 export class AdminProgramsComponent {
   programGrid = new AdminGridModel(
-    AdminModel.Program.title,
-    AdminModel.Program.route,
-    AdminModel.Program.defaultSort,
-    AdminModel.Program.columns,
+    AdminTabs.Program.title,
+    AdminTabs.Program.route,
+    AdminTabs.Program.defaultSort,
+    AdminTabs.Program.columns,
     []);
 }

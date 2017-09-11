@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MdDialogRef} from "@angular/material";
 
 import {AdminDialogComponent} from "../../admin-dialog.component";
-import {AdminModel} from "../../admin.constants";
+import {AdminTabs} from "../../admin.constants";
 import {AdminService} from "../../../../services/admin.service";
 import {NotifyService} from "../../../../services/notify.service";
 
@@ -102,7 +102,7 @@ export class AdminOrganizationsFormComponent implements OnInit {
   }
 
   private add(): void {
-    this.adminService.create(AdminModel.Organization.route, this.organizationForm.value).subscribe(resp => {
+    this.adminService.create(AdminTabs.Organization.route, this.organizationForm.value).subscribe(resp => {
       this.dialogRef.close({
         type: 'ADD',
         data: resp
@@ -115,7 +115,7 @@ export class AdminOrganizationsFormComponent implements OnInit {
 
   private update(): void {
     const toUpdate = this.prepareToUpdate();
-    this.adminService.update(AdminModel.Organization.route, toUpdate).subscribe(resp => {
+    this.adminService.update(AdminTabs.Organization.route, toUpdate).subscribe(resp => {
       this.dialogRef.close({
         type: 'UPDATE',
         data: resp
@@ -135,7 +135,7 @@ export class AdminOrganizationsFormComponent implements OnInit {
   }
 
   delete(): void {
-    this.adminService.delete(AdminModel.Organization.route, this.formOrganization.id).subscribe(resp => {
+    this.adminService.delete(AdminTabs.Organization.route, this.formOrganization.id).subscribe(resp => {
       this.dialogRef.close({
         type: 'DELETE',
         data: {

@@ -1,5 +1,5 @@
 import { HttpWrapperService } from '../shared/auth/http-wrapper.service';
-import { PortfolioItem } from '../models/portfolio-item';
+import { PortfolioItem } from '../models/portfolio-item.model';
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 

@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {MdDialog} from '@angular/material';
 
-import {Course} from '../../../models/course';
+import {Course} from '../../../models/course.model';
 import {CourseViewComponent} from '../course-view/course-view.component'
 import {DataService} from "../../../services/data.service"
 

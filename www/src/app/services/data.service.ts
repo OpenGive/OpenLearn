@@ -1,10 +1,10 @@
 import {Injectable} from "@angular/core";
 import {Router} from "@angular/router"
 
-import {Course} from "../models/course";
+import {Course} from "../models/course.model";
 import {User} from "../models/user.model";
 import {AdminService} from "./admin.service";
-import {AdminModel} from "../controls/admin/admin.constants";
+import {AdminTabs} from "../controls/admin/admin.constants";
 
 @Injectable()
 export class DataService {
@@ -28,14 +28,14 @@ export class DataService {
   }
 
   public setCourseById(id: Number) {
-    this.adminService.get(AdminModel.Course.route, id).subscribe(resp => {
+    this.adminService.get(AdminTabs.Course.route, id).subscribe(resp => {
       this.course = resp;
       this.router.navigate(['/course'])
     });
   }
 
   public setStudentById(id: Number) {
-    this.adminService.get(AdminModel.Student.route, id).subscribe(resp => {
+    this.adminService.get(AdminTabs.Student.route, id).subscribe(resp => {
       this.student = resp;
       this.router.navigate(['/student'])
     });

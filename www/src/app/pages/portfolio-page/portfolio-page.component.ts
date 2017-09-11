@@ -1,10 +1,10 @@
 import {Component} from '@angular/core';
 
-import {Course} from '../../models/course';
+import {Course} from '../../models/course.model';
 
-import {PortfolioItem} from "../../models/portfolio-item";
+import {PortfolioItem} from "../../models/portfolio-item.model";
 import {PortfolioService} from "../../services/portfolio.service";
-import {CourseService} from "../../services/course.service";
+import {StudentCourseService} from "../../services/student-course.service";
 import {Principal} from "../../shared/auth/principal.service";
 
 @Component({
@@ -16,7 +16,7 @@ export class PortfolioPageComponent {
 
   constructor(private principal: Principal,
               private portfolioService: PortfolioService,
-              private courseService: CourseService) {}
+              private courseService: StudentCourseService) {}
 
   portfolios: PortfolioItem[] = [];
   courses: Course[] = [];
@@ -42,7 +42,7 @@ export class PortfolioPageComponent {
 
   private getCourses(): void {
 
-    this.courseService.getStudentsCourses(this.principal.getId()).subscribe(courses => {
+    this.courseService.getStudentCoursesByStudent(this.principal.getId()).subscribe(courses => {
       this.courses = courses;
     })
   }

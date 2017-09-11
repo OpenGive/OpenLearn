@@ -3,7 +3,7 @@ import {NgModule} from "@angular/core";
 import {RouterModule, Routes} from "@angular/router";
 
 import {AppConstants} from './app.constants';
-import {AdminModel} from "./controls/admin/admin.constants";
+import {AdminTabs} from "./controls/admin/admin.constants";
 import {AccessDeniedPageComponent} from './pages/access-denied-page/access-denied-page.component';
 import {AdminPageComponent} from "./pages/admin-page/admin-page.component";
 import {DashboardPageComponent} from "./pages/dashboard-page/dashboard-page.component";
@@ -47,77 +47,77 @@ const ROUTES: Routes = [
     canActivate: [UserRouteAccessService],
     children: [
       {
-        path: AdminModel.Administrator.route,
+        path: AdminTabs.Administrator.route,
         component: AdminAdministratorsComponent,
         data: {
-          authorities: AdminModel.Administrator.authorities
+          authorities: AdminTabs.Administrator.authorities
         },
         canActivate: [UserRouteAccessService]
       },
       {
-        path: AdminModel.OrgAdministrator.route,
+        path: AdminTabs.OrgAdministrator.route,
         component: AdminOrgAdministratorsComponent,
         data: {
-          authorities: AdminModel.OrgAdministrator.authorities
+          authorities: AdminTabs.OrgAdministrator.authorities
         },
         canActivate: [UserRouteAccessService]
       },
       {
-        path: AdminModel.Instructor.route,
+        path: AdminTabs.Instructor.route,
         component: AdminInstructorsComponent,
         data: {
-          authorities: AdminModel.Instructor.authorities
+          authorities: AdminTabs.Instructor.authorities
         },
         canActivate: [UserRouteAccessService]
       },
       {
-        path: AdminModel.Student.route,
+        path: AdminTabs.Student.route,
         component: AdminStudentsComponent,
         data: {
-          authorities: AdminModel.Student.authorities
+          authorities: AdminTabs.Student.authorities
         },
         canActivate: [UserRouteAccessService]
       },
       {
-        path: AdminModel.Organization.route,
+        path: AdminTabs.Organization.route,
         component: AdminOrganizationsComponent,
         data: {
-          authorities: AdminModel.Organization.authorities
+          authorities: AdminTabs.Organization.authorities
         },
         canActivate: [UserRouteAccessService]
       },
       {
-        path: AdminModel.Session.route,
+        path: AdminTabs.Session.route,
         component: AdminSessionsComponent,
         data: {
-          authorities: AdminModel.Session.authorities
+          authorities: AdminTabs.Session.authorities
         },
         canActivate: [UserRouteAccessService]
       },
       {
-        path: AdminModel.Program.route,
+        path: AdminTabs.Program.route,
         component: AdminProgramsComponent,
         data: {
-          authorities: AdminModel.Program.authorities
+          authorities: AdminTabs.Program.authorities
         },
         canActivate: [UserRouteAccessService]
       },
       {
-        path: AdminModel.Course.route,
+        path: AdminTabs.Course.route,
         component: AdminCoursesComponent,
         data: {
-          authorities: AdminModel.Course.authorities
+          authorities: AdminTabs.Course.authorities
         },
         canActivate: [UserRouteAccessService]
       },
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: AdminModel.Administrator.route
+        redirectTo: AdminTabs.Administrator.route
       },
       {
         path: '**',
-        redirectTo: AdminModel.Administrator.route
+        redirectTo: AdminTabs.Administrator.route
       }
     ]
   },

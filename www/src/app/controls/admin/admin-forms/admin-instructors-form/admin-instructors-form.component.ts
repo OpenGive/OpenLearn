@@ -6,7 +6,7 @@ import * as _ from "lodash";
 
 import {AdminDialogComponent} from "../../admin-dialog.component";
 import {AppConstants} from "../../../../app.constants";
-import {AdminModel} from "../../admin.constants";
+import {AdminTabs} from "../../admin.constants";
 import {NotifyService} from "../../../../services/notify.service";
 import {UserService} from "../../../../services/user.service";
 import {AdminService} from "../../../../services/admin.service";

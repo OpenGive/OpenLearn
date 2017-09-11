@@ -2,8 +2,8 @@ import {Component, Input, OnInit} from "@angular/core";
 import {MdDialog} from "@angular/material";
 import * as _ from "lodash";
 
-import {Course} from '../../../models/course';
-import {CourseService} from "../../../services/course.service";
+import {Course} from '../../../models/course.model';
+import {StudentCourseService} from "../../../services/student-course.service";
 import {ResourceDialogComponent} from "../resource-dialog.component"
 
 @Component({
@@ -22,7 +22,7 @@ export class CourseResourceGridComponent implements OnInit {
   reverse: boolean;
 
   constructor(private dialog: MdDialog,
-              private courseService: CourseService) {}
+              private courseService: StudentCourseService) {}
 
   ngOnInit(): void {
 

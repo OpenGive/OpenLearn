@@ -1,6 +1,6 @@
 import {Component, OnInit, Inject, Input} from '@angular/core';
 
-import {AdminModel} from "../../controls/admin/admin.constants";
+import {AdminTabs} from "../../controls/admin/admin.constants";
 import {AdminService} from "../../services/admin.service";
 import {UserService} from "../../services/user.service";
 import {DataService} from "../../services/data.service";

@@ -4,7 +4,7 @@ import {MdDialogRef} from "@angular/material";
 import {Observable} from "rxjs/Observable";
 
 import {AdminDialogComponent} from "../../admin-dialog.component";
-import {AdminModel} from "../../admin.constants";
+import {AdminTabs} from "../../admin.constants";
 import {AdminService} from "../../../../services/admin.service";
 import {NotifyService} from "../../../../services/notify.service";
 
@@ -104,7 +104,7 @@ export class AdminProgramsFormComponent implements OnInit {
   }
 
   private getOrganizations(): void {
-    this.adminService.getAll(AdminModel.Organization.route).subscribe(resp => {
+    this.adminService.getAll(AdminTabs.Organization.route).subscribe(resp => {
       this.organizations = resp;
       this.filteredOrganizations = this.programForm.get('organization')
         .valueChanges
@@ -130,7 +130,7 @@ export class AdminProgramsFormComponent implements OnInit {
   }
 
   private add(): void {
-    this.adminService.create(AdminModel.Program.route, this.programForm.value).subscribe(resp => {
+    this.adminService.create(AdminTabs.Program.route, this.programForm.value).subscribe(resp => {
       this.dialogRef.close({
         type: 'ADD',
         data: resp
@@ -143,7 +143,7 @@ export class AdminProgramsFormComponent implements OnInit {
 
   private update(): void {
     const toUpdate = this.prepareToUpdate();
-    this.adminService.update(AdminModel.Program.route, toUpdate).subscribe(resp => {
+    this.adminService.update(AdminTabs.Program.route, toUpdate).subscribe(resp => {
       this.dialogRef.close({
         type: 'UPDATE',
         data: resp
@@ -165,7 +165,7 @@ export class AdminProgramsFormComponent implements OnInit {
   }
 
   delete(): void {
-    this.adminService.delete(AdminModel.Program.route, this.formProgram.id).subscribe(resp => {
+    this.adminService.delete(AdminTabs.Program.route, this.formProgram.id).subscribe(resp => {
       this.dialogRef.close({
         type: 'DELETE',
         data: {

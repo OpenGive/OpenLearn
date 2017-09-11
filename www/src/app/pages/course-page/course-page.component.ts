@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 
-import {AdminModel} from "../../controls/admin/admin.constants";
+import {AdminTabs} from "../../controls/admin/admin.constants";
 import {AdminService} from "../../services/admin.service";
-import {Course} from '../../models/course';
+import {Course} from '../../models/course.model';
 import {DataService} from "../../services/data.service"
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NotifyService} from "../../services/notify.service";
@@ -138,7 +138,7 @@ export class CoursePageComponent implements OnInit {
   }
 
   private getInstructors(): void {
-    this.adminService.getAll(AdminModel.Instructor.route).subscribe(resp => {
+    this.adminService.getAll(AdminTabs.Instructor.route).subscribe(resp => {
       this.instructors = resp;
       this.filteredInstructors = this.courseForm.get('instructor')
         .valueChanges
@@ -156,7 +156,7 @@ export class CoursePageComponent implements OnInit {
   }
 
   private getSessions(): void {
-    this.adminService.getAll(AdminModel.Session.route).subscribe(resp => {
+    this.adminService.getAll(AdminTabs.Session.route).subscribe(resp => {
       this.sessions = resp;
       this.filteredSessions = this.courseForm.get('session')
         .valueChanges
@@ -183,7 +183,7 @@ export class CoursePageComponent implements OnInit {
 
   private update(): void {
     const toUpdate = this.prepareToUpdate();
-    this.adminService.update(AdminModel.Course.route, toUpdate).subscribe(resp => {
+    this.adminService.update(AdminTabs.Course.route, toUpdate).subscribe(resp => {
 
       this.notify.success('Successfully updated course');
     }, error => {
@@ -204,7 +204,7 @@ export class CoursePageComponent implements OnInit {
   }
 
   delete(): void {
-    this.adminService.delete(AdminModel.Course.route, this.course.id).subscribe(resp => {
+    this.adminService.delete(AdminTabs.Course.route, this.course.id).subscribe(resp => {
 
       this.notify.success('Successfully deleted course');
     }, error => {

@@ -1,9 +1,9 @@
 import {Component, OnInit, Inject, Input} from '@angular/core';
 import {MD_DIALOG_DATA} from '@angular/material';
 
-import {AdminModel} from "../../admin/admin.constants";
+import {AdminTabs} from "../../admin/admin.constants";
 import {AdminService} from "../../../services/admin.service";
-import {Course} from '../../../models/course';
+import {Course} from '../../../models/course.model';
 
 @Component({
   selector: 'app-course-view',

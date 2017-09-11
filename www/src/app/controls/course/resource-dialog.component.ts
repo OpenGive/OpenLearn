@@ -2,10 +2,10 @@ import {Component, Input, Inject, OnInit} from "@angular/core";
 import {MdDialog, MdDialogRef, MD_DIALOG_DATA} from "@angular/material";
 import {FormBuilder, FormsModule, FormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs/Observable";
-import {CourseService} from "../../services/course.service";
+import {StudentCourseService} from "../../services/student-course.service";
 import {NotifyService} from "../../services/notify.service";
 import {ItemLinkService} from "../../services/itemlink.service";
-import {Course} from "../../models/course";
+import {Course} from "../../models/course.model";
 
 @Component({
   selector: 'resource-dialog',
@@ -54,7 +54,7 @@ export class ResourceDialogComponent implements OnInit {
 
   constructor(private dialog: MdDialogRef<ResourceDialogComponent>,
               @Inject(MD_DIALOG_DATA) public data: any,
-              private courseService: CourseService,
+              private courseService: StudentCourseService,
               private notify: NotifyService,
               private itemLinkService: ItemLinkService) {}
 

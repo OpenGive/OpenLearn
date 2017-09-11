@@ -1,6 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 
-import {AdminModel} from "../../controls/admin/admin.constants";
+import {AdminTabs} from "../../controls/admin/admin.constants";
 import {Principal} from "../../shared/auth/principal.service";
 
 @Component({
@@ -11,14 +11,14 @@ import {Principal} from "../../shared/auth/principal.service";
 export class AdminPageComponent implements OnInit {
 
   tabs = [
-    { name: AdminModel.Administrator.title, route: AdminModel.Administrator.route, authorities: AdminModel.Administrator.authorities },
-    { name: AdminModel.OrgAdministrator.title, route: AdminModel.OrgAdministrator.route, authorities: AdminModel.OrgAdministrator.authorities },
-    { name: AdminModel.Instructor.title, route: AdminModel.Instructor.route, authorities: AdminModel.Instructor.authorities },
-    { name: AdminModel.Student.title, route: AdminModel.Student.route, authorities: AdminModel.Student.authorities },
-    { name: AdminModel.Organization.title, route: AdminModel.Organization.route, authorities: AdminModel.Organization.authorities },
-    { name: AdminModel.Program.title, route: AdminModel.Program.route, authorities: AdminModel.Program.authorities },
-    { name: AdminModel.Session.title, route: AdminModel.Session.route, authorities: AdminModel.Session.authorities },
-    { name: AdminModel.Course.title, route: AdminModel.Course.route, authorities: AdminModel.Course.authorities }
+    { name: AdminTabs.Administrator.title, route: AdminTabs.Administrator.route, authorities: AdminTabs.Administrator.authorities },
+    { name: AdminTabs.OrgAdministrator.title, route: AdminTabs.OrgAdministrator.route, authorities: AdminTabs.OrgAdministrator.authorities },
+    { name: AdminTabs.Instructor.title, route: AdminTabs.Instructor.route, authorities: AdminTabs.Instructor.authorities },
+    { name: AdminTabs.Student.title, route: AdminTabs.Student.route, authorities: AdminTabs.Student.authorities },
+    { name: AdminTabs.Organization.title, route: AdminTabs.Organization.route, authorities: AdminTabs.Organization.authorities },
+    { name: AdminTabs.Program.title, route: AdminTabs.Program.route, authorities: AdminTabs.Program.authorities },
+    { name: AdminTabs.Session.title, route: AdminTabs.Session.route, authorities: AdminTabs.Session.authorities },
+    { name: AdminTabs.Course.title, route: AdminTabs.Course.route, authorities: AdminTabs.Course.authorities }
   ];
   filteredTabs: any[];
 

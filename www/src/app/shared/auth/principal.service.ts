@@ -3,13 +3,13 @@ import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
 import {AccountService} from './account.service';
 import {AppConstants} from "../../app.constants";
-import {AccountModel} from "../index";
+import {Account} from "../index";
 
 @Injectable()
 export class Principal {
-  private userIdentity: AccountModel;
+  private userIdentity: Account;
   private authenticated = false;
-  private authenticationState = new Subject<AccountModel>();
+  private authenticationState = new Subject<Account>();
 
   constructor(private account: AccountService) {
   }
@@ -63,7 +63,7 @@ export class Principal {
     return this.userIdentity.authority === authority;
   }
 
-  identity(force?: boolean): Promise<AccountModel> {
+  identity(force?: boolean): Promise<Account> {
     if (force === true) {
       this.userIdentity = undefined;
     }
@@ -102,7 +102,7 @@ export class Principal {
     return this.userIdentity != undefined;
   }
 
-  getAuthenticationState(): Observable<AccountModel> {
+  getAuthenticationState(): Observable<Account> {
     return this.authenticationState.asObservable();
   }
 

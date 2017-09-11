@@ -30,7 +30,7 @@
             </button>
             <md-menu #deleteMenu="mdMenu">
               <button md-menu-item type="button" disabled class="pink-button">Are you sure?</button>
-              <button md-menu-item type="button" (click)="removeStudent(row.student.id)">Yes, delete it</button>
+              <button md-menu-item type="button" (click)="removeStudent(row.id)">Yes, delete it</button>
               <button md-menu-item type="button">No, go back</button>
             </md-menu>
           </td>

@@ -2,11 +2,11 @@ import {Component, Input, OnInit} from "@angular/core";
 import {MdDialog} from "@angular/material";
 import * as _ from "lodash";
 
-import {Course} from '../../../models/course';
+import {Course} from '../../../models/course.model';
 import {CourseDialogComponent} from "../course-dialog.component";
 import {GradeDialogComponent} from "../grade-dialog.component";
 import {CourseStudentDialogComponent} from "../course-student-dialog.component";
-import {CourseService} from "../../../services/course.service";
+import {StudentCourseService} from "../../../services/student-course.service";
 
 @Component({
   selector: 'app-course-grid',
@@ -23,7 +23,7 @@ export class CourseGridComponent implements OnInit {
   reverse: boolean;
 
   constructor(private dialog: MdDialog,
-              private courseService: CourseService) {}
+              private courseService: StudentCourseService) {}
 
   ngOnInit(): void {
 
@@ -74,14 +74,14 @@ export class CourseGridComponent implements OnInit {
     });
   }
 
-  removeStudent(studentId: Number): void {
-    this.courseService.removeStudentFromCourse(this.course.id, studentId).subscribe(students => {
-      this.students = this.students.filter(student => student.student.id !== studentId);
-    })
+  removeStudent(id: Number): void {
+    this.courseService.deleteStudentCourse(id).subscribe(resp => {
+      this.students = _.filter(this.students, student => student.id !== id);
+    });
   }
 
   getStudents(): void {
-    this.courseService.getCourseStudents(this.course.id).subscribe(students => {
+    this.courseService.getStudentCoursesByCourse(this.course.id).subscribe(students => {
       this.students = students;
     })
   }

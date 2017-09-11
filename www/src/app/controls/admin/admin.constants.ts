@@ -1,6 +1,6 @@
 import {AppConstants} from "../../app.constants";
 
-export const AdminModel = {
+export const AdminTabs = {
   Administrator: {
     title: 'Administrators',
     route: 'administrators',

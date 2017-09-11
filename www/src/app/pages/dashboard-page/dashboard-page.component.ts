@@ -1,10 +1,10 @@
 import {Component, OnInit, Inject} from '@angular/core';
 import {MD_DIALOG_DATA} from '@angular/material';
 
-import {AdminModel} from "../../controls/admin/admin.constants";
+import {AdminTabs} from "../../controls/admin/admin.constants";
 import {AdminService} from "../../services/admin.service";
 import {UserService} from "../../services/user.service";
-import {Course} from '../../models/course';
+import {Course} from '../../models/course.model';
 
 @Component({
   selector: 'app-dashboard-page',

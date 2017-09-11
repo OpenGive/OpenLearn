@@ -4,7 +4,7 @@ import * as _ from "lodash";
 
 import {AdminDialogComponent} from "../admin-dialog.component";
 import {AdminGridModel} from "../../../models/admin-grid.model";
-import {AdminModel} from "../admin.constants";
+import {AdminTabs} from "../admin.constants";
 import {AdminService} from "../../../services/admin.service";
 import {AdminGridService} from "../../../services/admin-grid.service";
 import {DataService} from "../../../services/data.service";
@@ -48,9 +48,9 @@ export class AdminGridComponent implements OnInit {
 
   // Only make the calls to the backend that you need for the tab you are on
   private getAndMapEntities(): void {
-    if ([AdminModel.OrgAdministrator.route, AdminModel.Instructor.route, AdminModel.Student.route,
-        AdminModel.Program.route].includes(this.grid.route)) {
-      this.adminService.getAll(AdminModel.Organization.route).subscribe(resp => {
+    if ([AdminTabs.OrgAdministrator.route, AdminTabs.Instructor.route, AdminTabs.Student.route,
+        AdminTabs.Program.route].includes(this.grid.route)) {
+      this.adminService.getAll(AdminTabs.Organization.route).subscribe(resp => {
         this.organizations = resp;
         this.grid.rows.forEach(row => {
           let organization = _.find(this.organizations, ['id', row.organizationId]);
@@ -58,8 +58,8 @@ export class AdminGridComponent implements OnInit {
         });
       });
     }
-    if (AdminModel.Session.route === this.grid.route) {
-      this.adminService.getAll(AdminModel.Program.route).subscribe(resp => {
+    if (AdminTabs.Session.route === this.grid.route) {
+      this.adminService.getAll(AdminTabs.Program.route).subscribe(resp => {
         this.programs = resp;
         this.grid.rows.forEach(row => {
           let program = _.find(this.programs, ['id', row.programId]);
@@ -67,8 +67,8 @@ export class AdminGridComponent implements OnInit {
         });
       });
     }
-    if (AdminModel.Course.route === this.grid.route) {
-      this.adminService.getAll(AdminModel.Session.route).subscribe(resp => {
+    if (AdminTabs.Course.route === this.grid.route) {
+      this.adminService.getAll(AdminTabs.Session.route).subscribe(resp => {
         this.sessions = resp;
         this.grid.rows.forEach(row => {
           let session = _.find(this.sessions, ['id', row.sessionId]);
@@ -76,8 +76,8 @@ export class AdminGridComponent implements OnInit {
         });
       });
     }
-    if (AdminModel.Course.route === this.grid.route) {
-      this.adminService.getAll(AdminModel.Instructor.route).subscribe(resp => {
+    if (AdminTabs.Course.route === this.grid.route) {
+      this.adminService.getAll(AdminTabs.Instructor.route).subscribe(resp => {
         this.instructors = resp;
         this.grid.rows.forEach(row => {
           let instructor = _.find(this.instructors, ['id', row.instructorId]);
@@ -103,10 +103,10 @@ export class AdminGridComponent implements OnInit {
 
   viewDetails(row): void {
     switch (this.grid.route) {
-      case AdminModel.Course.route:
+      case AdminTabs.Course.route:
         this.dataService.setCourseById(row.id);
         break;
-      case AdminModel.Student.route:
+      case AdminTabs.Student.route:
         this.dataService.setStudentById(row.id);
         break;
       default:

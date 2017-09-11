@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 
 import {AdminGridModel} from "../../../models/admin-grid.model";
-import {AdminModel} from "../admin.constants";
+import {AdminTabs} from "../admin.constants";
 
 @Component({
   selector: 'app-admin-students',
@@ -9,9 +9,9 @@ import {AdminModel} from "../admin.constants";
 })
 export class AdminStudentsComponent {
   studentGrid = new AdminGridModel(
-    AdminModel.Student.title,
-    AdminModel.Student.route,
-    AdminModel.Student.defaultSort,
-    AdminModel.Student.columns,
+    AdminTabs.Student.title,
+    AdminTabs.Student.route,
+    AdminTabs.Student.defaultSort,
+    AdminTabs.Student.columns,
     []);
 }

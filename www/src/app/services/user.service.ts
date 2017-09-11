@@ -5,7 +5,7 @@ import * as _ from "lodash";
 import {AppConstants} from "../app.constants";
 import {HttpWrapperService} from '../shared/auth/http-wrapper.service';
 import {User} from "../models/user.model";
-import {Course} from "../models/course";
+import {Course} from "../models/course.model";
 import {Principal} from "../shared/auth/principal.service";
 
 

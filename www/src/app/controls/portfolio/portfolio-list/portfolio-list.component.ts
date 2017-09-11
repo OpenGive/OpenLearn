@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 
-import {PortfolioItem} from '../../../models/portfolio-item';
+import {PortfolioItem} from '../../../models/portfolio-item.model';
 
 @Component({
   selector: 'app-portfolio-list',
