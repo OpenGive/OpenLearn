@@ -26,7 +26,7 @@ public class LogsResource {
 
 	@PutMapping
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void changeLevel(@RequestBody LoggerVM jsonLogger) {
+	public void changeLevel(@RequestBody final LoggerVM jsonLogger) {
 		LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
 		context.getLogger(jsonLogger.getName()).setLevel(Level.valueOf(jsonLogger.getLevel()));
 	}

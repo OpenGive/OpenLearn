@@ -22,11 +22,11 @@ public class StudentAssignmentResource {
 
 	private static final String ENDPOINT = "/api/student-assignments/";
 
-	private final Logger log = LoggerFactory.getLogger(StudentAssignmentResource.class);
+	private static final Logger log = LoggerFactory.getLogger(StudentAssignmentResource.class);
 
 	private final StudentAssignmentService studentAssignmentService;
 
-	public StudentAssignmentResource(StudentAssignmentService studentAssignmentService) {
+	public StudentAssignmentResource(final StudentAssignmentService studentAssignmentService) {
 		this.studentAssignmentService = studentAssignmentService;
 	}
 
@@ -39,7 +39,7 @@ public class StudentAssignmentResource {
 	 */
 	@GetMapping("/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity get(@PathVariable Long id) {
+	public ResponseEntity get(@PathVariable final Long id) {
 		log.debug("GET request to get studentAssignment : {}", id);
 		StudentAssignmentDTO response = studentAssignmentService.findOne(id);
 		return ResponseEntity.ok(response);
@@ -55,7 +55,7 @@ public class StudentAssignmentResource {
 	 */
 	@PostMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
-	public ResponseEntity create(@RequestBody @Valid StudentAssignmentDTO studentAssignmentDTO) throws URISyntaxException {
+	public ResponseEntity create(@RequestBody @Valid final StudentAssignmentDTO studentAssignmentDTO) throws URISyntaxException {
 		log.debug("POST request to create studentAssignment : {}", studentAssignmentDTO);
 		StudentAssignmentDTO response = studentAssignmentService.save(studentAssignmentDTO);
 		return ResponseEntity.created(new URI(ENDPOINT + response.getId())).body(response);
@@ -70,7 +70,7 @@ public class StudentAssignmentResource {
 	 */
 	@PutMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
-	public ResponseEntity update(@RequestBody @Valid StudentAssignmentDTO studentAssignmentDTO) {
+	public ResponseEntity update(@RequestBody @Valid final StudentAssignmentDTO studentAssignmentDTO) {
 		log.debug("PUT request to update studentAssignment : {}", studentAssignmentDTO);
 		StudentAssignmentDTO response = studentAssignmentService.save(studentAssignmentDTO);
 		return ResponseEntity.ok(response);
@@ -85,7 +85,7 @@ public class StudentAssignmentResource {
 	 */
 	@DeleteMapping("/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
-	public ResponseEntity delete(@PathVariable Long id) {
+	public ResponseEntity delete(@PathVariable final Long id) {
 		log.debug("DELETE request to delete studentAssignment : {}", id);
 		studentAssignmentService.delete(id);
 		return ResponseEntity.ok().build();

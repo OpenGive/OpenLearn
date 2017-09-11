@@ -22,11 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/account")
 public class AccountResource {
 
-	private final Logger log = LoggerFactory.getLogger(AccountResource.class);
+	private static final Logger log = LoggerFactory.getLogger(AccountResource.class);
 
 	private final UserService userService;
 
-	public AccountResource(UserService userService) {
+	public AccountResource(final UserService userService) {
 		this.userService = userService;
 	}
 
@@ -52,7 +52,7 @@ public class AccountResource {
 	 */
 	@PostMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
-	public ResponseEntity update(@RequestBody @Valid AccountDTO accountDTO) {
+	public ResponseEntity update(@RequestBody @Valid final AccountDTO accountDTO) {
 		log.debug("POST request to update current user account info : {}", accountDTO);
 		AccountDTO response = userService.updateCurrentUserAccount(accountDTO);
 		return ResponseEntity.ok(response);

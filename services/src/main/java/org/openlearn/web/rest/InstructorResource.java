@@ -24,11 +24,11 @@ public class InstructorResource {
 
 	private static final String ENDPOINT = "/api/instructors/";
 
-	private final Logger log = LoggerFactory.getLogger(InstructorResource.class);
+	private static final Logger log = LoggerFactory.getLogger(InstructorResource.class);
 
 	private final InstructorService instructorService;
 
-	public InstructorResource(InstructorService instructorService) {
+	public InstructorResource(final InstructorService instructorService) {
 		this.instructorService = instructorService;
 	}
 
@@ -41,7 +41,7 @@ public class InstructorResource {
 	 */
 	@GetMapping("/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity get(@PathVariable Long id) {
+	public ResponseEntity get(@PathVariable final Long id) {
 		log.debug("GET request to get instructor : {}", id);
 		InstructorDTO response = instructorService.findOne(id);
 		return ResponseEntity.ok(response);
@@ -56,7 +56,7 @@ public class InstructorResource {
 	 */
 	@GetMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity get(@ApiParam Pageable pageable) {
+	public ResponseEntity get(@ApiParam final Pageable pageable) {
 		log.debug("GET request for all instructors");
 		Page<InstructorDTO> response = instructorService.findAll(pageable);
 		return ResponseEntity.ok(response.getContent());
@@ -72,7 +72,7 @@ public class InstructorResource {
 	 */
 	@PostMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity create(@RequestBody @Valid InstructorDTO instructorDTO) throws URISyntaxException {
+	public ResponseEntity create(@RequestBody @Valid final InstructorDTO instructorDTO) throws URISyntaxException {
 		log.debug("POST request to create instructor : {}", instructorDTO);
 		InstructorDTO response = instructorService.save(instructorDTO);
 		return ResponseEntity.created(new URI(ENDPOINT + response.getId())).body(response);
@@ -87,7 +87,7 @@ public class InstructorResource {
 	 */
 	@PutMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity update(@RequestBody @Valid InstructorDTO instructorDTO) {
+	public ResponseEntity update(@RequestBody @Valid final InstructorDTO instructorDTO) {
 		log.debug("PUT request to update instructor : {}", instructorDTO);
 		InstructorDTO response = instructorService.save(instructorDTO);
 		return ResponseEntity.ok(response);
@@ -102,7 +102,7 @@ public class InstructorResource {
 	 */
 	@DeleteMapping("/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity delete(@PathVariable Long id) {
+	public ResponseEntity delete(@PathVariable final Long id) {
 		log.debug("DELETE request to delete instructor : {}", id);
 		instructorService.delete(id);
 		return ResponseEntity.ok().build();

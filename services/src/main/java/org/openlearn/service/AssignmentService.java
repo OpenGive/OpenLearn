@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class AssignmentService {
 
-	private final Logger log = LoggerFactory.getLogger(AssignmentService.class);
+	private static final Logger log = LoggerFactory.getLogger(AssignmentService.class);
 
 	private final AssignmentRepository assignmentRepository;
 
@@ -32,8 +32,9 @@ public class AssignmentService {
 
 	private final UserService userService;
 
-	public AssignmentService(AssignmentRepository assignmentRepository, AssignmentTransformer assignmentTransformer,
-	                         CourseRepository courseRepository, UserService userService) {
+	public AssignmentService(final AssignmentRepository assignmentRepository,
+	                         final AssignmentTransformer assignmentTransformer,
+	                         final CourseRepository courseRepository, final UserService userService) {
 		this.assignmentRepository = assignmentRepository;
 		this.assignmentTransformer = assignmentTransformer;
 		this.courseRepository = courseRepository;
@@ -46,7 +47,7 @@ public class AssignmentService {
 	 * @param assignmentDTO the entity to save
 	 * @return the persisted entity
 	 */
-	public AssignmentDTO save(AssignmentDTO assignmentDTO) {
+	public AssignmentDTO save(final AssignmentDTO assignmentDTO) {
 		log.debug("Request to save Assignment : {}", assignmentDTO);
 		if (SecurityUtils.isAdmin() || inOrgOfCurrentUser(assignmentDTO)) {
 			return assignmentTransformer.transform(assignmentRepository.save(assignmentTransformer.transform(assignmentDTO)));
@@ -62,7 +63,7 @@ public class AssignmentService {
 	 * @return the list of entities
 	 */
 	@Transactional(readOnly = true)
-	public Page<AssignmentDTO> findAll(Pageable pageable) {
+	public Page<AssignmentDTO> findAll(final Pageable pageable) {
 		log.debug("Request to get all Assignments");
 		User user = userService.getCurrentUser();
 		if (SecurityUtils.isAdmin()) {
@@ -80,7 +81,7 @@ public class AssignmentService {
 	 * @return the entity
 	 */
 	@Transactional(readOnly = true)
-	public AssignmentDTO findOne(Long id) {
+	public AssignmentDTO findOne(final Long id) {
 		log.debug("Request to get Assignment : {}", id);
 		Assignment assignment = assignmentRepository.findOne(id);
 		if (assignment != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(assignment))) {
@@ -95,7 +96,7 @@ public class AssignmentService {
 	 *
 	 * @param id the id of the entity
 	 */
-	public void delete(Long id) {
+	public void delete(final Long id) {
 		log.debug("Request to delete Assignment : {}", id);
 		Assignment assignment = assignmentRepository.findOne(id);
 		if (assignment != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(assignment))) {
@@ -105,25 +106,13 @@ public class AssignmentService {
 		}
 	}
 
-	/**
-	 * Determines if an assignment is in the organization of current user
-	 *
-	 * @param assignmentDTO the assignment
-	 * @return true if assignment and current user are in the same org
-	 */
-	private boolean inOrgOfCurrentUser(AssignmentDTO assignmentDTO) {
+	private boolean inOrgOfCurrentUser(final AssignmentDTO assignmentDTO) {
 		User user = userService.getCurrentUser();
 		Course course = courseRepository.findOne(assignmentDTO.getCourseId());
 		return course != null && user.getOrganization().equals(course.getSession().getProgram().getOrganization());
 	}
 
-	/**
-	 * Determines if an assignment is in the organization of current user
-	 *
-	 * @param assignment the assignment
-	 * @return true if assignment and current user are in the same org
-	 */
-	private boolean inOrgOfCurrentUser(Assignment assignment) {
+	private boolean inOrgOfCurrentUser(final Assignment assignment) {
 		User user = userService.getCurrentUser();
 		return user.getOrganization().equals(assignment.getCourse().getSession().getProgram().getOrganization());
 	}

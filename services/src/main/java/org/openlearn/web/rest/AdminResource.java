@@ -24,11 +24,11 @@ public class AdminResource {
 
 	private static final String ENDPOINT = "/api/administrators/";
 
-	private final Logger log = LoggerFactory.getLogger(AdminResource.class);
+	private static final Logger log = LoggerFactory.getLogger(AdminResource.class);
 
 	private final AdminService adminService;
 
-	public AdminResource(AdminService adminService) {
+	public AdminResource(final AdminService adminService) {
 		this.adminService = adminService;
 	}
 
@@ -41,7 +41,7 @@ public class AdminResource {
 	 */
 	@GetMapping("/{id}")
 	@Secured({AuthoritiesConstants.ADMIN})
-	public ResponseEntity get(@PathVariable Long id) {
+	public ResponseEntity get(@PathVariable final Long id) {
 		log.debug("GET request to get admin : {}", id);
 		AdminDTO response = adminService.findOne(id);
 		return ResponseEntity.ok(response);
@@ -56,7 +56,7 @@ public class AdminResource {
 	 */
 	@GetMapping
 	@Secured({AuthoritiesConstants.ADMIN})
-	public ResponseEntity get(@ApiParam Pageable pageable) {
+	public ResponseEntity get(@ApiParam final Pageable pageable) {
 		log.debug("GET request for all admins");
 		Page<AdminDTO> response = adminService.findAll(pageable);
 		return ResponseEntity.ok(response.getContent());
@@ -72,7 +72,7 @@ public class AdminResource {
 	 */
 	@PostMapping
 	@Secured({AuthoritiesConstants.ADMIN})
-	public ResponseEntity create(@RequestBody @Valid AdminDTO adminDTO) throws URISyntaxException {
+	public ResponseEntity create(@RequestBody @Valid final AdminDTO adminDTO) throws URISyntaxException {
 		log.debug("POST request to create admin : {}", adminDTO);
 		AdminDTO response = adminService.save(adminDTO);
 		return ResponseEntity.created(new URI(ENDPOINT + response.getId())).body(response);
@@ -87,7 +87,7 @@ public class AdminResource {
 	 */
 	@PutMapping
 	@Secured({AuthoritiesConstants.ADMIN})
-	public ResponseEntity update(@RequestBody @Valid AdminDTO adminDTO) {
+	public ResponseEntity update(@RequestBody @Valid final AdminDTO adminDTO) {
 		log.debug("PUT request to update admin : {}", adminDTO);
 		AdminDTO response = adminService.save(adminDTO);
 		return ResponseEntity.ok(response);
@@ -102,7 +102,7 @@ public class AdminResource {
 	 */
 	@DeleteMapping("/{id}")
 	@Secured({AuthoritiesConstants.ADMIN})
-	public ResponseEntity delete(@PathVariable Long id) {
+	public ResponseEntity delete(@PathVariable final Long id) {
 		log.debug("DELETE request to delete admin : {}", id);
 		adminService.delete(id);
 		return ResponseEntity.ok().build();

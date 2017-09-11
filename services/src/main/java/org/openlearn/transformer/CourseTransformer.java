@@ -6,6 +6,8 @@ import org.openlearn.dto.CourseDTO;
 import org.openlearn.repository.SessionRepository;
 import org.openlearn.repository.UserRepository;
 import org.openlearn.security.AuthoritiesConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,16 +15,25 @@ public class CourseTransformer {
 
 	private static final Authority INSTRUCTOR = new Authority(AuthoritiesConstants.INSTRUCTOR);
 
+	private static final Logger log = LoggerFactory.getLogger(CourseTransformer.class);
+
 	private final SessionRepository sessionRepository;
 
 	private final UserRepository userRepository;
 
-	public CourseTransformer(SessionRepository sessionRepository, UserRepository userRepository) {
+	public CourseTransformer(final SessionRepository sessionRepository, final UserRepository userRepository) {
 		this.sessionRepository = sessionRepository;
 		this.userRepository = userRepository;
 	}
 
+	/**
+	 * Transforms an entity into a DTO
+	 *
+	 * @param course entity to transform
+	 * @return the new DTO
+	 */
 	public CourseDTO transform(final Course course) {
+		log.debug("Transforming course to course DTO : {}", course);
 		CourseDTO courseDTO = new CourseDTO();
 		courseDTO.setId(course.getId());
 		courseDTO.setName(course.getName());
@@ -36,7 +47,14 @@ public class CourseTransformer {
 		return courseDTO;
 	}
 
+	/**
+	 * Transforms a DTO into an entity
+	 *
+	 * @param courseDTO DTO to transform
+	 * @return the new entity
+	 */
 	public Course transform(final CourseDTO courseDTO) {
+		log.debug("Transforming course DTO to course : {}", courseDTO);
 		Course course = new Course();
 		course.setId(courseDTO.getId());
 		course.setName(courseDTO.getName());

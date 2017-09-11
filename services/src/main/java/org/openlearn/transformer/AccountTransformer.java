@@ -2,15 +2,26 @@ package org.openlearn.transformer;
 
 import org.openlearn.domain.User;
 import org.openlearn.dto.AccountDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AccountTransformer {
 
+	private static final Logger log = LoggerFactory.getLogger(AccountTransformer.class);
+
 	public AccountTransformer() {
 	}
 
+	/**
+	 * Transforms an entity into a DTO
+	 *
+	 * @param user entity to transform
+	 * @return the new DTO
+	 */
 	public AccountDTO transform(final User user) {
+		log.debug("Transforming user to account DTO : {}", user);
 		AccountDTO accountDTO = new AccountDTO();
 		accountDTO.setId(user.getId());
 		accountDTO.setAuthority(user.getAuthority().getName());
@@ -31,8 +42,16 @@ public class AccountTransformer {
 		return accountDTO;
 	}
 
-	// Never updates the id, authority, or login, needs to be done via other resources
+
+	/**
+	 * Transforms a DTO into an entity
+	 * NOTE: Does not save the id, authority, or login, as that should be done using one of the other DTOs
+	 *
+	 * @param accountDTO DTO to transform
+	 * @return the new entity
+	 */
 	public User transform(final AccountDTO accountDTO) {
+		log.debug("Transforming account DTO to user : {}", accountDTO);
 		User user = new User();
 		user.setFirstName(accountDTO.getFirstName());
 		user.setLastName(accountDTO.getLastName());

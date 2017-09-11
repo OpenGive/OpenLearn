@@ -24,11 +24,11 @@ public class SessionResource {
 
 	private static final String ENDPOINT = "/api/sessions/";
 
-	private final Logger log = LoggerFactory.getLogger(SessionResource.class);
+	private static final Logger log = LoggerFactory.getLogger(SessionResource.class);
 
 	private final SessionService sessionService;
 
-	public SessionResource(SessionService sessionService) {
+	public SessionResource(final SessionService sessionService) {
 		this.sessionService = sessionService;
 	}
 
@@ -41,7 +41,7 @@ public class SessionResource {
 	 */
 	@GetMapping("/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity get(@PathVariable Long id) {
+	public ResponseEntity get(@PathVariable final Long id) {
 		log.debug("GET request to get session : {}", id);
 		SessionDTO response = sessionService.findOne(id);
 		return ResponseEntity.ok(response);
@@ -56,7 +56,7 @@ public class SessionResource {
 	 */
 	@GetMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity get(@ApiParam Pageable pageable) {
+	public ResponseEntity get(@ApiParam final Pageable pageable) {
 		log.debug("GET request for all sessions");
 		Page<SessionDTO> response = sessionService.findAll(pageable);
 		return ResponseEntity.ok(response.getContent());
@@ -72,7 +72,7 @@ public class SessionResource {
 	 */
 	@PostMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
-	public ResponseEntity create(@RequestBody @Valid SessionDTO sessionDTO) throws URISyntaxException {
+	public ResponseEntity create(@RequestBody @Valid final SessionDTO sessionDTO) throws URISyntaxException {
 		log.debug("POST request to create session : {}", sessionDTO);
 		SessionDTO response = sessionService.save(sessionDTO);
 		return ResponseEntity.created(new URI(ENDPOINT + response.getId())).body(response);
@@ -87,7 +87,7 @@ public class SessionResource {
 	 */
 	@PutMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
-	public ResponseEntity update(@RequestBody @Valid SessionDTO sessionDTO) {
+	public ResponseEntity update(@RequestBody @Valid final SessionDTO sessionDTO) {
 		log.debug("PUT request to update session : {}", sessionDTO);
 		SessionDTO response = sessionService.save(sessionDTO);
 		return ResponseEntity.ok(response);
@@ -102,7 +102,7 @@ public class SessionResource {
 	 */
 	@DeleteMapping("/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
-	public ResponseEntity delete(@PathVariable Long id) {
+	public ResponseEntity delete(@PathVariable final Long id) {
 		log.debug("DELETE request to delete session : {}", id);
 		sessionService.delete(id);
 		return ResponseEntity.ok().build();

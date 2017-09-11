@@ -24,11 +24,11 @@ public class StudentCourseResource {
 
 	private static final String ENDPOINT = "/api/student-courses/";
 
-	private final Logger log = LoggerFactory.getLogger(StudentCourseResource.class);
+	private static final Logger log = LoggerFactory.getLogger(StudentCourseResource.class);
 
 	private final StudentCourseService studentCourseService;
 
-	public StudentCourseResource(StudentCourseService studentCourseService) {
+	public StudentCourseResource(final StudentCourseService studentCourseService) {
 		this.studentCourseService = studentCourseService;
 	}
 
@@ -41,7 +41,7 @@ public class StudentCourseResource {
 	 */
 	@GetMapping("/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity get(@PathVariable Long id) {
+	public ResponseEntity get(@PathVariable final Long id) {
 		log.debug("GET request to get studentCourse : {}", id);
 		StudentCourseDTO response = studentCourseService.findOne(id);
 		return ResponseEntity.ok(response);
@@ -56,7 +56,7 @@ public class StudentCourseResource {
 	 */
 	@GetMapping("/student/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity getByStudent(@PathVariable Long id, @ApiParam Pageable pageable) {
+	public ResponseEntity getByStudent(@PathVariable final Long id, @ApiParam final Pageable pageable) {
 		log.debug("GET request to get studentCourses by student : {}", id);
 		Page<StudentCourseDTO> response = studentCourseService.findByStudent(id, pageable);
 		return ResponseEntity.ok(response.getContent());
@@ -71,7 +71,7 @@ public class StudentCourseResource {
 	 */
 	@GetMapping("/course/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity getByCourse(@PathVariable Long id, @ApiParam Pageable pageable) {
+	public ResponseEntity getByCourse(@PathVariable final Long id, @ApiParam final Pageable pageable) {
 		log.debug("GET request to get studentCourses by course : {}", id);
 		Page<StudentCourseDTO> response = studentCourseService.findByCourse(id, pageable);
 		return ResponseEntity.ok(response.getContent());
@@ -87,7 +87,7 @@ public class StudentCourseResource {
 	 */
 	@PostMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
-	public ResponseEntity create(@RequestBody @Valid StudentCourseDTO studentCourseDTO) throws URISyntaxException {
+	public ResponseEntity create(@RequestBody @Valid final StudentCourseDTO studentCourseDTO) throws URISyntaxException {
 		log.debug("POST request to create studentCourse : {}", studentCourseDTO);
 		StudentCourseDTO response = studentCourseService.save(studentCourseDTO);
 		return ResponseEntity.created(new URI(ENDPOINT + response.getId())).body(response);
@@ -102,7 +102,7 @@ public class StudentCourseResource {
 	 */
 	@PutMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
-	public ResponseEntity update(@RequestBody @Valid StudentCourseDTO studentCourseDTO) {
+	public ResponseEntity update(@RequestBody @Valid final StudentCourseDTO studentCourseDTO) {
 		log.debug("PUT request to update studentCourse : {}", studentCourseDTO);
 		StudentCourseDTO response = studentCourseService.save(studentCourseDTO);
 		return ResponseEntity.ok(response);
@@ -117,7 +117,7 @@ public class StudentCourseResource {
 	 */
 	@DeleteMapping("/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
-	public ResponseEntity delete(@PathVariable Long id) {
+	public ResponseEntity delete(@PathVariable final Long id) {
 		log.debug("DELETE request to delete studentCourse : {}", id);
 		studentCourseService.delete(id);
 		return ResponseEntity.ok().build();

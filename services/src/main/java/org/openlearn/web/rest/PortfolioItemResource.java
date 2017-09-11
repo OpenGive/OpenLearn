@@ -24,11 +24,11 @@ public class PortfolioItemResource {
 
 	private static final String ENDPOINT = "/api/portfolio-items/";
 
-	private final Logger log = LoggerFactory.getLogger(PortfolioItemResource.class);
+	private static final Logger log = LoggerFactory.getLogger(PortfolioItemResource.class);
 
 	private final PortfolioItemService portfolioItemService;
 
-	public PortfolioItemResource(PortfolioItemService portfolioItemService) {
+	public PortfolioItemResource(final PortfolioItemService portfolioItemService) {
 		this.portfolioItemService = portfolioItemService;
 	}
 
@@ -41,7 +41,7 @@ public class PortfolioItemResource {
 	 */
 	@GetMapping("/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity get(@PathVariable Long id) {
+	public ResponseEntity get(@PathVariable final Long id) {
 		log.debug("GET request to get portfolio item : {}", id);
 		PortfolioItemDTO response = portfolioItemService.findOne(id);
 		return ResponseEntity.ok(response);
@@ -56,7 +56,7 @@ public class PortfolioItemResource {
 	 */
 	@GetMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity get(@ApiParam Pageable pageable) {
+	public ResponseEntity get(@ApiParam final Pageable pageable) {
 		log.debug("GET request for all portfolio items");
 		Page<PortfolioItemDTO> response = portfolioItemService.findAll(pageable);
 		return ResponseEntity.ok(response.getContent());
@@ -72,7 +72,7 @@ public class PortfolioItemResource {
 	 */
 	@PostMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity create(@RequestBody @Valid PortfolioItemDTO portfolioItemDTO) throws URISyntaxException {
+	public ResponseEntity create(@RequestBody @Valid final PortfolioItemDTO portfolioItemDTO) throws URISyntaxException {
 		log.debug("POST request to create portfolio item : {}", portfolioItemDTO);
 		PortfolioItemDTO response = portfolioItemService.save(portfolioItemDTO);
 		return ResponseEntity.created(new URI(ENDPOINT + response.getId())).body(response);
@@ -87,7 +87,7 @@ public class PortfolioItemResource {
 	 */
 	@PutMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity update(@RequestBody @Valid PortfolioItemDTO portfolioItemDTO) {
+	public ResponseEntity update(@RequestBody @Valid final PortfolioItemDTO portfolioItemDTO) {
 		log.debug("PUT request to update portfolio item : {}", portfolioItemDTO);
 		PortfolioItemDTO response = portfolioItemService.save(portfolioItemDTO);
 		return ResponseEntity.ok(response);
@@ -102,7 +102,7 @@ public class PortfolioItemResource {
 	 */
 	@DeleteMapping("/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity delete(@PathVariable Long id) {
+	public ResponseEntity delete(@PathVariable final Long id) {
 		log.debug("DELETE request to delete portfolio item : {}", id);
 		portfolioItemService.delete(id);
 		return ResponseEntity.ok().build();

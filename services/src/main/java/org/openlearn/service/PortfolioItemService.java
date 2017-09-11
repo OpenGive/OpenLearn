@@ -25,7 +25,7 @@ public class PortfolioItemService {
 
 	private static final Authority STUDENT = new Authority(AuthoritiesConstants.STUDENT);
 
-	private final Logger log = LoggerFactory.getLogger(PortfolioItemService.class);
+	private static final Logger log = LoggerFactory.getLogger(PortfolioItemService.class);
 
 	private final PortfolioItemRepository portfolioItemRepository;
 
@@ -35,9 +35,10 @@ public class PortfolioItemService {
 
 	private final UserService userService;
 
-	public PortfolioItemService(PortfolioItemRepository portfolioItemRepository,
-	                            PortfolioItemTransformer portfolioItemTransformer, UserRepository userRepository,
-	                            UserService userService) {
+	public PortfolioItemService(final PortfolioItemRepository portfolioItemRepository,
+	                            final PortfolioItemTransformer portfolioItemTransformer,
+	                            final UserRepository userRepository,
+	                            final UserService userService) {
 		this.portfolioItemRepository = portfolioItemRepository;
 		this.portfolioItemTransformer = portfolioItemTransformer;
 		this.userRepository = userRepository;
@@ -50,7 +51,7 @@ public class PortfolioItemService {
 	 * @param portfolioItemDTO the entity to save
 	 * @return the persisted entity
 	 */
-	public PortfolioItemDTO save(PortfolioItemDTO portfolioItemDTO) {
+	public PortfolioItemDTO save(final PortfolioItemDTO portfolioItemDTO) {
 		log.debug("Request to save portfolio item : {}", portfolioItemDTO);
 		if (SecurityUtils.isAdmin() || inOrgOfCurrentUser(portfolioItemDTO)) {
 			return portfolioItemTransformer.transform(portfolioItemRepository.save(portfolioItemTransformer.transform(portfolioItemDTO)));
@@ -66,7 +67,7 @@ public class PortfolioItemService {
 	 * @return the list of entities
 	 */
 	@Transactional(readOnly = true)
-	public Page<PortfolioItemDTO> findAll(Pageable pageable) {
+	public Page<PortfolioItemDTO> findAll(final Pageable pageable) {
 		log.debug("Request to get all portfolio items");
 		User user = userService.getCurrentUser();
 		if (SecurityUtils.isAdmin()) {
@@ -84,7 +85,7 @@ public class PortfolioItemService {
 	 * @return the entity
 	 */
 	@Transactional(readOnly = true)
-	public PortfolioItemDTO findOne(Long id) {
+	public PortfolioItemDTO findOne(final Long id) {
 		log.debug("Request to get portfolio item : {}", id);
 		PortfolioItem portfolioItem = portfolioItemRepository.findOne(id);
 		if (portfolioItem != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(portfolioItem))) {
@@ -99,7 +100,7 @@ public class PortfolioItemService {
 	 *
 	 * @param id the id of the entity
 	 */
-	public void delete(Long id) {
+	public void delete(final Long id) {
 		log.debug("Request to delete portfolio item : {}", id);
 		PortfolioItem portfolioItem = portfolioItemRepository.findOne(id);
 		if (portfolioItem != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(portfolioItem))) {
@@ -109,25 +110,13 @@ public class PortfolioItemService {
 		}
 	}
 
-	/**
-	 * Determines if a portfolio item is in the organization of current user
-	 *
-	 * @param portfolioItemDTO the portfolio item
-	 * @return true if portfolio item and current user are in the same org
-	 */
-	private boolean inOrgOfCurrentUser(PortfolioItemDTO portfolioItemDTO) {
+	private boolean inOrgOfCurrentUser(final PortfolioItemDTO portfolioItemDTO) {
 		User user = userService.getCurrentUser();
 		User student = userRepository.findOneByIdAndAuthority(portfolioItemDTO.getStudentId(), STUDENT);
 		return student != null && user.getOrganization().equals(student.getOrganization());
 	}
 
-	/**
-	 * Determines if a portfolio item is in the organization of current user
-	 *
-	 * @param portfolioItem the portfolio item
-	 * @return true if portfolio item and current user are in the same org
-	 */
-	private boolean inOrgOfCurrentUser(PortfolioItem portfolioItem) {
+	private boolean inOrgOfCurrentUser(final PortfolioItem portfolioItem) {
 		User user = userService.getCurrentUser();
 		return user.getOrganization().equals(portfolioItem.getStudent().getOrganization());
 	}

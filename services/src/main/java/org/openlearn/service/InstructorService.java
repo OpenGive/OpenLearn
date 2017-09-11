@@ -23,7 +23,7 @@ public class InstructorService {
 
 	private static final Authority INSTRUCTOR = new Authority(AuthoritiesConstants.INSTRUCTOR);
 
-	private final Logger log = LoggerFactory.getLogger(InstructorService.class);
+	private static final Logger log = LoggerFactory.getLogger(InstructorService.class);
 
 	private final InstructorTransformer instructorTransformer;
 
@@ -31,8 +31,8 @@ public class InstructorService {
 
 	private final UserService userService;
 
-	public InstructorService(InstructorTransformer instructorTransformer, UserRepository userRepository,
-	                      UserService userService) {
+	public InstructorService(final InstructorTransformer instructorTransformer, final UserRepository userRepository,
+	                         final UserService userService) {
 		this.instructorTransformer = instructorTransformer;
 		this.userRepository = userRepository;
 		this.userService = userService;
@@ -44,7 +44,7 @@ public class InstructorService {
 	 * @param instructorDTO the entity to save
 	 * @return the persisted entity
 	 */
-	public InstructorDTO save(InstructorDTO instructorDTO) {
+	public InstructorDTO save(final InstructorDTO instructorDTO) {
 		log.debug("Request to save instructor : {}", instructorDTO);
 		if (AuthoritiesConstants.INSTRUCTOR.equals(instructorDTO.getAuthority())
 			&& (SecurityUtils.isAdmin() || inOrgOfCurrentUser(instructorDTO))) {
@@ -61,7 +61,7 @@ public class InstructorService {
 	 * @return the list of entities
 	 */
 	@Transactional(readOnly = true)
-	public Page<InstructorDTO> findAll(Pageable pageable) {
+	public Page<InstructorDTO> findAll(final Pageable pageable) {
 		log.debug("Request to get all instructor users");
 		User user = userService.getCurrentUser();
 		if (SecurityUtils.isAdmin()) {
@@ -79,7 +79,7 @@ public class InstructorService {
 	 * @return the entity
 	 */
 	@Transactional(readOnly = true)
-	public InstructorDTO findOne(Long id) {
+	public InstructorDTO findOne(final Long id) {
 		log.debug("Request to get instructor : {}", id);
 		User instructor = userRepository.findOneByIdAndAuthority(id, INSTRUCTOR);
 		if (instructor != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(instructor))) {
@@ -94,7 +94,7 @@ public class InstructorService {
 	 *
 	 * @param id the id of the entity
 	 */
-	public void delete(Long id) {
+	public void delete(final Long id) {
 		log.debug("Request to delete instructor : {}", id);
 		User instructor = userRepository.findOneByIdAndAuthority(id, INSTRUCTOR);
 		if (instructor != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(instructor))) {
@@ -104,24 +104,12 @@ public class InstructorService {
 		}
 	}
 
-	/**
-	 * Determines if an instructor is in the organization of current user
-	 *
-	 * @param instructorDTO the instructor
-	 * @return true if instructor and current user are in the same org
-	 */
-	private boolean inOrgOfCurrentUser(InstructorDTO instructorDTO) {
+	private boolean inOrgOfCurrentUser(final InstructorDTO instructorDTO) {
 		User user = userService.getCurrentUser();
 		return user.getOrganization().getId().equals(instructorDTO.getOrganizationId());
 	}
 
-	/**
-	 * Determines if an instructor is in the organization of current user
-	 *
-	 * @param instructor the instructor
-	 * @return true if instructor and current user are in the same org
-	 */
-	private boolean inOrgOfCurrentUser(User instructor) {
+	private boolean inOrgOfCurrentUser(final User instructor) {
 		User user = userService.getCurrentUser();
 		return user.getOrganization().equals(instructor.getOrganization());
 	}

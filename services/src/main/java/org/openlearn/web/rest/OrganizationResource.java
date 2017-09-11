@@ -24,11 +24,11 @@ public class OrganizationResource {
 
 	private static final String ENDPOINT = "/api/organizations/";
 
-	private final Logger log = LoggerFactory.getLogger(OrganizationResource.class);
+	private static final Logger log = LoggerFactory.getLogger(OrganizationResource.class);
 
 	private final OrganizationService organizationService;
 
-	public OrganizationResource(OrganizationService organizationService) {
+	public OrganizationResource(final OrganizationService organizationService) {
 		this.organizationService = organizationService;
 	}
 
@@ -41,7 +41,7 @@ public class OrganizationResource {
 	 */
 	@GetMapping("/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
-	public ResponseEntity get(@PathVariable Long id) {
+	public ResponseEntity get(@PathVariable final Long id) {
 		log.debug("GET request to get organization : {}", id);
 		OrganizationDTO response = organizationService.findOne(id);
 		return ResponseEntity.ok(response);
@@ -56,7 +56,7 @@ public class OrganizationResource {
 	 */
 	@GetMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
-	public ResponseEntity get(@ApiParam Pageable pageable) {
+	public ResponseEntity get(@ApiParam final Pageable pageable) {
 		log.debug("GET request for all organizations");
 		Page<OrganizationDTO> response = organizationService.findAll(pageable);
 		return ResponseEntity.ok(response.getContent());
@@ -72,7 +72,7 @@ public class OrganizationResource {
 	 */
 	@PostMapping
 	@Secured({AuthoritiesConstants.ADMIN})
-	public ResponseEntity create(@RequestBody @Valid OrganizationDTO organizationDTO) throws URISyntaxException {
+	public ResponseEntity create(@RequestBody @Valid final OrganizationDTO organizationDTO) throws URISyntaxException {
 		log.debug("POST request to create organization : {}", organizationDTO);
 		OrganizationDTO response = organizationService.save(organizationDTO);
 		return ResponseEntity.created(new URI(ENDPOINT + response.getId())).body(response);
@@ -87,7 +87,7 @@ public class OrganizationResource {
 	 */
 	@PutMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
-	public ResponseEntity update(@RequestBody @Valid OrganizationDTO organizationDTO) {
+	public ResponseEntity update(@RequestBody @Valid final OrganizationDTO organizationDTO) {
 		log.debug("PUT request to update organization : {}", organizationDTO);
 		OrganizationDTO response = organizationService.save(organizationDTO);
 		return ResponseEntity.ok(response);
@@ -102,7 +102,7 @@ public class OrganizationResource {
 	 */
 	@DeleteMapping("/{id}")
 	@Secured({AuthoritiesConstants.ADMIN})
-	public ResponseEntity delete(@PathVariable Long id) {
+	public ResponseEntity delete(@PathVariable final Long id) {
 		log.debug("DELETE request to delete organization : {}", id);
 		organizationService.delete(id);
 		return ResponseEntity.ok().build();

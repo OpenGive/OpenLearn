@@ -24,11 +24,11 @@ public class ProgramResource {
 
 	private static final String ENDPOINT = "/api/programs/";
 
-	private final Logger log = LoggerFactory.getLogger(ProgramResource.class);
+	private static final Logger log = LoggerFactory.getLogger(ProgramResource.class);
 
 	private final ProgramService programService;
 
-	public ProgramResource(ProgramService programService) {
+	public ProgramResource(final ProgramService programService) {
 		this.programService = programService;
 	}
 
@@ -41,7 +41,7 @@ public class ProgramResource {
 	 */
 	@GetMapping("/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity get(@PathVariable Long id) {
+	public ResponseEntity get(@PathVariable final Long id) {
 		log.debug("GET request to get program : {}", id);
 		ProgramDTO response = programService.findOne(id);
 		return ResponseEntity.ok(response);
@@ -56,7 +56,7 @@ public class ProgramResource {
 	 */
 	@GetMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity get(@ApiParam Pageable pageable) {
+	public ResponseEntity get(@ApiParam final Pageable pageable) {
 		log.debug("GET request for all programs");
 		Page<ProgramDTO> response = programService.findAll(pageable);
 		return ResponseEntity.ok(response.getContent());
@@ -72,7 +72,7 @@ public class ProgramResource {
 	 */
 	@PostMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
-	public ResponseEntity create(@RequestBody @Valid ProgramDTO programDTO) throws URISyntaxException {
+	public ResponseEntity create(@RequestBody @Valid final ProgramDTO programDTO) throws URISyntaxException {
 		log.debug("POST request to create program : {}", programDTO);
 		ProgramDTO response = programService.save(programDTO);
 		return ResponseEntity.created(new URI(ENDPOINT + response.getId())).body(response);
@@ -87,7 +87,7 @@ public class ProgramResource {
 	 */
 	@PutMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
-	public ResponseEntity update(@RequestBody @Valid ProgramDTO programDTO) {
+	public ResponseEntity update(@RequestBody @Valid final ProgramDTO programDTO) {
 		log.debug("PUT request to update program : {}", programDTO);
 		ProgramDTO response = programService.save(programDTO);
 		return ResponseEntity.ok(response);
@@ -102,7 +102,7 @@ public class ProgramResource {
 	 */
 	@DeleteMapping("/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
-	public ResponseEntity delete(@PathVariable Long id) {
+	public ResponseEntity delete(@PathVariable final Long id) {
 		log.debug("DELETE request to delete program : {}", id);
 		programService.delete(id);
 		return ResponseEntity.ok().build();

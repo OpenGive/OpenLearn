@@ -17,13 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserService {
 
-	private final Logger log = LoggerFactory.getLogger(UserService.class);
+	private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
 	private final AccountTransformer accountTransformer;
 
 	private final UserRepository userRepository;
 
-	public UserService(AccountTransformer accountTransformer, UserRepository userRepository) {
+	public UserService(final AccountTransformer accountTransformer, final UserRepository userRepository) {
 		this.accountTransformer = accountTransformer;
 		this.userRepository = userRepository;
 	}
@@ -56,7 +56,7 @@ public class UserService {
 	 * @param accountDTO account info to update
 	 * @return updated current user account info
 	 */
-	public AccountDTO updateCurrentUserAccount(AccountDTO accountDTO) {
+	public AccountDTO updateCurrentUserAccount(final AccountDTO accountDTO) {
 		log.debug("Request to update current user account information");
 		User user = mergeAccountInfo(accountDTO, getCurrentUser());
 		return accountTransformer.transform(userRepository.save(user));

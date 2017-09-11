@@ -24,11 +24,11 @@ public class StudentResource {
 
 	private static final String ENDPOINT = "/api/students/";
 
-	private final Logger log = LoggerFactory.getLogger(StudentResource.class);
+	private static final Logger log = LoggerFactory.getLogger(StudentResource.class);
 
 	private final StudentService studentService;
 
-	public StudentResource(StudentService studentService) {
+	public StudentResource(final StudentService studentService) {
 		this.studentService = studentService;
 	}
 
@@ -41,7 +41,7 @@ public class StudentResource {
 	 */
 	@GetMapping("/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity get(@PathVariable Long id) {
+	public ResponseEntity get(@PathVariable final Long id) {
 		log.debug("GET request to get student : {}", id);
 		StudentDTO response = studentService.findOne(id);
 		return ResponseEntity.ok(response);
@@ -56,7 +56,7 @@ public class StudentResource {
 	 */
 	@GetMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity get(@ApiParam Pageable pageable) {
+	public ResponseEntity get(@ApiParam final Pageable pageable) {
 		log.debug("GET request for all students");
 		Page<StudentDTO> response = studentService.findAll(pageable);
 		return ResponseEntity.ok(response.getContent());
@@ -72,7 +72,7 @@ public class StudentResource {
 	 */
 	@PostMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity create(@RequestBody @Valid StudentDTO studentDTO) throws URISyntaxException {
+	public ResponseEntity create(@RequestBody @Valid final StudentDTO studentDTO) throws URISyntaxException {
 		log.debug("POST request to create student : {}", studentDTO);
 		StudentDTO response = studentService.save(studentDTO);
 		return ResponseEntity.created(new URI(ENDPOINT + response.getId())).body(response);
@@ -87,7 +87,7 @@ public class StudentResource {
 	 */
 	@PutMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity update(@RequestBody @Valid StudentDTO studentDTO) {
+	public ResponseEntity update(@RequestBody @Valid final StudentDTO studentDTO) {
 		log.debug("PUT request to update student : {}", studentDTO);
 		StudentDTO response = studentService.save(studentDTO);
 		return ResponseEntity.ok(response);
@@ -102,7 +102,7 @@ public class StudentResource {
 	 */
 	@DeleteMapping("/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity delete(@PathVariable Long id) {
+	public ResponseEntity delete(@PathVariable final Long id) {
 		log.debug("DELETE request to delete student : {}", id);
 		studentService.delete(id);
 		return ResponseEntity.ok().build();

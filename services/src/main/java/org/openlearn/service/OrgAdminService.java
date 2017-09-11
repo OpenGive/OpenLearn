@@ -24,7 +24,7 @@ public class OrgAdminService {
 
 	private static final Authority ORG_ADMIN = new Authority(AuthoritiesConstants.ORG_ADMIN);
 
-	private final Logger log = LoggerFactory.getLogger(OrgAdminService.class);
+	private static final Logger log = LoggerFactory.getLogger(OrgAdminService.class);
 
 	private final OrgAdminTransformer orgAdminTransformer;
 
@@ -32,8 +32,8 @@ public class OrgAdminService {
 
 	private final UserService userService;
 
-	public OrgAdminService(OrgAdminTransformer orgAdminTransformer, UserRepository userRepository,
-	                       UserService userService) {
+	public OrgAdminService(final OrgAdminTransformer orgAdminTransformer, final UserRepository userRepository,
+	                       final UserService userService) {
 		this.orgAdminTransformer = orgAdminTransformer;
 		this.userRepository = userRepository;
 		this.userService = userService;
@@ -45,7 +45,7 @@ public class OrgAdminService {
 	 * @param orgAdminDTO the entity to save
 	 * @return the persisted entity
 	 */
-	public OrgAdminDTO save(OrgAdminDTO orgAdminDTO) {
+	public OrgAdminDTO save(final OrgAdminDTO orgAdminDTO) {
 		log.debug("Request to save org admin : {}", orgAdminDTO);
 		if (AuthoritiesConstants.ORG_ADMIN.equals(orgAdminDTO.getAuthority())
 			&& (SecurityUtils.isAdmin() || inOrgOfCurrentUser(orgAdminDTO))) {
@@ -62,7 +62,7 @@ public class OrgAdminService {
 	 * @return the list of entities
 	 */
 	@Transactional(readOnly = true)
-	public Page<OrgAdminDTO> findAll(Pageable pageable) {
+	public Page<OrgAdminDTO> findAll(final Pageable pageable) {
 		log.debug("Request to get all org admin users");
 		User user = userService.getCurrentUser();
 		if (SecurityUtils.isAdmin()) {
@@ -80,7 +80,7 @@ public class OrgAdminService {
 	 * @return the entity
 	 */
 	@Transactional(readOnly = true)
-	public OrgAdminDTO findOne(Long id) {
+	public OrgAdminDTO findOne(final Long id) {
 		log.debug("Request to get org admin : {}", id);
 		User orgAdmin = userRepository.findOneByIdAndAuthority(id, ORG_ADMIN);
 		if (orgAdmin != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(orgAdmin))) {
@@ -95,7 +95,7 @@ public class OrgAdminService {
 	 *
 	 * @param id the id of the entity
 	 */
-	public void delete(Long id) {
+	public void delete(final Long id) {
 		log.debug("Request to delete org admin : {}", id);
 		User orgAdmin = userRepository.findOneByIdAndAuthority(id, ORG_ADMIN);
 		if (orgAdmin != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(orgAdmin))) {
@@ -105,24 +105,12 @@ public class OrgAdminService {
 		}
 	}
 
-	/**
-	 * Determines if an org admin is in the organization of current user
-	 *
-	 * @param orgAdminDTO the org admin
-	 * @return true if org admin and current user are in the same org
-	 */
-	private boolean inOrgOfCurrentUser(OrgAdminDTO orgAdminDTO) {
+	private boolean inOrgOfCurrentUser(final OrgAdminDTO orgAdminDTO) {
 		User user = userService.getCurrentUser();
 		return user.getOrganization().getId().equals(orgAdminDTO.getOrganizationId());
 	}
 
-	/**
-	 * Determines if an org admin is in the organization of current user
-	 *
-	 * @param orgAdmin the org admin
-	 * @return true if org admin and current user are in the same org
-	 */
-	private boolean inOrgOfCurrentUser(User orgAdmin) {
+	private boolean inOrgOfCurrentUser(final User orgAdmin) {
 		User user = userService.getCurrentUser();
 		return user.getOrganization().equals(orgAdmin.getOrganization());
 	}

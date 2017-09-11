@@ -5,6 +5,8 @@ import org.openlearn.domain.PortfolioItem;
 import org.openlearn.dto.PortfolioItemDTO;
 import org.openlearn.repository.UserRepository;
 import org.openlearn.security.AuthoritiesConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,13 +14,22 @@ public class PortfolioItemTransformer {
 
 	private static final Authority STUDENT = new Authority(AuthoritiesConstants.STUDENT);
 
+	private static final Logger log = LoggerFactory.getLogger(PortfolioItemTransformer.class);
+
 	private final UserRepository userRepository;
 
-	public PortfolioItemTransformer(UserRepository userRepository) {
+	public PortfolioItemTransformer(final UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
 
+	/**
+	 * Transforms an entity into a DTO
+	 *
+	 * @param portfolioItem entity to transform
+	 * @return the new DTO
+	 */
 	public PortfolioItemDTO transform(final PortfolioItem portfolioItem) {
+		log.debug("Transforming portfolio item to portfolio item DTO : {}", portfolioItem);
 		PortfolioItemDTO portfolioItemDTO = new PortfolioItemDTO();
 		portfolioItemDTO.setId(portfolioItem.getId());
 		portfolioItemDTO.setName(portfolioItem.getName());
@@ -28,7 +39,14 @@ public class PortfolioItemTransformer {
 		return portfolioItemDTO;
 	}
 
+	/**
+	 * Transforms a DTO into an entity
+	 *
+	 * @param portfolioItemDTO DTO to transform
+	 * @return the new entity
+	 */
 	public PortfolioItem transform(final PortfolioItemDTO portfolioItemDTO) {
+		log.debug("Transforming portfolio item DTO to portfolio item : {}", portfolioItemDTO);
 		PortfolioItem portfolioItem = new PortfolioItem();
 		portfolioItem.setId(portfolioItemDTO.getId());
 		portfolioItem.setName(portfolioItemDTO.getName());

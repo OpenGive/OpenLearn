@@ -27,7 +27,7 @@ public class StudentCourseService {
 
 	private static final Authority STUDENT = new Authority(AuthoritiesConstants.STUDENT);
 
-	private final Logger log = LoggerFactory.getLogger(StudentCourseService.class);
+	private static final Logger log = LoggerFactory.getLogger(StudentCourseService.class);
 
 	private final CourseRepository courseRepository;
 
@@ -39,9 +39,10 @@ public class StudentCourseService {
 
 	private final UserService userService;
 
-	public StudentCourseService(CourseRepository courseRepository, StudentCourseRepository studentCourseRepository,
-	                            StudentCourseTransformer studentCourseTransformer, UserRepository userRepository,
-	                            UserService userService) {
+	public StudentCourseService(final CourseRepository courseRepository,
+	                            final StudentCourseRepository studentCourseRepository,
+	                            final StudentCourseTransformer studentCourseTransformer,
+	                            final UserRepository userRepository, final UserService userService) {
 		this.courseRepository = courseRepository;
 		this.studentCourseRepository = studentCourseRepository;
 		this.studentCourseTransformer = studentCourseTransformer;
@@ -55,7 +56,7 @@ public class StudentCourseService {
 	 * @param studentCourseDTO the entity to save
 	 * @return the persisted entity
 	 */
-	public StudentCourseDTO save(StudentCourseDTO studentCourseDTO) {
+	public StudentCourseDTO save(final StudentCourseDTO studentCourseDTO) {
 		log.debug("Request to save StudentCourse : {}", studentCourseDTO);
 		if (SecurityUtils.isAdmin() || inOrgOfCurrentUser(studentCourseDTO)) {
 			return studentCourseTransformer.transform(studentCourseRepository.save(studentCourseTransformer.transform(studentCourseDTO)));
@@ -71,7 +72,7 @@ public class StudentCourseService {
 	 * @return the entity
 	 */
 	@Transactional(readOnly = true)
-	public StudentCourseDTO findOne(Long id) {
+	public StudentCourseDTO findOne(final Long id) {
 		log.debug("Request to get StudentCourse : {}", id);
 		StudentCourse studentCourse = studentCourseRepository.findOne(id);
 		if (studentCourse != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(studentCourse))) {
@@ -89,7 +90,7 @@ public class StudentCourseService {
 	 * @return the list of student courses
 	 */
 	@Transactional(readOnly = true)
-	public Page<StudentCourseDTO> findByStudent(Long id, Pageable pageable) {
+	public Page<StudentCourseDTO> findByStudent(final Long id, final Pageable pageable) {
 		log.debug("Request to get StudentCourses by Student : {}", id);
 		User student = userRepository.findOneByIdAndAuthority(id, STUDENT);
 		if (student != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(student))) {
@@ -108,7 +109,7 @@ public class StudentCourseService {
 	 * @return the list of student courses
 	 */
 	@Transactional(readOnly = true)
-	public Page<StudentCourseDTO> findByCourse(Long id, Pageable pageable) {
+	public Page<StudentCourseDTO> findByCourse(final Long id, final Pageable pageable) {
 		log.debug("Request to get StudentCourses by Course : {}", id);
 		Course course = courseRepository.findOne(id);
 		if (course != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(course))) {
@@ -124,7 +125,7 @@ public class StudentCourseService {
 	 *
 	 * @param id the id of the entity
 	 */
-	public void delete(Long id) {
+	public void delete(final Long id) {
 		log.debug("Request to delete StudentCourse : {}", id);
 		StudentCourse studentCourse = studentCourseRepository.findOne(id);
 		if (studentCourse != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(studentCourse))) {
@@ -134,13 +135,7 @@ public class StudentCourseService {
 		}
 	}
 
-	/**
-	 * Determines if a studentCourse is in the organization of current user
-	 *
-	 * @param studentCourseDTO the studentCourse
-	 * @return true if studentCourse and current user are in the same org
-	 */
-	private boolean inOrgOfCurrentUser(StudentCourseDTO studentCourseDTO) {
+	private boolean inOrgOfCurrentUser(final StudentCourseDTO studentCourseDTO) {
 		User user = userService.getCurrentUser();
 		User student = userRepository.findOneByIdAndAuthority(studentCourseDTO.getStudentId(), STUDENT);
 		Course course = courseRepository.findOne(studentCourseDTO.getCourseId());
@@ -148,36 +143,18 @@ public class StudentCourseService {
 			&& user.getOrganization().getId().equals(course.getOrganization().getId());
 	}
 
-	/**
-	 * Determines if a studentCourse is in the organization of current user
-	 *
-	 * @param studentCourse the studentCourse
-	 * @return true if studentCourse and current user are in the same org
-	 */
-	private boolean inOrgOfCurrentUser(StudentCourse studentCourse) {
+	private boolean inOrgOfCurrentUser(final StudentCourse studentCourse) {
 		User user = userService.getCurrentUser();
 		return user.getOrganization().equals(studentCourse.getStudent().getOrganization())
 			&& user.getOrganization().equals(studentCourse.getCourse().getOrganization());
 	}
 
-	/**
-	 * Determines if a student is in the organization of current user
-	 *
-	 * @param student the student
-	 * @return true if course and current user are in the same org
-	 */
-	private boolean inOrgOfCurrentUser(User student) {
+	private boolean inOrgOfCurrentUser(final User student) {
 		User user = userService.getCurrentUser();
 		return user.getOrganization().equals(student.getOrganization());
 	}
 
-	/**
-	 * Determines if a course is in the organization of current user
-	 *
-	 * @param course the course
-	 * @return true if course and current user are in the same org
-	 */
-	private boolean inOrgOfCurrentUser(Course course) {
+	private boolean inOrgOfCurrentUser(final Course course) {
 		User user = userService.getCurrentUser();
 		return user.getOrganization().equals(course.getOrganization());
 	}

@@ -22,13 +22,13 @@ public class AdminService {
 
 	private static final Authority ADMIN = new Authority(AuthoritiesConstants.ADMIN);
 
-	private final Logger log = LoggerFactory.getLogger(AdminService.class);
+	private static final Logger log = LoggerFactory.getLogger(AdminService.class);
 
 	private final AdminTransformer adminTransformer;
 
 	private final UserRepository userRepository;
 
-	public AdminService(AdminTransformer adminTransformer, UserRepository userRepository) {
+	public AdminService(final AdminTransformer adminTransformer, final UserRepository userRepository) {
 		this.adminTransformer = adminTransformer;
 		this.userRepository = userRepository;
 	}
@@ -39,7 +39,7 @@ public class AdminService {
 	 * @param adminDTO the entity to save
 	 * @return the persisted entity
 	 */
-	public AdminDTO save(AdminDTO adminDTO) {
+	public AdminDTO save(final AdminDTO adminDTO) {
 		log.debug("Request to save admin : {}", adminDTO);
 		return adminTransformer.transform(userRepository.save(adminTransformer.transform(adminDTO)));
 	}
@@ -51,7 +51,7 @@ public class AdminService {
 	 * @return the list of entities
 	 */
 	@Transactional(readOnly = true)
-	public Page<AdminDTO> findAll(Pageable pageable) {
+	public Page<AdminDTO> findAll(final Pageable pageable) {
 		log.debug("Request to get all admin users");
 		return userRepository.findAllByAuthority(ADMIN, pageable).map(adminTransformer::transform);
 	}
@@ -63,7 +63,7 @@ public class AdminService {
 	 * @return the entity
 	 */
 	@Transactional(readOnly = true)
-	public AdminDTO findOne(Long id) {
+	public AdminDTO findOne(final Long id) {
 		log.debug("Request to get admin : {}", id);
 		return adminTransformer.transform(userRepository.findOneByIdAndAuthority(id, ADMIN));
 	}
@@ -73,7 +73,7 @@ public class AdminService {
 	 *
 	 * @param id the id of the entity
 	 */
-	public void delete(Long id) {
+	public void delete(final Long id) {
 		log.debug("Request to delete admin : {}", id);
 		User admin = userRepository.findOneByIdAndAuthority(id, ADMIN);
 		if (admin != null) {

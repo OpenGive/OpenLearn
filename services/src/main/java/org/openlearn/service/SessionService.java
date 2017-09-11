@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class SessionService {
 
-	private final Logger log = LoggerFactory.getLogger(SessionService.class);
+	private static final Logger log = LoggerFactory.getLogger(SessionService.class);
 
 	private final ProgramRepository programRepository;
 
@@ -32,8 +32,8 @@ public class SessionService {
 
 	private final UserService userService;
 
-	public SessionService(ProgramRepository programRepository, SessionRepository sessionRepository,
-	                      SessionTransformer sessionTransformer, UserService userService) {
+	public SessionService(final ProgramRepository programRepository, final SessionRepository sessionRepository,
+	                      final SessionTransformer sessionTransformer, final UserService userService) {
 		this.programRepository = programRepository;
 		this.sessionRepository = sessionRepository;
 		this.sessionTransformer = sessionTransformer;
@@ -46,7 +46,7 @@ public class SessionService {
 	 * @param sessionDTO the entity to save
 	 * @return the persisted entity
 	 */
-	public SessionDTO save(SessionDTO sessionDTO) {
+	public SessionDTO save(final SessionDTO sessionDTO) {
 		log.debug("Request to save Session : {}", sessionDTO);
 		if (SecurityUtils.isAdmin() || inOrgOfCurrentUser(sessionDTO)) {
 			return sessionTransformer.transform(sessionRepository.save(sessionTransformer.transform(sessionDTO)));
@@ -62,7 +62,7 @@ public class SessionService {
 	 * @return the list of entities
 	 */
 	@Transactional(readOnly = true)
-	public Page<SessionDTO> findAll(Pageable pageable) {
+	public Page<SessionDTO> findAll(final Pageable pageable) {
 		log.debug("Request to get all Sessions");
 		User user = userService.getCurrentUser();
 		if (SecurityUtils.isAdmin()) {
@@ -80,7 +80,7 @@ public class SessionService {
 	 * @return the entity
 	 */
 	@Transactional(readOnly = true)
-	public SessionDTO findOne(Long id) {
+	public SessionDTO findOne(final Long id) {
 		log.debug("Request to get Session : {}", id);
 		Session session = sessionRepository.findOne(id);
 		if (session != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(session))) {
@@ -95,7 +95,7 @@ public class SessionService {
 	 *
 	 * @param id the id of the entity
 	 */
-	public void delete(Long id) {
+	public void delete(final Long id) {
 		log.debug("Request to delete Session : {}", id);
 		Session session = sessionRepository.findOne(id);
 		if (session != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(session))) {
@@ -105,25 +105,13 @@ public class SessionService {
 		}
 	}
 
-	/**
-	 * Determines if a session is in the organization of current user
-	 *
-	 * @param sessionDTO the session
-	 * @return true if session and current user are in the same org
-	 */
-	private boolean inOrgOfCurrentUser(SessionDTO sessionDTO) {
+	private boolean inOrgOfCurrentUser(final SessionDTO sessionDTO) {
 		User user = userService.getCurrentUser();
 		Program program = programRepository.findOne(sessionDTO.getProgramId());
 		return program != null && user.getOrganization().equals(program.getOrganization());
 	}
 
-	/**
-	 * Determines if a session is in the organization of current user
-	 *
-	 * @param session the session
-	 * @return true if session and current user are in the same org
-	 */
-	private boolean inOrgOfCurrentUser(Session session) {
+	private boolean inOrgOfCurrentUser(final Session session) {
 		User user = userService.getCurrentUser();
 		return user.getOrganization().equals(session.getProgram().getOrganization());
 	}

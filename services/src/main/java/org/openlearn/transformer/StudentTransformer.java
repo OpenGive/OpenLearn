@@ -4,21 +4,33 @@ import org.openlearn.domain.User;
 import org.openlearn.domain.enumeration.GradeLevel;
 import org.openlearn.dto.StudentDTO;
 import org.openlearn.repository.OrganizationRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class StudentTransformer {
 
+	private static final Logger log = LoggerFactory.getLogger(StudentTransformer.class);
+
 	private final UserTransformer userTransformer;
 
 	private final OrganizationRepository organizationRepository;
 
-	public StudentTransformer(UserTransformer userTransformer, OrganizationRepository organizationRepository) {
+	public StudentTransformer(final UserTransformer userTransformer,
+	                          final OrganizationRepository organizationRepository) {
 		this.userTransformer = userTransformer;
 		this.organizationRepository = organizationRepository;
 	}
 
+	/**
+	 * Transforms an entity into a DTO
+	 *
+	 * @param user entity to transform
+	 * @return the new DTO
+	 */
 	public StudentDTO transform(final User user) {
+		log.debug("Transforming user to student DTO : {}", user);
 		StudentDTO studentDTO = new StudentDTO();
 		userTransformer.transformUserToDTO(studentDTO, user);
 		studentDTO.setOrganizationId(user.getOrganization().getId());
@@ -34,7 +46,14 @@ public class StudentTransformer {
 		return studentDTO;
 	}
 
+	/**
+	 * Transforms a DTO into an entity
+	 *
+	 * @param studentDTO DTO to transform
+	 * @return the new entity
+	 */
 	public User transform(final StudentDTO studentDTO) {
+		log.debug("Transforming student DTO to user : {}", studentDTO);
 		User user = new User();
 		userTransformer.transformDTOToUser(user, studentDTO);
 		user.setOrganization(organizationRepository.findOne(studentDTO.getOrganizationId()));

@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ProgramService {
 
-	private final Logger log = LoggerFactory.getLogger(ProgramService.class);
+	private static final Logger log = LoggerFactory.getLogger(ProgramService.class);
 
 	private final ProgramRepository programRepository;
 
@@ -28,8 +28,8 @@ public class ProgramService {
 
 	private final UserService userService;
 
-	public ProgramService(ProgramRepository programRepository, ProgramTransformer programTransformer,
-	                      UserService userService) {
+	public ProgramService(final ProgramRepository programRepository, final ProgramTransformer programTransformer,
+	                      final UserService userService) {
 		this.programRepository = programRepository;
 		this.programTransformer = programTransformer;
 		this.userService = userService;
@@ -41,7 +41,7 @@ public class ProgramService {
 	 * @param programDTO the entity to save
 	 * @return the persisted entity
 	 */
-	public ProgramDTO save(ProgramDTO programDTO) {
+	public ProgramDTO save(final ProgramDTO programDTO) {
 		log.debug("Request to save Program : {}", programDTO);
 		if (SecurityUtils.isAdmin() || inOrgOfCurrentUser(programDTO)) {
 			return programTransformer.transform(programRepository.save(programTransformer.transform(programDTO)));
@@ -57,7 +57,7 @@ public class ProgramService {
 	 * @return the list of entities
 	 */
 	@Transactional(readOnly = true)
-	public Page<ProgramDTO> findAll(Pageable pageable) {
+	public Page<ProgramDTO> findAll(final Pageable pageable) {
 		log.debug("Request to get all Programs");
 		User user = userService.getCurrentUser();
 		if (SecurityUtils.isAdmin()) {
@@ -75,7 +75,7 @@ public class ProgramService {
 	 * @return the entity
 	 */
 	@Transactional(readOnly = true)
-	public ProgramDTO findOne(Long id) {
+	public ProgramDTO findOne(final Long id) {
 		log.debug("Request to get Program : {}", id);
 		Program program = programRepository.findOne(id);
 		if (program != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(program))) {
@@ -90,7 +90,7 @@ public class ProgramService {
 	 *
 	 * @param id the id of the entity
 	 */
-	public void delete(Long id) {
+	public void delete(final Long id) {
 		log.debug("Request to delete Program : {}", id);
 		Program program = programRepository.findOne(id);
 		if (program != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(program))) {
@@ -100,24 +100,12 @@ public class ProgramService {
 		}
 	}
 
-	/**
-	 * Determines if a program is in the organization of current user
-	 *
-	 * @param programDTO the program
-	 * @return true if program and current user are in the same org
-	 */
-	private boolean inOrgOfCurrentUser(ProgramDTO programDTO) {
+	private boolean inOrgOfCurrentUser(final ProgramDTO programDTO) {
 		User user = userService.getCurrentUser();
 		return user.getOrganization().getId().equals(programDTO.getOrganizationId());
 	}
 
-	/**
-	 * Determines if a program is in the organization of current user
-	 *
-	 * @param program the program
-	 * @return true if program and current user are in the same org
-	 */
-	private boolean inOrgOfCurrentUser(Program program) {
+	private boolean inOrgOfCurrentUser(final Program program) {
 		User user = userService.getCurrentUser();
 		return user.getOrganization().equals(program.getOrganization());
 	}

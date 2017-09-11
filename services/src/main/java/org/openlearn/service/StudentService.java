@@ -23,7 +23,7 @@ public class StudentService {
 
 	private static final Authority STUDENT = new Authority(AuthoritiesConstants.STUDENT);
 
-	private final Logger log = LoggerFactory.getLogger(StudentService.class);
+	private static final Logger log = LoggerFactory.getLogger(StudentService.class);
 
 	private final StudentTransformer studentTransformer;
 
@@ -31,8 +31,8 @@ public class StudentService {
 
 	private final UserService userService;
 
-	public StudentService(StudentTransformer studentTransformer, UserRepository userRepository,
-	                      UserService userService) {
+	public StudentService(final StudentTransformer studentTransformer, final UserRepository userRepository,
+	                      final UserService userService) {
 		this.studentTransformer = studentTransformer;
 		this.userRepository = userRepository;
 		this.userService = userService;
@@ -44,7 +44,7 @@ public class StudentService {
 	 * @param studentDTO the entity to save
 	 * @return the persisted entity
 	 */
-	public StudentDTO save(StudentDTO studentDTO) {
+	public StudentDTO save(final StudentDTO studentDTO) {
 		log.debug("Request to save student : {}", studentDTO);
 		if (AuthoritiesConstants.STUDENT.equals(studentDTO.getAuthority())
 			&& (SecurityUtils.isAdmin() || inOrgOfCurrentUser(studentDTO))) {
@@ -61,7 +61,7 @@ public class StudentService {
 	 * @return the list of entities
 	 */
 	@Transactional(readOnly = true)
-	public Page<StudentDTO> findAll(Pageable pageable) {
+	public Page<StudentDTO> findAll(final Pageable pageable) {
 		log.debug("Request to get all student users");
 		User user = userService.getCurrentUser();
 		if (SecurityUtils.isAdmin()) {
@@ -79,7 +79,7 @@ public class StudentService {
 	 * @return the entity
 	 */
 	@Transactional(readOnly = true)
-	public StudentDTO findOne(Long id) {
+	public StudentDTO findOne(final Long id) {
 		log.debug("Request to get student : {}", id);
 		User student = userRepository.findOneByIdAndAuthority(id, STUDENT);
 		if (student != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(student))) {
@@ -94,7 +94,7 @@ public class StudentService {
 	 *
 	 * @param id the id of the entity
 	 */
-	public void delete(Long id) {
+	public void delete(final Long id) {
 		log.debug("Request to delete student : {}", id);
 		User student = userRepository.findOneByIdAndAuthority(id, STUDENT);
 		if (student != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(student))) {
@@ -104,24 +104,12 @@ public class StudentService {
 		}
 	}
 
-	/**
-	 * Determines if a student is in the organization of current user
-	 *
-	 * @param studentDTO the student
-	 * @return true if student and current user are in the same org
-	 */
-	private boolean inOrgOfCurrentUser(StudentDTO studentDTO) {
+	private boolean inOrgOfCurrentUser(final StudentDTO studentDTO) {
 		User user = userService.getCurrentUser();
 		return user.getOrganization().getId().equals(studentDTO.getOrganizationId());
 	}
 
-	/**
-	 * Determines if a student is in the organization of current user
-	 *
-	 * @param student the student
-	 * @return true if student and current user are in the same org
-	 */
-	private boolean inOrgOfCurrentUser(User student) {
+	private boolean inOrgOfCurrentUser(final User student) {
 		User user = userService.getCurrentUser();
 		return user.getOrganization().equals(student.getOrganization());
 	}

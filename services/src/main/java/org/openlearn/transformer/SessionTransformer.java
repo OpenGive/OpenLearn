@@ -3,18 +3,29 @@ package org.openlearn.transformer;
 import org.openlearn.domain.Session;
 import org.openlearn.dto.SessionDTO;
 import org.openlearn.repository.ProgramRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SessionTransformer {
 
+	private static final Logger log = LoggerFactory.getLogger(SessionTransformer.class);
+
 	private final ProgramRepository programRepository;
 
-	public SessionTransformer(ProgramRepository programRepository) {
+	public SessionTransformer(final ProgramRepository programRepository) {
 		this.programRepository = programRepository;
 	}
 
+	/**
+	 * Transforms an entity into a DTO
+	 *
+	 * @param session entity to transform
+	 * @return the new DTO
+	 */
 	public SessionDTO transform(final Session session) {
+		log.debug("Transforming session to session DTO : {}", session);
 		SessionDTO sessionDTO = new SessionDTO();
 		sessionDTO.setId(session.getId());
 		sessionDTO.setName(session.getName());
@@ -25,7 +36,14 @@ public class SessionTransformer {
 		return sessionDTO;
 	}
 
+	/**
+	 * Transforms a DTO into an entity
+	 *
+	 * @param sessionDTO DTO to transform
+	 * @return the new entity
+	 */
 	public Session transform(final SessionDTO sessionDTO) {
+		log.debug("Transforming session DTO to session : {}", sessionDTO);
 		Session session = new Session();
 		session.setId(sessionDTO.getId());
 		session.setName(sessionDTO.getName());

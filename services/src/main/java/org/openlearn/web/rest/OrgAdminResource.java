@@ -24,11 +24,11 @@ public class OrgAdminResource {
 
 	private static final String ENDPOINT = "/api/org-administrators/";
 
-	private final Logger log = LoggerFactory.getLogger(OrgAdminResource.class);
+	private static final Logger log = LoggerFactory.getLogger(OrgAdminResource.class);
 
 	private final OrgAdminService orgAdminService;
 
-	public OrgAdminResource(OrgAdminService orgAdminService) {
+	public OrgAdminResource(final OrgAdminService orgAdminService) {
 		this.orgAdminService = orgAdminService;
 	}
 
@@ -41,7 +41,7 @@ public class OrgAdminResource {
 	 */
 	@GetMapping("/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
-	public ResponseEntity get(@PathVariable Long id) {
+	public ResponseEntity get(@PathVariable final Long id) {
 		log.debug("GET request to get org admin : {}", id);
 		OrgAdminDTO response = orgAdminService.findOne(id);
 		return ResponseEntity.ok(response);
@@ -56,7 +56,7 @@ public class OrgAdminResource {
 	 */
 	@GetMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
-	public ResponseEntity get(@ApiParam Pageable pageable) {
+	public ResponseEntity get(@ApiParam final Pageable pageable) {
 		log.debug("GET request for all org admins");
 		Page<OrgAdminDTO> response = orgAdminService.findAll(pageable);
 		return ResponseEntity.ok(response.getContent());
@@ -72,7 +72,7 @@ public class OrgAdminResource {
 	 */
 	@PostMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
-	public ResponseEntity create(@RequestBody @Valid OrgAdminDTO orgAdminDTO) throws URISyntaxException {
+	public ResponseEntity create(@RequestBody @Valid final OrgAdminDTO orgAdminDTO) throws URISyntaxException {
 		log.debug("POST request to create org admin : {}", orgAdminDTO);
 		OrgAdminDTO response = orgAdminService.save(orgAdminDTO);
 		return ResponseEntity.created(new URI(ENDPOINT + response.getId())).body(response);
@@ -87,7 +87,7 @@ public class OrgAdminResource {
 	 */
 	@PutMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
-	public ResponseEntity update(@RequestBody @Valid OrgAdminDTO orgAdminDTO) {
+	public ResponseEntity update(@RequestBody @Valid final OrgAdminDTO orgAdminDTO) {
 		log.debug("PUT request to update org admin : {}", orgAdminDTO);
 		OrgAdminDTO response = orgAdminService.save(orgAdminDTO);
 		return ResponseEntity.ok(response);
@@ -102,7 +102,7 @@ public class OrgAdminResource {
 	 */
 	@DeleteMapping("/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
-	public ResponseEntity delete(@PathVariable Long id) {
+	public ResponseEntity delete(@PathVariable final Long id) {
 		log.debug("DELETE request to delete org admin : {}", id);
 		orgAdminService.delete(id);
 		return ResponseEntity.ok().build();

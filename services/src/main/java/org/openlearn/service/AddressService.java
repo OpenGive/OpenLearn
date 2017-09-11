@@ -16,11 +16,11 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class AddressService {
 
-	private final Logger log = LoggerFactory.getLogger(AddressService.class);
+	private static final Logger log = LoggerFactory.getLogger(AddressService.class);
 
 	private final AddressRepository addressRepository;
 
-	public AddressService(AddressRepository addressRepository) {
+	public AddressService(final AddressRepository addressRepository) {
 		this.addressRepository = addressRepository;
 	}
 
@@ -30,7 +30,7 @@ public class AddressService {
 	 * @param address the entity to save
 	 * @return the persisted entity
 	 */
-	public Address save(Address address) {
+	public Address save(final Address address) {
 		log.debug("Request to save Address : {}", address);
 		return addressRepository.save(address);
 	}
@@ -42,7 +42,7 @@ public class AddressService {
 	 * @return the list of entities
 	 */
 	@Transactional(readOnly = true)
-	public Page<Address> findAll(Pageable pageable) {
+	public Page<Address> findAll(final Pageable pageable) {
 		log.debug("Request to get all Addresses");
 		return addressRepository.findAll(pageable);
 	}
@@ -54,7 +54,7 @@ public class AddressService {
 	 * @return the entity
 	 */
 	@Transactional(readOnly = true)
-	public Address findOne(Long id) {
+	public Address findOne(final Long id) {
 		log.debug("Request to get Address : {}", id);
 		return addressRepository.findOne(id);
 	}
@@ -64,7 +64,7 @@ public class AddressService {
 	 *
 	 * @param id the id of the entity
 	 */
-	public void delete(Long id) {
+	public void delete(final Long id) {
 		log.debug("Request to delete Address : {}", id);
 		addressRepository.delete(id);
 	}

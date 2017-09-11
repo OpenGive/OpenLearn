@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class OrganizationService {
 
-	private final Logger log = LoggerFactory.getLogger(OrganizationService.class);
+	private static final Logger log = LoggerFactory.getLogger(OrganizationService.class);
 
 	private final OrganizationRepository organizationRepository;
 
@@ -28,8 +28,8 @@ public class OrganizationService {
 
 	private final UserService userService;
 
-	public OrganizationService(OrganizationRepository organizationRepository,
-	                           OrganizationTransformer organizationTransformer, UserService userService) {
+	public OrganizationService(final OrganizationRepository organizationRepository,
+	                           final OrganizationTransformer organizationTransformer, final UserService userService) {
 		this.organizationRepository = organizationRepository;
 		this.organizationTransformer = organizationTransformer;
 		this.userService = userService;
@@ -41,7 +41,7 @@ public class OrganizationService {
 	 * @param organizationDTO the entity to save
 	 * @return the persisted entity
 	 */
-	public OrganizationDTO save(OrganizationDTO organizationDTO) {
+	public OrganizationDTO save(final OrganizationDTO organizationDTO) {
 		log.debug("Request to save Organization : {}", organizationDTO);
 		if (SecurityUtils.isAdmin() || isOrgOfCurrentUser(organizationDTO)) {
 			return organizationTransformer.transform(organizationRepository.save(organizationTransformer.transform(organizationDTO)));
@@ -57,7 +57,7 @@ public class OrganizationService {
 	 * @return the list of entities
 	 */
 	@Transactional(readOnly = true)
-	public Page<OrganizationDTO> findAll(Pageable pageable) {
+	public Page<OrganizationDTO> findAll(final Pageable pageable) {
 		log.debug("Request to get all Organizations");
 		User user = userService.getCurrentUser();
 		if (SecurityUtils.isAdmin()) {
@@ -75,7 +75,7 @@ public class OrganizationService {
 	 * @return the entity
 	 */
 	@Transactional(readOnly = true)
-	public OrganizationDTO findOne(Long id) {
+	public OrganizationDTO findOne(final Long id) {
 		log.debug("Request to get Organization : {}", id);
 		Organization organization = organizationRepository.findOne(id);
 		if (organization != null && (SecurityUtils.isAdmin() || isOrgOfCurrentUser(organization))) {
@@ -90,29 +90,17 @@ public class OrganizationService {
 	 *
 	 * @param id the id of the entity
 	 */
-	public void delete(Long id) {
+	public void delete(final Long id) {
 		log.debug("Request to delete Organization : {}", id);
 		organizationRepository.delete(id);
 	}
 
-	/**
-	 * Determines if a non-admin user is in an organization
-	 *
-	 * @param organizationDTO the organization
-	 * @return true if the current user is in the organization
-	 */
-	private boolean isOrgOfCurrentUser(OrganizationDTO organizationDTO) {
+	private boolean isOrgOfCurrentUser(final OrganizationDTO organizationDTO) {
 		User user = userService.getCurrentUser();
 		return user.getOrganization().getId().equals(organizationDTO.getId());
 	}
 
-	/**
-	 * Determines if a non-admin user is in an organization
-	 *
-	 * @param organization the organization
-	 * @return true if the current user is in the organization
-	 */
-	private boolean isOrgOfCurrentUser(Organization organization) {
+	private boolean isOrgOfCurrentUser(final Organization organization) {
 		User user = userService.getCurrentUser();
 		return user.getOrganization().equals(organization);
 	}

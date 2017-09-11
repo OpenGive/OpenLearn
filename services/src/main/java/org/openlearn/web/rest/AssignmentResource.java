@@ -24,11 +24,11 @@ public class AssignmentResource {
 
 	private static final String ENDPOINT = "/api/assignments/";
 
-	private final Logger log = LoggerFactory.getLogger(AssignmentResource.class);
+	private static final Logger log = LoggerFactory.getLogger(AssignmentResource.class);
 
 	private final AssignmentService assignmentService;
 
-	public AssignmentResource(AssignmentService assignmentService) {
+	public AssignmentResource(final AssignmentService assignmentService) {
 		this.assignmentService = assignmentService;
 	}
 
@@ -41,7 +41,7 @@ public class AssignmentResource {
 	 */
 	@GetMapping("/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity get(@PathVariable Long id) {
+	public ResponseEntity get(@PathVariable final Long id) {
 		log.debug("GET request to get assignment : {}", id);
 		AssignmentDTO response = assignmentService.findOne(id);
 		return ResponseEntity.ok(response);
@@ -56,7 +56,7 @@ public class AssignmentResource {
 	 */
 	@GetMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity get(@ApiParam Pageable pageable) {
+	public ResponseEntity get(@ApiParam final Pageable pageable) {
 		log.debug("GET request for all assignments");
 		Page<AssignmentDTO> response = assignmentService.findAll(pageable);
 		return ResponseEntity.ok(response.getContent());
@@ -72,7 +72,7 @@ public class AssignmentResource {
 	 */
 	@PostMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity create(@RequestBody @Valid AssignmentDTO assignmentDTO) throws URISyntaxException {
+	public ResponseEntity create(@RequestBody @Valid final AssignmentDTO assignmentDTO) throws URISyntaxException {
 		log.debug("POST request to create assignment : {}", assignmentDTO);
 		AssignmentDTO response = assignmentService.save(assignmentDTO);
 		return ResponseEntity.created(new URI(ENDPOINT + response.getId())).body(response);
@@ -87,7 +87,7 @@ public class AssignmentResource {
 	 */
 	@PutMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity update(@RequestBody @Valid AssignmentDTO assignmentDTO) {
+	public ResponseEntity update(@RequestBody @Valid final AssignmentDTO assignmentDTO) {
 		log.debug("PUT request to update assignment : {}", assignmentDTO);
 		AssignmentDTO response = assignmentService.save(assignmentDTO);
 		return ResponseEntity.ok(response);
@@ -102,7 +102,7 @@ public class AssignmentResource {
 	 */
 	@DeleteMapping("/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity delete(@PathVariable Long id) {
+	public ResponseEntity delete(@PathVariable final Long id) {
 		log.debug("DELETE request to delete assignment : {}", id);
 		assignmentService.delete(id);
 		return ResponseEntity.ok().build();
