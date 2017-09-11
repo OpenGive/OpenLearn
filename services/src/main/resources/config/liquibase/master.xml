@@ -6,11 +6,9 @@ xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liqui
 
 	<include file="classpath:config/liquibase/changelog/00000000000000_core_domain_schema.xml" relativeToChangelogFile="false"/>
 	<include file="classpath:config/liquibase/changelog/00000000000001_oauth_schema.xml" relativeToChangelogFile="false"/>
-	<include file="classpath:config/liquibase/changelog/99999999999999_test_data_load.xml" relativeToChangelogFile="false"/>
+	<!-- different data will be loaded depending on the liquibase.contexts property set in the Spring application properties file -->
+	<include file="classpath:config/liquibase/changelog/99999999999999_data_load.xml" relativeToChangelogFile="false"/>
 
 	<!--<include file="classpath:config/liquibase/changelog/99999999999999_load_system_user.xml" relativeToChangelogFile="false"/>-->
-
-	<!--this file loads 2000 users with classes and orgs into the db. Commment our for production-->
-	<!--<include file="classpath:config/liquibase/changelog/99999999999999_dummy_data_load.xml" relativeToChangelogFile="false"/>-->
 
 </databaseChangeLog>

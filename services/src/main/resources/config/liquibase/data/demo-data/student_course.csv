@@ -1,0 +1,2 @@
+id,student_id,course_id,grade,enroll_date,drop_date,complete,on_portfolio
+1,4,1,95,2017-09-04T12:00:00Z,null,TRUE,TRUE
