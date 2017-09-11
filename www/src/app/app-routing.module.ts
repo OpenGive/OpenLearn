@@ -11,7 +11,6 @@ import {CoursePageComponent} from "./pages/course-page/course-page.component";
 import {LandingPageComponent} from "./pages/landing-page/landing-page.component";
 import {LoginPageComponent} from "./pages/login-page/login-page.component";
 import {StudentPageComponent} from "./pages/student-page/student-page.component";
-import {PortfolioPageComponent} from "./pages/portfolio-page/portfolio-page.component"
 import {ProfilePageComponent} from "./pages/profile-page/profile-page.component";
 import {AdminAdministratorsComponent} from "./controls/admin/admin-tabs/admin-administrators.component";
 import {AdminOrgAdministratorsComponent} from "./controls/admin/admin-tabs/admin-org-administrators.component";
@@ -42,7 +41,7 @@ const ROUTES: Routes = [
     path: 'admin',
     component: AdminPageComponent,
     data: {
-      authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin]
+      authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor]
     },
     canActivate: [UserRouteAccessService],
     children: [
@@ -113,16 +112,16 @@ const ROUTES: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: AdminTabs.Administrator.route
+        redirectTo: AdminTabs.Course.route
       },
       {
         path: '**',
-        redirectTo: AdminTabs.Administrator.route
+        redirectTo: AdminTabs.Course.route
       }
     ]
   },
   {
-    path: 'dashboard',
+    path: 'dashboard', // TODO: Rename to my course page or something better than dashboard
     component: DashboardPageComponent,
     data: {
       authorities: [AppConstants.Role.Instructor]
@@ -133,7 +132,7 @@ const ROUTES: Routes = [
     path: 'course',
     component: CoursePageComponent,
     data: {
-      authorities: []
+      authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor, AppConstants.Role.Student]
     },
     canActivate: [UserRouteAccessService]
   },

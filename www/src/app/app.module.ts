@@ -8,13 +8,11 @@ import {HttpModule} from "@angular/http";
 import {AppComponent} from "./app.component";
 import {LandingPageComponent} from "./pages/landing-page/landing-page.component";
 import {LoginPageComponent} from "./pages/login-page/login-page.component";
-import {PortfolioPageComponent} from "./pages/portfolio-page/portfolio-page.component";
 import {NavigationMenuComponent} from "./controls/navigation-menu/navigation-menu.component";
 import {MaterialModule, MdNativeDateModule} from "@angular/material";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import "hammerjs";
-import {PortfolioCardComponent} from "./controls/portfolio/portfolio-card/portfolio-card.component";
 import {CourseCardComponent} from "./controls/course/course-card/course-card.component";
 import {UserService} from "./services/user.service";
 import {StudentCourseService} from "./services/student-course.service";
@@ -29,8 +27,6 @@ import {AccessDeniedPageComponent} from './pages/access-denied-page/access-denie
 import {CourseListComponent} from './controls/course/course-list/course-list.component';
 import {ForgotPasswordDialogComponent} from "./controls/forgot-password-dialog/forgot-password-dialog.component";
 import {AdminPageComponent} from "./pages/admin-page/admin-page.component";
-import {PortfolioService} from './services/portfolio.service';
-import {PortfolioListComponent} from './controls/portfolio/portfolio-list/portfolio-list.component';
 import {AdminGridService} from "./services/admin-grid.service";
 import {CoursePageComponent} from "./pages/course-page/course-page.component";
 import {AdminService} from "./services/admin.service";
@@ -43,7 +39,6 @@ import {NotifyService} from "./services/notify.service";
 import {OLAdminModule} from "./controls/admin/admin.module";
 import {OLCourseModule} from "./controls/course/course.module";
 import {DashboardPageComponent} from "./pages/dashboard-page/dashboard-page.component";
-import {ResetPasswordPageComponent} from "./pages/reset-password-page/reset-password-page.component";
 import {DataService} from "./services/data.service";
 
 @NgModule({
@@ -54,20 +49,16 @@ import {DataService} from "./services/data.service";
     ForgotPasswordDialogComponent,
     AdminPageComponent,
     NavigationMenuComponent,
-    PortfolioCardComponent,
     CoursePageComponent,
     StudentPageComponent,
     CourseCardComponent,
     AccessDeniedPageComponent,
     CourseListComponent,
-    PortfolioPageComponent,
-    PortfolioListComponent,
     CourseViewComponent,
     CourseGridComponent,
     CourseResourceGridComponent,
     ProfilePageComponent,
-    DashboardPageComponent,
-    ResetPasswordPageComponent
+    DashboardPageComponent
   ],
   imports: [
     AppRoutingModule,
@@ -93,7 +84,6 @@ import {DataService} from "./services/data.service";
     AuthServerProvider,
     StateStorageService,
     HttpWrapperService,
-    PortfolioService,
     AdminService,
     DataService,
     AdminGridService,
