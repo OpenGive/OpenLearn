@@ -3,6 +3,7 @@ package org.openlearn.transformer;
 import org.openlearn.domain.Program;
 import org.openlearn.dto.ProgramDTO;
 import org.openlearn.repository.OrganizationRepository;
+import org.openlearn.repository.ProgramRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -14,8 +15,12 @@ public class ProgramTransformer {
 
 	private final OrganizationRepository organizationRepository;
 
-	public ProgramTransformer(final OrganizationRepository organizationRepository) {
+	private final ProgramRepository programRepository;
+
+	public ProgramTransformer(final OrganizationRepository organizationRepository,
+	                          final ProgramRepository programRepository) {
 		this.organizationRepository = organizationRepository;
+		this.programRepository = programRepository;
 	}
 
 	/**
@@ -42,8 +47,8 @@ public class ProgramTransformer {
 	 */
 	public Program transform(final ProgramDTO programDTO) {
 		log.debug("Transforming program DTO to program : {}", programDTO);
-		Program program = new Program();
-		program.setId(programDTO.getId());
+		Program program = programDTO.getId() == null ? new Program() : programRepository.findOne(programDTO.getId());
+		// TODO: Error handling
 		program.setName(programDTO.getName());
 		program.setDescription(programDTO.getDescription());
 		program.setOrganization(organizationRepository.findOne(programDTO.getOrganizationId()));

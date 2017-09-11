@@ -9,6 +9,8 @@ import {AdminService} from "../../../../services/admin.service";
 import {AppConstants} from "../../../../app.constants";
 import {NotifyService} from "../../../../services/notify.service";
 import {UserService} from "../../../../services/user.service";
+import {Admin} from "../../../../models/admin.model";
+import {AdminTabs} from "../../admin.constants";
 
 @Component({
   selector: 'admin-administrators-form',
@@ -17,7 +19,7 @@ import {UserService} from "../../../../services/user.service";
 })
 export class AdminAdministratorsFormComponent implements OnInit {
 
-  @Input('item') formAdministrator: any;
+  @Input('item') formAdministrator: Admin;
   @Input() adding: boolean;
   @Input('organizations') organizations: any[];
   editing: boolean;
@@ -34,13 +36,13 @@ export class AdminAdministratorsFormComponent implements OnInit {
     lastName: '',
     login: '',
     password: '',
-    notes: '',
     email: '',
     phoneNumber: '',
     streetAddress1: '',
     streetAddress2: '',
     city: '',
-    postalCode: ''
+    postalCode: '',
+    notes: ''
   };
   validationMessages = {
     firstName: {
@@ -58,12 +60,6 @@ export class AdminAdministratorsFormComponent implements OnInit {
       required: 'Password is required',
       minlength: 'Password must be at least 6 characters long',
       maxlength: 'Password cannot be more than 50 characters long'
-    },
-    authorities: {
-      required: 'Administrator must have 1 role'
-    },
-    notes: {
-      maxlength: 'Notes cannot be more than 2000 characters long'
     },
     email: {
       // email: 'Email is not formatted correctly', TODO: See comment in buildForm()
@@ -88,6 +84,9 @@ export class AdminAdministratorsFormComponent implements OnInit {
     },
     postalCode: {
       pattern: 'Postal Code is not formatted correctly'
+    },
+    notes: {
+      maxlength: 'Notes cannot be more than 2000 characters long'
     }
   };
 
@@ -123,9 +122,6 @@ export class AdminAdministratorsFormComponent implements OnInit {
         Validators.minLength(6),
         Validators.maxLength(50)
       ] : []],
-      notes: [this.formAdministrator.notes, [
-        Validators.maxLength(2000)
-      ]],
       email: [this.formAdministrator.email, [
         // Validators.email, TODO: This forces email to be required, https://github.com/angular/angular/pull/16902 is the fix, pattern below is the workaround
         Validators.pattern(AppConstants.OLValidators.Email),
@@ -150,6 +146,9 @@ export class AdminAdministratorsFormComponent implements OnInit {
       state: [this.formAdministrator.state],
       postalCode: [this.formAdministrator.postalCode, [
         Validators.pattern(AppConstants.OLValidators.PostalCode)
+      ]],
+      notes: [this.formAdministrator.notes, [
+        Validators.maxLength(2000)
       ]]
     });
     this.administratorForm.valueChanges.subscribe(data => this.onValueChanged());
@@ -194,7 +193,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
 
   private getStates(): void {
     this.states = AppConstants.States;
-    this.filteredStates = this.administratorForm.get('address').get('state')
+    this.filteredStates = this.administratorForm.get('state')
       .valueChanges
       .startWith(null)
       .map(val => val ? this.filterStates(val) : this.states.slice());
@@ -204,15 +203,8 @@ export class AdminAdministratorsFormComponent implements OnInit {
     return this.states.filter(state => new RegExp(`${val}`, 'gi').test(state.name));
   }
 
-  private setOrganizationID(): void {
-    if (this.administratorForm.valid && this.administratorForm.get('organizationIds').value != null) {
-      this.administratorForm.get('organizationIds').setValue([this.administratorForm.get('organizationIds').value[0]])
-    }
-  }
-
   save(): void {
     if (this.administratorForm.valid) {
-      this.setOrganizationID();
       if (this.adding) {
         this.add();
       } else {
@@ -237,7 +229,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
 
   private update(): void {
     const toUpdate = this.prepareToUpdate();
-    this.userService.update(toUpdate).subscribe(resp => {
+    this.adminService.update(AdminTabs.Administrator.route, toUpdate).subscribe(resp => {
       this.dialogRef.close({
         type: 'UPDATE',
         data: resp
@@ -256,14 +248,14 @@ export class AdminAdministratorsFormComponent implements OnInit {
       login: this.administratorForm.get('login').value,
       password: this.administratorForm.get('password').value,
       authority: AppConstants.Role.Admin,
-      notes: this.administratorForm.get('notes').value,
       email: this.administratorForm.get('email').value,
       phoneNumber: this.administratorForm.get('phoneNumber').value,
       streetAddress1: this.administratorForm.get('streetAddress1').value,
       streetAddress2: this.administratorForm.get('streetAddress2').value,
       city: this.administratorForm.get('city').value,
       state: this.administratorForm.get('state').value,
-      postalCode: this.administratorForm.get('postalCode').value
+      postalCode: this.administratorForm.get('postalCode').value,
+      notes: this.administratorForm.get('notes').value,
     };
   }
 

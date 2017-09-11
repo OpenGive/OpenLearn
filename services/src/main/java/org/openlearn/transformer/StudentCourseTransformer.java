@@ -4,6 +4,7 @@ import org.openlearn.domain.Authority;
 import org.openlearn.domain.StudentCourse;
 import org.openlearn.dto.StudentCourseDTO;
 import org.openlearn.repository.CourseRepository;
+import org.openlearn.repository.StudentCourseRepository;
 import org.openlearn.repository.UserRepository;
 import org.openlearn.security.AuthoritiesConstants;
 import org.slf4j.Logger;
@@ -21,14 +22,18 @@ public class StudentCourseTransformer {
 
 	private final CourseTransformer courseTransformer;
 
+	private final StudentCourseRepository studentCourseRepository;
+
 	private final StudentTransformer studentTransformer;
 
 	private final UserRepository userRepository;
 
 	public StudentCourseTransformer(final CourseRepository courseRepository, final CourseTransformer courseTransformer,
+	                                final StudentCourseRepository studentCourseRepository,
 	                                final StudentTransformer studentTransformer, final UserRepository userRepository) {
 		this.courseRepository = courseRepository;
 		this.courseTransformer = courseTransformer;
+		this.studentCourseRepository = studentCourseRepository;
 		this.studentTransformer = studentTransformer;
 		this.userRepository = userRepository;
 	}
@@ -82,15 +87,15 @@ public class StudentCourseTransformer {
 	 */
 	public StudentCourse transform(final StudentCourseDTO studentCourseDTO) {
 		log.debug("Transforming student course DTO to student course : {}", studentCourseDTO);
-		StudentCourse studentCourse = new StudentCourse();
-		studentCourse.setId(studentCourseDTO.getId());
+		StudentCourse studentCourse = studentCourseDTO.getId() == null ? new StudentCourse() : studentCourseRepository.findOne(studentCourseDTO.getId());
+		// TODO: Error handling
 		studentCourse.setStudent(userRepository.findOneByIdAndAuthority(studentCourseDTO.getStudentId(), STUDENT));
 		studentCourse.setCourse(courseRepository.findOne(studentCourseDTO.getCourseId()));
-		studentCourse.setGrade(studentCourseDTO.getGrade());
-		studentCourse.setEnrollDate(studentCourseDTO.getEnrollDate());
-		studentCourse.setDropDate(studentCourseDTO.getDropDate());
-		studentCourse.setComplete(studentCourseDTO.getComplete());
-		studentCourse.setOnPortfolio(studentCourseDTO.getOnPortfolio());
+		if (studentCourseDTO.getGrade() != null) studentCourse.setGrade(studentCourseDTO.getGrade());
+		if (studentCourseDTO.getEnrollDate() != null) studentCourse.setEnrollDate(studentCourseDTO.getEnrollDate());
+		if (studentCourseDTO.getDropDate() != null) studentCourse.setDropDate(studentCourseDTO.getDropDate());
+		if (studentCourseDTO.getComplete() != null) studentCourse.setComplete(studentCourseDTO.getComplete());
+		if (studentCourseDTO.getOnPortfolio() != null) studentCourse.setOnPortfolio(studentCourseDTO.getOnPortfolio());
 		return studentCourse;
 	}
 }

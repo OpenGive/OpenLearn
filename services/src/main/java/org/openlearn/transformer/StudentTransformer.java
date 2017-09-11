@@ -4,6 +4,7 @@ import org.openlearn.domain.User;
 import org.openlearn.domain.enumeration.GradeLevel;
 import org.openlearn.dto.StudentDTO;
 import org.openlearn.repository.OrganizationRepository;
+import org.openlearn.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -13,14 +14,17 @@ public class StudentTransformer {
 
 	private static final Logger log = LoggerFactory.getLogger(StudentTransformer.class);
 
-	private final UserTransformer userTransformer;
-
 	private final OrganizationRepository organizationRepository;
 
-	public StudentTransformer(final UserTransformer userTransformer,
-	                          final OrganizationRepository organizationRepository) {
-		this.userTransformer = userTransformer;
+	private final UserRepository userRepository;
+
+	private final UserTransformer userTransformer;
+
+	public StudentTransformer(final OrganizationRepository organizationRepository, final UserRepository userRepository,
+	                          final UserTransformer userTransformer) {
 		this.organizationRepository = organizationRepository;
+		this.userRepository = userRepository;
+		this.userTransformer = userTransformer;
 	}
 
 	/**
@@ -54,7 +58,8 @@ public class StudentTransformer {
 	 */
 	public User transform(final StudentDTO studentDTO) {
 		log.debug("Transforming student DTO to user : {}", studentDTO);
-		User user = new User();
+		User user = studentDTO.getId() == null ? new User() : userRepository.findOne(studentDTO.getId());
+		// TODO: Error handling
 		userTransformer.transformDTOToUser(user, studentDTO);
 		user.setOrganization(organizationRepository.findOne(studentDTO.getOrganizationId()));
 		user.setFourteenPlus(studentDTO.getFourteenPlus());
@@ -64,8 +69,8 @@ public class StudentTransformer {
 		user.setGuardianPhone(studentDTO.getGuardianPhone());
 		user.setSchool(studentDTO.getSchool());
 		user.setGradeLevel(GradeLevel.valueOf(studentDTO.getGradeLevel()));
-		user.setStateStudentId(studentDTO.getStateStudentId());
-		user.setOrgStudentId(studentDTO.getOrgStudentId());
+		if (studentDTO.getStateStudentId() != null) user.setStateStudentId(studentDTO.getStateStudentId());
+		if (studentDTO.getOrgStudentId() != null) user.setOrgStudentId(studentDTO.getOrgStudentId());
 		return user;
 	}
 }

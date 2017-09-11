@@ -4,6 +4,7 @@ import org.openlearn.domain.Authority;
 import org.openlearn.domain.StudentAssignment;
 import org.openlearn.dto.StudentAssignmentDTO;
 import org.openlearn.repository.AssignmentRepository;
+import org.openlearn.repository.StudentAssignmentRepository;
 import org.openlearn.repository.UserRepository;
 import org.openlearn.security.AuthoritiesConstants;
 import org.slf4j.Logger;
@@ -23,14 +24,18 @@ public class StudentAssignmentTransformer {
 
 	private final StudentTransformer studentTransformer;
 
+	private final StudentAssignmentRepository studentAssignmentRepository;
+
 	private final UserRepository userRepository;
 
 	public StudentAssignmentTransformer(final AssignmentRepository assignmentRepository,
 	                                    final AssignmentTransformer assignmentTransformer,
+	                                    final StudentAssignmentRepository studentAssignmentRepository,
 	                                    final StudentTransformer studentTransformer,
 	                                    final UserRepository userRepository) {
 		this.assignmentRepository = assignmentRepository;
 		this.assignmentTransformer = assignmentTransformer;
+		this.studentAssignmentRepository = studentAssignmentRepository;
 		this.studentTransformer = studentTransformer;
 		this.userRepository = userRepository;
 	}
@@ -82,13 +87,13 @@ public class StudentAssignmentTransformer {
 	 */
 	public StudentAssignment transform(final StudentAssignmentDTO studentAssignmentDTO) {
 		log.debug("Transforming student assignment DTO to student assignment : {}", studentAssignmentDTO);
-		StudentAssignment studentAssignment = new StudentAssignment();
-		studentAssignment.setId(studentAssignmentDTO.getId());
+		StudentAssignment studentAssignment = studentAssignmentDTO.getId() == null ? new StudentAssignment() : studentAssignmentRepository.findOne(studentAssignmentDTO.getId());
+		// TODO: Error handling
 		studentAssignment.setStudent(userRepository.findOneByIdAndAuthority(studentAssignmentDTO.getStudentId(), STUDENT));
 		studentAssignment.setAssignment(assignmentRepository.findOne(studentAssignmentDTO.getAssignmentId()));
-		studentAssignment.setGrade(studentAssignmentDTO.getGrade());
-		studentAssignment.setComplete(studentAssignmentDTO.getComplete());
-		studentAssignment.setOnPortfolio(studentAssignmentDTO.getOnPortfolio());
+		if (studentAssignmentDTO.getGrade() != null) studentAssignment.setGrade(studentAssignmentDTO.getGrade());
+		if (studentAssignmentDTO.getComplete() != null) studentAssignment.setComplete(studentAssignmentDTO.getComplete());
+		if (studentAssignmentDTO.getOnPortfolio() != null) studentAssignment.setOnPortfolio(studentAssignmentDTO.getOnPortfolio());
 		return studentAssignment;
 	}
 }

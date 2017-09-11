@@ -2,6 +2,7 @@ package org.openlearn.transformer;
 
 import org.openlearn.domain.Organization;
 import org.openlearn.dto.OrganizationDTO;
+import org.openlearn.repository.OrganizationRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,10 @@ public class OrganizationTransformer {
 
 	private static final Logger log = LoggerFactory.getLogger(OrganizationTransformer.class);
 
-	public OrganizationTransformer() {
+	private final OrganizationRepository organizationRepository;
+
+	public OrganizationTransformer(final OrganizationRepository organizationRepository) {
+		this.organizationRepository = organizationRepository;
 	}
 
 	/**
@@ -41,14 +45,14 @@ public class OrganizationTransformer {
 	 */
 	public Organization transform(final OrganizationDTO organizationDTO) {
 		log.debug("Transforming organization DTO to organization : {}", organizationDTO);
-		Organization organization = new Organization();
-		organization.setId(organizationDTO.getId());
+		Organization organization = organizationDTO.getId() == null ? new Organization() : organizationRepository.findOne(organizationDTO.getId());
+		// TODO: Error handling
 		organization.setName(organizationDTO.getName());
 		organization.setDescription(organizationDTO.getDescription());
 		organization.setPrimaryContactName(organizationDTO.getPrimaryContactName());
 		organization.setPrimaryContactInfo(organizationDTO.getPrimaryContactInfo());
-		organization.setSecondaryContactName(organizationDTO.getSecondaryContactName());
-		organization.setSecondaryContactInfo(organizationDTO.getSecondaryContactInfo());
+		if (organizationDTO.getSecondaryContactName() != null) organization.setSecondaryContactName(organizationDTO.getSecondaryContactName());
+		if (organizationDTO.getSecondaryContactInfo() != null) organization.setSecondaryContactInfo(organizationDTO.getSecondaryContactInfo());
 		return organization;
 	}
 }

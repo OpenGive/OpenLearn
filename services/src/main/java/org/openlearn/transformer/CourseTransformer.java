@@ -3,6 +3,7 @@ package org.openlearn.transformer;
 import org.openlearn.domain.Authority;
 import org.openlearn.domain.Course;
 import org.openlearn.dto.CourseDTO;
+import org.openlearn.repository.CourseRepository;
 import org.openlearn.repository.SessionRepository;
 import org.openlearn.repository.UserRepository;
 import org.openlearn.security.AuthoritiesConstants;
@@ -17,11 +18,15 @@ public class CourseTransformer {
 
 	private static final Logger log = LoggerFactory.getLogger(CourseTransformer.class);
 
+	private final CourseRepository courseRepository;
+
 	private final SessionRepository sessionRepository;
 
 	private final UserRepository userRepository;
 
-	public CourseTransformer(final SessionRepository sessionRepository, final UserRepository userRepository) {
+	public CourseTransformer(final CourseRepository courseRepository, final SessionRepository sessionRepository,
+	                         final UserRepository userRepository) {
+		this.courseRepository = courseRepository;
 		this.sessionRepository = sessionRepository;
 		this.userRepository = userRepository;
 	}
@@ -55,17 +60,17 @@ public class CourseTransformer {
 	 */
 	public Course transform(final CourseDTO courseDTO) {
 		log.debug("Transforming course DTO to course : {}", courseDTO);
-		Course course = new Course();
-		course.setId(courseDTO.getId());
+		Course course = courseDTO.getId() == null ? new Course() : courseRepository.findOne(courseDTO.getId());
+		// TODO: Error handling
 		course.setName(courseDTO.getName());
 		course.setDescription(courseDTO.getDescription());
 		course.setStartDate(courseDTO.getStartDate());
 		course.setEndDate(courseDTO.getEndDate());
 		course.setSession(sessionRepository.findOne(courseDTO.getSessionId()));
-		course.setInstructor(userRepository.findOneByIdAndAuthority(courseDTO.getInstructorId(), INSTRUCTOR));
-		course.setLocations(courseDTO.getLocations());
-		course.setTimes(courseDTO.getTimes());
 		course.setOrganization(course.getSession().getOrganization());
+		course.setInstructor(userRepository.findOneByIdAndAuthority(courseDTO.getInstructorId(), INSTRUCTOR));
+		if (courseDTO.getLocations() != null) course.setLocations(courseDTO.getLocations());
+		if (courseDTO.getTimes() != null) course.setTimes(courseDTO.getTimes());
 		return course;
 	}
 }

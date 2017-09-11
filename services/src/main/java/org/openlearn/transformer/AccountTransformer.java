@@ -5,9 +5,11 @@ import org.openlearn.domain.User;
 import org.openlearn.domain.enumeration.State;
 import org.openlearn.dto.AccountDTO;
 import org.openlearn.repository.AddressRepository;
+import org.openlearn.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 @Service
 public class AccountTransformer {
@@ -16,8 +18,11 @@ public class AccountTransformer {
 
 	private final AddressRepository addressRepository;
 
-	public AccountTransformer(final AddressRepository addressRepository) {
+	private final UserRepository userRepository;
+
+	public AccountTransformer(final AddressRepository addressRepository, final UserRepository userRepository) {
 		this.addressRepository = addressRepository;
+		this.userRepository = userRepository;
 	}
 
 	/**
@@ -36,7 +41,7 @@ public class AccountTransformer {
 		accountDTO.setLastName(user.getLastName());
 		accountDTO.setEmail(user.getEmail());
 		accountDTO.setPhoneNumber(user.getPhoneNumber());
-		if (!user.getAddresses().isEmpty()) {
+		if (!CollectionUtils.isEmpty(user.getAddresses())) {
 			Address address = user.getAddresses().get(0);
 			accountDTO.setStreetAddress1(address.getStreetAddress1());
 			accountDTO.setStreetAddress2(address.getStreetAddress2());
@@ -52,34 +57,36 @@ public class AccountTransformer {
 
 	/**
 	 * Transforms a DTO into an entity
-	 * NOTE: Does not save the id, authority, or login, as that should be done using one of the other DTOs
+	 * NOTE: Does not save the authority, or login, as that should be done using one of the other DTOs
 	 *
 	 * @param accountDTO DTO to transform
 	 * @return the new entity
 	 */
 	public User transform(final AccountDTO accountDTO) {
 		log.debug("Transforming account DTO to user : {}", accountDTO);
-		User user = new User();
-		user.setFirstName(accountDTO.getFirstName());
-		user.setLastName(accountDTO.getLastName());
-		user.setEmail(accountDTO.getEmail());
-		user.setPhoneNumber(accountDTO.getPhoneNumber());
+		User user = accountDTO.getId() == null ? new User() : userRepository.findOne(accountDTO.getId());
+		// TODO: Error handling
+		if (accountDTO.getFirstName() != null) user.setFirstName(accountDTO.getFirstName());
+		if (accountDTO.getLastName() != null) user.setLastName(accountDTO.getLastName());
+		if (accountDTO.getEmail() != null) user.setEmail(accountDTO.getEmail());
+		if (accountDTO.getPhoneNumber() != null) user.setPhoneNumber(accountDTO.getPhoneNumber());
 		if (!isAddressEmpty(accountDTO)) {
-			Address address = (user.getAddresses().isEmpty() ? new Address() : user.getAddresses().get(0));
-			address.setStreetAddress1(accountDTO.getStreetAddress1());
-			address.setStreetAddress2(accountDTO.getStreetAddress2());
-			address.setCity(accountDTO.getCity());
-			address.setState(State.valueOf(accountDTO.getState()));
-			address.setPostalCode(accountDTO.getPostalCode());
+			Address address = (CollectionUtils.isEmpty(user.getAddresses()) ? new Address() : user.getAddresses().get(0));
+			if (accountDTO.getStreetAddress1() != null) address.setStreetAddress1(accountDTO.getStreetAddress1());
+			if (accountDTO.getStreetAddress2() != null) address.setStreetAddress2(accountDTO.getStreetAddress2());
+			if (accountDTO.getCity() != null) address.setCity(accountDTO.getCity());
+			if (accountDTO.getState() != null) address.setState(State.valueOf(accountDTO.getState()));
+			if (accountDTO.getPostalCode() != null) address.setPostalCode(accountDTO.getPostalCode());
 			address.setUser(user);
 			addressRepository.save(address);
 		}
-		user.setNotes(accountDTO.getNotes());
-		user.setOrgRole(accountDTO.getOrgRole());
+		if (accountDTO.getNotes() != null) user.setNotes(accountDTO.getNotes());
+		if (accountDTO.getOrgRole() != null) user.setOrgRole(accountDTO.getOrgRole());
 		return user;
 	}
 
 	private boolean isAddressEmpty(AccountDTO accountDTO) {
+		// TODO: Validate address
 		return accountDTO.getStreetAddress1() == null
 			&& accountDTO.getStreetAddress2() == null
 			&& accountDTO.getCity() == null

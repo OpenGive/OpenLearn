@@ -3,6 +3,7 @@ package org.openlearn.transformer;
 import org.openlearn.domain.Authority;
 import org.openlearn.domain.PortfolioItem;
 import org.openlearn.dto.PortfolioItemDTO;
+import org.openlearn.repository.PortfolioItemRepository;
 import org.openlearn.repository.UserRepository;
 import org.openlearn.security.AuthoritiesConstants;
 import org.slf4j.Logger;
@@ -16,9 +17,13 @@ public class PortfolioItemTransformer {
 
 	private static final Logger log = LoggerFactory.getLogger(PortfolioItemTransformer.class);
 
+	private final PortfolioItemRepository portfolioItemRepository;
+
 	private final UserRepository userRepository;
 
-	public PortfolioItemTransformer(final UserRepository userRepository) {
+	public PortfolioItemTransformer(final PortfolioItemRepository portfolioItemRepository,
+	                                final UserRepository userRepository) {
+		this.portfolioItemRepository = portfolioItemRepository;
 		this.userRepository = userRepository;
 	}
 
@@ -47,12 +52,12 @@ public class PortfolioItemTransformer {
 	 */
 	public PortfolioItem transform(final PortfolioItemDTO portfolioItemDTO) {
 		log.debug("Transforming portfolio item DTO to portfolio item : {}", portfolioItemDTO);
-		PortfolioItem portfolioItem = new PortfolioItem();
-		portfolioItem.setId(portfolioItemDTO.getId());
+		PortfolioItem portfolioItem = portfolioItemDTO.getId() == null ? new PortfolioItem() : portfolioItemRepository.findOne(portfolioItemDTO.getId());
+		// TODO: Error handling
 		portfolioItem.setName(portfolioItemDTO.getName());
 		portfolioItem.setDescription(portfolioItemDTO.getDescription());
 		portfolioItem.setStudent(userRepository.findOneByIdAndAuthority(portfolioItemDTO.getStudentId(), STUDENT));
-		portfolioItem.setUrl(portfolioItemDTO.getUrl());
+		if (portfolioItemDTO.getUrl() != null) portfolioItem.setUrl(portfolioItemDTO.getUrl());
 		portfolioItem.setOrganization(portfolioItem.getStudent().getOrganization());
 		return portfolioItem;
 	}
