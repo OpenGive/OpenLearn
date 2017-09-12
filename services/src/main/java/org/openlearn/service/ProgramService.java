@@ -63,7 +63,7 @@ public class ProgramService {
 		if (SecurityUtils.isAdmin()) {
 			return programRepository.findAll(pageable).map(programTransformer::transform);
 		} else {
-			return programRepository.findAllByOrganization(user.getOrganization(), pageable)
+			return programRepository.findByOrganization(user.getOrganization(), pageable)
 				.map(programTransformer::transform);
 		}
 	}

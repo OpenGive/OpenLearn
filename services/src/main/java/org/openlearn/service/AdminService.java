@@ -53,7 +53,7 @@ public class AdminService {
 	@Transactional(readOnly = true)
 	public Page<AdminDTO> findAll(final Pageable pageable) {
 		log.debug("Request to get all admin users");
-		return userRepository.findAllByAuthority(ADMIN, pageable).map(adminTransformer::transform);
+		return userRepository.findByAuthority(ADMIN, pageable).map(adminTransformer::transform);
 	}
 
 	/**

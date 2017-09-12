@@ -68,7 +68,7 @@ public class SessionService {
 		if (SecurityUtils.isAdmin()) {
 			return sessionRepository.findAll(pageable).map(sessionTransformer::transform);
 		} else {
-			return sessionRepository.findAllByOrganization(user.getOrganization(), pageable)
+			return sessionRepository.findByOrganization(user.getOrganization(), pageable)
 				.map(sessionTransformer::transform);
 		}
 	}

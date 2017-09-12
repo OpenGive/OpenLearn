@@ -16,7 +16,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	User findOneByIdAndAuthority(Long id, Authority authority);
 
-	Page<User> findAllByAuthority(Authority authority, Pageable pageable);
+	Page<User> findByAuthority(Authority authority, Pageable pageable);
 
-	Page<User> findAllByOrganizationAndAuthority(Organization organization, Authority authority, Pageable pageable);
+	Page<User> findByOrganizationAndAuthority(Organization organization, Authority authority, Pageable pageable);
 }

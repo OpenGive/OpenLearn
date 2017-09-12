@@ -11,5 +11,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface SessionRepository extends JpaRepository<Session, Long> {
 
-	Page<Session> findAllByOrganization(Organization organization, Pageable pageable);
+	Page<Session> findByOrganization(Organization organization, Pageable pageable);
 }

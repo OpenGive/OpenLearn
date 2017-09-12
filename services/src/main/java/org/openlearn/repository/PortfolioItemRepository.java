@@ -11,5 +11,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface PortfolioItemRepository extends JpaRepository<PortfolioItem, Long> {
 
-	Page<PortfolioItem> findAllByOrganization(Organization organization, Pageable pageable);
+	Page<PortfolioItem> findByOrganization(Organization organization, Pageable pageable);
 }
