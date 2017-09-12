@@ -202,7 +202,7 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
 
   private getStates(): void {
     this.states = AppConstants.States;
-    this.filteredStates = this.orgAdministratorForm.get('address').get('state')
+    this.filteredStates = this.orgAdministratorForm.get('state')
       .valueChanges
       .startWith(null)
       .map(val => val ? this.filterStates(val) : this.states.slice());

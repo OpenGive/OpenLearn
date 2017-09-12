@@ -204,7 +204,7 @@ export class AdminInstructorsFormComponent implements OnInit {
 
   private getStates(): void {
     this.states = AppConstants.States;
-    this.filteredStates = this.instructorForm.get('address').get('state')
+    this.filteredStates = this.instructorForm.get('state')
       .valueChanges
       .startWith(null)
       .map(val => val ? this.filterStates(val) : this.states.slice());
