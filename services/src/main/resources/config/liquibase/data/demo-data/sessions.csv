@@ -1,0 +1,5 @@
+id,name,description,start_date,end_date,program_id,organization_id
+1,Winter 2016,,2016-12-04T12:00:00Z,2017-01-12T12:00:00Z,1,1
+2,Summer 2015,,2015-05-08T12:00:00Z,2015-08-03T12:00:00Z,2,2
+3,Ongoing,,2017-09-08T12:00:00Z,2017-12-08T12:00:00Z,3,3
+4,Summer 2017,,2017-05-08T12:00:00Z,2017-08-08T12:00:00Z,4,3
