@@ -39,7 +39,7 @@ public class AssignmentResource {
 	 * @return the ResponseEntity with status 200 (OK) and the assignment in the body
 	 *      or with ... TODO: Error handling
 	 */
-	@GetMapping("/{id}")
+	@GetMapping(path = "/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
 	public ResponseEntity get(@PathVariable final Long id) {
 		log.debug("GET request to get assignment : {}", id);
@@ -59,6 +59,21 @@ public class AssignmentResource {
 	public ResponseEntity get(@ApiParam final Pageable pageable) {
 		log.debug("GET request for all assignments");
 		Page<AssignmentDTO> response = assignmentService.findAll(pageable);
+		return ResponseEntity.ok(response.getContent());
+	}
+
+	/**
+	 * GET  / : get a list of all assignments for a course
+	 *
+	 * @param pageable the pagination information
+	 * @return the ResponseEntity with status 200 (OK) and a list of assignments in the body
+	 *      or with ... TODO: Error handling
+	 */
+	@GetMapping(path = "/course/{id}")
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
+	public ResponseEntity getByCourse(@PathVariable final Long id, @ApiParam final Pageable pageable) {
+		log.debug("GET request for all assignments by course: {}", id);
+		Page<AssignmentDTO> response = assignmentService.findByCourse(id, pageable);
 		return ResponseEntity.ok(response.getContent());
 	}
 
@@ -100,7 +115,7 @@ public class AssignmentResource {
 	 * @return the ResponseEntity with status 200 (OK)
 	 *      or with ... TODO: Error handling
 	 */
-	@DeleteMapping("/{id}")
+	@DeleteMapping(path = "/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
 	public ResponseEntity delete(@PathVariable final Long id) {
 		log.debug("DELETE request to delete assignment : {}", id);

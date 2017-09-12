@@ -65,9 +65,9 @@ public class OrgAdminService {
 		log.debug("Request to get all org admin users");
 		User user = userService.getCurrentUser();
 		if (SecurityUtils.isAdmin()) {
-			return userRepository.findAllByAuthority(ORG_ADMIN, pageable).map(orgAdminTransformer::transform);
+			return userRepository.findByAuthority(ORG_ADMIN, pageable).map(orgAdminTransformer::transform);
 		} else {
-			return userRepository.findAllByOrganizationAndAuthority(user.getOrganization(), ORG_ADMIN, pageable)
+			return userRepository.findByOrganizationAndAuthority(user.getOrganization(), ORG_ADMIN, pageable)
 				.map(orgAdminTransformer::transform);
 		}
 	}

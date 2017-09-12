@@ -63,7 +63,7 @@ public class OrganizationService {
 		if (SecurityUtils.isAdmin()) {
 			return organizationRepository.findAll(pageable).map(organizationTransformer::transform);
 		} else {
-			return organizationRepository.findAllById(user.getOrganization().getId(), pageable)
+			return organizationRepository.findById(user.getOrganization().getId(), pageable)
 				.map(organizationTransformer::transform);
 		}
 	}

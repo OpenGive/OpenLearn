@@ -73,7 +73,7 @@ public class PortfolioItemService {
 		if (SecurityUtils.isAdmin()) {
 			return portfolioItemRepository.findAll(pageable).map(portfolioItemTransformer::transform);
 		} else {
-			return portfolioItemRepository.findAllByOrganization(user.getOrganization(), pageable)
+			return portfolioItemRepository.findByOrganization(user.getOrganization(), pageable)
 				.map(portfolioItemTransformer::transform);
 		}
 	}

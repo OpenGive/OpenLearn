@@ -12,5 +12,5 @@ import org.springframework.data.jpa.repository.*;
  */
 public interface ProgramRepository extends JpaRepository<Program, Long> {
 
-	Page<Program> findAllByOrganization(Organization organization, Pageable pageable);
+	Page<Program> findByOrganization(Organization organization, Pageable pageable);
 }

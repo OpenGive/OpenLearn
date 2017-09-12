@@ -69,9 +69,27 @@ public class AssignmentService {
 		if (SecurityUtils.isAdmin()) {
 			return assignmentRepository.findAll(pageable).map(assignmentTransformer::transform);
 		} else {
-			return assignmentRepository.findAllByOrganization(user.getOrganization(), pageable)
+			return assignmentRepository.findByOrganization(user.getOrganization(), pageable)
 				.map(assignmentTransformer::transform);
 		}
+	}
+
+	/**
+	 * Get all the assignments for a course
+	 *
+	 * @param id the course id
+	 * @param pageable the pagination information
+	 * @return the list of entities
+	 */
+	@Transactional(readOnly = true)
+	public Page<AssignmentDTO> findByCourse(final Long id, final Pageable pageable) {
+		log.debug("Request to get StudentCourses by Course : {}", id);
+		Course course = courseRepository.findOne(id);
+		if (course != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(course))) {
+			return assignmentRepository.findByCourse(course, pageable).map(assignmentTransformer::transform);
+		}
+		// TODO: Error handling / logging
+		return null;
 	}
 
 	/**
@@ -115,5 +133,10 @@ public class AssignmentService {
 	private boolean inOrgOfCurrentUser(final Assignment assignment) {
 		User user = userService.getCurrentUser();
 		return user.getOrganization().equals(assignment.getCourse().getSession().getProgram().getOrganization());
+	}
+
+	private boolean inOrgOfCurrentUser(final Course course) {
+		User user = userService.getCurrentUser();
+		return user.getOrganization().equals(course.getOrganization());
 	}
 }

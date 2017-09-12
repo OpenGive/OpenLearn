@@ -68,7 +68,7 @@ public class CourseService {
 		if (SecurityUtils.isAdmin()) {
 			return courseRepository.findAll(pageable).map(courseTransformer::transform);
 		} else {
-			return courseRepository.findAllByOrganization(user.getOrganization(), pageable)
+			return courseRepository.findByOrganization(user.getOrganization(), pageable)
 				.map(courseTransformer::transform);
 		}
 	}

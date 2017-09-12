@@ -1,0 +1,136 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+				   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+				   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+	<property name="now" value="now()" dbms="h2"/>
+
+	<property name="now" value="now()" dbms="mysql"/>
+	<property name="autoIncrement" value="true"/>
+
+	<property name="floatType" value="float4" dbms="postgresql, h2"/>
+	<property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+	<!--
+		Test data loader
+	-->
+	<changeSet id="99999999999999-1" author="meverett" context="!test and !old">
+		<loadData file="config/liquibase/data/authority.csv" tableName="authority"/>
+		<loadData file="config/liquibase/data/organization.csv" tableName="organization"/>
+		<loadData file="config/liquibase/data/user.csv" tableName="user"/>
+		<loadData file="config/liquibase/data/program.csv" tableName="program"/>
+		<loadData file="config/liquibase/data/session.csv" tableName="session"/>
+		<loadData file="config/liquibase/data/course.csv" tableName="course"/>
+		<loadData file="config/liquibase/data/assignment.csv" tableName="assignment"/>
+		<loadData file="config/liquibase/data/portfolio_item.csv" tableName="portfolio_item"/>
+		<loadData file="config/liquibase/data/student_assignment.csv" tableName="student_assignment"/>
+		<loadData file="config/liquibase/data/student_course.csv" tableName="student_course"/>
+		<loadData file="config/liquibase/data/address.csv" tableName="address"/>
+	</changeSet>
+
+	<!--
+		Old dev - this configuration loads 2000 users with classes and orgs into the db.
+	-->
+	<changeSet id="99999999999999-2" author="wdraper" context="old">
+
+		<loadData encoding="UTF-8"
+				  file="config/liquibase/data/dummy-data/dummy-data-user.csv"
+				  separator=","
+				  tableName="user">
+			<column name="is_14_plus" type="boolean"/>
+			<column name="activated" type="boolean"/>
+			<column name="created_date" type="timestamp"/>
+		</loadData>
+
+		<loadData encoding="UTF-8"
+				  file="config/liquibase/data/dummy-data/dummy-data-user_authorities.csv"
+				  separator=","
+				  tableName="user_authority"/>
+
+		<loadData encoding="UTF-8"
+				  file="config/liquibase/data/dummy-data/dummy-data-organizations.csv"
+				  separator=","
+				  tableName="ORGANIZATION"/>
+
+		<loadData encoding="UTF-8"
+				  file="config/liquibase/data/dummy-data/dummy-data-programs.csv"
+				  separator=","
+				  tableName="PROGRAM"/>
+
+		<loadData encoding="UTF-8"
+				  file="config/liquibase/data/dummy-data/dummy-data-sessions.csv"
+				  separator=","
+				  tableName="session"/>
+
+		<loadData encoding="UTF-8"
+				  file="config/liquibase/data/dummy-data/dummy-data-courses.csv"
+				  separator=","
+				  tableName="course"/>
+
+		<loadData encoding="UTF-8"
+				  file="config/liquibase/data/dummy-data/dummy-data-users_orgs.csv"
+				  separator=","
+				  tableName="user_org">
+		</loadData>
+
+		<loadData encoding="UTF-8"
+				  file="config/liquibase/data/dummy-data/dummy-data-student_course.csv"
+				  separator=","
+				  tableName="student_course">
+		</loadData>
+
+	</changeSet>
+
+	<!--
+		Demo data loader, used for http://dev.openlearn.opengive.io
+	-->
+	<changeSet id="99999999999999-3" author="Stephen Rudolph" context="test">
+
+		<loadData encoding="UTF-8"
+				  file="config/liquibase/data/demo-data/authority.csv"
+				  separator=","
+				  tableName="authority"/>
+
+		<loadData encoding="UTF-8"
+				  file="config/liquibase/data/demo-data/organizations.csv"
+				  separator=","
+				  tableName="organization"/>
+
+		<loadData encoding="UTF-8"
+				  file="config/liquibase/data/demo-data/user.csv"
+				  separator=","
+				  tableName="user">
+			<column name="fourteen_plus" type="BOOLEAN"/>
+		</loadData>
+
+		<loadData encoding="UTF-8"
+				  file="config/liquibase/data/demo-data/programs.csv"
+				  separator=","
+				  tableName="program"/>
+
+		<loadData encoding="UTF-8"
+				  file="config/liquibase/data/demo-data/sessions.csv"
+				  separator=","
+				  tableName="session"/>
+
+		<loadData encoding="UTF-8"
+				  file="config/liquibase/data/demo-data/courses.csv"
+				  separator=","
+				  tableName="course"/>
+
+		<loadData encoding="UTF-8"
+				  file="config/liquibase/data/demo-data/student_course.csv"
+				  separator=","
+				  tableName="student_course">
+			<column name="complete" type="BOOLEAN"/>
+			<column name="on_portfolio" type="BOOLEAN"/>
+		</loadData>
+
+		<loadData encoding="UTF-8"
+				  file="config/liquibase/data/demo-data/address.csv"
+				  separator=","
+				  tableName="address"/>
+
+	</changeSet>
+</databaseChangeLog>
+
