@@ -214,15 +214,8 @@ export class AdminInstructorsFormComponent implements OnInit {
     return this.states.filter(state => new RegExp(`${val}`, 'gi').test(state.name));
   }
 
-  private setOrganizationID(): void {
-    if (this.instructorForm.valid && this.instructorForm.get('organizationIds').value != null) {
-      this.instructorForm.get('organizationIds').setValue([this.instructorForm.get('organizationIds').value[0]])
-    }
-  }
-
   save(): void {
     if (this.instructorForm.valid) {
-      this.setOrganizationID();
       if (this.adding) {
         this.add();
       } else {
@@ -248,7 +241,7 @@ export class AdminInstructorsFormComponent implements OnInit {
 
   private update(): void {
     const toUpdate = this.prepareToUpdate();
-    this.userService.update(toUpdate).subscribe(resp => {
+    this.adminService.update(AdminTabs.Instructor.route, toUpdate).subscribe(resp => {
       this.dialogRef.close({
         type: 'UPDATE',
         data: resp

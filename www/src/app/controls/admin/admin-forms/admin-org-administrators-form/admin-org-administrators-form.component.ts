@@ -9,6 +9,8 @@ import {AdminService} from "../../../../services/admin.service";
 import {AppConstants} from "../../../../app.constants";
 import {NotifyService} from "../../../../services/notify.service";
 import {UserService} from "../../../../services/user.service";
+import {OrgAdmin} from "../../../../models/org-admin.model";
+import {AdminTabs} from "../../admin.constants";
 
 @Component({
   selector: 'admin-org-administrators-form',
@@ -95,7 +97,8 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
   constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
               private fb: FormBuilder,
               private userService: UserService,
-              private notify: NotifyService) {}
+              private notify: NotifyService,
+              private adminService: AdminService) {}
 
   ngOnInit(): void {
     this.buildForm();
@@ -212,15 +215,8 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
     return this.states.filter(state => new RegExp(`${val}`, 'gi').test(state.name));
   }
 
-  private setOrganizationID(): void {
-    if (this.orgAdministratorForm.valid && this.orgAdministratorForm.get('organizationIds').value != null) {
-      this.orgAdministratorForm.get('organizationIds').setValue([this.orgAdministratorForm.get('organizationIds').value[0]])
-    }
-  }
-
   save(): void {
     if (this.orgAdministratorForm.valid) {
-      this.setOrganizationID();
       if (this.adding) {
         this.add();
       } else {
@@ -245,7 +241,7 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
 
   private update(): void {
     const toUpdate = this.prepareToUpdate();
-    this.userService.update(toUpdate).subscribe(resp => {
+    this.adminService.update(AdminTabs.OrgAdministrator.route, toUpdate).subscribe(resp => {
       this.dialogRef.close({
         type: 'UPDATE',
         data: resp
@@ -264,7 +260,6 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
       login: this.orgAdministratorForm.get('login').value,
       password: this.orgAdministratorForm.get('password').value,
       authority: AppConstants.Role.OrgAdmin,
-      biography: this.orgAdministratorForm.get('biography').value,
       email: this.orgAdministratorForm.get('email').value,
       phoneNumber: this.orgAdministratorForm.get('phoneNumber').value,
       streetAddress1: this.orgAdministratorForm.get('streetAddress1').value,
