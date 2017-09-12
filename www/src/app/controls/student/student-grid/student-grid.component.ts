@@ -8,7 +8,7 @@ import {StudentGradeDialogComponent} from "../grade-dialog.component";
 import {CourseStudentDialogComponent} from "../course-student-dialog.component";
 import {StudentCourseService} from "../../../services/student-course.service";
 import {Student} from "../../../models/student.model";
-
+import {DataService} from "../../../services/data.service";
 @Component({
   selector: 'app-student-grid',
   templateUrl: './student-grid.component.html',
@@ -24,6 +24,7 @@ export class StudentGridComponent implements OnInit {
   reverse: boolean;
 
   constructor(private dialog: MdDialog,
+              private dataService: DataService,
               private courseService: StudentCourseService) {}
 
   ngOnInit(): void {
@@ -88,15 +89,7 @@ export class StudentGridComponent implements OnInit {
   }
 
   viewCourseDetails(course): void {
-    this.dialog.open(CourseStudentDialogComponent,  {
-      data: {
-        item: course,
-          adding: false
-      },
-      disableClose: true
-    }).afterClosed().subscribe(resp => {
-
-    });
+    this.dataService.setCourseById(course.id);
   }
 
   stopPropagation(e): void {
