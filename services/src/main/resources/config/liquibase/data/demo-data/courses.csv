@@ -1,2 +1,16 @@
 id,name,description,start_date,end_date,session_id,instructor_id,locations,times,organization_id
-1,"Structured Writing","Learn how to make very dense decks.",2017-09-05T12:00:00Z,2017-09-06T12:00:00Z,1,3,Boardroom,null,1
+1,"Aerospace Engineering","",2017-05-08T12:00:00,2017-08-06T12:00:00,4,1,"Community College of Denver on Lowry Campus",null,3
+2,"Architecture","",2017-05-08T12:00:00,2017-08-06T12:00:00,4,2,"Community College of Denver on Lowry Campus",null,3
+3,"Ad Astra (To the stars)","Interdisciplinary Approach to Science",2017-05-08T12:00:00,2017-08-06T12:00:00,4,3,"Community College of Denver on Lowry Campus",null,3
+4,"Construction Management & Construction Principles","",2017-05-08T12:00:00,2017-08-06T12:00:00,4,4,"Community College of Denver on Lowry Campus",null,3
+5,"Lego Robotics","",2017-05-08T12:00:00,2017-08-06T12:00:00,4,5,"Community College of Denver on Lowry Campus",null,3
+6,"Fun with Microcontrollers","",2017-05-08T12:00:00,2017-08-06T12:00:00,4,6,"Community College of Denver on Lowry Campus",null,3
+7,"\"Synergy\": Multi-Topic","Electrical: DC & AC Currents; Electrical: DC & AC Currents; Climate Change; Bioengineering",2017-05-08T12:00:00,2017-08-06T12:00:00,4,7,"Community College of Denver on Lowry Campus",null,3
+8,"Aerospace Engineering","",2017-05-08T12:00:00,2017-08-06T12:00:00,3,1,"Community College of Denver on Lowry Campus",null,3
+9,"Architecture","",2017-05-08T12:00:00,2017-08-06T12:00:00,3,2,"Community College of Denver on Lowry Campus",null,3
+10,"Ad Astra (To the stars)","Interdisciplinary Approach to Science",2017-05-08T12:00:00,2017-08-06T12:00:00,3,3,"Community College of Denver on Lowry Campus",null,3
+11,"Construction Management & Construction Principles","",2017-05-08T12:00:00,2017-08-06T12:00:00,3,4,"Community College of Denver on Lowry Campus",null,3
+12,"Lego Robotics","",2017-05-08T12:00:00,2017-08-06T12:00:00,3,5,"Community College of Denver on Lowry Campus",null,3
+13,"Fun with Microcontrollers II","",2017-05-08T12:00:00,2017-08-06T12:00:00,3,6,"Community College of Denver on Lowry Campus",null,3
+14,"\"Synergy\": Multi-Topic","Electrical: DC & AC Currents; Electrical: DC & AC Currents; Climate Change; Bioengineering",2017-05-08T12:00:00,2017-08-06T12:00:00,3,7,"Community College of Denver on Lowry Campus",null,3
+15,"Fun with Microcontrollers III","",2017-01-08T12:00:00,2017-05-06T12:00:00,5,6,"Community College of Denver on Lowry Campus",null,3
