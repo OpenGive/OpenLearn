@@ -209,8 +209,8 @@ export class CoursePageComponent implements OnInit {
       id: this.course.id,
       name: this.courseForm.get('name').value,
       description: this.courseForm.get('description').value,
-      session: this.courseForm.get('sessionId').value.id,
-      instructor: this.courseForm.get('instructorId').value.id,
+      sessionId: this.courseForm.get('sessionId').value.id,
+      instructorId: this.courseForm.get('instructorId').value.id,
       startDate: this.courseForm.get('startDate').value,
       endDate: this.courseForm.get('endDate').value
     };
