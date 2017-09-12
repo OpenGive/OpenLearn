@@ -1,6 +1,6 @@
 <div>
   <div id="grid-header" fxLayout="row" fxLayoutAlign="space-between center">
-    <span class="grid-header-text">Enrolled Students</span>
+    <span class="grid-header-text">Enrolled Courses</span>
     <button md-raised-button fxHide.xs (click)="add()" class="grid-add-button" mdTooltip="Add">
       <md-icon>add</md-icon>
     </button>
@@ -18,9 +18,9 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let row of students" (click)="viewStudentDetails(row.student)">
-          <td>{{row.student.firstName}}</td>
-          <td>{{row.student.lastName}}</td>
+        <tr *ngFor="let row of courses" (click)="viewCourseDetails(row.course)">
+          <td>{{row.course.name}}</td>
+          <td>{{row.course.description}}</td>
           <td>{{row.grade}}
             <md-icon (click)="editGrade(row, $event)" class="edit-icon" mdTooltip="Edit">edit</md-icon>
           </td>

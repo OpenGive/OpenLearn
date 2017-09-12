@@ -93,12 +93,12 @@
 
 <div class="student-form" fxLayout="row" *ngIf="!studentView">
   <div fxFlex="50%">
-    <app-course-grid [course]="course"></app-course-grid>
+    <app-student-grid [student]="student"></app-student-grid>
   </div>
-  <div fxFlex="50%">
-    <app-course-resource-grid [course]="course"></app-course-resource-grid>
-  </div>
-</div>
-<div class="course-form" fxLayout="row" fxFlex="100%" *ngIf="studentView">
-  <app-course-resource-grid [course]="course"></app-course-resource-grid>
+  <!--<div fxFlex="50%">-->
+    <!--<app-course-resource-grid [course]="course"></app-course-resource-grid>-->
+  <!--</div>-->
+<!--</div>-->
+<!--<div class="course-form" fxLayout="row" fxFlex="100%" *ngIf="studentView">-->
+  <!--<app-course-resource-grid [course]="course"></app-course-resource-grid>-->
 </div>

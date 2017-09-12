@@ -3,20 +3,21 @@ import {MdDialog} from "@angular/material";
 import * as _ from "lodash";
 
 import {Course} from '../../../models/course.model';
-import {CourseDialogComponent} from "../course-dialog.component";
-import {GradeDialogComponent} from "../grade-dialog.component";
+import {StudentDialogComponent} from "../student-dialog.component";
+import {StudentGradeDialogComponent} from "../grade-dialog.component";
 import {CourseStudentDialogComponent} from "../course-student-dialog.component";
 import {StudentCourseService} from "../../../services/student-course.service";
+import {Student} from "../../../models/student.model";
 
 @Component({
-  selector: 'app-course-grid',
+  selector: 'app-student-grid',
   templateUrl: './student-grid.component.html',
   styleUrls: ['./student-grid.component.css']
 })
-export class CourseGridComponent implements OnInit {
+export class StudentGridComponent implements OnInit {
 
-  @Input() course: Course;
-  students: any[];
+  @Input() student: Student;
+  courses: any[];
   columns: any[];
 
   sortColumn: any;
@@ -29,12 +30,12 @@ export class CourseGridComponent implements OnInit {
 
     this.columns = [
       {
-        id: "student.firstName",
-        name: "First Name"
+        id: "course.name",
+        name: "Name"
       },
       {
-        id: "student.lastName",
-        name: "Last Name"
+        id: "course.description",
+        name: "Description"
       },
       {
         id: "grade",
@@ -42,14 +43,14 @@ export class CourseGridComponent implements OnInit {
       }
     ];
 
-    this.getStudents();
+    this.getCourses();
 
   }
 
   add(): void {
-    this.dialog.open(CourseDialogComponent, {
+    this.dialog.open(StudentDialogComponent, {
       data: {
-        course: this.course
+        course: this.student
       },
       width: "400px",
       height: "600px",
@@ -59,42 +60,42 @@ export class CourseGridComponent implements OnInit {
     });
   }
 
-  editGrade(student, e): void {
+  editGrade(course, e): void {
     this.stopPropagation(e);
-    this.dialog.open(GradeDialogComponent, {
+    this.dialog.open(StudentGradeDialogComponent, {
       data: {
-        course: this.course,
-        student: student
+        course: course,
       },
       width: "50px",
       height: "200px",
       disableClose: true
     }).afterClosed().subscribe(resp => {
-      this.handleEditGradeResponse(resp)
+       this.handleEditGradeResponse(resp)
     });
   }
 
-  removeStudent(id: Number): void {
-    this.courseService.deleteStudentCourse(id).subscribe(resp => {
-      this.students = _.filter(this.students, student => student.id !== id);
-    });
-  }
+  // removeStudent(id: Number): void {
+  //   this.courseService.deleteStudentCourse(id).subscribe(resp => {
+  //     this.students = _.filter(this.students, student => student.id !== id);
+  //   });
+  // }
 
-  getStudents(): void {
-    this.courseService.getStudentCoursesByCourse(this.course.id).subscribe(students => {
-      this.students = students;
+  getCourses(): void {
+    this.courseService.getStudentCoursesByStudent(this.student.id).subscribe(courses => {
+      this.courses = courses;
+      console.log(courses);
     })
   }
 
-  viewStudentDetails(student): void {
-    this.dialog.open(CourseStudentDialogComponent, {
+  viewCourseDetails(course): void {
+    this.dialog.open(CourseStudentDialogComponent,  {
       data: {
-        item: student,
-        adding: false
+        item: course,
+          adding: false
       },
       disableClose: true
     }).afterClosed().subscribe(resp => {
-      this.handleEditStudentResponse(resp);
+
     });
   }
 
@@ -102,18 +103,6 @@ export class CourseGridComponent implements OnInit {
     e.stopPropagation();
   }
 
-   private handleEditStudentResponse(resp): void {
-    if (resp) {
-      console.log("Response from edit student", resp);
-
-      for (var i = 0; i < this.students.length; i++) {
-         let student = this.students[i];
-         if (student.student.id == resp.data.id) {
-           this.students[i].student = resp.data;
-         }
-      }
-    }
-  }
 
   private handleAddStudentResponse(resp): void {
     if (resp) {
@@ -121,21 +110,11 @@ export class CourseGridComponent implements OnInit {
 
       var studentData = resp.data;
 
-      this.students.push(studentData);
+      this.courses.push(studentData);
     }
   }
 
   private handleEditGradeResponse(resp): void {
-    if (resp) {
-      console.log("Response from edit grade", resp);
-
-      for (var i = 0; i < this.students.length; i++) {
-         let student = this.students[i];
-         if (student.student.id == resp.data.student.id) {
-           student.grade = resp.data.grade;
-         }
-      }
-
-    }
+    console.log(resp);
   }
 }

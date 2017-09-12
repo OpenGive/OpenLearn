@@ -33,11 +33,13 @@ import {AdminService} from "./services/admin.service";
 import {StudentPageComponent} from "./pages/student-page/student-page.component";
 import {CourseViewComponent} from "./controls/course/course-view/course-view.component";
 import {CourseGridComponent} from "./controls/course/course-grid/course-grid.component";
+import {StudentGridComponent} from "./controls/student/student-grid/student-grid.component"
 import {CourseResourceGridComponent} from "./controls/course/course-resource-grid/course-resource-grid.component";
 import {ProfilePageComponent} from "./pages/profile-page/profile-page.component";
 import {NotifyService} from "./services/notify.service";
 import {OLAdminModule} from "./controls/admin/admin.module";
 import {OLCourseModule} from "./controls/course/course.module";
+import {OLStudentModule} from "./controls/student/student.module";
 import {DashboardPageComponent} from "./pages/dashboard-page/dashboard-page.component";
 import {DataService} from "./services/data.service";
 
@@ -56,6 +58,7 @@ import {DataService} from "./services/data.service";
     CourseListComponent,
     CourseViewComponent,
     CourseGridComponent,
+    StudentGridComponent,
     CourseResourceGridComponent,
     ProfilePageComponent,
     DashboardPageComponent
@@ -72,6 +75,7 @@ import {DataService} from "./services/data.service";
     MdNativeDateModule,
     OLAdminModule,
     OLCourseModule,
+    OLStudentModule,
     ReactiveFormsModule
   ],
   providers: [
