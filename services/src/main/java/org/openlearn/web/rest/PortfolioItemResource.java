@@ -39,7 +39,7 @@ public class PortfolioItemResource {
 	 * @return the ResponseEntity with status 200 (OK) and the portfolio item in the body
 	 *      or with ... TODO: Error handling
 	 */
-	@GetMapping("/{id}")
+	@GetMapping(path = "/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
 	public ResponseEntity get(@PathVariable final Long id) {
 		log.debug("GET request to get portfolio item : {}", id);
@@ -100,7 +100,7 @@ public class PortfolioItemResource {
 	 * @return the ResponseEntity with status 200 (OK)
 	 *      or with ... TODO: Error handling
 	 */
-	@DeleteMapping("/{id}")
+	@DeleteMapping(path = "/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
 	public ResponseEntity delete(@PathVariable final Long id) {
 		log.debug("DELETE request to delete portfolio item : {}", id);

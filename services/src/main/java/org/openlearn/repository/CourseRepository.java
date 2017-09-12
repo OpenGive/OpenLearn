@@ -11,5 +11,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface CourseRepository extends JpaRepository<Course, Long> {
 
-	Page<Course> findAllByOrganization(Organization organization, Pageable pageable);
+	Page<Course> findByOrganization(Organization organization, Pageable pageable);
 }

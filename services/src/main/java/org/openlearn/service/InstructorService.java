@@ -65,9 +65,9 @@ public class InstructorService {
 		log.debug("Request to get all instructor users");
 		User user = userService.getCurrentUser();
 		if (SecurityUtils.isAdmin()) {
-			return userRepository.findAllByAuthority(INSTRUCTOR, pageable).map(instructorTransformer::transform);
+			return userRepository.findByAuthority(INSTRUCTOR, pageable).map(instructorTransformer::transform);
 		} else {
-			return userRepository.findAllByOrganizationAndAuthority(user.getOrganization(), INSTRUCTOR, pageable)
+			return userRepository.findByOrganizationAndAuthority(user.getOrganization(), INSTRUCTOR, pageable)
 				.map(instructorTransformer::transform);
 		}
 	}

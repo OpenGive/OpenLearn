@@ -39,7 +39,7 @@ public class StudentCourseResource {
 	 * @return the ResponseEntity with status 200 (OK) and the studentCourse in the body
 	 *      or with ... TODO: Error handling
 	 */
-	@GetMapping("/{id}")
+	@GetMapping(path = "/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
 	public ResponseEntity get(@PathVariable final Long id) {
 		log.debug("GET request to get studentCourse : {}", id);
@@ -54,7 +54,7 @@ public class StudentCourseResource {
 	 * @return the ResponseEntity with status 200 (OK) and a list of studentCourse with course objects in the body
 	 *      or with ... TODO: Error handling
 	 */
-	@GetMapping("/student/{id}")
+	@GetMapping(path = "/student/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
 	public ResponseEntity getByStudent(@PathVariable final Long id, @ApiParam final Pageable pageable) {
 		log.debug("GET request to get studentCourses by student : {}", id);
@@ -69,7 +69,7 @@ public class StudentCourseResource {
 	 * @return the ResponseEntity with status 200 (OK) and a list of studentCourse with student objects in the body
 	 *      or with ... TODO: Error handling
 	 */
-	@GetMapping("/course/{id}")
+	@GetMapping(path = "/course/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
 	public ResponseEntity getByCourse(@PathVariable final Long id, @ApiParam final Pageable pageable) {
 		log.debug("GET request to get studentCourses by course : {}", id);
@@ -115,7 +115,7 @@ public class StudentCourseResource {
 	 * @return the ResponseEntity with status 200 (OK)
 	 *      or with ... TODO: Error handling
 	 */
-	@DeleteMapping("/{id}")
+	@DeleteMapping(path = "/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
 	public ResponseEntity delete(@PathVariable final Long id) {
 		log.debug("DELETE request to delete studentCourse : {}", id);
