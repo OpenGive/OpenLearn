@@ -238,7 +238,6 @@ export class CoursePageComponent implements OnInit {
   }
 
   displayInstructor(instructor: any): string {
-    console.log(instructor);
     return instructor ? instructor.lastName + ', ' + instructor.firstName : '';
   }
 

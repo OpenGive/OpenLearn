@@ -65,7 +65,6 @@ export class CourseGridComponent implements OnInit {
     this.stopPropagation(e);
     this.dialog.open(GradeDialogComponent, {
       data: {
-        course: this.course,
         student: student
       },
       width: "50px",

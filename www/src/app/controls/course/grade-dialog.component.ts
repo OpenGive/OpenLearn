@@ -32,6 +32,7 @@ export class GradeDialogComponent implements OnInit {
   grade: Number;
 
   ngOnInit(): void {
+    console.log(this.data);
     this.grade = this.data.student.grade;
   }
 
@@ -46,7 +47,7 @@ export class GradeDialogComponent implements OnInit {
 
   save(): void {
     this.data.student.grade = this.grade;
-    this.courseService.updateStudentCourse(this.data.student.id).subscribe(resp => {
+    this.courseService.updateStudentCourse(this.data.student).subscribe(resp => {
       this.dialog.close({
         type: 'ADD',
         data: resp
