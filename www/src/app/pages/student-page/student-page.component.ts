@@ -52,18 +52,26 @@ export class StudentPageComponent implements OnInit {
     notes: '',
     email: '',
     phoneNumber: '',
-    address: {
-      streetAddress1: '',
-      streetAddress2: '',
-      city: '',
-      postalCode: ''
-    }
+    streetAddress1: '',
+    streetAddress2: '',
+    city: '',
+    postalCode: '',
+    guardianFirstName: '',
+    guardianLastName: '',
+    guardianEmail: '',
+    guardianPhone: '',
+    school: '',
+    gradeLevel: '',
+    stateStudentId: '',
+    orgStudentId: ''
   };
   validationMessages = {
     firstName: {
+      required: 'First Name is required',
       maxlength: 'First Name cannot be more than 50 characters long'
     },
     lastName: {
+      required: 'Last Name is required',
       maxlength: 'Last Name cannot be more than 50 characters long'
     },
     login: {
@@ -92,21 +100,54 @@ export class StudentPageComponent implements OnInit {
       pattern: 'Phone is not formatted correctly',
       maxlength: 'Phone cannot be more than 15 characters long'
     },
-    address: {
-      streetAddress1: {
-        minlength: 'Street Address 1 must be at least 5 characters long',
-        maxlength: 'Street Address 1 cannot be more than 50 characters long'
-      },
-      streetAddress2: {
-        minlength: 'Street Address 2 must be at least 5 characters long',
-        maxlength: 'Street Address 2 cannot be more than 50 characters long'
-      },
-      city: {
-        maxlength: 'City cannot be more than 50 characters long'
-      },
-      postalCode: {
-        pattern: 'Postal Code is not formatted correctly'
-      }
+    streetAddress1: {
+      minlength: 'Street Address 1 must be at least 5 characters long',
+      maxlength: 'Street Address 1 cannot be more than 50 characters long'
+    },
+    streetAddress2: {
+      minlength: 'Street Address 2 must be at least 5 characters long',
+      maxlength: 'Street Address 2 cannot be more than 50 characters long'
+    },
+    city: {
+      maxlength: 'City cannot be more than 50 characters long'
+    },
+    postalCode: {
+      pattern: 'Postal Code is not formatted correctly'
+    },
+    guardianFirstName: {
+      required: 'Guardian First Name is required',
+      maxlength: 'Guardian First Name cannot be more than 50 characters long'
+    },
+    guardianLastName: {
+      required: 'Guardian Last Name is required',
+      maxlength: 'Guardian Last Name cannot be more than 50 characters long'
+    },
+    guardianEmail: {
+      required: 'Guardian Last Name is required',
+      pattern: 'Guardian Email is not formatted correctly',
+      minlength: 'Guardian Email must be at least 5 characters long',
+      maxlength: 'Guardian Email cannot be more than 100 characters long'
+    },
+    guardianPhoneNumber: {
+      required: 'Guardian Phone is required',
+      pattern: 'Guardian Phone is not formatted correctly',
+      maxlength: 'Phone cannot be more than 15 characters long'
+    },
+    school: {
+      required: 'School is required',
+      maxlength: 'School cannot be more than 100 characters long'
+    },
+    gradeLevel: {
+      required: 'Grade Level is required',
+      maxlength: 'Grade Level cannot be more than 100 characters long'
+    },
+    stateStudentId: {
+      required: 'State Student ID is required',
+      maxlength: 'State Student ID cannot be more than 100 characters long'
+    },
+    orgStudentId: {
+      required: 'Org Student ID is required',
+      maxlength: 'Org Student ID cannot be more than 100 characters long'
     }
   };
 
