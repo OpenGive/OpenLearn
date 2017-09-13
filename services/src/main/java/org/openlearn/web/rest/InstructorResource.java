@@ -40,7 +40,7 @@ public class InstructorResource {
 	 *      or with ... TODO: Error handling
 	 */
 	@GetMapping(path = "/{id}")
-	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR,  AuthoritiesConstants.STUDENT})
 	public ResponseEntity get(@PathVariable final Long id) {
 		log.debug("GET request to get instructor : {}", id);
 		InstructorDTO response = instructorService.findOne(id);

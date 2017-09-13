@@ -86,8 +86,10 @@ public class SessionService {
 		if (session != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(session))) {
 			return sessionTransformer.transform(session);
 		}
+		//quick fix for demo. Remove later. Need so student can see course
+		return sessionTransformer.transform(session);
 		// TODO: Error handling / logging
-		return null;
+		//return null;
 	}
 
 	/**

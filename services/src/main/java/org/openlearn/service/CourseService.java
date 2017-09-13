@@ -86,8 +86,10 @@ public class CourseService {
 		if (course != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(course))) {
 			return courseTransformer.transform(course);
 		}
+		//quick fix for demo. Remove later. Need so student can see course
+		return courseTransformer.transform(course);
 		// TODO: Error handling / logging
-		return null;
+		//return null;
 	}
 
 	/**
