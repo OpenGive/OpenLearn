@@ -27,35 +27,35 @@
   <div class="course-form-sub">
     <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap>
       <md-input-container fxFlex="30%">
-        <input mdInput formControlName="name" placeholder="Name"/>
+        <input mdInput formControlName="name" placeholder="Name*"/>
         <md-error *ngIf="formErrors.name">{{formErrors.name}}</md-error>
       </md-input-container>
       <md-input-container fxFlex="30%">
-        <textarea mdInput formControlName="description" placeholder="Description"></textarea>
+        <textarea mdInput formControlName="description" placeholder="Description*"></textarea>
         <md-error *ngIf="formErrors.description">{{formErrors.description}}</md-error>
       </md-input-container>
       <md-input-container fxFlex="30%">
-        <input mdInput formControlName="sessionId" placeholder="Session" [mdAutocomplete]="session">
+        <input mdInput formControlName="sessionId" placeholder="Session*" [mdAutocomplete]="session">
         <md-error *ngIf="formErrors.session">{{formErrors.session}}</md-error>
         <md-autocomplete #session="mdAutocomplete" [displayWith]="displaySession">
           <md-option *ngFor="let session of filteredSessions | async" [value]="session">{{session.name}}</md-option>
         </md-autocomplete>
       </md-input-container>
       <md-input-container fxFlex="30%">
-        <input mdInput formControlName="instructorId" placeholder="Instructor" [mdAutocomplete]="instructor">
+        <input mdInput formControlName="instructorId" placeholder="Instructor*" [mdAutocomplete]="instructor">
         <md-error *ngIf="formErrors.instructor">{{formErrors.instructor}}</md-error>
         <md-autocomplete #instructor="mdAutocomplete" [displayWith]="displayInstructor">
           <md-option *ngFor="let instructor of filteredInstructors | async" [value]="instructor">{{instructor.lastName}}, {{instructor.firstName}}</md-option>
         </md-autocomplete>
       </md-input-container>
       <md-input-container fxFlex="30%">
-        <input mdInput formControlName="startDate" placeholder="Start Date" [mdDatepicker]="startDate">
+        <input mdInput formControlName="startDate" placeholder="Start Date*" [mdDatepicker]="startDate">
         <button mdSuffix *ngIf="editing" [mdDatepickerToggle]="startDate"></button>
         <md-error *ngIf="formErrors.startDate">{{formErrors.startDate}}</md-error>
         <md-datepicker #startDate></md-datepicker>
       </md-input-container>
       <md-input-container fxFlex="30%">
-        <input mdInput formControlName="endDate" placeholder="End Date" [mdDatepicker]="endDate">
+        <input mdInput formControlName="endDate" placeholder="End Date*" [mdDatepicker]="endDate">
         <button mdSuffix *ngIf="editing" [mdDatepickerToggle]="endDate"></button>
         <md-error *ngIf="formErrors.endDate">{{formErrors.endDate}}</md-error>
         <md-datepicker #endDate></md-datepicker>

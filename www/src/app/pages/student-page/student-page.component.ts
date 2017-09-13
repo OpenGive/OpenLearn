@@ -144,11 +144,9 @@ export class StudentPageComponent implements OnInit {
       maxlength: 'Grade Level cannot be more than 100 characters long'
     },
     stateStudentId: {
-      required: 'State Student ID is required',
       maxlength: 'State Student ID cannot be more than 100 characters long'
     },
     orgStudentId: {
-      required: 'Org Student ID is required',
       maxlength: 'Org Student ID cannot be more than 100 characters long'
     }
   };
@@ -245,11 +243,9 @@ export class StudentPageComponent implements OnInit {
         Validators.maxLength(100)
       ]],
       stateStudentId: [this.student.stateStudentId, [
-        Validators.required,
         Validators.maxLength(100)
       ]],
       orgStudentId: [this.student.orgStudentId, [
-        Validators.required,
         Validators.maxLength(100)
       ]]
     });
