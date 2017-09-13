@@ -209,7 +209,7 @@ export class CoursePageComponent implements OnInit {
   private update(): void {
     const toUpdate = this.prepareToUpdate();
     this.adminService.update(AdminTabs.Course.route, toUpdate).subscribe(resp => {
-
+      this.setEditing(this.adding);
       this.notify.success('Successfully updated course');
     }, error => {
       this.notify.error('Failed to update course');
@@ -244,7 +244,7 @@ export class CoursePageComponent implements OnInit {
   }
 
   cancel(): void {
-    this.ngOnInit();
+    this.setEditing(this.adding);
   }
 
   close(): void {

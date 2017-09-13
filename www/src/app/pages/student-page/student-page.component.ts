@@ -319,6 +319,8 @@ export class StudentPageComponent implements OnInit {
   private update(): void {
     const toUpdate = this.prepareToUpdate();
     this.adminService.update(AdminTabs.Student.route, toUpdate).subscribe(resp => {
+      this.setEditing(this.adding);
+      this.resetPassword(false);
       this.notify.success('Successfully updated student');
     }, error => {
       this.notify.error('Failed to update student');
@@ -359,7 +361,8 @@ export class StudentPageComponent implements OnInit {
   }
 
   cancel(): void {
-    this.ngOnInit();
+    this.setEditing(this.adding);
+    this.resetPassword(false);
   }
 
   close(): void {
