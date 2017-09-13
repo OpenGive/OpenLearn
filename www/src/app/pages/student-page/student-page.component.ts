@@ -48,7 +48,6 @@ export class StudentPageComponent implements OnInit {
     lastName: '',
     login: '',
     password: '',
-    authorities: '',
     notes: '',
     email: '',
     phoneNumber: '',
@@ -56,6 +55,7 @@ export class StudentPageComponent implements OnInit {
     streetAddress2: '',
     city: '',
     postalCode: '',
+    organizationId:'',
     guardianFirstName: '',
     guardianLastName: '',
     guardianEmail: '',
@@ -84,9 +84,6 @@ export class StudentPageComponent implements OnInit {
       minlength: 'Password must be at least 6 characters long',
       maxlength: 'Password cannot be more than 50 characters long'
     },
-    authorities: {
-      required: 'Student must have at least 1 role'
-    },
     notes: {
       maxlength: 'Notes cannot be more than 2000 characters long'
     },
@@ -113,6 +110,9 @@ export class StudentPageComponent implements OnInit {
     },
     postalCode: {
       pattern: 'Postal Code is not formatted correctly'
+    },
+    organizationId: {
+      required: 'Organization is required'
     },
     guardianFirstName: {
       required: 'Guardian First Name is required',
@@ -212,6 +212,9 @@ export class StudentPageComponent implements OnInit {
         Validators.maxLength(50)
       ]],
       fourteenPlus: [this.student.fourteenPlus],
+      organizationId: [this.student.organizationId, [
+        Validators.required
+      ]],
       guardianFirstName: [this.student.guardianFirstName, [
         Validators.required,
         Validators.maxLength(50)
@@ -287,13 +290,9 @@ export class StudentPageComponent implements OnInit {
     }
   }
 
-  private getRoles(): void {
-    this.roles = Object.keys(AppConstants.Role).map(key => AppConstants.Role[key]);
-  }
-
   private getStates(): void {
     this.states = AppConstants.States;
-    this.filteredStates = this.studentForm.get('address').get('state')
+    this.filteredStates = this.studentForm.get('state')
       .valueChanges
       .startWith(null)
       .map(val => val ? this.filterStates(val) : this.states.slice());
@@ -331,7 +330,7 @@ export class StudentPageComponent implements OnInit {
       lastName: this.studentForm.get('lastName').value,
       login: this.studentForm.get('login').value,
       password: this.studentForm.get('password').value,
-      authorities: this.studentForm.get('authorities').value,
+      authority: AppConstants.Role.Student,
       notes: this.studentForm.get('notes').value,
       email: this.studentForm.get('email').value,
       phoneNumber: this.studentForm.get('phoneNumber').value,
@@ -340,7 +339,16 @@ export class StudentPageComponent implements OnInit {
       city: this.studentForm.get('city').value,
       state: this.studentForm.get('state').value,
       postalCode: this.studentForm.get('postalCode').value,
-      fourteenPlus: this.studentForm.get('is14Plus').value
+      fourteenPlus: this.studentForm.get('is14Plus').value,
+      organizationId: this.studentForm.get('organizationId').value,
+      guardianFirstName: this.studentForm.get('guardianFirstName').value,
+      guardianLastName: this.studentForm.get('guardianLastName').value,
+      guardianEmail: this.studentForm.get('guardianEmail').value,
+      guardianPhone: this.studentForm.get('guardianPhone').value,
+      school: this.studentForm.get('school').value,
+      gradeLevel: this.studentForm.get('gradeLevel').value,
+      stateStudentId: this.studentForm.get('stateStudentId').value,
+      orgStudentId: this.studentForm.get('orgStudentId').value
     };
   }
 
