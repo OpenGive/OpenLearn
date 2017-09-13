@@ -128,7 +128,7 @@ export class StudentPageComponent implements OnInit {
       minlength: 'Guardian Email must be at least 5 characters long',
       maxlength: 'Guardian Email cannot be more than 100 characters long'
     },
-    guardianPhoneNumber: {
+    guardianPhone: {
       required: 'Guardian Phone is required',
       pattern: 'Guardian Phone is not formatted correctly',
       maxlength: 'Phone cannot be more than 15 characters long'
@@ -166,9 +166,11 @@ export class StudentPageComponent implements OnInit {
   private buildForm(): void {
     this.studentForm = this.fb.group({
       firstName: [this.student.firstName, [
+        Validators.required,
         Validators.maxLength(50)
       ]],
       lastName: [this.student.lastName, [
+        Validators.required,
         Validators.maxLength(50)
       ]],
       login: [this.student.login, [
@@ -206,8 +208,45 @@ export class StudentPageComponent implements OnInit {
       postalCode: [this.student.postalCode, [
         Validators.pattern(AppConstants.OLValidators.PostalCode)
       ]],
-      notes: [this.student.notes],
-      fourteenPlus: [this.student.fourteenPlus]
+      notes: [this.student.notes, [
+        Validators.maxLength(50)
+      ]],
+      fourteenPlus: [this.student.fourteenPlus],
+      guardianFirstName: [this.student.guardianFirstName, [
+        Validators.required,
+        Validators.maxLength(50)
+      ]],
+      guardianLastName: [this.student.guardianLastName, [
+        Validators.required,
+        Validators.maxLength(50)
+      ]],
+      guardianEmail: [this.student.guardianEmail, [
+        Validators.required,
+        Validators.pattern(AppConstants.OLValidators.Email),
+        Validators.minLength(5),
+        Validators.maxLength(100)
+      ]],
+      guardianPhone: [this.student.guardianPhone, [
+        Validators.required,
+        // TODO: Pattern
+        Validators.maxLength(15)
+      ]],
+      school: [this.student.school, [
+        Validators.required,
+        Validators.maxLength(100)
+      ]],
+      gradeLevel: [this.student.guardianEmail, [
+        Validators.required,
+        Validators.maxLength(100)
+      ]],
+      stateStudentId: [this.student.stateStudentId, [
+        Validators.required,
+        Validators.maxLength(100)
+      ]],
+      orgStudentId: [this.student.orgStudentId, [
+        Validators.required,
+        Validators.maxLength(100)
+      ]]
     });
     this.studentForm.valueChanges.subscribe(data => this.onValueChanged());
     this.onValueChanged();
