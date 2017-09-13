@@ -213,7 +213,7 @@ export class StudentPageComponent implements OnInit {
       notes: [this.student.notes, [
         Validators.maxLength(50)
       ]],
-      fourteenPlus: [this.student.fourteenPlus],
+      fourteenPlus: [this.student.fourteenPlus || false],
       organizationId: [this.student.organizationId, [
         Validators.required
       ]],
@@ -341,7 +341,7 @@ export class StudentPageComponent implements OnInit {
       city: this.studentForm.get('city').value,
       state: this.studentForm.get('state').value,
       postalCode: this.studentForm.get('postalCode').value,
-      fourteenPlus: this.studentForm.get('is14Plus').value,
+      fourteenPlus: this.studentForm.get('fourteenPlus').value,
       organizationId: this.studentForm.get('organizationId').value,
       guardianFirstName: this.studentForm.get('guardianFirstName').value,
       guardianLastName: this.studentForm.get('guardianLastName').value,
