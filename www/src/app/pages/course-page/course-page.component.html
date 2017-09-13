@@ -60,6 +60,14 @@
         <md-error *ngIf="formErrors.endDate">{{formErrors.endDate}}</md-error>
         <md-datepicker #endDate></md-datepicker>
       </md-input-container>
+      <md-input-container fxFlex="30%">
+        <input mdInput formControlName="locations" placeholder="Locations"/>
+        <md-error *ngIf="formErrors.locations">{{formErrors.locations}}</md-error>
+      </md-input-container>
+      <md-input-container fxFlex="30%">
+        <input mdInput formControlName="times" placeholder="Times"/>
+        <md-error *ngIf="formErrors.times">{{formErrors.times}}</md-error>
+      </md-input-container>
     </div>
   </div>
 </form>
