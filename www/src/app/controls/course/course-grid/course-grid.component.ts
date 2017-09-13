@@ -7,6 +7,7 @@ import {CourseDialogComponent} from "../course-dialog.component";
 import {GradeDialogComponent} from "../grade-dialog.component";
 import {CourseStudentDialogComponent} from "../course-student-dialog.component";
 import {StudentCourseService} from "../../../services/student-course.service";
+import {DataService} from "../../../services/data.service";
 
 @Component({
   selector: 'app-course-grid',
@@ -23,6 +24,7 @@ export class CourseGridComponent implements OnInit {
   reverse: boolean;
 
   constructor(private dialog: MdDialog,
+              private dataService: DataService,
               private courseService: StudentCourseService) {}
 
   ngOnInit(): void {
@@ -63,7 +65,6 @@ export class CourseGridComponent implements OnInit {
     this.stopPropagation(e);
     this.dialog.open(GradeDialogComponent, {
       data: {
-        course: this.course,
         student: student
       },
       width: "50px",
@@ -87,15 +88,7 @@ export class CourseGridComponent implements OnInit {
   }
 
   viewStudentDetails(student): void {
-    this.dialog.open(CourseStudentDialogComponent, {
-      data: {
-        item: student,
-        adding: false
-      },
-      disableClose: true
-    }).afterClosed().subscribe(resp => {
-      this.handleEditStudentResponse(resp);
-    });
+    this.dataService.setStudentById(student.id);
   }
 
   stopPropagation(e): void {

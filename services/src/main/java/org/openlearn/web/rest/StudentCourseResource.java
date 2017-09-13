@@ -55,7 +55,7 @@ public class StudentCourseResource {
 	 *      or with ... TODO: Error handling
 	 */
 	@GetMapping(path = "/student/{id}")
-	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
 	public ResponseEntity getByStudent(@PathVariable final Long id, @ApiParam final Pageable pageable) {
 		log.debug("GET request to get studentCourses by student : {}", id);
 		Page<StudentCourseDTO> response = studentCourseService.findByStudent(id, pageable);

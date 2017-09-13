@@ -5,11 +5,12 @@ import {Course} from "../models/course.model";
 import {User} from "../models/user.model";
 import {AdminService} from "./admin.service";
 import {AdminTabs} from "../controls/admin/admin.constants";
+import {Student} from "../models/student.model";
 
 @Injectable()
 export class DataService {
   private course: Course;
-  private student: User;
+  private student: Student;
 
   constructor(private router: Router,
               private adminService: AdminService) {
@@ -19,7 +20,7 @@ export class DataService {
     return this.course;
   }
 
-  public getStudent(): User {
+  public getStudent(): Student {
     return this.student;
   }
 

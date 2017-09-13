@@ -11,6 +11,7 @@ import {Router} from "@angular/router";
 import {Principal} from "../../shared/auth/principal.service";
 import {AppConstants} from "../../app.constants";
 import {User} from "../../models/user.model";
+import {Student} from "../../models/student.model";
 
 @Component({
   selector: 'app-student-page',
@@ -40,7 +41,7 @@ export class StudentPageComponent implements OnInit {
   filteredSessions: Observable<any[]>;
 
   private studentId: String;
-  private student: User;
+  private student: Student;
   studentForm: FormGroup;
   formErrors = {
     firstName: '',
@@ -48,7 +49,7 @@ export class StudentPageComponent implements OnInit {
     login: '',
     password: '',
     authorities: '',
-    biography: '',
+    notes: '',
     email: '',
     phoneNumber: '',
     address: {
@@ -78,8 +79,8 @@ export class StudentPageComponent implements OnInit {
     authorities: {
       required: 'Student must have at least 1 role'
     },
-    biography: {
-      maxlength: 'Biography cannot be more than 2000 characters long'
+    notes: {
+      maxlength: 'Notes cannot be more than 2000 characters long'
     },
     email: {
       // email: 'Email is not formatted correctly', TODO: See comment in buildForm()
@@ -163,7 +164,9 @@ export class StudentPageComponent implements OnInit {
       state: [this.student.state],
       postalCode: [this.student.postalCode, [
         Validators.pattern(AppConstants.OLValidators.PostalCode)
-      ]]
+      ]],
+      notes: [this.student.notes],
+      fourteenPlus: [this.student.fourteenPlus]
     });
     this.studentForm.valueChanges.subscribe(data => this.onValueChanged());
     this.onValueChanged();
@@ -249,7 +252,7 @@ export class StudentPageComponent implements OnInit {
       login: this.studentForm.get('login').value,
       password: this.studentForm.get('password').value,
       authorities: this.studentForm.get('authorities').value,
-      biography: this.studentForm.get('biography').value,
+      notes: this.studentForm.get('notes').value,
       email: this.studentForm.get('email').value,
       phoneNumber: this.studentForm.get('phoneNumber').value,
       streetAddress1: this.studentForm.get('streetAddress1').value,
@@ -257,8 +260,7 @@ export class StudentPageComponent implements OnInit {
       city: this.studentForm.get('city').value,
       state: this.studentForm.get('state').value,
       postalCode: this.studentForm.get('postalCode').value,
-      activated: this.studentForm.get('activated').value,
-      is14Plus: this.studentForm.get('is14Plus').value
+      fourteenPlus: this.studentForm.get('is14Plus').value
     };
   }
 

@@ -99,12 +99,14 @@
 		<loadData encoding="UTF-8"
 				  file="config/liquibase/data/demo-data/user.csv"
 				  separator=","
-				  tableName="user"/>
+				  tableName="user">
+			<column name="fourteen_plus" type="BOOLEAN"/>
+		</loadData>
 
 		<loadData encoding="UTF-8"
 				  file="config/liquibase/data/demo-data/programs.csv"
 				  separator=","
-				  tableName="PROGRAM"/>
+				  tableName="program"/>
 
 		<loadData encoding="UTF-8"
 				  file="config/liquibase/data/demo-data/sessions.csv"
@@ -119,7 +121,10 @@
 		<loadData encoding="UTF-8"
 				  file="config/liquibase/data/demo-data/student_course.csv"
 				  separator=","
-				  tableName="student_course"/>
+				  tableName="student_course">
+			<column name="complete" type="BOOLEAN"/>
+			<column name="on_portfolio" type="BOOLEAN"/>
+		</loadData>
 
 		<loadData encoding="UTF-8"
 				  file="config/liquibase/data/demo-data/address.csv"

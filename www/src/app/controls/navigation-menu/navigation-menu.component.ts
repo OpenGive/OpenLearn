@@ -3,6 +3,7 @@ import {Component} from '@angular/core';
 import {LoginService} from "../../services/login.service";
 import {Principal} from "../../shared/auth/principal.service";
 import {AppConstants} from "../../app.constants";
+import {DataService} from "../../services/data.service";
 
 @Component({
   selector: 'app-navigation-menu',
@@ -28,6 +29,7 @@ export class NavigationMenuComponent {
   };
 
   constructor(private loginService: LoginService,
+              private dataService: DataService,
               private principal: Principal) {}
 
   authenticated(): boolean {
@@ -69,5 +71,10 @@ export class NavigationMenuComponent {
 
   logout(): void {
     this.loginService.logout();
+  }
+
+  toStudentPage()
+  {
+    this.dataService.setStudentById(this.principal.getId());
   }
 }

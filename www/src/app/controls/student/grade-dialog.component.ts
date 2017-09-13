@@ -25,18 +25,18 @@ import {NotifyService} from "../../services/notify.service";
       </div>
     </div>
     `,
-  styleUrls: ['./course-grid/course-grid.component.css', '../dialog-forms.css']
+  styleUrls: ['./student-grid/student-grid.component.css', '../dialog-forms.css']
 })
-export class GradeDialogComponent implements OnInit {
+export class StudentGradeDialogComponent implements OnInit {
 
   grade: Number;
 
   ngOnInit(): void {
     console.log(this.data);
-    this.grade = this.data.student.grade;
+    this.grade = this.data.course.grade;
   }
 
-  constructor(private dialog: MdDialogRef<GradeDialogComponent>,
+  constructor(private dialog: MdDialogRef<StudentGradeDialogComponent>,
               @Inject(MD_DIALOG_DATA) public data: any,
               private courseService: StudentCourseService,
               private notify: NotifyService) {}
@@ -46,8 +46,8 @@ export class GradeDialogComponent implements OnInit {
   }
 
   save(): void {
-    this.data.student.grade = this.grade;
-    this.courseService.updateStudentCourse(this.data.student).subscribe(resp => {
+    this.data.course.grade = this.grade;
+    this.courseService.updateStudentCourse(this.data.course).subscribe(resp => {
       this.dialog.close({
         type: 'ADD',
         data: resp
