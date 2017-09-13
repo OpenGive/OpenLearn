@@ -5,6 +5,8 @@ import {Observable} from "rxjs/Observable";
 import {UserService} from "../../services/user.service";
 import {StudentCourseService} from "../../services/student-course.service";
 import {NotifyService} from "../../services/notify.service";
+import {AdminService} from "../../services/admin.service";
+import {AdminTabs} from "../admin/admin.constants";
 
 @Component({
   selector: 'course-dialog',
@@ -59,6 +61,7 @@ export class CourseDialogComponent implements OnInit {
   columns: any[];
 
   ngOnInit(): void {
+    console.log(this.data);
     console.log("Start Students:" + this.students);
     this.columns = [
       {
@@ -83,12 +86,19 @@ export class CourseDialogComponent implements OnInit {
               @Inject(MD_DIALOG_DATA) public data: any,
               private userService: UserService,
               private courseService: StudentCourseService,
+              private adminService: AdminService,
               private notify: NotifyService) {}
 
 
+  // private getStudents(): void {
+  //   this.courseService.getCourseStudentsNot(this.data.course.id).subscribe(students => {
+  //     this.students = students;
+  //   })
+  // }
+
   private getStudents(): void {
-    this.courseService.getCourseStudentsNot(this.data.course.id).subscribe(students => {
-      this.students = students;
+    this.adminService.getAll(AdminTabs.Student.route).subscribe(resp => {
+      this.students = resp;
     })
   }
 
