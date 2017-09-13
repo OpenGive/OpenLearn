@@ -48,10 +48,12 @@ export class CoursePageComponent implements OnInit {
   formErrors = {
     name: '',
     description: '',
-    session: '',
-    instructor: '',
+    sessionId: '',
+    instructorId: '',
     startDate: '',
-    endDate: ''
+    endDate: '',
+    locations: '',
+    times: ''
   };
   validationMessages = {
     name: {
@@ -60,19 +62,22 @@ export class CoursePageComponent implements OnInit {
       maxlength: 'Name cannot be more than 100 characters long'
     },
     description: {
+      required: 'Name is required',
       minlength: 'Description must be at least 5 characters long',
       maxlength: 'Description cannot be more than 200 characters long'
     },
-    session: {
+    sessionId: {
       required: 'Session is required'
     },
-    instructor: {
+    instructorId: {
       required: 'Instructor is required'
     },
     startDate: {
+      required: 'Name is required',
       mdDatepickerMax: 'Start date must not be after End Date'
     },
     endDate: {
+      required: 'Name is required',
       mdDatepickerMin: 'End date must not be before Start Date'
     }
   };
@@ -106,6 +111,7 @@ export class CoursePageComponent implements OnInit {
         Validators.maxLength(100)
       ]],
       description: [this.course.description, [
+        Validators.required,
         Validators.minLength(5),
         Validators.maxLength(200)
       ]],
@@ -115,8 +121,14 @@ export class CoursePageComponent implements OnInit {
       instructorId: [this.instructor, [
         Validators.required
       ]],
-      startDate: [this.course.startDate],
-      endDate: [this.course.endDate]
+      startDate: [this.course.startDate, [
+        Validators.required
+      ]],
+      endDate: [this.course.endDate, [
+        Validators.required
+      ]],
+      locations: [this.course.locations],
+      times: [this.course.times],
     });
     this.courseForm.valueChanges.subscribe(data => this.onValueChanged());
     this.onValueChanged();
@@ -212,7 +224,9 @@ export class CoursePageComponent implements OnInit {
       sessionId: this.courseForm.get('sessionId').value.id,
       instructorId: this.courseForm.get('instructorId').value.id,
       startDate: this.courseForm.get('startDate').value,
-      endDate: this.courseForm.get('endDate').value
+      endDate: this.courseForm.get('endDate').value,
+      locations: this.courseForm.get('locations').value,
+      times: this.courseForm.get('times').value
     };
   }
 
