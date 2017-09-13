@@ -51,7 +51,7 @@ export class StudentGridComponent implements OnInit {
   add(): void {
     this.dialog.open(StudentDialogComponent, {
       data: {
-        course: this.student
+        student: this.student
       },
       width: "400px",
       height: "600px",

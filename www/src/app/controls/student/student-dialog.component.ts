@@ -5,6 +5,8 @@ import {Observable} from "rxjs/Observable";
 import {UserService} from "../../services/user.service";
 import {StudentCourseService} from "../../services/student-course.service";
 import {NotifyService} from "../../services/notify.service";
+import {AdminService} from "../../services/admin.service";
+import {AdminTabs} from "../admin/admin.constants";
 
 @Component({
   selector: 'student-dialog',
@@ -13,7 +15,7 @@ import {NotifyService} from "../../services/notify.service";
       <div class="ol-dialog-header" fxLayout="row" fxLayoutAlign="space-between center">
         <div fxLayout="row" fxLayoutAlign="start center">
           <div><button md-button type="reset" (click)="close()"><i class="fa fa-times fa-lg"></i></button></div>
-          <span class="ol-dialog-title">Add Student</span>
+          <span class="ol-dialog-title">Add Course</span>
         </div>
       </div>
       <div class="ol-dialog-content course-view-body">
@@ -33,12 +35,11 @@ import {NotifyService} from "../../services/notify.service";
                 </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let student of students">
-                  <td>{{student.firstName}}</td>
-                  <td>{{student.lastName}}</td>
-                  <td>{{student.email}}</td>
+                <tr *ngFor="let course of courses">
+                  <td>{{course.name}}</td>
+                  <td>{{course.description}}</td>
                   <td>
-                    <button md-raised-button fxHide.xs (click)="add(student)" class="grid-add-button" mdTooltip="Add">
+                    <button md-raised-button fxHide.xs (click)="add(course)" class="grid-add-button" mdTooltip="Add">
                       <md-icon>add</md-icon>
                     </button>
                   </td>
@@ -55,41 +56,36 @@ import {NotifyService} from "../../services/notify.service";
 })
 export class StudentDialogComponent implements OnInit {
 
-  private students: any [];
+  private courses: any [];
   columns: any[];
 
   ngOnInit(): void {
-    console.log("Start Students:" + this.students);
+    console.log(this.data);
     this.columns = [
       {
-        id: "firstName",
-        name: "First Name"
+        id: "name",
+        name: "Name"
       },
       {
-        id: "lastName",
-        name: "Last Name"
-      },
-      {
-        id: "email",
-        name: "Email"
+        id: "description",
+        name: "Description"
       }
     ];
 
-    this.getStudents();
-    console.log("After Students: " + this.students);
+    this.getCourses();
   }
 
   constructor(private dialog: MdDialogRef<StudentDialogComponent>,
               @Inject(MD_DIALOG_DATA) public data: any,
               private userService: UserService,
               private courseService: StudentCourseService,
+              private adminService: AdminService,
               private notify: NotifyService) {}
 
-
-  private getStudents(): void {
-    this.courseService.getCourseStudentsNot(this.data.course.id).subscribe(students => {
-      this.students = students;
-    })
+  private getCourses(): void {
+    this.adminService.getAll(AdminTabs.Course.route).subscribe(resp => {
+      this.courses = resp;
+    });
   }
 
 
@@ -98,8 +94,8 @@ export class StudentDialogComponent implements OnInit {
     this.dialog.close();
   }
 
-  add(student): void {
-    this.courseService.createStudentCourse(student.id, this.data.course.id).subscribe(resp => {
+  add(course): void {
+    this.courseService.createStudentCourse(this.data.student.id, course.id).subscribe(resp => {
       this.dialog.close({
         type: 'ADD',
         data: resp
