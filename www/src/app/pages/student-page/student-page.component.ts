@@ -12,6 +12,7 @@ import {Principal} from "../../shared/auth/principal.service";
 import {AppConstants} from "../../app.constants";
 import {User} from "../../models/user.model";
 import {Student} from "../../models/student.model";
+import * as _ from "lodash";
 
 @Component({
   selector: 'app-student-page',
@@ -32,6 +33,7 @@ export class StudentPageComponent implements OnInit {
   private adding:boolean = false;
   private editing:boolean = false;
   private studentView:boolean = false;
+  private changingPassword:boolean;
 
   states: any[];
   filteredStates: Observable<any[]>;
@@ -155,11 +157,11 @@ export class StudentPageComponent implements OnInit {
     this.studentView = this.principle.getRole() === AppConstants.Role.Student;
     this.student = this.dataService.getStudent();
     this.studentId = this.student.id;
-    console.log("StudentID: " + this.studentId);
-    console.log("here");
     console.log(this.student);
     this.buildForm();
     this.setEditing(this.adding);
+    this.resetPassword(false);
+    this.getStates();
     if(!this.studentView) {
     }
   }
@@ -316,7 +318,7 @@ export class StudentPageComponent implements OnInit {
 
   private update(): void {
     const toUpdate = this.prepareToUpdate();
-    this.userService.update(toUpdate).subscribe(resp => {
+    this.adminService.update(AdminTabs.Student.route, toUpdate).subscribe(resp => {
       this.notify.success('Successfully updated student');
     }, error => {
       this.notify.error('Failed to update student');
@@ -362,6 +364,14 @@ export class StudentPageComponent implements OnInit {
 
   close(): void {
 
+  }
+
+  resetPassword(changingPassword: boolean): void {
+    this.changingPassword = changingPassword;
+  }
+
+  displayState(stateValue: string): string {
+    return stateValue ? _.filter(AppConstants.States, {value: stateValue})[0].name : '';
   }
 
   displayInstructor(instructor: any): string {
