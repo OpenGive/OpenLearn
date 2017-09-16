@@ -69,8 +69,8 @@ public class StudentTransformer {
 		user.setGuardianPhone(studentDTO.getGuardianPhone());
 		user.setSchool(studentDTO.getSchool());
 		user.setGradeLevel(GradeLevel.valueOf(studentDTO.getGradeLevel()));
-		user.setStateStudentId(studentDTO.getStateStudentId());
-		user.setOrgStudentId(studentDTO.getOrgStudentId());
+		if (studentDTO.getStateStudentId() != null) user.setStateStudentId(studentDTO.getStateStudentId());
+		if (studentDTO.getOrgStudentId() != null) user.setOrgStudentId(studentDTO.getOrgStudentId());
 		return user;
 	}
 }
