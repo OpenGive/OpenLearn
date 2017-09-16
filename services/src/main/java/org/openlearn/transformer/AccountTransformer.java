@@ -6,10 +6,13 @@ import org.openlearn.domain.enumeration.State;
 import org.openlearn.dto.AccountDTO;
 import org.openlearn.repository.AddressRepository;
 import org.openlearn.repository.UserRepository;
+import org.openlearn.security.AuthoritiesConstants;
+import org.openlearn.service.exception.OpenLearnException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 @Service
 public class AccountTransformer {
@@ -54,22 +57,97 @@ public class AccountTransformer {
 		return accountDTO;
 	}
 
-
 	/**
-	 * Transforms a DTO into an entity
-	 * NOTE: Does not save the authority, or login, as that should be done using one of the other DTOs
+	 * Transforms an account DTO into a user
 	 *
-	 * @param accountDTO DTO to transform
-	 * @return the new entity
+	 * @param accountDTO DTO to transform from
+	 * @param user user to merge to
+	 * @return the user
+	 * @throws OpenLearnException if there is a validation error
 	 */
-	public User transform(final AccountDTO accountDTO) {
-		log.debug("Transforming account DTO to user : {}", accountDTO);
-		User user = accountDTO.getId() == null ? new User() : userRepository.findOne(accountDTO.getId());
-		// TODO: Error handling
-		if (accountDTO.getFirstName() != null) user.setFirstName(accountDTO.getFirstName());
-		if (accountDTO.getLastName() != null) user.setLastName(accountDTO.getLastName());
-		if (accountDTO.getEmail() != null) user.setEmail(accountDTO.getEmail());
-		if (accountDTO.getPhoneNumber() != null) user.setPhoneNumber(accountDTO.getPhoneNumber());
+	public User transform(final AccountDTO accountDTO, final User user) throws OpenLearnException {
+		switch(user.getAuthority().getName()) {
+			case AuthoritiesConstants.ADMIN:
+				return mergeAdmin(accountDTO, user);
+			case AuthoritiesConstants.ORG_ADMIN:
+				return mergeOrgAdmin(accountDTO, user);
+			case AuthoritiesConstants.INSTRUCTOR:
+				return mergeInstructor(accountDTO, user);
+			case AuthoritiesConstants.STUDENT:
+				return mergeStudent(accountDTO, user);
+			default:
+				// TODO: Error handling
+				return null;
+		}
+	}
+
+	private User mergeAdmin(final AccountDTO accountDTO, final User user) throws OpenLearnException {
+		user.setFirstName(accountDTO.getFirstName());
+		user.setLastName(accountDTO.getLastName());
+		if (StringUtils.isEmpty(accountDTO.getEmail())) {
+			throw new OpenLearnException("Email is required");
+		} else {
+			user.setEmail(accountDTO.getEmail());
+		}
+		user.setPhoneNumber(accountDTO.getPhoneNumber());
+		mergeAddress(accountDTO, user);
+		user.setNotes(accountDTO.getNotes());
+		return user;
+	}
+
+	private User mergeOrgAdmin(final AccountDTO accountDTO, final User user) throws OpenLearnException {
+		user.setFirstName(accountDTO.getFirstName());
+		user.setLastName(accountDTO.getLastName());
+		if (StringUtils.isEmpty(accountDTO.getEmail())) {
+			throw new OpenLearnException("Email is required");
+		} else {
+			user.setEmail(accountDTO.getEmail());
+		}
+		user.setPhoneNumber(accountDTO.getPhoneNumber());
+		mergeAddress(accountDTO, user);
+		user.setNotes(accountDTO.getNotes());
+		if (StringUtils.isEmpty(accountDTO.getOrgRole())) {
+			throw new OpenLearnException("Org role is required");
+		} else {
+			user.setOrgRole(accountDTO.getOrgRole());
+		}
+		return user;
+	}
+
+	private User mergeInstructor(final AccountDTO accountDTO, final User user) throws OpenLearnException {
+		user.setFirstName(accountDTO.getFirstName());
+		user.setLastName(accountDTO.getLastName());
+		if (StringUtils.isEmpty(accountDTO.getEmail())) {
+			throw new OpenLearnException("Email is required");
+		} else {
+			user.setEmail(accountDTO.getEmail());
+		}
+		if (StringUtils.isEmpty(accountDTO.getPhoneNumber())) {
+			throw new OpenLearnException("Phone number is required");
+		} else {
+			user.setPhoneNumber(accountDTO.getPhoneNumber());
+		}
+		mergeAddress(accountDTO, user);
+		user.setNotes(accountDTO.getNotes());
+		if (StringUtils.isEmpty(accountDTO.getOrgRole())) {
+			throw new OpenLearnException("Org role is required");
+		} else {
+			user.setOrgRole(accountDTO.getOrgRole());
+		}
+		return user;
+	}
+
+	private User mergeStudent(final AccountDTO accountDTO, final User user) {
+		user.setFirstName(accountDTO.getFirstName());
+		user.setLastName(accountDTO.getLastName());
+		user.setEmail(accountDTO.getEmail());
+		user.setPhoneNumber(accountDTO.getPhoneNumber());
+		mergeAddress(accountDTO, user);
+		user.setNotes(accountDTO.getNotes());
+		return user;
+	}
+
+	private void mergeAddress(final AccountDTO accountDTO, final User user) {
 		if (!isAddressEmpty(accountDTO) || !CollectionUtils.isEmpty(user.getAddresses())) {
 			Address address = (CollectionUtils.isEmpty(user.getAddresses()) ? new Address() : user.getAddresses().get(0));
 			address.setStreetAddress1(accountDTO.getStreetAddress1());
@@ -80,9 +158,6 @@ public class AccountTransformer {
 			address.setUser(user);
 			addressRepository.save(address);
 		}
-		if (accountDTO.getNotes() != null) user.setNotes(accountDTO.getNotes());
-		if (accountDTO.getOrgRole() != null) user.setOrgRole(accountDTO.getOrgRole());
-		return user;
 	}
 
 	private boolean isAddressEmpty(AccountDTO accountDTO) {

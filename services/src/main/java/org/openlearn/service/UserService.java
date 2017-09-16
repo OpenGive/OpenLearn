@@ -4,6 +4,7 @@ import org.openlearn.domain.User;
 import org.openlearn.dto.AccountDTO;
 import org.openlearn.repository.UserRepository;
 import org.openlearn.security.SecurityUtils;
+import org.openlearn.service.exception.OpenLearnException;
 import org.openlearn.transformer.AccountTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,33 +57,9 @@ public class UserService {
 	 * @param accountDTO account info to update
 	 * @return updated current user account info
 	 */
-	public AccountDTO updateCurrentUserAccount(final AccountDTO accountDTO) {
+	public AccountDTO updateCurrentUserAccount(final AccountDTO accountDTO) throws OpenLearnException {
 		log.debug("Request to update current user account information");
-		User user = mergeAccountInfo(accountDTO, getCurrentUser());
+		User user = accountTransformer.transform(accountDTO, getCurrentUser());
 		return accountTransformer.transform(userRepository.save(user));
-	}
-
-	private User mergeAccountInfo(final AccountDTO accountDTO, final User user) {
-		// TODO: Validate based on role (authority)
-		if (!accountDTO.getFirstName().equals(user.getFirstName())) {
-			user.setFirstName(accountDTO.getFirstName());
-		}
-		if (!accountDTO.getLastName().equals(user.getLastName())) {
-			user.setLastName(accountDTO.getLastName());
-		}
-		if (!accountDTO.getEmail().equals(user.getEmail())) {
-			user.setEmail(accountDTO.getEmail());
-		}
-		if (!accountDTO.getPhoneNumber().equals(user.getPhoneNumber())) {
-			user.setPhoneNumber(accountDTO.getPhoneNumber());
-		}
-		// TODO: Save address
-		if (!accountDTO.getNotes().equals(user.getNotes())) {
-			user.setNotes(accountDTO.getNotes());
-		}
-		if (!accountDTO.getOrgRole().equals(user.getOrgRole())) {
-			user.setOrgRole(accountDTO.getOrgRole());
-		}
-		return user;
 	}
 }

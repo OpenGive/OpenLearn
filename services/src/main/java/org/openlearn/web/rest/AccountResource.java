@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import org.openlearn.dto.AccountDTO;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.service.UserService;
+import org.openlearn.service.exception.OpenLearnException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -48,13 +49,18 @@ public class AccountResource {
 	 * POST  / : update the current user information
 	 *
 	 * @param accountDTO the current user information
-	 * @return the ResponseEntity with status 200 (OK), or status 400 (Bad Request) or 500 (Internal Server Error) if the user couldn't be updated
+	 * @return the ResponseEntity with status 200 (OK) and the current user in body
+	 *      or with ... // TODO: Error handling
 	 */
 	@PostMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
 	public ResponseEntity update(@RequestBody @Valid final AccountDTO accountDTO) {
 		log.debug("POST request to update current user account info : {}", accountDTO);
-		AccountDTO response = userService.updateCurrentUserAccount(accountDTO);
-		return ResponseEntity.ok(response);
+		try {
+			AccountDTO response = userService.updateCurrentUserAccount(accountDTO);
+			return ResponseEntity.ok(response);
+		} catch (OpenLearnException e) {
+			return ResponseEntity.badRequest().build();
+		}
 	}
 }
