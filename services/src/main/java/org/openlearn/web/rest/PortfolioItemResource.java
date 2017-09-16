@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/portfolio-items")
@@ -60,6 +61,21 @@ public class PortfolioItemResource {
 		log.debug("GET request for all portfolio items");
 		Page<PortfolioItemDTO> response = portfolioItemService.findAll(pageable);
 		return ResponseEntity.ok(response.getContent());
+	}
+
+	/**
+	 * GET  /portfolio/:id : get a list of all portfolio items and flagged courses and assignments
+	 *
+	 * @param id of the student for which to retrieve portfolio
+	 * @return the ResponseEntity with status 200 (OK) and a list of portfolio items in the body
+	 *      or with ... TODO: Error handling
+	 */
+	@GetMapping(path = "/portfolio/{id}")
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
+	public ResponseEntity getPortfolio(@PathVariable final Long id) {
+		log.debug("GET request for portfolio of student : {}", id);
+		List<PortfolioItemDTO> response = portfolioItemService.getPortfolioForStudent(id);
+		return ResponseEntity.ok(response);
 	}
 
 	/**

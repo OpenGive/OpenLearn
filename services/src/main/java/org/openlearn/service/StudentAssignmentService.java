@@ -13,10 +13,11 @@ import org.openlearn.security.SecurityUtils;
 import org.openlearn.transformer.StudentAssignmentTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing StudentAssignment.
@@ -87,16 +88,34 @@ public class StudentAssignmentService {
 	 * Get a list studentAssignment by student.
 	 *
 	 * @param id the id of the student
-	 * @param pageable the pagination information
 	 * @return the list of student assignments
 	 */
 	@Transactional(readOnly = true)
-	public Page<StudentAssignmentDTO> findByStudent(final Long id, final Pageable pageable) {
+	public List<StudentAssignmentDTO> findByStudent(final Long id) {
 		log.debug("Request to get StudentAssignments by Student : {}", id);
 		User student = userRepository.findOneByIdAndAuthority(id, STUDENT);
 		if (student != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(student))) {
-			return studentAssignmentRepository.findByStudent(student, pageable)
-				.map((StudentAssignment studentAssignment) -> studentAssignmentTransformer.transform(studentAssignment, false, true));
+			return studentAssignmentRepository.findByStudent(student).stream()
+				.map((StudentAssignment studentAssignment) ->
+					studentAssignmentTransformer.transform(studentAssignment, false, true))
+				.collect(Collectors.toList());
+		}
+		// TODO: Error handling / logging
+		return null;
+	}
+
+	/**
+	 * Get a list studentAssignment by student that are on a student's portfolio.
+	 *
+	 * @param id the id of the student
+	 * @return the list of student assignments
+	 */
+	@Transactional(readOnly = true)
+	public List<StudentAssignment> findFlaggedByStudent(final Long id) {
+		log.debug("Request to get portfolio StudentAssignments by Student : {}", id);
+		User student = userRepository.findOneByIdAndAuthority(id, STUDENT);
+		if (student != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(student))) {
+			return studentAssignmentRepository.findByStudentAndAndOnPortfolio(student, true);
 		}
 		// TODO: Error handling / logging
 		return null;
@@ -106,16 +125,17 @@ public class StudentAssignmentService {
 	 * Get a list studentAssignment by assignment.
 	 *
 	 * @param id the id of the assignment
-	 * @param pageable the pagination information
 	 * @return the list of student assignments
 	 */
 	@Transactional(readOnly = true)
-	public Page<StudentAssignmentDTO> findByAssignment(final Long id, final Pageable pageable) {
+	public List<StudentAssignmentDTO> findByAssignment(final Long id) {
 		log.debug("Request to get StudentAssignments by Assignment : {}", id);
 		Assignment assignment = assignmentRepository.findOne(id);
 		if (assignment != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(assignment))) {
-			return studentAssignmentRepository.findByAssignment(assignment, pageable)
-				.map((StudentAssignment studentAssignment) -> studentAssignmentTransformer.transform(studentAssignment, true, false));
+			return studentAssignmentRepository.findByAssignment(assignment).stream()
+				.map((StudentAssignment studentAssignment) ->
+					studentAssignmentTransformer.transform(studentAssignment, true, false))
+				.collect(Collectors.toList());
 		}
 		// TODO: Error handling / logging
 		return null;

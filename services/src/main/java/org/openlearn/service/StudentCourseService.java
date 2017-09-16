@@ -13,10 +13,11 @@ import org.openlearn.security.SecurityUtils;
 import org.openlearn.transformer.StudentCourseTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing StudentCourse.
@@ -86,16 +87,34 @@ public class StudentCourseService {
 	 * Get a list studentCourse by student.
 	 *
 	 * @param id the id of the student
-	 * @param pageable the pagination information
 	 * @return the list of student courses
 	 */
 	@Transactional(readOnly = true)
-	public Page<StudentCourseDTO> findByStudent(final Long id, final Pageable pageable) {
+	public List<StudentCourseDTO> findByStudent(final Long id) {
 		log.debug("Request to get StudentCourses by Student : {}", id);
 		User student = userRepository.findOneByIdAndAuthority(id, STUDENT);
 		if (student != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(student))) {
-			return studentCourseRepository.findByStudent(student, pageable)
-				.map((StudentCourse studentCourse) -> studentCourseTransformer.transform(studentCourse, false, true));
+			return studentCourseRepository.findByStudent(student).stream()
+				.map((StudentCourse studentCourse) ->
+					studentCourseTransformer.transform(studentCourse, false, true))
+				.collect(Collectors.toList());
+		}
+		// TODO: Error handling / logging
+		return null;
+	}
+
+	/**
+	 * Get a list studentCourse by student that are on a student's portfolio.
+	 *
+	 * @param id the id of the student
+	 * @return the list of student courses
+	 */
+	@Transactional(readOnly = true)
+	public List<StudentCourse> findFlaggedByStudent(final Long id) {
+		log.debug("Request to get portfolio StudentCourses by Student : {}", id);
+		User student = userRepository.findOneByIdAndAuthority(id, STUDENT);
+		if (student != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(student))) {
+			return studentCourseRepository.findByStudentAndOnPortfolio(student, true);
 		}
 		// TODO: Error handling / logging
 		return null;
@@ -105,16 +124,17 @@ public class StudentCourseService {
 	 * Get a list studentCourse by course.
 	 *
 	 * @param id the id of the course
-	 * @param pageable the pagination information
 	 * @return the list of student courses
 	 */
 	@Transactional(readOnly = true)
-	public Page<StudentCourseDTO> findByCourse(final Long id, final Pageable pageable) {
+	public List<StudentCourseDTO> findByCourse(final Long id) {
 		log.debug("Request to get StudentCourses by Course : {}", id);
 		Course course = courseRepository.findOne(id);
 		if (course != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(course))) {
-			return studentCourseRepository.findByCourse(course, pageable)
-				.map((StudentCourse studentCourse) -> studentCourseTransformer.transform(studentCourse, true, false));
+			return studentCourseRepository.findByCourse(course).stream()
+				.map((StudentCourse studentCourse) ->
+					studentCourseTransformer.transform(studentCourse, true, false))
+				.collect(Collectors.toList());
 		}
 		// TODO: Error handling / logging
 		return null;

@@ -11,10 +11,14 @@ import org.openlearn.security.SecurityUtils;
 import org.openlearn.transformer.PortfolioItemTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.actuate.autoconfigure.ShellProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing PortfolioItem.
@@ -31,16 +35,23 @@ public class PortfolioItemService {
 
 	private final PortfolioItemTransformer portfolioItemTransformer;
 
+	private final StudentAssignmentService studentAssignmentService;
+
+	private final StudentCourseService studentCourseService;
+
 	private final UserRepository userRepository;
 
 	private final UserService userService;
 
 	public PortfolioItemService(final PortfolioItemRepository portfolioItemRepository,
 	                            final PortfolioItemTransformer portfolioItemTransformer,
-	                            final UserRepository userRepository,
+	                            final StudentAssignmentService studentAssignmentService,
+	                            final StudentCourseService studentCourseService, final UserRepository userRepository,
 	                            final UserService userService) {
 		this.portfolioItemRepository = portfolioItemRepository;
 		this.portfolioItemTransformer = portfolioItemTransformer;
+		this.studentAssignmentService = studentAssignmentService;
+		this.studentCourseService = studentCourseService;
 		this.userRepository = userRepository;
 		this.userService = userService;
 	}
@@ -92,6 +103,22 @@ public class PortfolioItemService {
 			return portfolioItemTransformer.transform(portfolioItem);
 		}
 		// TODO: Error handling / logging
+		return null;
+	}
+
+	public List<PortfolioItemDTO> getPortfolioForStudent(final Long id) {
+		log.debug("Request to get portfolio for student : {}", id);
+		User student = userRepository.findOneByIdAndAuthority(id, STUDENT);
+		if (student != null) {
+			List<PortfolioItemDTO> portfolio = portfolioItemRepository.findByStudent(student).stream()
+				.map(portfolioItemTransformer::transform).collect(Collectors.toList());
+			portfolio.addAll(studentAssignmentService.findFlaggedByStudent(id).stream()
+				.map(portfolioItemTransformer::transform).collect(Collectors.toList()));
+			portfolio.addAll(studentCourseService.findFlaggedByStudent(id).stream()
+				.map(portfolioItemTransformer::transform).collect(Collectors.toList()));
+			return portfolio;
+		}
+		// TODO: Error handling
 		return null;
 	}
 

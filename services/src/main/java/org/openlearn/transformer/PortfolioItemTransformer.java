@@ -2,6 +2,8 @@ package org.openlearn.transformer;
 
 import org.openlearn.domain.Authority;
 import org.openlearn.domain.PortfolioItem;
+import org.openlearn.domain.StudentAssignment;
+import org.openlearn.domain.StudentCourse;
 import org.openlearn.dto.PortfolioItemDTO;
 import org.openlearn.repository.PortfolioItemRepository;
 import org.openlearn.repository.UserRepository;
@@ -60,5 +62,37 @@ public class PortfolioItemTransformer {
 		portfolioItem.setUrl(portfolioItemDTO.getUrl());
 		portfolioItem.setOrganization(portfolioItem.getStudent().getOrganization());
 		return portfolioItem;
+	}
+
+	/**
+	 * Transforms a student-assignment into a portfolio item DTO
+	 *
+	 * @param studentAssignment student assignment to transform
+	 * @return the new portfolio item DTO
+	 */
+	public PortfolioItemDTO transform(final StudentAssignment studentAssignment) {
+		log.debug("Transforming student assignment into portfolio item DTO : {}", studentAssignment);
+		PortfolioItemDTO portfolioItemDTO = new PortfolioItemDTO();
+		portfolioItemDTO.setId(-1L);
+		portfolioItemDTO.setName("Assignment: " + studentAssignment.getAssignment().getName());
+		portfolioItemDTO.setDescription(studentAssignment.getAssignment().getDescription());
+		portfolioItemDTO.setStudentId(studentAssignment.getStudent().getId());
+		return portfolioItemDTO;
+	}
+
+	/**
+	 * Transforms a student-course into a portfolio item DTO
+	 *
+	 * @param studentCourse student course to transform
+	 * @return the new portfolio item DTO
+	 */
+	public PortfolioItemDTO transform(final StudentCourse studentCourse) {
+		log.debug("Transforming student course into portfolio item DTO : {}", studentCourse);
+		PortfolioItemDTO portfolioItemDTO = new PortfolioItemDTO();
+		portfolioItemDTO.setId(-1L);
+		portfolioItemDTO.setName("Course: " + studentCourse.getCourse().getName());
+		portfolioItemDTO.setDescription(studentCourse.getCourse().getDescription());
+		portfolioItemDTO.setStudentId(studentCourse.getStudent().getId());
+		return portfolioItemDTO;
 	}
 }

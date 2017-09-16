@@ -1,13 +1,10 @@
 package org.openlearn.web.rest;
 
-import io.swagger.annotations.ApiParam;
 import org.openlearn.dto.StudentAssignmentDTO;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.service.StudentAssignmentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/student-assignments")
@@ -56,10 +54,10 @@ public class StudentAssignmentResource {
 	 */
 	@GetMapping(path = "/student/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity getByStudent(@PathVariable final Long id, @ApiParam final Pageable pageable) {
+	public ResponseEntity getByStudent(@PathVariable final Long id) {
 		log.debug("GET request to get studentAssignments by student : {}", id);
-		Page<StudentAssignmentDTO> response = studentAssignmentService.findByStudent(id, pageable);
-		return ResponseEntity.ok(response.getContent());
+		List<StudentAssignmentDTO> response = studentAssignmentService.findByStudent(id);
+		return ResponseEntity.ok(response);
 	}
 
 	/**
@@ -71,10 +69,10 @@ public class StudentAssignmentResource {
 	 */
 	@GetMapping(path = "/assignment/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity getByAssignment(@PathVariable final Long id, @ApiParam final Pageable pageable) {
+	public ResponseEntity getByAssignment(@PathVariable final Long id) {
 		log.debug("GET request to get studentAssignments by assignment : {}", id);
-		Page<StudentAssignmentDTO> response = studentAssignmentService.findByAssignment(id, pageable);
-		return ResponseEntity.ok(response.getContent());
+		List<StudentAssignmentDTO> response = studentAssignmentService.findByAssignment(id);
+		return ResponseEntity.ok(response);
 	}
 
 	/**
