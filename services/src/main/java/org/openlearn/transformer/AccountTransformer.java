@@ -70,13 +70,13 @@ public class AccountTransformer {
 		if (accountDTO.getLastName() != null) user.setLastName(accountDTO.getLastName());
 		if (accountDTO.getEmail() != null) user.setEmail(accountDTO.getEmail());
 		if (accountDTO.getPhoneNumber() != null) user.setPhoneNumber(accountDTO.getPhoneNumber());
-		if (!isAddressEmpty(accountDTO)) {
+		if (!isAddressEmpty(accountDTO) || !CollectionUtils.isEmpty(user.getAddresses())) {
 			Address address = (CollectionUtils.isEmpty(user.getAddresses()) ? new Address() : user.getAddresses().get(0));
-			if (accountDTO.getStreetAddress1() != null) address.setStreetAddress1(accountDTO.getStreetAddress1());
-			if (accountDTO.getStreetAddress2() != null) address.setStreetAddress2(accountDTO.getStreetAddress2());
-			if (accountDTO.getCity() != null) address.setCity(accountDTO.getCity());
-			if (accountDTO.getState() != null) address.setState(State.valueOf(accountDTO.getState()));
-			if (accountDTO.getPostalCode() != null) address.setPostalCode(accountDTO.getPostalCode());
+			address.setStreetAddress1(accountDTO.getStreetAddress1());
+			address.setStreetAddress2(accountDTO.getStreetAddress2());
+			address.setCity(accountDTO.getCity());
+			address.setState(State.valueOf(accountDTO.getState()));
+			address.setPostalCode(accountDTO.getPostalCode());
 			address.setUser(user);
 			addressRepository.save(address);
 		}

@@ -51,8 +51,8 @@ public class OrganizationTransformer {
 		organization.setDescription(organizationDTO.getDescription());
 		organization.setPrimaryContactName(organizationDTO.getPrimaryContactName());
 		organization.setPrimaryContactInfo(organizationDTO.getPrimaryContactInfo());
-		if (organizationDTO.getSecondaryContactName() != null) organization.setSecondaryContactName(organizationDTO.getSecondaryContactName());
-		if (organizationDTO.getSecondaryContactInfo() != null) organization.setSecondaryContactInfo(organizationDTO.getSecondaryContactInfo());
+		organization.setSecondaryContactName(organizationDTO.getSecondaryContactName());
+		organization.setSecondaryContactInfo(organizationDTO.getSecondaryContactInfo());
 		return organization;
 	}
 }

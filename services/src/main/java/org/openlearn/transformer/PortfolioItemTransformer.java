@@ -57,7 +57,7 @@ public class PortfolioItemTransformer {
 		portfolioItem.setName(portfolioItemDTO.getName());
 		portfolioItem.setDescription(portfolioItemDTO.getDescription());
 		portfolioItem.setStudent(userRepository.findOneByIdAndAuthority(portfolioItemDTO.getStudentId(), STUDENT));
-		if (portfolioItemDTO.getUrl() != null) portfolioItem.setUrl(portfolioItemDTO.getUrl());
+		portfolioItem.setUrl(portfolioItemDTO.getUrl());
 		portfolioItem.setOrganization(portfolioItem.getStudent().getOrganization());
 		return portfolioItem;
 	}

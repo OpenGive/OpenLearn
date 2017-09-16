@@ -59,20 +59,20 @@ public class UserTransformer {
 	 */
 	public void transformDTOToUser(final User user, final UserDTO userDTO) {
 		log.debug("Transforming user DTO to user : {}", userDTO);
-		if (userDTO.getFirstName() != null) user.setFirstName(userDTO.getFirstName());
-		if (userDTO.getLastName() != null) user.setLastName(userDTO.getLastName());
-		if (userDTO.getLogin() != null) user.setLogin(userDTO.getLogin());
-		if (userDTO.getAuthority() != null) user.setAuthority(authorityRepository.findOne(userDTO.getAuthority()));
-		if (userDTO.getEmail() != null) user.setEmail(userDTO.getEmail());
-		if (userDTO.getPhoneNumber() != null) user.setPhoneNumber(userDTO.getPhoneNumber());
-		if (userDTO.getNotes() != null) user.setNotes(userDTO.getNotes());
-		if (!isAddressEmpty(userDTO)) {
+		user.setFirstName(userDTO.getFirstName());
+		user.setLastName(userDTO.getLastName());
+		user.setLogin(userDTO.getLogin());
+		user.setAuthority(authorityRepository.findOne(userDTO.getAuthority()));
+		user.setEmail(userDTO.getEmail());
+		user.setPhoneNumber(userDTO.getPhoneNumber());
+		user.setNotes(userDTO.getNotes());
+		if (!isAddressEmpty(userDTO) || !CollectionUtils.isEmpty(user.getAddresses())) {
 			Address address = (CollectionUtils.isEmpty(user.getAddresses()) ? new Address() : user.getAddresses().get(0));
-			if (userDTO.getStreetAddress1() != null) address.setStreetAddress1(userDTO.getStreetAddress1());
-			if (userDTO.getStreetAddress2() != null) address.setStreetAddress2(userDTO.getStreetAddress2());
-			if (userDTO.getCity() != null) address.setCity(userDTO.getCity());
-			if (userDTO.getState() != null) address.setState(State.valueOf(userDTO.getState()));
-			if (userDTO.getPostalCode() != null) address.setPostalCode(userDTO.getPostalCode());
+			address.setStreetAddress1(userDTO.getStreetAddress1());
+			address.setStreetAddress2(userDTO.getStreetAddress2());
+			address.setCity(userDTO.getCity());
+			address.setState(State.valueOf(userDTO.getState()));
+			address.setPostalCode(userDTO.getPostalCode());
 			address.setUser(user);
 			addressRepository.save(address);
 		}

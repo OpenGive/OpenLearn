@@ -91,11 +91,11 @@ public class StudentCourseTransformer {
 		// TODO: Error handling
 		studentCourse.setStudent(userRepository.findOneByIdAndAuthority(studentCourseDTO.getStudentId(), STUDENT));
 		studentCourse.setCourse(courseRepository.findOne(studentCourseDTO.getCourseId()));
-		if (studentCourseDTO.getGrade() != null) studentCourse.setGrade(studentCourseDTO.getGrade());
-		if (studentCourseDTO.getEnrollDate() != null) studentCourse.setEnrollDate(studentCourseDTO.getEnrollDate());
-		if (studentCourseDTO.getDropDate() != null) studentCourse.setDropDate(studentCourseDTO.getDropDate());
-		if (studentCourseDTO.getComplete() != null) studentCourse.setComplete(studentCourseDTO.getComplete());
-		if (studentCourseDTO.getOnPortfolio() != null) studentCourse.setOnPortfolio(studentCourseDTO.getOnPortfolio());
+		studentCourse.setGrade(studentCourseDTO.getGrade());
+		studentCourse.setEnrollDate(studentCourseDTO.getEnrollDate());
+		studentCourse.setDropDate(studentCourseDTO.getDropDate());
+		studentCourse.setComplete(studentCourseDTO.getComplete());
+		studentCourse.setOnPortfolio(studentCourseDTO.getOnPortfolio());
 		return studentCourse;
 	}
 }

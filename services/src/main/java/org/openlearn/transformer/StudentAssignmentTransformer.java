@@ -91,9 +91,9 @@ public class StudentAssignmentTransformer {
 		// TODO: Error handling
 		studentAssignment.setStudent(userRepository.findOneByIdAndAuthority(studentAssignmentDTO.getStudentId(), STUDENT));
 		studentAssignment.setAssignment(assignmentRepository.findOne(studentAssignmentDTO.getAssignmentId()));
-		if (studentAssignmentDTO.getGrade() != null) studentAssignment.setGrade(studentAssignmentDTO.getGrade());
-		if (studentAssignmentDTO.getComplete() != null) studentAssignment.setComplete(studentAssignmentDTO.getComplete());
-		if (studentAssignmentDTO.getOnPortfolio() != null) studentAssignment.setOnPortfolio(studentAssignmentDTO.getOnPortfolio());
+		studentAssignment.setGrade(studentAssignmentDTO.getGrade());
+		studentAssignment.setComplete(studentAssignmentDTO.getComplete());
+		studentAssignment.setOnPortfolio(studentAssignmentDTO.getOnPortfolio());
 		return studentAssignment;
 	}
 }
