@@ -26,7 +26,7 @@
     <div fxHide.xs fxHide.sm [ngClass]="{'nav-divide': authenticated()}">
       <button routerLink="/" md-button>Home</button>
       <button routerLink="/login" md-button *ngIf="!authenticated()">Login</button>
-      <button routerLink="/admin" md-button *ngIf="authenticated() && (roles.admin || roles.orgAdmin)">Admin</button>
+      <button routerLink="/admin" md-button *ngIf="authenticated() && (roles.admin || roles.orgAdmin || roles.instructor)">Admin</button>
       <button routerLink="/dashboard" md-button *ngIf="authenticated() && roles.instructor">Dashboard</button>
       <button (click)="toStudentPage()" md-button *ngIf="authenticated() && roles.student">Dashboard</button>
     </div>
