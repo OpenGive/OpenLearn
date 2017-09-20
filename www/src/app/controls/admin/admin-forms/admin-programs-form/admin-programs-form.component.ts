@@ -5,8 +5,10 @@ import {Observable} from "rxjs/Observable";
 
 import {AdminDialogComponent} from "../../admin-dialog.component";
 import {AdminTabs} from "../../admin.constants";
+import {AppConstants} from "../../../../app.constants";
 import {AdminService} from "../../../../services/admin.service";
 import {NotifyService} from "../../../../services/notify.service";
+import {Principal} from "../../../../shared/auth/principal.service";
 
 @Component({
   selector: 'admin-programs-form',
@@ -20,6 +22,7 @@ export class AdminProgramsFormComponent implements OnInit {
   editing: boolean;
 
   organizations: any[];
+  instructor = this.principal.getRole() === AppConstants.Role.Instructor;
 
   filteredOrganizations: Observable<any[]>;
 
@@ -47,7 +50,8 @@ export class AdminProgramsFormComponent implements OnInit {
   constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
               private fb: FormBuilder,
               private adminService: AdminService,
-              private notify: NotifyService) {}
+              private notify: NotifyService,
+              private principal: Principal) {}
 
   ngOnInit(): void {
     this.buildForm();
