@@ -43,13 +43,16 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
     streetAddress1: '',
     streetAddress2: '',
     city: '',
-    postalCode: ''
+    postalCode: '',
+    orgRole: ''
   };
   validationMessages = {
     firstName: {
+      required: 'First Name is required',
       maxlength: 'First Name cannot be more than 50 characters long'
     },
     lastName: {
+      required: 'Last Name is required',
       maxlength: 'Last Name cannot be more than 50 characters long'
     },
     login: {
@@ -91,6 +94,9 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
     },
     postalCode: {
       pattern: 'Postal Code is not formatted correctly'
+    },
+    orgRole: {
+      required: 'Org Role is required',
     }
   };
 
@@ -111,9 +117,11 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
   private buildForm(): void {
     this.orgAdministratorForm = this.fb.group({
       firstName: [this.formOrgAdministrator.firstName, [
+        Validators.required,
         Validators.maxLength(50)
       ]],
       lastName: [this.formOrgAdministrator.lastName, [
+        Validators.required,
         Validators.maxLength(50)
       ]],
       login: [this.formOrgAdministrator.login, [
@@ -126,6 +134,7 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
         Validators.minLength(6),
         Validators.maxLength(50)
       ] : []],
+      authority: [AppConstants.Role.OrgAdmin],
       organizationId: [this.formOrgAdministrator.organizationId, [
         Validators.required
       ]],
@@ -156,6 +165,9 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
       state: [this.formOrgAdministrator.state],
       postalCode: [this.formOrgAdministrator.postalCode, [
         Validators.pattern(AppConstants.OLValidators.PostalCode)
+      ]],
+      orgRole: [this.formOrgAdministrator.orgRole, [
+        Validators.required
       ]]
     });
     this.orgAdministratorForm.valueChanges.subscribe(data => this.onValueChanged());
@@ -228,7 +240,7 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
   }
 
   private add(): void {
-    this.userService.create(this.orgAdministratorForm.value).subscribe(resp => {
+    this.adminService.create(AdminTabs.OrgAdministrator.route, this.orgAdministratorForm.value).subscribe(resp => {
       this.dialogRef.close({
         type: 'ADD',
         data: resp
@@ -268,6 +280,7 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
       state: this.orgAdministratorForm.get('state').value,
       postalCode: this.orgAdministratorForm.get('postalCode').value,
       organizationId: this.orgAdministratorForm.get('organizationId').value,
+      orgRole: this.orgAdministratorForm.get('orgRole').value
     };
   }
 
