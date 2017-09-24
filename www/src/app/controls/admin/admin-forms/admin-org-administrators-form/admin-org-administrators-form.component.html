@@ -64,15 +64,15 @@
         <input mdInput formControlName="city" placeholder="City"/>
         <md-error *ngIf="formErrors.city">{{formErrors.city}}</md-error>
       </md-input-container>
-            <md-input-container fxFlex="20%">
-        <input mdInput formControlName="phoneNumber" placeholder="Phone"/>
-        <md-error *ngIf="formErrors.phoneNumber">{{formErrors.phoneNumber}}</md-error>
-      </md-input-container>
       <md-input-container fxFlex="20%">
         <input mdInput formControlName="state" placeholder="State" [mdAutocomplete]="state"/>
         <md-autocomplete #state="mdAutocomplete" [displayWith]="displayState">
           <md-option *ngFor="let state of filteredStates | async" [value]="state.value">{{state.name}}</md-option>
         </md-autocomplete>
+      </md-input-container>
+      <md-input-container fxFlex="20%">
+        <input mdInput formControlName="phoneNumber" placeholder="Phone"/>
+        <md-error *ngIf="formErrors.phoneNumber">{{formErrors.phoneNumber}}</md-error>
       </md-input-container>
       <md-input-container fxFlex="20%">
         <input mdInput formControlName="postalCode" placeholder="Postal Code"/>

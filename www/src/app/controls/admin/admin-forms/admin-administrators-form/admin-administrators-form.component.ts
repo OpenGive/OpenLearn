@@ -36,19 +36,21 @@ export class AdminAdministratorsFormComponent implements OnInit {
     lastName: '',
     login: '',
     password: '',
+    notes: '',
     email: '',
     phoneNumber: '',
     streetAddress1: '',
     streetAddress2: '',
     city: '',
-    postalCode: '',
-    notes: ''
+    postalCode: ''
   };
   validationMessages = {
     firstName: {
+      required: 'First Name is required',
       maxlength: 'First Name cannot be more than 50 characters long'
     },
     lastName: {
+      required: 'First Name is required',
       maxlength: 'Last Name cannot be more than 50 characters long'
     },
     login: {
@@ -60,6 +62,9 @@ export class AdminAdministratorsFormComponent implements OnInit {
       required: 'Password is required',
       minlength: 'Password must be at least 6 characters long',
       maxlength: 'Password cannot be more than 50 characters long'
+    },
+    notes: {
+      maxlength: 'Notes cannot be more than 2000 characters long'
     },
     email: {
       // email: 'Email is not formatted correctly', TODO: See comment in buildForm()
@@ -84,9 +89,6 @@ export class AdminAdministratorsFormComponent implements OnInit {
     },
     postalCode: {
       pattern: 'Postal Code is not formatted correctly'
-    },
-    notes: {
-      maxlength: 'Notes cannot be more than 2000 characters long'
     }
   };
 
@@ -107,9 +109,11 @@ export class AdminAdministratorsFormComponent implements OnInit {
   private buildForm(): void {
     this.administratorForm = this.fb.group({
       firstName: [this.formAdministrator.firstName, [
+        Validators.required,
         Validators.maxLength(50)
       ]],
       lastName: [this.formAdministrator.lastName, [
+        Validators.required,
         Validators.maxLength(50)
       ]],
       login: [this.formAdministrator.login, [
@@ -122,6 +126,10 @@ export class AdminAdministratorsFormComponent implements OnInit {
         Validators.minLength(6),
         Validators.maxLength(50)
       ] : []],
+      authority: [AppConstants.Role.OrgAdmin],
+      notes: [this.formAdministrator.notes, [
+        Validators.maxLength(2000)
+      ]],
       email: [this.formAdministrator.email, [
         // Validators.email, TODO: This forces email to be required, https://github.com/angular/angular/pull/16902 is the fix, pattern below is the workaround
         Validators.pattern(AppConstants.OLValidators.Email),
@@ -146,9 +154,6 @@ export class AdminAdministratorsFormComponent implements OnInit {
       state: [this.formAdministrator.state],
       postalCode: [this.formAdministrator.postalCode, [
         Validators.pattern(AppConstants.OLValidators.PostalCode)
-      ]],
-      notes: [this.formAdministrator.notes, [
-        Validators.maxLength(2000)
       ]]
     });
     this.administratorForm.valueChanges.subscribe(data => this.onValueChanged());
@@ -216,7 +221,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
   }
 
   private add(): void {
-    this.userService.create(this.administratorForm.value).subscribe(resp => {
+    this.adminService.create(AdminTabs.Administrator.route, this.administratorForm.value).subscribe(resp => {
       this.dialogRef.close({
         type: 'ADD',
         data: resp
@@ -247,6 +252,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
       lastName: this.administratorForm.get('lastName').value,
       login: this.administratorForm.get('login').value,
       password: this.administratorForm.get('password').value,
+      notes: this.administratorForm.get('notes').value,
       authority: AppConstants.Role.Admin,
       email: this.administratorForm.get('email').value,
       phoneNumber: this.administratorForm.get('phoneNumber').value,
@@ -254,8 +260,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
       streetAddress2: this.administratorForm.get('streetAddress2').value,
       city: this.administratorForm.get('city').value,
       state: this.administratorForm.get('state').value,
-      postalCode: this.administratorForm.get('postalCode').value,
-      notes: this.administratorForm.get('notes').value,
+      postalCode: this.administratorForm.get('postalCode').value
     };
   }
 
