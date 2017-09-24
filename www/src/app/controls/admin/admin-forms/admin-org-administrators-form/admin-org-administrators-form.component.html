@@ -85,7 +85,7 @@
           <md-option *ngFor="let organization of filteredOrganizations | async" [value]="organization">{{organization.name}}</md-option>
         </md-autocomplete>
       </md-input-container>
-      <md-input-container fxFlex="20%" *ngIf="adding">
+      <md-input-container fxFlex="20%">
         <input mdInput formControlName="orgRole" placeholder="Org Role*"/>
         <md-error *ngIf="formErrors.orgRole">{{formErrors.orgRole}}</md-error>
       </md-input-container>

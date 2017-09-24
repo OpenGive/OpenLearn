@@ -271,6 +271,7 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
       lastName: this.orgAdministratorForm.get('lastName').value,
       login: this.orgAdministratorForm.get('login').value,
       password: this.orgAdministratorForm.get('password').value,
+      notes: this.orgAdministratorForm.get('notes').value,
       authority: AppConstants.Role.OrgAdmin,
       email: this.orgAdministratorForm.get('email').value,
       phoneNumber: this.orgAdministratorForm.get('phoneNumber').value,
