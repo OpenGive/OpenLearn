@@ -29,7 +29,8 @@ export class AdminSessionsFormComponent implements OnInit {
   sessionForm: FormGroup;
   formErrors = {
     name: '',
-    program: '',
+    description: '',
+    programId: '',
     startDate: '',
     endDate: ''
   };
@@ -37,9 +38,14 @@ export class AdminSessionsFormComponent implements OnInit {
     name: {
       required: 'Name is required',
       minlength: 'Name must be at least 5 characters long',
-      maxlength: 'Name cannot be more than 50 characters long'
+      maxlength: 'Name cannot be more than 100 characters long'
     },
-    program: {
+    description: {
+      required: 'Description is required',
+      minlength: 'Name must be at least 5 characters long',
+      maxlength: 'Name cannot be more than 200 characters long'
+    },
+    programId: {
       required: 'Program is required'
     },
     startDate: {
@@ -59,7 +65,7 @@ export class AdminSessionsFormComponent implements OnInit {
   ngOnInit(): void {
     this.buildForm();
     this.setEditing(this.adding);
-    this.getPrograms();
+    //this.getPrograms();
   }
 
   private buildForm(): void {
@@ -67,15 +73,18 @@ export class AdminSessionsFormComponent implements OnInit {
       name: [this.formSession.name, [
         Validators.required,
         Validators.minLength(5),
-        Validators.maxLength(50)
+        Validators.maxLength(100)
       ]],
-      description: [this.formSession.description],
-      program: [this.formSession.program, [
+      description: [this.formSession.description, [
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(200)
+      ]],
+      programId: [this.formSession.programId, [
         Validators.required
       ]],
       startDate: [this.formSession.startDate],
-      endDate: [this.formSession.endDate],
-      active: [this.formSession.active || false]
+      endDate: [this.formSession.endDate]
     });
     this.sessionForm.valueChanges.subscribe(data => this.onValueChanged());
     this.onValueChanged();
@@ -112,7 +121,7 @@ export class AdminSessionsFormComponent implements OnInit {
   private getPrograms(): void {
     this.adminService.getAll(AdminTabs.Program.route).subscribe(resp => {
       this.programs = resp;
-      this.filteredPrograms = this.sessionForm.get('program')
+      this.filteredPrograms = this.sessionForm.get('programId')
         .valueChanges
         .startWith(null)
         .map(val => val ? this.filterPrograms(val) : this.programs.slice());
@@ -165,10 +174,9 @@ export class AdminSessionsFormComponent implements OnInit {
       id: this.formSession.id,
       name: this.sessionForm.get('name').value,
       description: this.sessionForm.get('description').value,
-      program: this.sessionForm.get('program').value,
+      programId: this.sessionForm.get('programId').value,
       startDate: this.sessionForm.get('startDate').value,
-      endDate: this.sessionForm.get('endDate').value,
-      active: this.sessionForm.get('active').value
+      endDate: this.sessionForm.get('endDate').value
     };
   }
 
@@ -198,7 +206,7 @@ export class AdminSessionsFormComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  displayProgram(program: any): string {
-    return program ? program.name : '';
-  }
+  // displayProgram(program: any): string {
+  //   return program ? program.name : '';
+  // }
 }
