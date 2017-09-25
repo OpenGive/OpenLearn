@@ -32,11 +32,25 @@
         <input mdInput formControlName="name" placeholder="Name"/>
         <md-error *ngIf="formErrors.name">{{formErrors.name}}</md-error>
       </md-input-container>
-    </div>
-    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap>
       <md-input-container fxFlex="100%">
         <textarea rows="6" mdInput formControlName="description" placeholder="Description"></textarea>
         <md-error *ngIf="formErrors.description">{{formErrors.description}}</md-error>
+      </md-input-container>
+      <md-input-container fxFlex="40%">
+        <input mdInput formControlName="primaryContactName" placeholder="Primary Contact Name"/>
+        <md-error *ngIf="formErrors.primaryContactName">{{formErrors.primaryContactName}}</md-error>
+      </md-input-container>
+      <md-input-container fxFlex="40%">
+        <input mdInput formControlName="primaryContactInfo" placeholder="Primary Contact Info"/>
+        <md-error *ngIf="formErrors.primaryContactInfo">{{formErrors.primaryContactInfo}}</md-error>
+      </md-input-container>
+      <md-input-container fxFlex="40%">
+        <input mdInput formControlName="secondaryContactName" placeholder="Secondary Contact Name"/>
+        <md-error *ngIf="formErrors.secondaryContactName">{{formErrors.secondaryContactName}}</md-error>
+      </md-input-container>
+      <md-input-container fxFlex="40%">
+        <input mdInput formControlName="secondaryContactInfo" placeholder="Secondary Contact Info"/>
+        <md-error *ngIf="formErrors.secondaryContactInfo">{{formErrors.secondaryContactInfo}}</md-error>
       </md-input-container>
     </div>
   </div>

@@ -21,7 +21,11 @@ export class AdminOrganizationsFormComponent implements OnInit {
   organizationForm: FormGroup;
   formErrors = {
     name: '',
-    description: ''
+    description: '',
+    primaryContactName: '',
+    primaryContactInfo: '',
+    secondaryContactName: '',
+    secondaryContactInfo: ''
   };
   validationMessages = {
     name: {
@@ -32,7 +36,18 @@ export class AdminOrganizationsFormComponent implements OnInit {
     description: {
       minlength: 'Description must be at least 10 characters long',
       maxlength: 'Description cannot be more than 800 characters long'
-    }
+    },
+    primaryContactName: {
+      required: 'Primary Contact Name is required',
+      maxlength: 'Primary Contact Name cannot be more than 50 characters long'
+    },
+    primaryContactInfo: {
+      required: 'Primary Contact Info is required'
+    },
+    secondaryContactName: {
+      maxlength: 'Secondary Contact Name cannot be more than 50 characters long'
+    },
+    secondaryContactInfo: {}
   };
 
   constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
@@ -55,7 +70,18 @@ export class AdminOrganizationsFormComponent implements OnInit {
       description: [this.formOrganization.description, [
         Validators.minLength(10),
         Validators.maxLength(800)
-      ]]
+      ]],
+      primaryContactName: [this.formOrganization.primaryContactName, [
+        Validators.required,
+        Validators.maxLength(50)
+      ]],
+      primaryContactInfo: [this.formOrganization.primaryContactInfo, [
+        Validators.required
+      ]],
+      secondaryContactName: [this.formOrganization.secondaryContactName, [
+        Validators.maxLength(50)
+      ]],
+      secondaryContactInfo: [this.formOrganization.secondaryContactInfo]
     });
     this.organizationForm.valueChanges.subscribe(data => this.onValueChanged());
     this.onValueChanged();
@@ -130,7 +156,11 @@ export class AdminOrganizationsFormComponent implements OnInit {
     return {
       id: this.formOrganization.id,
       name: this.organizationForm.get('name').value,
-      description: this.organizationForm.get('description').value
+      description: this.organizationForm.get('description').value,
+      primaryContactName: this.organizationForm.get('primaryContactName').value,
+      primaryContactInfo: this.organizationForm.get('primaryContactInfo').value,
+      secondaryContactName: this.organizationForm.get('secondaryContactName').value,
+      secondaryContactInfo: this.organizationForm.get('secondaryContactInfo').value
     };
   }
 
