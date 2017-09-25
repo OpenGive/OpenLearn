@@ -30,21 +30,22 @@ export class AdminProgramsFormComponent implements OnInit {
   formErrors = {
     name: '',
     description: '',
-    organization: '',
+    organizationId: '',
   };
   validationMessages = {
     name: {
       required: 'Name is required',
       minlength: 'Name must be at least 5 characters long',
-      maxlength: 'Name cannot be more than 100 characters long'
+      maxlength: 'Name cannot be more than 50 characters long'
     },
     description: {
+      required: 'Description is required',
       minlength: 'Description must be at least 5 characters long',
       maxlength: 'Description cannot be more than 200 characters long'
     },
-    organization: {
+    organizationId: {
       required: 'Organization is required'
-    },
+    }
   };
 
   constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
@@ -56,7 +57,7 @@ export class AdminProgramsFormComponent implements OnInit {
   ngOnInit(): void {
     this.buildForm();
     this.setEditing(this.adding);
-    this.getOrganizations();
+    //this.getOrganizations();
   }
 
   private buildForm(): void {
@@ -64,16 +65,16 @@ export class AdminProgramsFormComponent implements OnInit {
       name: [this.formProgram.name, [
         Validators.required,
         Validators.minLength(5),
-        Validators.maxLength(100)
+        Validators.maxLength(50)
       ]],
       description: [this.formProgram.description, [
+        Validators.required,
         Validators.minLength(5),
         Validators.maxLength(200)
       ]],
-      organization: [this.formProgram.organization, [
+      organizationId: [this.formProgram.organizationId, [
         Validators.required
-      ]],
-      active: [this.formProgram.active || false]
+      ]]
     });
     this.programForm.valueChanges.subscribe(data => this.onValueChanged());
     this.onValueChanged();
@@ -110,7 +111,7 @@ export class AdminProgramsFormComponent implements OnInit {
   private getOrganizations(): void {
     this.adminService.getAll(AdminTabs.Organization.route).subscribe(resp => {
       this.organizations = resp;
-      this.filteredOrganizations = this.programForm.get('organization')
+      this.filteredOrganizations = this.programForm.get('organizationId')
         .valueChanges
         .startWith(null)
         .map(val => val ? this.filterOrganizations(val) : this.organizations.slice());
@@ -163,8 +164,7 @@ export class AdminProgramsFormComponent implements OnInit {
       id: this.formProgram.id,
       name: this.programForm.get('name').value,
       description: this.programForm.get('description').value,
-      organization: this.programForm.get('organization').value,
-      active: this.programForm.get('active').value
+      organizationId: this.programForm.get('organizationId').value
     };
   }
 
@@ -194,7 +194,7 @@ export class AdminProgramsFormComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  displayOrganization(organization: any): string {
-    return organization ? organization.name : '';
-  }
+  // displayOrganization(organization: any): string {
+  //   return organization ? organization.name : '';
+  // }
 }

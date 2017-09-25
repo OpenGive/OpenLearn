@@ -34,6 +34,7 @@ export class AdminOrganizationsFormComponent implements OnInit {
       maxlength: 'Name cannot be more than 100 characters long'
     },
     description: {
+      required: 'Name is required',
       minlength: 'Description must be at least 10 characters long',
       maxlength: 'Description cannot be more than 800 characters long'
     },
@@ -68,6 +69,7 @@ export class AdminOrganizationsFormComponent implements OnInit {
         Validators.maxLength(100)
       ]],
       description: [this.formOrganization.description, [
+        Validators.required,
         Validators.minLength(10),
         Validators.maxLength(800)
       ]],
