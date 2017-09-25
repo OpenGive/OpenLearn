@@ -29,19 +29,19 @@
   <div class="ol-dialog-content">
     <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap>
       <md-input-container fxFlex="30%">
-        <input mdInput formControlName="firstName" placeholder="First Name"/>
+        <input mdInput formControlName="firstName" placeholder="First Name*"/>
         <md-error *ngIf="formErrors.firstName">{{formErrors.firstName}}</md-error>
       </md-input-container>
       <md-input-container fxFlex="30%">
-        <input mdInput formControlName="lastName" placeholder="Last Name"/>
+        <input mdInput formControlName="lastName" placeholder="Last Name*"/>
         <md-error *ngIf="formErrors.lastName">{{formErrors.lastName}}</md-error>
       </md-input-container>
       <md-input-container fxFlex="30%">
-        <input mdInput formControlName="login" placeholder="Username"/>
+        <input mdInput formControlName="login" placeholder="Username*"/>
         <md-error *ngIf="formErrors.login">{{formErrors.login}}</md-error>
       </md-input-container>
       <md-input-container fxFlex="30%" *ngIf="adding">
-        <input mdInput formControlName="password" placeholder="Password"/>
+        <input mdInput formControlName="password" placeholder="Password*"/>
         <md-error *ngIf="formErrors.password">{{formErrors.password}}</md-error>
       </md-input-container>
       <md-input-container fxFlex="30%">

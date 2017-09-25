@@ -96,7 +96,7 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
       pattern: 'Postal Code is not formatted correctly'
     },
     orgRole: {
-      required: 'Org Role is required',
+      required: 'Org Role is required'
     }
   };
 
