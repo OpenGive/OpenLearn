@@ -75,7 +75,6 @@ export class AdminCoursesFormComponent implements OnInit {
     this.buildForm();
     this.setEditing(this.adding);
     this.getInstructors();
-    this.getOrganizations();
     this.getSessions();
   }
 
@@ -141,7 +140,7 @@ export class AdminCoursesFormComponent implements OnInit {
   private getInstructors(): void {
     this.adminService.getAll(AdminTabs.Instructor.route).subscribe(resp => {
       this.instructors = resp;
-      this.filteredInstructors = this.courseForm.get('instructor')
+      this.filteredInstructors = this.courseForm.get('instructorId')
         .valueChanges
         .startWith(null)
         .map(val => val ? this.filterInstructors(val) : this.instructors.slice());
@@ -156,16 +155,6 @@ export class AdminCoursesFormComponent implements OnInit {
     });
   }
 
-  private getOrganizations(): void {
-    this.adminService.getAll(AdminTabs.Organization.route).subscribe(resp => {
-      this.organizations = resp;
-      this.filteredOrganizations = this.courseForm.get('organization')
-        .valueChanges
-        .startWith(null)
-        .map(val => val ? this.filterOrganizations(val) : this.organizations.slice());
-    });
-  }
-
   private filterOrganizations(val: string): any[] {
     return this.organizations.filter(organization => new RegExp(`${val}`, 'gi').test(organization.name));
   }
@@ -173,7 +162,7 @@ export class AdminCoursesFormComponent implements OnInit {
   private getSessions(): void {
     this.adminService.getAll(AdminTabs.Session.route).subscribe(resp => {
       this.sessions = resp;
-      this.filteredSessions = this.courseForm.get('session')
+      this.filteredSessions = this.courseForm.get('sessionId')
         .valueChanges
         .startWith(null)
         .map(val => val ? this.filterSessions(val) : this.sessions.slice());
