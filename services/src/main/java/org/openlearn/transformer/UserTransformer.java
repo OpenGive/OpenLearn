@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class UserTransformer {
@@ -20,9 +21,12 @@ public class UserTransformer {
 
 	private final AuthorityRepository authorityRepository;
 
-	public UserTransformer(final AddressRepository addressRepository, final AuthorityRepository authorityRepository) {
+	private final PasswordEncoder passwordEncoder;
+
+	public UserTransformer(final AddressRepository addressRepository, final AuthorityRepository authorityRepository, PasswordEncoder passwordEncoder) {
 		this.addressRepository = addressRepository;
 		this.authorityRepository = authorityRepository;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	/**
@@ -62,6 +66,8 @@ public class UserTransformer {
 		user.setFirstName(userDTO.getFirstName());
 		user.setLastName(userDTO.getLastName());
 		user.setLogin(userDTO.getLogin());
+		String encryptedPassword = passwordEncoder.encode(userDTO.getPassword());
+		user.setPassword(encryptedPassword);
 		user.setAuthority(authorityRepository.findOne(userDTO.getAuthority()));
 		user.setEmail(userDTO.getEmail());
 		user.setPhoneNumber(userDTO.getPhoneNumber());

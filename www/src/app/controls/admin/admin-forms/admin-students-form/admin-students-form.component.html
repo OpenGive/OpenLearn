@@ -73,7 +73,10 @@
         <md-error *ngIf="formErrors.school">{{formErrors.school}}</md-error>
       </md-input-container>
       <md-input-container fxFlex="30%">
-        <input mdInput formControlName="gradeLevel" placeholder="Grade Level*"/>
+        <input mdInput formControlName="gradeLevel" placeholder="Grade Level*" [mdAutocomplete]="gradeLevel"/>
+        <md-autocomplete #gradeLevel="mdAutocomplete" [displayWith]="displayGradeLevel">
+          <md-option *ngFor="let gradeLevel of filteredGradeLevels | async" [value]="gradeLevel.value">{{gradeLevel.name}}</md-option>
+        </md-autocomplete>
         <md-error *ngIf="formErrors.gradeLevel">{{formErrors.gradeLevel}}</md-error>
       </md-input-container>
       <md-input-container fxFlex="30%">

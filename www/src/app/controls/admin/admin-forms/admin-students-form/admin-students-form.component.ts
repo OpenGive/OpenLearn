@@ -25,8 +25,10 @@ export class AdminStudentsFormComponent implements OnInit {
 
   roles: string[];
   states: any[];
+  gradeLevels: any[];
 
   filteredStates: Observable<any[]>;
+  filteredGradeLevels: Observable<any[]>;
 
   studentForm: FormGroup;
   formErrors = {
@@ -147,6 +149,7 @@ export class AdminStudentsFormComponent implements OnInit {
     this.resetPassword(false);
     this.getRoles();
     this.getStates();
+    this.getGradeLevels();
   }
 
   private buildForm(): void {
@@ -225,7 +228,7 @@ export class AdminStudentsFormComponent implements OnInit {
         Validators.required,
         Validators.maxLength(100)
       ]],
-      gradeLevel: [this.formStudent.guardianEmail, [
+      gradeLevel: [this.formStudent.gradeLevel, [
         Validators.required,
         Validators.maxLength(100)
       ]],
@@ -289,8 +292,20 @@ export class AdminStudentsFormComponent implements OnInit {
       .map(val => val ? this.filterStates(val) : this.states.slice());
   }
 
+  private getGradeLevels(): void {
+    this.gradeLevels = AppConstants.GradeLevels;
+    this.filteredGradeLevels = this.studentForm.get('gradeLevel')
+      .valueChanges
+      .startWith(null)
+      .map(val => val ? this.filterGradeLevels(val) : this.gradeLevels.slice());
+  }
+
   private filterStates(val: string): any[] {
     return this.states.filter(state => new RegExp(`${val}`, 'gi').test(state.name));
+  }
+
+  private filterGradeLevels(val: string): any[] {
+    return this.gradeLevels.filter(gradeLevel => new RegExp(`${val}`, 'gi').test(gradeLevel.name));
   }
 
   save(): void {
@@ -391,5 +406,9 @@ export class AdminStudentsFormComponent implements OnInit {
 
   displayState(stateValue: string): string {
     return stateValue ? _.filter(AppConstants.States, {value: stateValue})[0].name : '';
+  }
+
+  displayGradeLevel(gradeLevelValue: string): string {
+    return gradeLevelValue ? _.filter(AppConstants.GradeLevels, {value: gradeLevelValue})[0].name : '';
   }
 }
