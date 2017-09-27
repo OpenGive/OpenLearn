@@ -32,11 +32,12 @@ export class AdminCoursesFormComponent implements OnInit {
   formErrors = {
     name: '',
     description: '',
-    organization: '',
-    session: '',
-    instructor: '',
+    sessionId: '',
+    instructorId: '',
     startDate: '',
-    endDate: ''
+    endDate: '',
+    locations: '',
+    times: ''
   };
   validationMessages = {
     name: {
@@ -45,22 +46,22 @@ export class AdminCoursesFormComponent implements OnInit {
       maxlength: 'Name cannot be more than 100 characters long'
     },
     description: {
+      required: 'Name is required',
       minlength: 'Description must be at least 5 characters long',
       maxlength: 'Description cannot be more than 200 characters long'
     },
-    organization: {
-      required: 'Organization is required'
-    },
-    session: {
+    sessionId: {
       required: 'Session is required'
     },
-    instructor: {
+    instructorId: {
       required: 'Instructor is required'
     },
     startDate: {
+      required: 'Name is required',
       mdDatepickerMax: 'Start date must not be after End Date'
     },
     endDate: {
+      required: 'Name is required',
       mdDatepickerMin: 'End date must not be before Start Date'
     }
   };
@@ -86,20 +87,24 @@ export class AdminCoursesFormComponent implements OnInit {
         Validators.maxLength(100)
       ]],
       description: [this.formCourse.description, [
+        Validators.required,
         Validators.minLength(5),
         Validators.maxLength(200)
       ]],
-      organization: [this.formCourse.organization, [
+      sessionId: [this.formCourse.session, [
         Validators.required
       ]],
-      session: [this.formCourse.session, [
+      instructorId: [this.formCourse.instructor, [
         Validators.required
       ]],
-      instructor: [this.formCourse.instructor, [
+      startDate: [this.formCourse.startDate, [
         Validators.required
       ]],
-      startDate: [this.formCourse.startDate],
-      endDate: [this.formCourse.endDate]
+      endDate: [this.formCourse.endDate, [
+        Validators.required
+      ]],
+      locations: [this.formCourse.locations],
+      times: [this.formCourse.times],
     });
     this.courseForm.valueChanges.subscribe(data => this.onValueChanged());
     this.onValueChanged();
@@ -221,11 +226,12 @@ export class AdminCoursesFormComponent implements OnInit {
       id: this.formCourse.id,
       name: this.courseForm.get('name').value,
       description: this.courseForm.get('description').value,
-      organization: this.courseForm.get('organization').value,
-      session: this.courseForm.get('session').value,
-      instructor: this.courseForm.get('instructor').value,
+      sessionId: this.courseForm.get('sessionId').value,
+      instructorId: this.courseForm.get('instructorId').value,
       startDate: this.courseForm.get('startDate').value,
-      endDate: this.courseForm.get('endDate').value
+      endDate: this.courseForm.get('endDate').value,
+      locations: this.courseForm.get('locations').value,
+      times: this.courseForm.get('times').value
     };
   }
 
