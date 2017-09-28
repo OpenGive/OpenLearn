@@ -5,9 +5,11 @@ import {Observable} from "rxjs/Observable";
 import * as _ from "lodash";
 
 import {AdminDialogComponent} from "../../admin-dialog.component";
+import {AdminService} from "../../../../services/admin.service";
 import {AppConstants} from "../../../../app.constants";
 import {NotifyService} from "../../../../services/notify.service";
 import {UserService} from "../../../../services/user.service";
+import {AdminTabs} from "../../admin.constants";
 
 @Component({
   selector: 'admin-students-form',
@@ -23,8 +25,10 @@ export class AdminStudentsFormComponent implements OnInit {
 
   roles: string[];
   states: any[];
+  gradeLevels: any[];
 
   filteredStates: Observable<any[]>;
+  filteredGradeLevels: Observable<any[]>;
 
   studentForm: FormGroup;
   formErrors = {
@@ -38,13 +42,24 @@ export class AdminStudentsFormComponent implements OnInit {
     streetAddress1: '',
     streetAddress2: '',
     city: '',
-    postalCode: ''
+    postalCode: '',
+    organizationId:'',
+    guardianFirstName: '',
+    guardianLastName: '',
+    guardianEmail: '',
+    guardianPhone: '',
+    school: '',
+    gradeLevel: '',
+    stateStudentId: '',
+    orgStudentId: ''
   };
   validationMessages = {
     firstName: {
+      required: 'First Name is required',
       maxlength: 'First Name cannot be more than 50 characters long'
     },
     lastName: {
+      required: 'Last Name is required',
       maxlength: 'Last Name cannot be more than 50 characters long'
     },
     login: {
@@ -83,13 +98,50 @@ export class AdminStudentsFormComponent implements OnInit {
     },
     postalCode: {
       pattern: 'Postal Code is not formatted correctly'
+    },
+    organizationId: {
+      required: 'Organization is required'
+    },
+    guardianFirstName: {
+      required: 'Guardian First Name is required',
+      maxlength: 'Guardian First Name cannot be more than 50 characters long'
+    },
+    guardianLastName: {
+      required: 'Guardian Last Name is required',
+      maxlength: 'Guardian Last Name cannot be more than 50 characters long'
+    },
+    guardianEmail: {
+      required: 'Guardian Last Name is required',
+      pattern: 'Guardian Email is not formatted correctly',
+      minlength: 'Guardian Email must be at least 5 characters long',
+      maxlength: 'Guardian Email cannot be more than 100 characters long'
+    },
+    guardianPhone: {
+      required: 'Guardian Phone is required',
+      pattern: 'Guardian Phone is not formatted correctly',
+      maxlength: 'Phone cannot be more than 15 characters long'
+    },
+    school: {
+      required: 'School is required',
+      maxlength: 'School cannot be more than 100 characters long'
+    },
+    gradeLevel: {
+      required: 'Grade Level is required',
+      maxlength: 'Grade Level cannot be more than 100 characters long'
+    },
+    stateStudentId: {
+      maxlength: 'State Student ID cannot be more than 100 characters long'
+    },
+    orgStudentId: {
+      maxlength: 'Org Student ID cannot be more than 100 characters long'
     }
   };
 
   constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
               private fb: FormBuilder,
               private userService: UserService,
-              private notify: NotifyService) {}
+              private notify: NotifyService,
+              private adminService: AdminService) {}
 
   ngOnInit(): void {
     this.buildForm();
@@ -97,14 +149,17 @@ export class AdminStudentsFormComponent implements OnInit {
     this.resetPassword(false);
     this.getRoles();
     this.getStates();
+    this.getGradeLevels();
   }
 
   private buildForm(): void {
     this.studentForm = this.fb.group({
       firstName: [this.formStudent.firstName, [
+        Validators.required,
         Validators.maxLength(50)
       ]],
       lastName: [this.formStudent.lastName, [
+        Validators.required,
         Validators.maxLength(50)
       ]],
       login: [this.formStudent.login, [
@@ -145,7 +200,44 @@ export class AdminStudentsFormComponent implements OnInit {
       postalCode: [this.formStudent.postalCode, [
         Validators.pattern(AppConstants.OLValidators.PostalCode)
       ]],
-      fourteenPlus: [this.formStudent.fourteenPlus || false]
+      fourteenPlus: [this.formStudent.fourteenPlus || false],
+      authority: [AppConstants.Role.Student],
+      organizationId: [this.formStudent.organizationId, [
+        Validators.required
+      ]],
+      guardianFirstName: [this.formStudent.guardianFirstName, [
+        Validators.required,
+        Validators.maxLength(50)
+      ]],
+      guardianLastName: [this.formStudent.guardianLastName, [
+        Validators.required,
+        Validators.maxLength(50)
+      ]],
+      guardianEmail: [this.formStudent.guardianEmail, [
+        Validators.required,
+        Validators.pattern(AppConstants.OLValidators.Email),
+        Validators.minLength(5),
+        Validators.maxLength(100)
+      ]],
+      guardianPhone: [this.formStudent.guardianPhone, [
+        Validators.required,
+        // TODO: Pattern
+        Validators.maxLength(15)
+      ]],
+      school: [this.formStudent.school, [
+        Validators.required,
+        Validators.maxLength(100)
+      ]],
+      gradeLevel: [this.formStudent.gradeLevel, [
+        Validators.required,
+        Validators.maxLength(100)
+      ]],
+      stateStudentId: [this.formStudent.stateStudentId, [
+        Validators.maxLength(100)
+      ]],
+      orgStudentId: [this.formStudent.orgStudentId, [
+        Validators.maxLength(100)
+      ]]
     });
     this.studentForm.valueChanges.subscribe(data => this.onValueChanged());
     this.onValueChanged();
@@ -200,8 +292,20 @@ export class AdminStudentsFormComponent implements OnInit {
       .map(val => val ? this.filterStates(val) : this.states.slice());
   }
 
+  private getGradeLevels(): void {
+    this.gradeLevels = AppConstants.GradeLevels;
+    this.filteredGradeLevels = this.studentForm.get('gradeLevel')
+      .valueChanges
+      .startWith(null)
+      .map(val => val ? this.filterGradeLevels(val) : this.gradeLevels.slice());
+  }
+
   private filterStates(val: string): any[] {
     return this.states.filter(state => new RegExp(`${val}`, 'gi').test(state.name));
+  }
+
+  private filterGradeLevels(val: string): any[] {
+    return this.gradeLevels.filter(gradeLevel => new RegExp(`${val}`, 'gi').test(gradeLevel.name));
   }
 
   save(): void {
@@ -217,7 +321,7 @@ export class AdminStudentsFormComponent implements OnInit {
   }
 
   private add(): void {
-    this.userService.create(this.studentForm.value).subscribe(resp => {
+    this.adminService.create(AdminTabs.Student.route, this.studentForm.value).subscribe(resp => {
       this.dialogRef.close({
         type: 'ADD',
         data: resp
@@ -230,7 +334,7 @@ export class AdminStudentsFormComponent implements OnInit {
 
   private update(): void {
     const toUpdate = this.prepareToUpdate();
-    this.userService.update(toUpdate).subscribe(resp => {
+    this.adminService.update(AdminTabs.Student.route, toUpdate).subscribe(resp => {
       this.dialogRef.close({
         type: 'UPDATE',
         data: resp
@@ -257,7 +361,16 @@ export class AdminStudentsFormComponent implements OnInit {
       city: this.studentForm.get('city').value,
       state: this.studentForm.get('state').value,
       postalCode: this.studentForm.get('postalCode').value,
-      fourteenPlus: this.studentForm.get('fourteenPlus').value
+      fourteenPlus: this.studentForm.get('fourteenPlus').value,
+      organizationId: this.studentForm.get('organizationId').value,
+      guardianFirstName: this.studentForm.get('guardianFirstName').value,
+      guardianLastName: this.studentForm.get('guardianLastName').value,
+      guardianEmail: this.studentForm.get('guardianEmail').value,
+      guardianPhone: this.studentForm.get('guardianPhone').value,
+      school: this.studentForm.get('school').value,
+      gradeLevel: this.studentForm.get('gradeLevel').value,
+      stateStudentId: this.studentForm.get('stateStudentId').value,
+      orgStudentId: this.studentForm.get('orgStudentId').value
     };
   }
 
@@ -293,5 +406,9 @@ export class AdminStudentsFormComponent implements OnInit {
 
   displayState(stateValue: string): string {
     return stateValue ? _.filter(AppConstants.States, {value: stateValue})[0].name : '';
+  }
+
+  displayGradeLevel(gradeLevelValue: string): string {
+    return gradeLevelValue ? _.filter(AppConstants.GradeLevels, {value: gradeLevelValue})[0].name : '';
   }
 }
