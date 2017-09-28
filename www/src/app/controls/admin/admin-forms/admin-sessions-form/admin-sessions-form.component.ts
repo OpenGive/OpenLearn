@@ -49,9 +49,11 @@ export class AdminSessionsFormComponent implements OnInit {
       required: 'Program is required'
     },
     startDate: {
+      required: 'Start Date is required',
       mdDatepickerMax: 'Start date must not be after End Date'
     },
     endDate: {
+      required: 'End Date is required',
       mdDatepickerMin: 'End date must not be before Start Date'
     }
   };

@@ -29,30 +29,30 @@
   <div class="ol-dialog-content">
     <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap>
       <md-input-container fxFlex="30%">
-        <input mdInput formControlName="name" placeholder="Name"/>
+        <input mdInput formControlName="name" placeholder="Name*"/>
         <md-error *ngIf="formErrors.name">{{formErrors.name}}</md-error>
       </md-input-container>
       <md-input-container fxFlex="30%">
-        <input mdInput formControlName="programId" placeholder="Program" [mdAutocomplete]="programId">
+        <input mdInput formControlName="programId" placeholder="Program*" [mdAutocomplete]="programId">
         <md-error *ngIf="formErrors.programId">{{formErrors.programId}}</md-error>
         <md-autocomplete #programId="mdAutocomplete" [displayWith]="displayProgram">
           <md-option *ngFor="let program of filteredPrograms | async" [value]="program">{{program.name}}</md-option>
         </md-autocomplete>
       </md-input-container>
       <md-input-container fxFlex="15%">
-        <input mdInput formControlName="startDate" placeholder="Start Date" [mdDatepicker]="startDate"/>
+        <input mdInput formControlName="startDate" placeholder="Start Date*" [mdDatepicker]="startDate"/>
         <button mdSuffix *ngIf="editing" [mdDatepickerToggle]="startDate"></button>
         <md-error *ngIf="formErrors.startDate">{{formErrors.startDate}}</md-error>
       </md-input-container>
       <md-datepicker #startDate></md-datepicker>
       <md-input-container fxFlex="15%">
-        <input mdInput formControlName="endDate" placeholder="End Date" [mdDatepicker]="endDate"/>
+        <input mdInput formControlName="endDate" placeholder="End Date*" [mdDatepicker]="endDate"/>
         <button mdSuffix *ngIf="editing" [mdDatepickerToggle]="endDate"></button>
         <md-error *ngIf="formErrors.endDate">{{formErrors.endDate}}</md-error>
       </md-input-container>
       <md-datepicker #endDate></md-datepicker>
       <md-input-container fxFlex="100%">
-        <textarea mdInput formControlName="description" placeholder="Description"></textarea>
+        <textarea mdInput formControlName="description" placeholder="Description*"></textarea>
         <md-error *ngIf="formErrors.description">{{formErrors.description}}</md-error>
       </md-input-container>
       <!--<md-input-container fxFlex="30%">-->
