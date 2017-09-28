@@ -186,6 +186,8 @@ export class AdminCoursesFormComponent implements OnInit {
   }
 
   private add(): void {
+    this.courseForm.value['instructorId'] = this.courseForm.get('instructorId').value.id;
+    this.courseForm.value['sessionId'] = this.courseForm.get('sessionId').value.id;
     this.adminService.create(AdminTabs.Course.route, this.courseForm.value).subscribe(resp => {
       this.dialogRef.close({
         type: 'ADD',
@@ -215,8 +217,8 @@ export class AdminCoursesFormComponent implements OnInit {
       id: this.formCourse.id,
       name: this.courseForm.get('name').value,
       description: this.courseForm.get('description').value,
-      sessionId: this.courseForm.get('sessionId').value,
-      instructorId: this.courseForm.get('instructorId').value,
+      sessionId: this.courseForm.get('sessionId').value.id,
+      instructorId: this.courseForm.get('instructorId').value.id,
       startDate: this.courseForm.get('startDate').value,
       endDate: this.courseForm.get('endDate').value,
       locations: this.courseForm.get('locations').value,
