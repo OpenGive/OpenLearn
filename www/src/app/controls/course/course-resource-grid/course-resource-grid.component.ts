@@ -3,6 +3,7 @@ import {MdDialog} from "@angular/material";
 
 import {Course} from '../../../models/course.model';
 import {StudentCourseService} from "../../../services/student-course.service";
+import {AssignmentService} from "../../../services/assignment.service";
 
 @Component({
   selector: 'app-course-resource-grid',
@@ -12,15 +13,16 @@ import {StudentCourseService} from "../../../services/student-course.service";
 export class CourseResourceGridComponent implements OnInit {
 
   @Input() course: Course;
-  @Input() resource: any;
-  resources: any[];
+  @Input() assignment: any;
+  assignments: any[];
   columns: any[];
 
   sortColumn: any;
   reverse: boolean;
 
   constructor(private dialog: MdDialog,
-              private courseService: StudentCourseService) {}
+              private courseService: StudentCourseService,
+              private assignmentService: AssignmentService) {}
 
   ngOnInit(): void {
 
@@ -32,18 +34,10 @@ export class CourseResourceGridComponent implements OnInit {
       {
         id: "resource.description",
         name: "Description"
-      },
-      {
-        id: "resource.thumbnailImageUrl",
-        name: "Thumbnail image"
-      },
-      {
-        id: "resource.itemUrl",
-        name: "URL"
       }
     ];
 
-    this.getCourseResources();
+    this.getCourseAssignments();
 
   }
 
@@ -63,26 +57,26 @@ export class CourseResourceGridComponent implements OnInit {
   }
 
 
-  removeResource(resourceId: Number): void {
-    this.courseService.removeResourceFromCourse(this.course.id, resourceId).subscribe(resources => {
-      this.resources = this.resources.filter(resources => resources.id !== resourceId);
+  // removeResource(resourceId: Number): void {
+  //   this.courseService.removeResourceFromCourse(this.course.id, resourceId).subscribe(resources => {
+  //     this.resources = this.resources.filter(resources => resources.id !== resourceId);
+  //   })
+  // }
+
+  getCourseAssignments(): void {
+    this.assignmentService.getAssignmentsByCourse(this.course.id).subscribe( assignments => {
+      this.assignments = assignments;
     })
   }
 
-  getCourseResources(): void {
-    this.courseService.getCourseResources(this.course.id).subscribe(resources => {
-      this.resources = resources;
-    })
-  }
-
-  private handleAddResourceResponse(resp): void {
-    if (resp) {
-      console.log("Response from add resource", resp);
-
-      var resourceData = resp.data;
-
-      this.resources.push(resourceData);
-    }
-  }
+  // private handleAddResourceResponse(resp): void {
+  //   if (resp) {
+  //     console.log("Response from add resource", resp);
+  //
+  //     var resourceData = resp.data;
+  //
+  //     this.resources.push(resourceData);
+  //   }
+  // }
 
 }
