@@ -62,6 +62,14 @@ public class StudentResource {
 		return ResponseEntity.ok(response.getContent());
 	}
 
+	@GetMapping(path = "/notInCourse/{id}")
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
+	public ResponseEntity get(@ApiParam final Pageable pageable, @PathVariable final Long id) {
+		log.debug("GET request for students not in course: " + id.toString());
+		Page<StudentDTO> response = studentService.findStudentsNotInCourse(id,pageable);
+		return ResponseEntity.ok(response.getContent());
+	}
+
 	/**
 	 * POST  / : create a student user
 	 *

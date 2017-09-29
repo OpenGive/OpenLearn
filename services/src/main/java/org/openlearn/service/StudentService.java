@@ -72,6 +72,19 @@ public class StudentService {
 		}
 	}
 
+	@Transactional(readOnly = true)
+	public Page<StudentDTO> findStudentsNotInCourse(final Long courseId, final Pageable pageable) {
+		log.debug("Request to get all StudentsNotInCourseByOrganization");
+		if (SecurityUtils.isAdmin()) {
+			return userRepository.findStudentsNotInCourse(courseId, pageable)
+				.map(studentTransformer::transform);
+		} else {
+			User user = userService.getCurrentUser();
+			return userRepository.findStudentsNotInCourseByOrganization(courseId,user.getOrganization().getId(),pageable)
+				.map(studentTransformer::transform);
+		}
+	}
+
 	/**
 	 * Get one user by id.
 	 *
