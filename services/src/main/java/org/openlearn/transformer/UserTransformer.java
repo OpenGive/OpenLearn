@@ -66,8 +66,10 @@ public class UserTransformer {
 		user.setFirstName(userDTO.getFirstName());
 		user.setLastName(userDTO.getLastName());
 		user.setLogin(userDTO.getLogin());
-		String encryptedPassword = passwordEncoder.encode(userDTO.getPassword());
-		user.setPassword(encryptedPassword);
+		if (userDTO.getPassword() != null) {
+			String encryptedPassword = passwordEncoder.encode(userDTO.getPassword());
+			user.setPassword(encryptedPassword);
+		}
 		user.setAuthority(authorityRepository.findOne(userDTO.getAuthority()));
 		user.setEmail(userDTO.getEmail());
 		user.setPhoneNumber(userDTO.getPhoneNumber());
