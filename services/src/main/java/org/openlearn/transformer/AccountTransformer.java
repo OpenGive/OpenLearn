@@ -44,8 +44,8 @@ public class AccountTransformer {
 		accountDTO.setLastName(user.getLastName());
 		accountDTO.setEmail(user.getEmail());
 		accountDTO.setPhoneNumber(user.getPhoneNumber());
-		if (!CollectionUtils.isEmpty(user.getAddresses())) {
-			Address address = user.getAddresses().get(0);
+		if (user.getAddress() != null) {
+			Address address = user.getAddress();
 			accountDTO.setStreetAddress1(address.getStreetAddress1());
 			accountDTO.setStreetAddress2(address.getStreetAddress2());
 			accountDTO.setCity(address.getCity());
@@ -148,8 +148,8 @@ public class AccountTransformer {
 	}
 
 	private void mergeAddress(final AccountDTO accountDTO, final User user) {
-		if (!isAddressEmpty(accountDTO) || !CollectionUtils.isEmpty(user.getAddresses())) {
-			Address address = (CollectionUtils.isEmpty(user.getAddresses()) ? new Address() : user.getAddresses().get(0));
+		if (!isAddressEmpty(accountDTO) || user.getAddress() != null) {
+			Address address = (user.getAddress() == null) ? new Address() : user.getAddress();
 			address.setStreetAddress1(accountDTO.getStreetAddress1());
 			address.setStreetAddress2(accountDTO.getStreetAddress2());
 			address.setCity(accountDTO.getCity());

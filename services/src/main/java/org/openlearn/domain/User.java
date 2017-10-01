@@ -87,8 +87,8 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	@Column(name = "org_student_id", length = 100)
 	private String orgStudentId;
 
-	@OneToMany(mappedBy = "user")
-	private List<Address> addresses;
+	@OneToOne(mappedBy = "user")
+	private Address address;
 
 	public Long getId() {
 		return id;
@@ -250,12 +250,12 @@ public class User extends AbstractAuditingEntity implements Serializable {
 		this.orgStudentId = orgStudentId;
 	}
 
-	public List<Address> getAddresses() {
-		return addresses;
+	public Address getAddress() {
+		return address;
 	}
 
-	public void setAddresses(List<Address> addresses) {
-		this.addresses = addresses;
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 
 	@Override
@@ -290,7 +290,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
 		if (stateStudentId != null ? !stateStudentId.equals(user.stateStudentId) : user.stateStudentId != null)
 			return false;
 		if (orgStudentId != null ? !orgStudentId.equals(user.orgStudentId) : user.orgStudentId != null) return false;
-		return addresses != null ? addresses.equals(user.addresses) : user.addresses == null;
+		return address != null ? address.equals(user.address) : user.address == null;
 	}
 
 	@Override
@@ -315,7 +315,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
 		result = 31 * result + (gradeLevel != null ? gradeLevel.hashCode() : 0);
 		result = 31 * result + (stateStudentId != null ? stateStudentId.hashCode() : 0);
 		result = 31 * result + (orgStudentId != null ? orgStudentId.hashCode() : 0);
-		result = 31 * result + (addresses != null ? addresses.hashCode() : 0);
 		return result;
 	}
 

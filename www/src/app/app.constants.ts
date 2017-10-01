@@ -69,7 +69,7 @@ export class AppConstants {
     {name: '5th', value: 'FIFTH'},
     {name: '6th', value: 'SIXTH'},
     {name: '7th', value: 'SEVENTH'},
-    {name: '8th', value: 'EIGTH'},
+    {name: '8th', value: 'EIGHTH'},
     {name: '9th', value: 'NINTH'},
     {name: '10th', value: 'TENTH'},
     {name: '11th', value: 'ELEVENTH'},
