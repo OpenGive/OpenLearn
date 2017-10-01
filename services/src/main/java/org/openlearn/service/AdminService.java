@@ -4,6 +4,7 @@ import org.openlearn.domain.Authority;
 import org.openlearn.domain.User;
 import org.openlearn.dto.AdminDTO;
 import org.openlearn.repository.UserRepository;
+import org.openlearn.repository.AddressRepository;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.transformer.AdminTransformer;
 import org.slf4j.Logger;
@@ -28,9 +29,12 @@ public class AdminService {
 
 	private final UserRepository userRepository;
 
-	public AdminService(final AdminTransformer adminTransformer, final UserRepository userRepository) {
+	private final AddressRepository addressRepository;
+
+	public AdminService(final AdminTransformer adminTransformer, final UserRepository userRepository, final AddressRepository addressRepository) {
 		this.adminTransformer = adminTransformer;
 		this.userRepository = userRepository;
+		this.addressRepository = addressRepository;
 	}
 
 	/**
@@ -41,7 +45,9 @@ public class AdminService {
 	 */
 	public AdminDTO save(final AdminDTO adminDTO) {
 		log.debug("Request to save admin : {}", adminDTO);
-		return adminTransformer.transform(userRepository.save(adminTransformer.transform(adminDTO)));
+		User user = userRepository.save(adminTransformer.transform(adminDTO));
+		if (user.getAddress() != null) addressRepository.save(user.getAddress());
+		return adminTransformer.transform(user);
 	}
 
 	/**
