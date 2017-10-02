@@ -28,12 +28,12 @@
   </div>
   <div class="ol-dialog-content">
     <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap>
-      <md-input-container fxFlex="30%">
+      <md-input-container fxFlex="100%">
         <input mdInput formControlName="name" placeholder="Name*"/>
         <!--<md-error *ngIf="formErrors.firstName">{{formErrors.firstName}}</md-error>-->
       </md-input-container>
-      <md-input-container fxFlex="30%">
-        <input mdInput formControlName="description" placeholder="Description"/>
+      <md-input-container fxFlex="100%">
+        <textarea rows="6" mdInput formControlName="description" placeholder="Description*"></textarea>
         <!--<md-error *ngIf="formErrors.lastName">{{formErrors.lastName}}</md-error>-->
       </md-input-container>
     </div>

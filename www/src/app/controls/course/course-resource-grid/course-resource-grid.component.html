@@ -18,7 +18,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let row of assignments">
+        <tr *ngFor="let row of assignments" (click)="viewAssignmentDetails(row.assignment)">
           <td>{{row.name}}</td>
           <td>{{row.description}}</td>
           <td style="text-align: right;">
