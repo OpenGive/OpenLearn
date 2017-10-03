@@ -10,7 +10,8 @@ import {AppConstants} from "../../../app.constants";
 import {NotifyService} from "../../../services/notify.service";
 import {UserService} from "../../../services/user.service";
 import {OrgAdmin} from "../../../models/org-admin.model";
-import {AdminTabs} from "../../admin/admin.constants"
+import {AdminTabs} from "../../admin/admin.constants";
+import {StudentCourseService} from "../../../services/student-course.service";
 
 @Component({
   selector: 'assignment-form',
@@ -23,6 +24,7 @@ export class AssignmentFormComponent implements OnInit {
   formAssignment: any;
   adding: Boolean;
   editing: Boolean = false;
+  students: any[];
 
   assignmentForm: FormGroup;
 
@@ -30,14 +32,46 @@ export class AssignmentFormComponent implements OnInit {
               private fb: FormBuilder,
               @Inject(MD_DIALOG_DATA) public data: any,
               private notify: NotifyService,
-              private adminService: AdminService) {}
+              private adminService: AdminService,
+              private courseService: StudentCourseService) {}
 
+  columns: any[];
+  formErrors = {
+    name: '',
+    description: ''
+  };
+
+  validationMessages = {
+    name: {
+      required: 'Name is required',
+      maxlength: 'Name must be less than 50 characters long'
+    },
+    description: {
+      required: 'Description is required',
+      maxlength: 'Description must be less than 100 characters long',
+      minlength: 'Description must be more than 10 characters long'
+    }
+  };
   ngOnInit(): void {
-    this.formAssignment = {};
+    this.columns = [
+      {
+        id: "firstName",
+        name: "FirstName"
+      },
+      {
+        id: "lastName",
+        name: "LastName"
+      },
+      {
+        id: "grade",
+        name: "Grade"
+      }
+    ];
+    this.formAssignment = this.data.assignment;
+    this.getStudents();
     this.buildForm();
     this.adding = this.data.adding;
     this.setEditing(this.adding);
-    console.log(this.data);
   }
 
   private buildForm(): void {
@@ -50,8 +84,26 @@ export class AssignmentFormComponent implements OnInit {
         Validators.maxLength(100),
         Validators.minLength(10)
       ]]
-    })
+    });
+    this.assignmentForm.valueChanges.subscribe(data => this.onValueChanged());
+    this.onValueChanged();
     this.assignmentForm.disable();
+  }
+
+  private onValueChanged(): void {
+    if (this.assignmentForm) {
+      const form = this.assignmentForm;
+      for (const field in this.formErrors) {
+        this.formErrors[field] = '';
+        const control = form.get(field);
+        if (control && control.dirty && !control.valid) {
+          const messages = this.validationMessages[field];
+          for (const key in control.errors) {
+            this.formErrors[field] += messages[key] + ' ';
+          }
+        }
+      }
+    }
   }
 
   save(): void {
@@ -84,8 +136,26 @@ export class AssignmentFormComponent implements OnInit {
   }
 
   private update(): void {
-    // const toUpdate = this.prepareToUpdate();
-    // this.adminService.update(AdminTabs.Assignment.route, )
+    console.log(this.prepareToUpdate());
+    const toUpdate = this.prepareToUpdate();
+    this.adminService.update(AdminTabs.Assignment.route, toUpdate).subscribe(resp => {
+      this.dialogRef.close({
+        type: 'UPDATE',
+        data: resp
+      });
+      this.notify.success('Successfully updated assignment');
+    }, error => {
+      this.notify.error('Failed to update assignment');
+    });
+  }
+
+  private prepareToUpdate(): any {
+    return {
+      id: this.data.assignment.id,
+      name: this.assignmentForm.value.name,
+      description: this.assignmentForm.value.description,
+      courseId: this.data.course.id
+    }
   }
   close(): void {
     this.dialogRef.close();
@@ -105,5 +175,15 @@ export class AssignmentFormComponent implements OnInit {
         this.editing = false;
       }
     }
+  }
+
+  cancel(): void {
+    this.ngOnInit();
+  }
+
+  getStudents(): void {
+    this.courseService.getStudentCoursesByCourse(this.data.course.id).subscribe(students => {
+      this.students = students;
+    })
   }
 }

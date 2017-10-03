@@ -30,12 +30,45 @@
     <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap>
       <md-input-container fxFlex="100%">
         <input mdInput formControlName="name" placeholder="Name*"/>
-        <!--<md-error *ngIf="formErrors.firstName">{{formErrors.firstName}}</md-error>-->
+        <md-error *ngIf="formErrors.name">{{formErrors.name}}</md-error>
       </md-input-container>
       <md-input-container fxFlex="100%">
         <textarea rows="6" mdInput formControlName="description" placeholder="Description*"></textarea>
-        <!--<md-error *ngIf="formErrors.lastName">{{formErrors.lastName}}</md-error>-->
+        <md-error *ngIf="formErrors.description">{{formErrors.description}}</md-error>
       </md-input-container>
+    </div>
+    <div class="ol-dialog-content course-view-body">
+      <div>
+        <div id="grid-table" fxLayout="row">
+          <div class="table-wrapper">
+            <table>
+              <thead>
+              <tr class="header-row">
+                <th *ngFor="let column of columns" (click)="sort(column)">
+                  {{column.name}}
+                  <md-icon>{{column.sortIcon}}</md-icon>
+                </th>
+                <th>
+
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let student of students">
+                <td>{{student.firstName}}</td>
+                <td>{{student.lastName}}</td>
+                <td>{{student.email}}</td>
+                <td>
+                  <button md-raised-button fxHide.xs (click)="add(student)" class="grid-add-button" mdTooltip="Add">
+                    <md-icon>add</md-icon>
+                  </button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </form>

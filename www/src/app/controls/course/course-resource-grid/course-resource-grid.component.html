@@ -18,11 +18,11 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let row of assignments" (click)="viewAssignmentDetails(row.assignment)">
+        <tr *ngFor="let row of assignments" (click)="viewAssignmentDetails(row)">
           <td>{{row.name}}</td>
           <td>{{row.description}}</td>
           <td style="text-align: right;">
-            <button md-raised-button type="button" *ngIf="!editing" [mdMenuTriggerFor]="deleteMenu" class="ol-dialog-button pink-button" mdTooltip="Delete">
+            <button md-raised-button type="button" (click)="stopPropagation($event)" *ngIf="!editing" [mdMenuTriggerFor]="deleteMenu" class="ol-dialog-button pink-button" mdTooltip="Delete">
               <md-icon>delete</md-icon>
             </button>
             <md-menu #deleteMenu="mdMenu">

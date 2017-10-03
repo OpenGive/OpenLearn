@@ -28,7 +28,6 @@ export class CourseResourceGridComponent implements OnInit {
               private courseService: StudentCourseService,
               private assignmentService: AssignmentService,
               private adminService: AdminService) {}
-
   ngOnInit(): void {
 
     this.columns = [
@@ -53,15 +52,29 @@ export class CourseResourceGridComponent implements OnInit {
     this.dialog.open(AssignmentFormComponent, {
       data: {
         course: this.course,
-        adding: true
+        adding: true,
+        assignment: {}
       },
       width: "400px",
       height: "600px",
       disableClose: true
     }).afterClosed().subscribe(resp => {
-      this.handleAddResourceResponse(resp)
+      this.handleDialogResponse(resp);
     });
   }
+
+  viewAssignmentDetails(assignment){
+    console.log(assignment);
+    this.dialog.open(AssignmentFormComponent, {
+      data: {
+        course: this.course,
+        adding: false,
+        assignment: assignment
+      }
+    }).afterClosed().subscribe(resp => {
+      this.handleDialogResponse(resp);
+    })
+}
 
   removeAssignment(assignmentId: Number): void {
     this.adminService.delete(AdminTabs.Assignment.route,assignmentId).subscribe(resp=> {
@@ -72,18 +85,25 @@ export class CourseResourceGridComponent implements OnInit {
   getCourseAssignments(): void {
     this.assignmentService.getAssignmentsByCourse(this.course.id).subscribe( assignments => {
       this.assignments = assignments;
-      console.log("Assignemnts1: " + this.assignments);
     })
   }
 
-  private handleAddResourceResponse(resp): void {
-    if (resp) {
+  private handleDialogResponse(resp): void {
+    if(!resp) {
+      return;
+    } else if (resp.type === 'ADD') {
       console.log("Response from add assignment", resp);
 
-      var assignmentData = resp.data;
+      this.ngOnInit();
+    } else if(resp.type === 'UPDATE') {
+      console.log("Response from update assignment", resp);
 
-      this.assignments.push(assignmentData);
+      this.ngOnInit();
     }
+  }
+
+  stopPropagation(e): void {
+    e.stopPropagation();
   }
 
 }
