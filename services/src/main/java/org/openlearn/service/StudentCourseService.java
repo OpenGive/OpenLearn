@@ -1,13 +1,8 @@
 package org.openlearn.service;
 
-import org.openlearn.domain.Authority;
-import org.openlearn.domain.Course;
-import org.openlearn.domain.StudentCourse;
-import org.openlearn.domain.User;
+import org.openlearn.domain.*;
 import org.openlearn.dto.StudentCourseDTO;
-import org.openlearn.repository.CourseRepository;
-import org.openlearn.repository.StudentCourseRepository;
-import org.openlearn.repository.UserRepository;
+import org.openlearn.repository.*;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.security.SecurityUtils;
 import org.openlearn.transformer.StudentCourseTransformer;
@@ -15,7 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.PageRequest;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +27,10 @@ public class StudentCourseService {
 
 	private static final Logger log = LoggerFactory.getLogger(StudentCourseService.class);
 
+	private final StudentAssignmentRepository studentAssignmentRepository;
+
+	private final AssignmentRepository assignmentRepository;
+
 	private final CourseRepository courseRepository;
 
 	private final StudentCourseRepository studentCourseRepository;
@@ -41,9 +42,14 @@ public class StudentCourseService {
 	private final UserService userService;
 
 	public StudentCourseService(final CourseRepository courseRepository,
-	                            final StudentCourseRepository studentCourseRepository,
+	                            final AssignmentRepository assignmentRepository,
+								final StudentAssignmentRepository studentAssignmentRepository,
+								final StudentCourseRepository studentCourseRepository,
 	                            final StudentCourseTransformer studentCourseTransformer,
-	                            final UserRepository userRepository, final UserService userService) {
+	                            final UserRepository userRepository,
+								final UserService userService) {
+		this.assignmentRepository = assignmentRepository;
+		this.studentAssignmentRepository = studentAssignmentRepository;
 		this.courseRepository = courseRepository;
 		this.studentCourseRepository = studentCourseRepository;
 		this.studentCourseTransformer = studentCourseTransformer;
@@ -57,7 +63,33 @@ public class StudentCourseService {
 	 * @param studentCourseDTO the entity to save
 	 * @return the persisted entity
 	 */
-	public StudentCourseDTO save(final StudentCourseDTO studentCourseDTO) {
+	public StudentCourseDTO create(final StudentCourseDTO studentCourseDTO) {
+		log.debug("Request to save StudentCourse : {}", studentCourseDTO);
+		if (SecurityUtils.isAdmin() || inOrgOfCurrentUser(studentCourseDTO)) {
+			StudentCourse studentCourse = studentCourseTransformer.transform(studentCourseDTO);
+			studentCourse.setGrade("-");
+			studentCourse.setEnrollDate(ZonedDateTime.now());
+			studentCourse.setComplete(false);
+			studentCourse.setOnPortfolio(false);
+
+			studentCourse = studentCourseRepository.save(studentCourse);
+
+			for (Assignment assignment : assignmentRepository.findByCourse(studentCourse.getCourse(), new PageRequest(0,100))) {
+				StudentAssignment studentAssignment = new StudentAssignment();
+				studentAssignment.setAssignment(assignment);
+				studentAssignment.setComplete(false);
+				studentAssignment.setOnPortfolio(false);
+				studentAssignment.setStudent(studentCourse.getStudent());
+				studentAssignmentRepository.save(studentAssignment);
+			}
+
+			return studentCourseTransformer.transform(studentCourse);
+		}
+		// TODO: Error handling / logging
+		return null;
+	}
+
+	public StudentCourseDTO update(final StudentCourseDTO studentCourseDTO) {
 		log.debug("Request to save StudentCourse : {}", studentCourseDTO);
 		if (SecurityUtils.isAdmin() || inOrgOfCurrentUser(studentCourseDTO)) {
 			return studentCourseTransformer.transform(studentCourseRepository.save(studentCourseTransformer.transform(studentCourseDTO)));
@@ -67,11 +99,11 @@ public class StudentCourseService {
 	}
 
 	/**
-	 * Get one studentCourse by id.
-	 *
-	 * @param id the id of the entity
-	 * @return the entity
-	 */
+    * Get one studentCourse by id.
+    *
+    * @param id the id of the entity
+    * @return the entity
+    */
 	@Transactional(readOnly = true)
 	public StudentCourseDTO findOne(final Long id) {
 		log.debug("Request to get StudentCourse : {}", id);

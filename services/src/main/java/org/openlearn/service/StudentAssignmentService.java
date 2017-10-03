@@ -1,11 +1,9 @@
 package org.openlearn.service;
 
-import org.openlearn.domain.Assignment;
-import org.openlearn.domain.Authority;
-import org.openlearn.domain.StudentAssignment;
-import org.openlearn.domain.User;
+import org.openlearn.domain.*;
 import org.openlearn.dto.StudentAssignmentDTO;
 import org.openlearn.repository.AssignmentRepository;
+import org.openlearn.repository.CourseRepository;
 import org.openlearn.repository.StudentAssignmentRepository;
 import org.openlearn.repository.UserRepository;
 import org.openlearn.security.AuthoritiesConstants;
@@ -13,6 +11,7 @@ import org.openlearn.security.SecurityUtils;
 import org.openlearn.transformer.StudentAssignmentTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +31,8 @@ public class StudentAssignmentService {
 
 	private final AssignmentRepository assignmentRepository;
 
+	private final CourseRepository courseRepository;
+
 	private final StudentAssignmentRepository studentAssignmentRepository;
 
 	private final StudentAssignmentTransformer studentAssignmentTransformer;
@@ -41,10 +42,13 @@ public class StudentAssignmentService {
 	private final UserService userService;
 
 	public StudentAssignmentService(final AssignmentRepository assignmentRepository,
+	                                final CourseRepository courseRepository,
 	                                final StudentAssignmentRepository studentAssignmentRepository,
 	                                final StudentAssignmentTransformer studentAssignmentTransformer,
-	                                final UserRepository userRepository, final UserService userService) {
+	                                final UserRepository userRepository,
+									final UserService userService) {
 		this.assignmentRepository = assignmentRepository;
+		this.courseRepository = courseRepository;
 		this.studentAssignmentRepository = studentAssignmentRepository;
 		this.studentAssignmentTransformer = studentAssignmentTransformer;
 		this.userRepository = userRepository;
@@ -100,6 +104,30 @@ public class StudentAssignmentService {
 					studentAssignmentTransformer.transform(studentAssignment, false, true))
 				.collect(Collectors.toList());
 		}
+		// TODO: Error handling / logging
+		return null;
+	}
+
+	/**
+	 * Get a list studentAssignment by student and course.
+	 *
+	 * @param studentId the id of the student
+	 * @patam courseId the id of the course
+	 * @return the list of student assignments
+	 */
+	@Transactional(readOnly = true)
+	public List<StudentAssignmentDTO> findByStudentAndCourse(final Long studentId, final Long courseId) {
+		log.debug("Request to get StudentAssignments by Student : {} and Course : {}", studentId, courseId);
+		User student = userRepository.findOneByIdAndAuthority(studentId, STUDENT);
+			if (student != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(student))) {
+
+				return studentAssignmentRepository.findByStudent(student).stream()
+					.filter((StudentAssignment studentAssignment) ->
+						studentAssignment.getAssignment().getCourse().getId().equals(courseId))
+					.map((StudentAssignment studentAssignment) ->
+						studentAssignmentTransformer.transform(studentAssignment, false, true))
+					.collect(Collectors.toList());
+			}
 		// TODO: Error handling / logging
 		return null;
 	}

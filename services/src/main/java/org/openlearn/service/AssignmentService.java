@@ -1,11 +1,12 @@
 package org.openlearn.service;
 
-import org.openlearn.domain.Assignment;
-import org.openlearn.domain.Course;
-import org.openlearn.domain.User;
+import org.openlearn.domain.*;
 import org.openlearn.dto.AssignmentDTO;
+import org.openlearn.dto.StudentCourseDTO;
 import org.openlearn.repository.AssignmentRepository;
 import org.openlearn.repository.CourseRepository;
+import org.openlearn.repository.StudentAssignmentRepository;
+import org.openlearn.repository.StudentCourseRepository;
 import org.openlearn.security.SecurityUtils;
 import org.openlearn.transformer.AssignmentTransformer;
 import org.slf4j.Logger;
@@ -30,14 +31,23 @@ public class AssignmentService {
 
 	private final CourseRepository courseRepository;
 
+	private final StudentAssignmentRepository studentAssignmentRepository;
+
+	private final StudentCourseRepository studentCourseRepository;
+
 	private final UserService userService;
 
 	public AssignmentService(final AssignmentRepository assignmentRepository,
 	                         final AssignmentTransformer assignmentTransformer,
-	                         final CourseRepository courseRepository, final UserService userService) {
+	                         final CourseRepository courseRepository,
+							 final StudentAssignmentRepository studentAssignmentRepository,
+							 final StudentCourseRepository studentCourseRepository,
+							 final UserService userService) {
 		this.assignmentRepository = assignmentRepository;
 		this.assignmentTransformer = assignmentTransformer;
 		this.courseRepository = courseRepository;
+		this.studentAssignmentRepository = studentAssignmentRepository;
+		this.studentCourseRepository = studentCourseRepository;
 		this.userService = userService;
 	}
 
@@ -49,8 +59,20 @@ public class AssignmentService {
 	 */
 	public AssignmentDTO save(final AssignmentDTO assignmentDTO) {
 		log.debug("Request to save Assignment : {}", assignmentDTO);
+
 		if (SecurityUtils.isAdmin() || inOrgOfCurrentUser(assignmentDTO)) {
-			return assignmentTransformer.transform(assignmentRepository.save(assignmentTransformer.transform(assignmentDTO)));
+			Assignment assignment = assignmentRepository.save(assignmentTransformer.transform(assignmentDTO));
+
+			for (StudentCourse studentCourse : studentCourseRepository.findByCourse(assignment.getCourse())) {
+				StudentAssignment studentAssignment = new StudentAssignment();
+				studentAssignment.setAssignment(assignment);
+				studentAssignment.setComplete(false);
+				studentAssignment.setOnPortfolio(false);
+				studentAssignment.setStudent(studentCourse.getStudent());
+				studentAssignmentRepository.save(studentAssignment);
+			}
+
+			return assignmentTransformer.transform(assignment);
 		}
 		// TODO: Error handling / logging
 		return null;
