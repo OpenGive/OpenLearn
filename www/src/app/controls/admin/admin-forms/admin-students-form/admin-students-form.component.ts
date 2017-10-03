@@ -317,9 +317,6 @@ export class AdminStudentsFormComponent implements OnInit {
         this.update();
       }
     } else {
-      if (this.studentForm.errors) {
-        this.notify.error('Student must be at least 14 to submit an email');
-      }
       this.studentForm.markAsTouched();
     }
   }
