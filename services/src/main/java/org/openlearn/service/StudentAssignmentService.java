@@ -1,6 +1,12 @@
 package org.openlearn.service;
 
-import org.openlearn.domain.*;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.openlearn.domain.Assignment;
+import org.openlearn.domain.Authority;
+import org.openlearn.domain.StudentAssignment;
+import org.openlearn.domain.User;
 import org.openlearn.dto.StudentAssignmentDTO;
 import org.openlearn.repository.AssignmentRepository;
 import org.openlearn.repository.CourseRepository;
@@ -11,12 +17,8 @@ import org.openlearn.security.SecurityUtils;
 import org.openlearn.transformer.StudentAssignmentTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing StudentAssignment.
@@ -30,8 +32,6 @@ public class StudentAssignmentService {
 	private static final Logger log = LoggerFactory.getLogger(StudentAssignmentService.class);
 
 	private final AssignmentRepository assignmentRepository;
-
-	private final CourseRepository courseRepository;
 
 	private final StudentAssignmentRepository studentAssignmentRepository;
 
@@ -48,7 +48,6 @@ public class StudentAssignmentService {
 	                                final UserRepository userRepository,
 									final UserService userService) {
 		this.assignmentRepository = assignmentRepository;
-		this.courseRepository = courseRepository;
 		this.studentAssignmentRepository = studentAssignmentRepository;
 		this.studentAssignmentTransformer = studentAssignmentTransformer;
 		this.userRepository = userRepository;
