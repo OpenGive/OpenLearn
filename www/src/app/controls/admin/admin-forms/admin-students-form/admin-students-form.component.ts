@@ -10,6 +10,7 @@ import {AppConstants} from "../../../../app.constants";
 import {NotifyService} from "../../../../services/notify.service";
 import {UserService} from "../../../../services/user.service";
 import {AdminTabs} from "../../admin.constants";
+import {FourteenPlusValidator} from "../../custom.validators";
 
 @Component({
   selector: 'admin-students-form',
@@ -237,7 +238,7 @@ export class AdminStudentsFormComponent implements OnInit {
       ]],
       orgStudentId: [this.formStudent.orgStudentId, [
         Validators.maxLength(100)
-      ]]
+      ]]}, { validator: FourteenPlusValidator('email', 'fourteenPlus')
     });
     this.studentForm.valueChanges.subscribe(data => this.onValueChanged());
     this.onValueChanged();
@@ -316,6 +317,9 @@ export class AdminStudentsFormComponent implements OnInit {
         this.update();
       }
     } else {
+      if (this.studentForm.errors) {
+        this.notify.error('Student must be at least 14 to submit an email');
+      }
       this.studentForm.markAsTouched();
     }
   }
