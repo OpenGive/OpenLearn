@@ -12,6 +12,7 @@ import {Principal} from "../../shared/auth/principal.service";
 import {AppConstants} from "../../app.constants";
 import {User} from "../../models/user.model";
 import {Student} from "../../models/student.model";
+import {FourteenPlusValidator} from "../../controls/admin/custom.validators"
 import * as _ from "lodash";
 
 @Component({
@@ -247,7 +248,7 @@ export class StudentPageComponent implements OnInit {
       ]],
       orgStudentId: [this.student.orgStudentId, [
         Validators.maxLength(100)
-      ]]
+      ]]}, { validator: FourteenPlusValidator('email', 'fourteenPlus')
     });
     this.studentForm.valueChanges.subscribe(data => this.onValueChanged());
     this.onValueChanged();
