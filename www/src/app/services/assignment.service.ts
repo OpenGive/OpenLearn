@@ -21,4 +21,16 @@ export class AssignmentService {
     console.error(error);
     return Observable.throw(error.json() || {message: 'Server Error'});
   }
+
+  getAssignmentStudentByAssignmentId(assignmentId: Number): Observable<any> {
+    return this._http.get('/api/student-assignments/assignment/' + assignmentId)
+      .map(resp => resp.json())
+      .catch(this.handleError);
+  }
+
+  getAssignmentByCourseAndStudent(courseId: Number, studentId: Number): Observable<any> {
+    return this._http.get('/api/student-assignments/student/' + studentId + '/course/' + courseId)
+      .map(resp => resp.json())
+      .catch(this.handleError)
+  }
 }

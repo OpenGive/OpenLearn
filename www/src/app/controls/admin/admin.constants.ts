@@ -103,5 +103,9 @@ export const AdminTabs = {
       {property: 'name', display: 'Name'},
       {property: 'description', display: 'Description'}
     ]
+  },
+  StudentAssignment: {
+    title: 'StudentAssignment',
+    route: 'student-assignments'
   }
 };

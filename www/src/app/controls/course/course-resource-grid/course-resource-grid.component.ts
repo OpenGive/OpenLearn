@@ -8,6 +8,8 @@ import {AssignmentService} from "../../../services/assignment.service";
 import {AssignmentFormComponent} from "../assignment/assignment-form.component";
 import {AdminTabs} from "../../admin/admin.constants";
 import {AdminService} from "../../../services/admin.service";
+import {Principal} from "../../../shared/auth/principal.service";
+import {AppConstants} from "../../../app.constants";
 
 @Component({
   selector: 'app-course-resource-grid',
@@ -23,23 +25,42 @@ export class CourseResourceGridComponent implements OnInit {
 
   sortColumn: any;
   reverse: boolean;
+  studentView: boolean;
 
   constructor(private dialog: MdDialog,
               private courseService: StudentCourseService,
               private assignmentService: AssignmentService,
-              private adminService: AdminService) {}
+              private adminService: AdminService,
+              private principal: Principal) {}
   ngOnInit(): void {
-
-    this.columns = [
-      {
-        id: "assignment.name",
-        name: "Name"
-      },
-      {
-        id: "assignment.description",
-        name: "Description"
-      }
-    ];
+    this.studentView = this.principal.hasAuthority(AppConstants.Role.Student);
+    if(!this.studentView) {
+      this.columns = [
+        {
+          id: "assignment.name",
+          name: "Name"
+        },
+        {
+          id: "assignment.description",
+          name: "Description"
+        }
+      ];
+    } else {
+      this.columns = [
+        {
+          id: "assignment.name",
+          name: "Name"
+        },
+        {
+          id: "assignment.description",
+          name: "Description"
+        },
+        {
+          id: "assignment.grade",
+          name: "Grade"
+        }
+      ];
+    }
 
     this.getCourseAssignments();
   }
@@ -82,9 +103,16 @@ export class CourseResourceGridComponent implements OnInit {
   }
 
   getCourseAssignments(): void {
-    this.assignmentService.getAssignmentsByCourse(this.course.id).subscribe( assignments => {
-      this.assignments = assignments;
-    })
+    if(!this.studentView) {
+      this.assignmentService.getAssignmentsByCourse(this.course.id).subscribe(assignments => {
+        this.assignments = assignments;
+      })
+    } else {
+      this.assignmentService.getAssignmentByCourseAndStudent(this.course.id,this.principal.getId()).subscribe(assignments => {
+        this.assignments = assignments;
+        console.log(assignments);
+      })
+    }
   }
 
   private handleDialogResponse(resp): void {

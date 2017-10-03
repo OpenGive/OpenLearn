@@ -69,7 +69,7 @@ public class StudentAssignmentResource {
 	 *      or with ... TODO: Error handling
 	 */
 	@GetMapping(path = "/student/{studentId}/course/{courseId}")
-	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
 	public ResponseEntity getByStudent(@PathVariable final Long studentId, @PathVariable final Long courseId) {
 		log.debug("GET request to get studentAssignments by student : {} and course : {}", studentId, courseId);
 		List<StudentAssignmentDTO> response = studentAssignmentService.findByStudentAndCourse(studentId, courseId);

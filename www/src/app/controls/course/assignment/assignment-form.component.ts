@@ -1,6 +1,6 @@
 import {Component, Inject, Input, OnInit} from "@angular/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {MD_DIALOG_DATA, MdDialogRef} from "@angular/material";
+import {MD_DIALOG_DATA, MdDialog, MdDialogRef} from "@angular/material";
 import {Observable} from "rxjs/Observable";
 import * as _ from "lodash";
 
@@ -12,6 +12,8 @@ import {UserService} from "../../../services/user.service";
 import {OrgAdmin} from "../../../models/org-admin.model";
 import {AdminTabs} from "../../admin/admin.constants";
 import {StudentCourseService} from "../../../services/student-course.service";
+import {AssignmentService} from "../../../services/assignment.service";
+import {GradeDialogComponent} from "../grade-dialog.component";
 
 @Component({
   selector: 'assignment-form',
@@ -29,11 +31,13 @@ export class AssignmentFormComponent implements OnInit {
   assignmentForm: FormGroup;
 
   constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
+              public dialog: MdDialog,
               private fb: FormBuilder,
               @Inject(MD_DIALOG_DATA) public data: any,
               private notify: NotifyService,
               private adminService: AdminService,
-              private courseService: StudentCourseService) {}
+              private courseService: StudentCourseService,
+              private assignmentService: AssignmentService) {}
 
   columns: any[];
   formErrors = {
@@ -181,10 +185,31 @@ export class AssignmentFormComponent implements OnInit {
     this.ngOnInit();
   }
 
+  editGrade(assignment, e): void {
+    console.log(assignment);
+    this.stopPropagation(e);
+    this.dialog.open(GradeDialogComponent, {
+      data: {
+        assignment: assignment,
+        type: 'ASSIGNMENT'
+      },
+      width: "50px",
+      height: "200px",
+      disableClose: true
+    }).afterClosed().subscribe(resp => {
+      //this.handleEditGradeResponse(resp)
+    });
+  }
+
   getStudents(): void {
-    this.courseService.getStudentCoursesByCourse(this.data.course.id).subscribe(students => {
-      this.students = students;
-      console.log(this.students);
+    this.assignmentService.getAssignmentStudentByAssignmentId(this.data.assignment.id).subscribe(assignmentStudents => {
+      this.students = assignmentStudents;
+      console.log(this.students)
     })
+
+  }
+
+  stopPropagation(e): void {
+    e.stopPropagation();
   }
 }
