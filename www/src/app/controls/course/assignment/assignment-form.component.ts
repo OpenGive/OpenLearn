@@ -184,6 +184,7 @@ export class AssignmentFormComponent implements OnInit {
   getStudents(): void {
     this.courseService.getStudentCoursesByCourse(this.data.course.id).subscribe(students => {
       this.students = students;
+      console.log(this.students);
     })
   }
 }

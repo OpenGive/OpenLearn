@@ -77,3 +77,131 @@ input[disabled], textarea[disabled] {
   padding: 20px 40px;
   overflow-y: scroll;
 }
+
+#grid-header {
+  height: 70px;
+  padding: 20px;
+  margin: 0 20px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  border: 2px solid #FF5252;
+  border-radius: 4px;
+  box-shadow: 0 2px 2px rgba(0,0,0,.24), 0 0 2px rgba(0,0,0,.12);
+}
+
+.grid-header-text {
+  font-family: Rubik, sans-serif;
+  font-size: 24px;
+  font-weight: bolder;
+  color: #4D5A70;
+  letter-spacing: -0.38px;
+}
+
+.grid-add-button {
+  border-radius: 4px;
+  height: 36px;
+  font-family: OpenSans, sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 0;
+  line-height: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+  min-width: 36px;
+  background: #FF5252;
+  color: #FFFFFF;
+}
+
+#grid-table {
+  padding: 20px;
+  margin: 20px 20px 10px 20px;
+  border: 2px solid #FF5252;
+  border-radius: 4px;
+  box-shadow: 0 2px 2px rgba(0,0,0,.24), 0 0 2px rgba(0,0,0,.12);
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: scroll;
+}
+
+table {
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+}
+
+tr {
+  border-bottom: 1px solid #E5E5E5;
+}
+
+tr:hover:not(.header-row) {
+  background: #eeeeee;
+}
+
+td, th {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+th {
+  font-family: Rubik, sans-serif;
+  font-size: 11px;
+  color: #999999;
+  letter-spacing: -0.18px;
+  padding-bottom: 5px;
+  cursor: pointer;
+}
+
+th > md-icon {
+  font-size: 11px;
+  height: 11px;
+  width: 11px;
+  color: #999999;
+  padding-left: 5px;
+}
+
+th:hover {
+  background: #eeeeee;
+}
+
+td {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-family: Rubik, sans-serif;
+  font-size: 14px;
+  color: #4D5A70;
+  letter-spacing: -0.18px;
+  cursor: pointer;
+}
+
+@media only screen and (min-width: 600px) {
+  td:first-child, th:first-child {
+    padding-left: 20px;
+  }
+
+  td:last-child, th:last-child {
+    padding-right: 20px;
+  }
+}
+
+.mat-icon.menu-icon {
+  color: #4D5A70;
+  font-size: 20px;
+}
+
+.mat-menu-item {
+  font-family: Rubik, sans-serif;
+  font-size: 14px;
+  color: #4D5A70;
+  letter-spacing: -0.22px;
+}
+
+.edit-icon {
+  font-size: 15px;
+}
+
+.set-width-modal {
+  width: 700px;
+}
+

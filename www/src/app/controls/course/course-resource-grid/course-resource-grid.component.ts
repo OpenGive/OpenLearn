@@ -42,9 +42,6 @@ export class CourseResourceGridComponent implements OnInit {
     ];
 
     this.getCourseAssignments();
-    console.log("Assignment: " + this.assignment);
-    console.log("Assignemnts2: " + this.assignments);
-
   }
 
   add(): void {
@@ -70,7 +67,9 @@ export class CourseResourceGridComponent implements OnInit {
         course: this.course,
         adding: false,
         assignment: assignment
-      }
+      },
+      width: "600px",
+      height: "600px"
     }).afterClosed().subscribe(resp => {
       this.handleDialogResponse(resp);
     })
