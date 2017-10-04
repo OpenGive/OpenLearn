@@ -1,7 +1,7 @@
 <div>
   <div id="grid-header" fxLayout="row" fxLayoutAlign="space-between center">
     <span class="grid-header-text">Assignments</span>
-    <button md-raised-button fxHide.xs (click)="add()" class="grid-add-button" mdTooltip="Add">
+    <button *ngIf="!studentView" md-raised-button fxHide.xs (click)="add()" class="grid-add-button" mdTooltip="Add">
       <md-icon>add</md-icon>
     </button>
   </div>
@@ -19,9 +19,12 @@
         </thead>
         <tbody>
         <tr *ngFor="let row of assignments" (click)="viewAssignmentDetails(row)">
-          <td>{{row.name}}</td>
-          <td>{{row.description}}</td>
-          <td style="text-align: right;">
+          <td *ngIf="!studentView">{{row.name}}</td>
+          <td *ngIf="!studentView">{{row.description}}</td>
+          <td *ngIf="studentView">{{row.assignment.name}}</td>
+          <td *ngIf="studentView">{{row.assignment.description}}</td>
+          <td *ngIf="studentView">{{row.grade}}</td>
+          <td *ngIf="!studentView" style="text-align: right;">
             <button md-raised-button type="button" (click)="stopPropagation($event)" *ngIf="!editing" [mdMenuTriggerFor]="deleteMenu" class="ol-dialog-button pink-button" mdTooltip="Delete">
               <md-icon>delete</md-icon>
             </button>

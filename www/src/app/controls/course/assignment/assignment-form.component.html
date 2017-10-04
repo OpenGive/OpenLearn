@@ -6,7 +6,7 @@
       <span class="ol-dialog-title edit" *ngIf="adding">New Assignment</span>
       <span class="ol-dialog-title edit" *ngIf="editing && !adding">Edit Assignment</span>
     </div>
-    <div fxLayout="row">
+    <div fxLayout="row" *ngIf="!studentView">
       <button md-raised-button type="submit" *ngIf="editing" class="ol-dialog-button grey-button" mdTooltip="Save">
         <md-icon>save</md-icon>
       </button>
@@ -37,7 +37,7 @@
         <md-error *ngIf="formErrors.description">{{formErrors.description}}</md-error>
       </md-input-container>
     </div>
-    <div class="course-view-body" *ngIf="!adding && !editing">
+    <div class="course-view-body" *ngIf="!adding && !editing && !studentView">
       <div>
         <div id="grid-table" fxLayout="row">
           <div class="table-wrapper">

@@ -71,7 +71,8 @@ export class CourseResourceGridComponent implements OnInit {
       data: {
         course: this.course,
         adding: true,
-        assignment: {}
+        assignment: {},
+        studentView: this.studentView
       },
       width: "400px",
       height: "600px",
@@ -81,13 +82,13 @@ export class CourseResourceGridComponent implements OnInit {
     });
   }
 
-  viewAssignmentDetails(assignment){
-    console.log(assignment);
+  viewAssignmentDetails(row){
     this.dialog.open(AssignmentFormComponent, {
       data: {
         course: this.course,
         adding: false,
-        assignment: assignment
+        assignment: this.getAssignment(row),
+        studentView: this.studentView
       },
       width: "600px",
       height: "600px"
@@ -110,6 +111,7 @@ export class CourseResourceGridComponent implements OnInit {
     } else {
       this.assignmentService.getAssignmentByCourseAndStudent(this.course.id,this.principal.getId()).subscribe(assignments => {
         this.assignments = assignments;
+        console.log("Assignments: ");
         console.log(assignments);
       })
     }
@@ -126,6 +128,14 @@ export class CourseResourceGridComponent implements OnInit {
       console.log("Response from update assignment", resp);
 
       this.ngOnInit();
+    }
+  }
+
+  private getAssignment(row): any {
+    if(this.studentView){
+      return row.assignment
+    } else {
+      return row
     }
   }
 

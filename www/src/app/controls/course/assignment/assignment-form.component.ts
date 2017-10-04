@@ -27,6 +27,7 @@ export class AssignmentFormComponent implements OnInit {
   adding: Boolean;
   editing: Boolean = false;
   students: any[];
+  studentView: boolean;
 
   assignmentForm: FormGroup;
 
@@ -71,6 +72,7 @@ export class AssignmentFormComponent implements OnInit {
         name: "Grade"
       }
     ];
+    this.studentView = this.data.studentView;
     this.formAssignment = this.data.assignment;
     this.getStudents();
     this.buildForm();
