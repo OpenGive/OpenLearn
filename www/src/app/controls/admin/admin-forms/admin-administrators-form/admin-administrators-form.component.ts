@@ -126,7 +126,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
         Validators.minLength(6),
         Validators.maxLength(50)
       ] : []],
-      authority: [AppConstants.Role.OrgAdmin],
+      authority: [AppConstants.Role.Admin],
       notes: [this.formAdministrator.notes, [
         Validators.maxLength(2000)
       ]],
