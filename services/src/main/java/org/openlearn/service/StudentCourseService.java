@@ -42,12 +42,12 @@ public class StudentCourseService {
 	private final UserService userService;
 
 	public StudentCourseService(final CourseRepository courseRepository,
-	                            final AssignmentRepository assignmentRepository,
-								final StudentAssignmentRepository studentAssignmentRepository,
-								final StudentCourseRepository studentCourseRepository,
-	                            final StudentCourseTransformer studentCourseTransformer,
-	                            final UserRepository userRepository,
-								final UserService userService) {
+			final AssignmentRepository assignmentRepository,
+			final StudentAssignmentRepository studentAssignmentRepository,
+			final StudentCourseRepository studentCourseRepository,
+			final StudentCourseTransformer studentCourseTransformer,
+			final UserRepository userRepository,
+			final UserService userService) {
 		this.assignmentRepository = assignmentRepository;
 		this.studentAssignmentRepository = studentAssignmentRepository;
 		this.courseRepository = courseRepository;
@@ -66,7 +66,12 @@ public class StudentCourseService {
 	public StudentCourseDTO create(final StudentCourseDTO studentCourseDTO) {
 		log.debug("Request to save StudentCourse : {}", studentCourseDTO);
 		if (SecurityUtils.isAdmin() || inOrgOfCurrentUser(studentCourseDTO)) {
+
 			StudentCourse studentCourse = studentCourseTransformer.transform(studentCourseDTO);
+
+			StudentCourse existing = studentCourseRepository.findByStudentAndCourse(studentCourse.getStudent(), studentCourse.getCourse());
+			if(existing != null) { return studentCourseTransformer.transform(existing); }
+
 			studentCourse.setGrade("-");
 			studentCourse.setEnrollDate(ZonedDateTime.now());
 			studentCourse.setComplete(false);
@@ -99,11 +104,11 @@ public class StudentCourseService {
 	}
 
 	/**
-    * Get one studentCourse by id.
-    *
-    * @param id the id of the entity
-    * @return the entity
-    */
+	 * Get one studentCourse by id.
+	 *
+	 * @param id the id of the entity
+	 * @return the entity
+	 */
 	@Transactional(readOnly = true)
 	public StudentCourseDTO findOne(final Long id) {
 		log.debug("Request to get StudentCourse : {}", id);
@@ -127,9 +132,9 @@ public class StudentCourseService {
 		User student = userRepository.findOneByIdAndAuthority(id, STUDENT);
 		if (student != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(student))) {
 			return studentCourseRepository.findByStudent(student).stream()
-				.map((StudentCourse studentCourse) ->
+					.map((StudentCourse studentCourse) ->
 					studentCourseTransformer.transform(studentCourse, false, true))
-				.collect(Collectors.toList());
+					.collect(Collectors.toList());
 		}
 		// TODO: Error handling / logging
 		return null;
@@ -164,9 +169,9 @@ public class StudentCourseService {
 		Course course = courseRepository.findOne(id);
 		if (course != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(course))) {
 			return studentCourseRepository.findByCourse(course).stream()
-				.map((StudentCourse studentCourse) ->
+					.map((StudentCourse studentCourse) ->
 					studentCourseTransformer.transform(studentCourse, true, false))
-				.collect(Collectors.toList());
+					.collect(Collectors.toList());
 		}
 		// TODO: Error handling / logging
 		return null;
@@ -192,13 +197,13 @@ public class StudentCourseService {
 		User student = userRepository.findOneByIdAndAuthority(studentCourseDTO.getStudentId(), STUDENT);
 		Course course = courseRepository.findOne(studentCourseDTO.getCourseId());
 		return user.getOrganization().getId().equals(student.getOrganization().getId())
-			&& user.getOrganization().getId().equals(course.getOrganization().getId());
+				&& user.getOrganization().getId().equals(course.getOrganization().getId());
 	}
 
 	private boolean inOrgOfCurrentUser(final StudentCourse studentCourse) {
 		User user = userService.getCurrentUser();
 		return user.getOrganization().equals(studentCourse.getStudent().getOrganization())
-			&& user.getOrganization().equals(studentCourse.getCourse().getOrganization());
+				&& user.getOrganization().equals(studentCourse.getCourse().getOrganization());
 	}
 
 	private boolean inOrgOfCurrentUser(final User student) {

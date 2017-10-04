@@ -140,6 +140,11 @@ public class AssignmentService {
 		log.debug("Request to delete Assignment : {}", id);
 		Assignment assignment = assignmentRepository.findOne(id);
 		if (assignment != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(assignment))) {
+			
+			for (StudentAssignment studentAssignment : studentAssignmentRepository.findByAssignment(assignment)) {
+				studentAssignmentRepository.delete(studentAssignment.getId());
+			}
+			
 			assignmentRepository.delete(id);
 		} else {
 			// TODO: Error handling / logging
