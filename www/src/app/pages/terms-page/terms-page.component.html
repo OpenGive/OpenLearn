@@ -1,0 +1,31 @@
+<div fxLayout="row" fxLayoutAlign="center">
+  <form #profileForm="ngForm" class="" fxLayout="column" fxFlex.gt-sm="960px">
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <h2>Terms and Conditions</h2>
+      <div fxLayout="row">
+        <button md-raised-button *ngIf="editing" (click)="save()" class="ol-dialog-button grey-button" mdTooltip="Save">
+          <md-icon>save</md-icon>
+        </button>
+        <button md-raised-button *ngIf="editing" (click)="cancel()" class="ol-dialog-button navy-button" mdTooltip="Cancel">
+          <md-icon>clear</md-icon>
+        </button>
+        <button md-raised-button *ngIf="!editing" (click)="edit()" class="ol-dialog-button grey-button" mdTooltip="Edit">
+          <md-icon>create</md-icon>
+        </button>
+      </div>
+    </div>
+    <div fxLayout="column" fxLayoutAlign="start stretch">
+      <div fxLayout="row" fxLayoutAlign="space-between">
+        <md-input-container fxFlex="47%">
+          <input mdInput [disabled]="!editing" name="firstName" [(ngModel)]="profile.firstName" placeholder="First Name"/>
+        </md-input-container>
+        <md-input-container fxFlex="47%">
+          <input mdInput [disabled]="!editing" name="lastName" [(ngModel)]="profile.lastName" placeholder="Last Name"/>
+        </md-input-container>
+      </div>
+      <md-input-container>
+        <textarea mdInput [disabled]="!editing || !ageAllowed()" name="biography" [(ngModel)]="profile.biography" placeholder="Bio"></textarea>
+      </md-input-container>
+    </div>
+  </form>
+</div>
