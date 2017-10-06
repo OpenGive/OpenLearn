@@ -2,6 +2,8 @@ import {Component, Inject, OnInit} from "@angular/core";
 import {MdDialogRef, MD_DIALOG_DATA} from "@angular/material";
 import {StudentCourseService} from "../../services/student-course.service";
 import {NotifyService} from "../../services/notify.service";
+import {AdminService} from "../../services/admin.service";
+import {AdminTabs} from "../admin/admin.constants";
 
 @Component({
   selector: 'grade-dialog',
@@ -33,28 +35,46 @@ export class GradeDialogComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.data);
-    this.grade = this.data.student.grade;
+    if(this.data.type === 'STUDENT') {
+      this.grade = this.data.student.grade;
+    } else if (this.data.type === 'ASSIGNMENT') {
+      this.grade = this.data.assignment.grade;
+    }
   }
 
   constructor(private dialog: MdDialogRef<GradeDialogComponent>,
               @Inject(MD_DIALOG_DATA) public data: any,
               private courseService: StudentCourseService,
-              private notify: NotifyService) {}
+              private notify: NotifyService,
+              private adminService: AdminService) {}
 
   close(): void {
     this.dialog.close();
   }
 
   save(): void {
-    this.data.student.grade = this.grade;
-    this.courseService.updateStudentCourse(this.data.student).subscribe(resp => {
-      this.dialog.close({
-        type: 'ADD',
-        data: resp
+    if(this.data.type === 'STUDENT') {
+      this.data.student.grade = this.grade;
+      this.courseService.updateStudentCourse(this.data.student).subscribe(resp => {
+        this.dialog.close({
+          type: 'ADD',
+          data: resp
+        });
+        this.notify.success('Successfully set student grade');
+      }, error => {
+        this.notify.error('Failed to set student grade');
       });
-      this.notify.success('Successfully set student grade');
-    }, error => {
-      this.notify.error('Failed to set student grade');
-    });
+    } else if(this.data.type === 'ASSIGNMENT') {
+      this.data.assignment.grade = this.grade;
+      this.adminService.update(AdminTabs.StudentAssignment.route,this.data.assignment).subscribe(resp => {
+        this.dialog.close({
+          type: 'UPDATE',
+          data: resp
+        });
+        this.notify.success('Successfully set assignment grade');
+      }, error => {
+        this.notify.error('Failed to set assignment grade');
+      })
+    }
   }
 }

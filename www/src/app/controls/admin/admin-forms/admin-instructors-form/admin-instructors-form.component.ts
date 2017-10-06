@@ -42,13 +42,16 @@ export class AdminInstructorsFormComponent implements OnInit {
     streetAddress1: '',
     streetAddress2: '',
     city: '',
-    postalCode: ''
+    postalCode: '',
+    orgRole: ''
   };
   validationMessages = {
     firstName: {
+      required: 'First Name is required',
       maxlength: 'First Name cannot be more than 50 characters long'
     },
     lastName: {
+      required: 'Last Name is required',
       maxlength: 'Last Name cannot be more than 50 characters long'
     },
     login: {
@@ -90,6 +93,9 @@ export class AdminInstructorsFormComponent implements OnInit {
     },
     postalCode: {
       pattern: 'Postal Code is not formatted correctly'
+    },
+    orgRole: {
+      required: 'Org Role is required'
     }
   };
 
@@ -110,9 +116,11 @@ export class AdminInstructorsFormComponent implements OnInit {
   private buildForm(): void {
     this.instructorForm = this.fb.group({
       firstName: [this.formInstructor.firstName, [
+        Validators.required,
         Validators.maxLength(50)
       ]],
       lastName: [this.formInstructor.lastName, [
+        Validators.required,
         Validators.maxLength(50)
       ]],
       login: [this.formInstructor.login, [
@@ -125,6 +133,7 @@ export class AdminInstructorsFormComponent implements OnInit {
         Validators.minLength(6),
         Validators.maxLength(50)
       ] : []],
+      authority: [AppConstants.Role.Instructor],
       organizationId: [this.formInstructor.organizationId, [
         Validators.required
       ]],
@@ -155,6 +164,9 @@ export class AdminInstructorsFormComponent implements OnInit {
       state: [this.formInstructor.state],
       postalCode: [this.formInstructor.postalCode, [
         Validators.pattern(AppConstants.OLValidators.PostalCode)
+      ]],
+      orgRole: [this.formInstructor.orgRole, [
+        Validators.required
       ]]
     });
     this.instructorForm.valueChanges.subscribe(data => this.onValueChanged());
@@ -227,8 +239,7 @@ export class AdminInstructorsFormComponent implements OnInit {
   }
 
   private add(): void {
-    console.log(this.instructorForm.value);
-    this.userService.create(this.instructorForm.value).subscribe(resp => {
+    this.adminService.create(AdminTabs.Instructor.route, this.instructorForm.value).subscribe(resp => {
       this.dialogRef.close({
         type: 'ADD',
         data: resp
@@ -269,6 +280,7 @@ export class AdminInstructorsFormComponent implements OnInit {
       state: this.instructorForm.get('state').value,
       postalCode: this.instructorForm.get('postalCode').value,
       organizationId: this.instructorForm.get('organizationId').value,
+      orgRole: this.instructorForm.get('orgRole').value
     };
   }
 

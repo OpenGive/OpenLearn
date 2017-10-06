@@ -238,7 +238,7 @@ export class StudentPageComponent implements OnInit {
         Validators.required,
         Validators.maxLength(100)
       ]],
-      gradeLevel: [this.student.guardianEmail, [
+      gradeLevel: [this.student.gradeLevel, [
         Validators.required,
         Validators.maxLength(100)
       ]],

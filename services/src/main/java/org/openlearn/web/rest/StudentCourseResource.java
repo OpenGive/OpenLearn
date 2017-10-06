@@ -87,7 +87,7 @@ public class StudentCourseResource {
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
 	public ResponseEntity create(@RequestBody @Valid final StudentCourseDTO studentCourseDTO) throws URISyntaxException {
 		log.debug("POST request to create studentCourse : {}", studentCourseDTO);
-		StudentCourseDTO response = studentCourseService.save(studentCourseDTO);
+		StudentCourseDTO response = studentCourseService.create(studentCourseDTO);
 		return ResponseEntity.created(new URI(ENDPOINT + response.getId())).body(response);
 	}
 
@@ -102,7 +102,7 @@ public class StudentCourseResource {
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
 	public ResponseEntity update(@RequestBody @Valid final StudentCourseDTO studentCourseDTO) {
 		log.debug("PUT request to update studentCourse : {}", studentCourseDTO);
-		StudentCourseDTO response = studentCourseService.save(studentCourseDTO);
+		StudentCourseDTO response = studentCourseService.update(studentCourseDTO);
 		return ResponseEntity.ok(response);
 	}
 

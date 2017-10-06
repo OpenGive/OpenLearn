@@ -43,7 +43,7 @@ export class StudentCourseService {
   }
 
   getStudentsNotInCourse(courseId: Number): Observable<any[]> {
-    return this._http.get(this.endpoint + '/course/not/' + courseId)
+    return this._http.get('/api/students' + '/notInCourse/' + courseId)
       .map(resp => resp.json())
       .catch(this.handleError);
   }

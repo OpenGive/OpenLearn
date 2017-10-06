@@ -35,7 +35,7 @@ export const AdminTabs = {
       {property: 'lastName', display: 'Last Name'},
       {property: 'organizationId', display: 'Organization'}
     ],
-    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin]
+    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor]
   },
   Student: {
     title: 'Students',
@@ -47,7 +47,7 @@ export const AdminTabs = {
       {property: 'lastName', display: 'Last Name'},
       {property: 'organizationId', display: 'Organization'}
     ],
-    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin]
+    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor]
   },
   Organization: {
     title: 'Organizations',
@@ -94,5 +94,18 @@ export const AdminTabs = {
       {property: 'instructorId', display: 'Instructor'}
     ],
     authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor]
+  },
+  Assignment: {
+    title: 'Assignment',
+    route: 'assignments',
+    defaultSort: 'name',
+    columns: [
+      {property: 'name', display: 'Name'},
+      {property: 'description', display: 'Description'}
+    ]
+  },
+  StudentAssignment: {
+    title: 'StudentAssignment',
+    route: 'student-assignments'
   }
 };

@@ -36,14 +36,14 @@
       </md-input-container>
       <md-input-container fxFlex="30%">
         <input mdInput formControlName="sessionId" placeholder="Session*" [mdAutocomplete]="session">
-        <md-error *ngIf="formErrors.session">{{formErrors.session}}</md-error>
+        <md-error *ngIf="formErrors.sessionId">{{formErrors.sessionId}}</md-error>
         <md-autocomplete #session="mdAutocomplete" [displayWith]="displaySession">
           <md-option *ngFor="let session of filteredSessions | async" [value]="session">{{session.name}}</md-option>
         </md-autocomplete>
       </md-input-container>
       <md-input-container fxFlex="30%">
         <input mdInput formControlName="instructorId" placeholder="Instructor*" [mdAutocomplete]="instructor">
-        <md-error *ngIf="formErrors.instructor">{{formErrors.instructor}}</md-error>
+        <md-error *ngIf="formErrors.instructorId">{{formErrors.instructorId}}</md-error>
         <md-autocomplete #instructor="mdAutocomplete" [displayWith]="displayInstructor">
           <md-option *ngFor="let instructor of filteredInstructors | async" [value]="instructor">{{instructor.lastName}}, {{instructor.firstName}}</md-option>
         </md-autocomplete>
@@ -60,7 +60,7 @@
         <md-error *ngIf="formErrors.endDate">{{formErrors.endDate}}</md-error>
         <md-datepicker #endDate></md-datepicker>
       </md-input-container>
-      <md-input-container fxFlex="30%">
+      <md-input-container fxFlex="65%">
         <input mdInput formControlName="locations" placeholder="Locations"/>
         <md-error *ngIf="formErrors.locations">{{formErrors.locations}}</md-error>
       </md-input-container>
@@ -79,6 +79,6 @@
   <app-course-resource-grid [course]="course"></app-course-resource-grid>
 </div>
 </div>
-<div fxLayout="row" fxFlex="100%" *ngIf="!studentView">
+<div fxLayout="row" fxFlex="100%" *ngIf="studentView">
   <app-course-resource-grid [course]="course"></app-course-resource-grid>
 </div>
