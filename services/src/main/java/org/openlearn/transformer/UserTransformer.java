@@ -45,8 +45,8 @@ public class UserTransformer {
 		userDTO.setEmail(user.getEmail());
 		userDTO.setPhoneNumber(user.getPhoneNumber());
 		userDTO.setNotes(user.getNotes());
-		if (!CollectionUtils.isEmpty(user.getAddresses())) {
-			Address address = user.getAddresses().get(0);
+		if (user.getAddress() != null) {
+			Address address = user.getAddress();
 			userDTO.setStreetAddress1(address.getStreetAddress1());
 			userDTO.setStreetAddress2(address.getStreetAddress2());
 			userDTO.setCity(address.getCity());
@@ -74,15 +74,15 @@ public class UserTransformer {
 		user.setEmail(userDTO.getEmail());
 		user.setPhoneNumber(userDTO.getPhoneNumber());
 		user.setNotes(userDTO.getNotes());
-		if (!isAddressEmpty(userDTO) || !CollectionUtils.isEmpty(user.getAddresses())) {
-			Address address = (CollectionUtils.isEmpty(user.getAddresses()) ? new Address() : user.getAddresses().get(0));
+		if (!isAddressEmpty(userDTO) || user.getAddress() != null) {
+			Address address = (user.getAddress() == null) ? new Address() : user.getAddress();
 			address.setStreetAddress1(userDTO.getStreetAddress1());
 			address.setStreetAddress2(userDTO.getStreetAddress2());
 			address.setCity(userDTO.getCity());
 			address.setState(State.valueOf(userDTO.getState()));
 			address.setPostalCode(userDTO.getPostalCode());
 			address.setUser(user);
-			addressRepository.save(address);
+			user.setAddress(address);
 		}
 	}
 

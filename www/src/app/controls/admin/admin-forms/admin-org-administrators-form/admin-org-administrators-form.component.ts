@@ -8,7 +8,6 @@ import {AdminDialogComponent} from "../../admin-dialog.component";
 import {AdminService} from "../../../../services/admin.service";
 import {AppConstants} from "../../../../app.constants";
 import {NotifyService} from "../../../../services/notify.service";
-import {UserService} from "../../../../services/user.service";
 import {OrgAdmin} from "../../../../models/org-admin.model";
 import {AdminTabs} from "../../admin.constants";
 
@@ -102,7 +101,6 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
 
   constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
               private fb: FormBuilder,
-              private userService: UserService,
               private notify: NotifyService,
               private adminService: AdminService) {}
 
@@ -286,7 +284,7 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
   }
 
   delete(): void {
-    this.userService.delete(this.formOrgAdministrator.id).subscribe(resp => {
+    this.adminService.delete(AdminTabs.OrgAdministrator.route, this.formOrgAdministrator.id).subscribe(resp => {
       this.dialogRef.close({
         type: 'DELETE',
         data: {

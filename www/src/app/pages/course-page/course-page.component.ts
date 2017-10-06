@@ -232,8 +232,8 @@ export class CoursePageComponent implements OnInit {
 
   delete(): void {
     this.adminService.delete(AdminTabs.Course.route, this.course.id).subscribe(resp => {
-
       this.notify.success('Successfully deleted course');
+      this.router.navigate(['/admin/courses']);
     }, error => {
       this.notify.error('Failed to delete course');
     });

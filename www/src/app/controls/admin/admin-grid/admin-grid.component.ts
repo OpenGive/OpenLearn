@@ -44,7 +44,7 @@ export class AdminGridComponent implements OnInit {
     this.adminGridService.query(this.grid.route)
       .subscribe(resp => {
         this.grid.rows = resp;
-        //this.getAndMapEntities();
+        this.getAndMapEntities();
         this.sort(_.find(this.grid.columns, {'property': this.grid.defaultSort}), false);
       });
   }
@@ -138,6 +138,7 @@ export class AdminGridComponent implements OnInit {
       } else if (resp.type === 'DELETE') {
         _.remove(this.grid.rows, row => row.id === resp.data.id);
       }
+      this.getAndMapEntities();
       this.sort(_.find(this.grid.columns, {'property': this.sortColumn}), this.reverse);
     }
   }
@@ -145,10 +146,10 @@ export class AdminGridComponent implements OnInit {
   displayCell(row, column): string {
     if (['endDate', 'startDate'].includes(column.property)) {
       return this.displayDate(row[column.property]);
-    // } else if (['organizationId', 'programId', 'sessionId'].includes(column.property)) {
-    //   return this.displayObject(row[column.property]);
-    // } else if (['instructorId'].includes(column.property)) {
-    //   return this.displayUser(row[column.property]);
+    } else if (['organizationId', 'programId', 'sessionId'].includes(column.property)) {
+      return this.displayObject(row[column.property.slice(0, -2)]);
+    } else if (['instructorId'].includes(column.property)) {
+      return this.displayUser(row[column.property.slice(0, -2)]);
     } else {
       return row[column.property];
     }
@@ -158,13 +159,13 @@ export class AdminGridComponent implements OnInit {
     return date ? new Date(date).toLocaleDateString() : '';
   }
 
-  // private displayObject(object): string {
-  //   return _.isNil(object) ? '' : object.name;
-  // }
-  //
-  // private displayUser(user): string {
-  //   return user.lastName + ', ' + user.firstName;
-  // }
+  private displayObject(object): string {
+    return _.isNil(object) ? '' : object.name;
+  }
+  
+  private displayUser(user): string {
+    return _.isNil(user) ? '' : user.lastName + ', ' + user.firstName;
+  }
 
   sort(column: any, reverse ?: boolean): void {
     if (!_.isNil(reverse)) { // use reverse parameter if available
@@ -173,13 +174,13 @@ export class AdminGridComponent implements OnInit {
       this.reverse = (this.sortColumn === column.property ? !this.reverse : false);
     }
     this.sortColumn = column.property;
-    // if (['organizationId', 'programId', 'sessionId'].includes(column.property)) {
-    //   this.filteredRows = _.sortBy(this.grid.rows, [row => this.displayObject(row[column.property])]);
-    // } else if (['instructorId'].includes(column.property)) {
-    //   this.filteredRows = _.sortBy(this.grid.rows, [row => this.displayUser(row[column.property])]);
-    // } else {
-    this.filteredRows = _.sortBy(this.grid.rows, [row => row[column.property]]);
-    // }
+    if (['organizationId', 'programId', 'sessionId'].includes(column.property)) {
+      this.filteredRows = _.sortBy(this.grid.rows, [row => this.displayObject(row[column.property])]);
+    } else if (['instructorId'].includes(column.property)) {
+      this.filteredRows = _.sortBy(this.grid.rows, [row => this.displayUser(row[column.property])]);
+    } else {
+      this.filteredRows = _.sortBy(this.grid.rows, [row => row[column.property]]);
+    }
     if (this.reverse) {
       this.filteredRows.reverse();
     }
