@@ -99,7 +99,7 @@ public class StudentCourseResource {
 	 *      or with ... TODO: Error handling
 	 */
 	@PutMapping
-	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
 	public ResponseEntity update(@RequestBody @Valid final StudentCourseDTO studentCourseDTO) {
 		log.debug("PUT request to update studentCourse : {}", studentCourseDTO);
 		StudentCourseDTO response = studentCourseService.update(studentCourseDTO);
