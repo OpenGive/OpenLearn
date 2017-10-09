@@ -104,6 +104,8 @@ public class OrgAdminService {
 		log.debug("Request to delete org admin : {}", id);
 		User orgAdmin = userRepository.findOneByIdAndAuthority(id, ORG_ADMIN);
 		if (orgAdmin != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(orgAdmin))) {
+			// TODO: Use Address service
+			if (orgAdmin.getAddress() != null) addressRepository.delete(orgAdmin.getAddress().getId());
 			userRepository.delete(id);
 		} else {
 			// TODO: Error handling / logging

@@ -83,6 +83,8 @@ public class AdminService {
 		log.debug("Request to delete admin : {}", id);
 		User admin = userRepository.findOneByIdAndAuthority(id, ADMIN);
 		if (admin != null) {
+			// TODO: Use Address service
+			if (admin.getAddress() != null) addressRepository.delete(admin.getAddress().getId());
 			userRepository.delete(id);
 		} else {
 			// TODO: Error handling / logging
