@@ -21,6 +21,7 @@ export class AdminStudentsFormComponent implements OnInit {
 
   @Input('item') formStudent: any;
   @Input() adding: boolean;
+  @Input('organizations') organizations: any[];
   editing: boolean;
   changingPassword: boolean;
 

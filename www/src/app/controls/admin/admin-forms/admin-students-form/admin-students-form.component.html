@@ -80,10 +80,12 @@
         </md-autocomplete>
         <md-error *ngIf="formErrors.gradeLevel">{{formErrors.gradeLevel}}</md-error>
       </md-input-container>
-      <md-input-container fxFlex="30%">
-        <input mdInput formControlName="organizationId" placeholder="Organization*"/>
+      <div fxLayout="column" fxFlex="30%">
         <md-error *ngIf="formErrors.organizationId">{{formErrors.organizationId}}</md-error>
-      </md-input-container>
+        <md-select formControlName="organizationId" placeholder="Organization*" [disabled]="!editing">
+          <md-option *ngFor="let organization of organizations" [(value)]="organization.id">{{organization.name}}</md-option>
+        </md-select>
+      </div>
       <md-input-container fxFlex="30%">
         <input mdInput formControlName="stateStudentId" placeholder="State Student ID"/>
         <md-error *ngIf="formErrors.stateStudentId">{{formErrors.stateStudentId}}</md-error>
