@@ -55,7 +55,7 @@ public class OrganizationResource {
 	 *      or with ... TODO: Error handling
 	 */
 	@GetMapping
-	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
 	public ResponseEntity get(@ApiParam final Pageable pageable) {
 		log.debug("GET request for all organizations");
 		Page<OrganizationDTO> response = organizationService.findAll(pageable);
