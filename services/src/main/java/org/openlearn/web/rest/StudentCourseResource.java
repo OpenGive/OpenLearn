@@ -84,7 +84,7 @@ public class StudentCourseResource {
 	 * @throws URISyntaxException if the Location URI syntax is incorrect
 	 */
 	@PostMapping
-	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
 	public ResponseEntity create(@RequestBody @Valid final StudentCourseDTO studentCourseDTO) throws URISyntaxException {
 		log.debug("POST request to create studentCourse : {}", studentCourseDTO);
 		StudentCourseDTO response = studentCourseService.create(studentCourseDTO);
