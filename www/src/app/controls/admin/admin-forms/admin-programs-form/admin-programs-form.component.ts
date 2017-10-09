@@ -19,9 +19,9 @@ export class AdminProgramsFormComponent implements OnInit {
 
   @Input('item') formProgram: any;
   @Input() adding: boolean;
+  @Input('organizations') organizations: any[];
   editing: boolean;
 
-  organizations: any[];
   instructor = this.principal.getRole() === AppConstants.Role.Instructor;
 
   filteredOrganizations: Observable<any[]>;
@@ -57,7 +57,7 @@ export class AdminProgramsFormComponent implements OnInit {
   ngOnInit(): void {
     this.buildForm();
     this.setEditing(this.adding);
-    //this.getOrganizations();
+    console.log(JSON.stringify(this.organizations));
   }
 
   private buildForm(): void {
@@ -106,20 +106,6 @@ export class AdminProgramsFormComponent implements OnInit {
         this.editing = false;
       }
     }
-  }
-
-  private getOrganizations(): void {
-    this.adminService.getAll(AdminTabs.Organization.route).subscribe(resp => {
-      this.organizations = resp;
-      this.filteredOrganizations = this.programForm.get('organizationId')
-        .valueChanges
-        .startWith(null)
-        .map(val => val ? this.filterOrganizations(val) : this.organizations.slice());
-    });
-  }
-
-  private filterOrganizations(val: string): any[] {
-    return this.organizations.filter(organization => new RegExp(`${val}`, 'gi').test(organization.name));
   }
 
   save(): void {
@@ -193,8 +179,4 @@ export class AdminProgramsFormComponent implements OnInit {
   close(): void {
     this.dialogRef.close();
   }
-
-  // displayOrganization(organization: any): string {
-  //   return organization ? organization.name : '';
-  // }
 }

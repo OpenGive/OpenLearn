@@ -11,7 +11,7 @@ import {MD_DIALOG_DATA} from "@angular/material";
       <admin-students-form *ngSwitchCase="'students'" [item]="data.item" [adding]="data.adding"></admin-students-form>
       <admin-organizations-form *ngSwitchCase="'organizations'" [item]="data.item" [adding]="data.adding"></admin-organizations-form>
       <admin-sessions-form *ngSwitchCase="'sessions'" [item]="data.item" [adding]="data.adding"></admin-sessions-form>
-      <admin-programs-form *ngSwitchCase="'programs'" [item]="data.item" [adding]="data.adding"></admin-programs-form>
+      <admin-programs-form *ngSwitchCase="'programs'" [item]="data.item" [adding]="data.adding" [organizations]="data.organizations"></admin-programs-form>
       <admin-courses-form *ngSwitchCase="'courses'" [item]="data.item" [adding]="data.adding"></admin-courses-form>
     </div>`
 })
