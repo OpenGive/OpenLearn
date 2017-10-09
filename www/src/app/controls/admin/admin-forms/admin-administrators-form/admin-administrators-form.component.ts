@@ -104,6 +104,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
     this.resetPassword(false);
     this.getRoles();
     this.getStates();
+    console.log(JSON.stringify(this.organizations));
   }
 
   private buildForm(): void {

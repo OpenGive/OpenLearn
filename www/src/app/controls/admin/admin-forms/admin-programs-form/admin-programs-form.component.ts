@@ -19,9 +19,10 @@ export class AdminProgramsFormComponent implements OnInit {
 
   @Input('item') formProgram: any;
   @Input() adding: boolean;
+  @Input('organizations') organizations: any[];
   editing: boolean;
 
-  organizations: any[];
+  // organizations: any[];
   instructor = this.principal.getRole() === AppConstants.Role.Instructor;
 
   filteredOrganizations: Observable<any[]>;
@@ -57,7 +58,7 @@ export class AdminProgramsFormComponent implements OnInit {
   ngOnInit(): void {
     this.buildForm();
     this.setEditing(this.adding);
-    //this.getOrganizations();
+    console.log(JSON.stringify(this.organizations));
   }
 
   private buildForm(): void {

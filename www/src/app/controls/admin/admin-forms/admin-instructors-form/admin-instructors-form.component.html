@@ -78,13 +78,12 @@
         <input mdInput formControlName="postalCode" placeholder="Postal Code"/>
         <md-error *ngIf="formErrors.postalCode">{{formErrors.postalCode}}</md-error>
       </md-input-container>
-      <md-input-container fxFlex="20%">
-        <input mdInput formControlName="organizationId" placeholder="Organization*" [mdAutocomplete]="organizationId"/>
+      <div fxLayout="column" fxFlex="20%">
         <md-error *ngIf="formErrors.organizationId">{{formErrors.organizationId}}</md-error>
-        <md-autocomplete #organizationId="mdAutocomplete" [displayWith]="displayOrganization">
-          <md-option *ngFor="let organization of filteredOrganizations | async" [value]="organization">{{organization.name}}</md-option>
-        </md-autocomplete>
-      </md-input-container>
+        <md-select formControlName="organizationId" placeholder="Organization*" [disabled]="!editing">
+          <md-option *ngFor="let organization of organizations" [(value)]="organization.id">{{organization.name}}</md-option>
+        </md-select>
+      </div>
       <md-input-container fxFlex="20%">
         <input mdInput formControlName="orgRole" placeholder="Org Role*"/>
         <md-error *ngIf="formErrors.orgRole">{{formErrors.orgRole}}</md-error>
