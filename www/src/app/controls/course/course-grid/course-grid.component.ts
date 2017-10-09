@@ -113,9 +113,7 @@ export class CourseGridComponent implements OnInit {
     if (resp) {
       console.log("Response from add student", resp);
 
-      var studentData = resp.data;
-
-      this.students.push(studentData);
+      this.ngOnInit();
     }
   }
 
