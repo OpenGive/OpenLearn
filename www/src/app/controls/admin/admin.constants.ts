@@ -107,5 +107,8 @@ export const AdminTabs = {
   StudentAssignment: {
     title: 'StudentAssignment',
     route: 'student-assignments'
+  },
+  Portfolio: {
+    route: 'portfolio-items'
   }
 };

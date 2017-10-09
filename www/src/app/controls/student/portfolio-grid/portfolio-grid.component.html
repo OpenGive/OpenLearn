@@ -1,6 +1,6 @@
 <div>
   <div id="grid-header" fxLayout="row" fxLayoutAlign="space-between center">
-    <span class="grid-header-text">Enrolled Courses</span>
+    <span class="grid-header-text">Portfolio Items</span>
     <button md-raised-button *ngIf="!studentView" fxHide.xs (click)="add()" class="grid-add-button" mdTooltip="Add">
       <md-icon>add</md-icon>
     </button>
@@ -18,19 +18,16 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let row of courses" (click)="viewCourseDetails(row.course)">
-          <td>{{row.course.name}}</td>
-          <td>{{row.course.description}}</td>
-          <td>{{row.grade}}
-            <md-icon (click)="editGrade(row, $event)" class="edit-icon" mdTooltip="Edit">edit</md-icon>
-          </td>
+        <tr *ngFor="let row of portfolioItems" (click)="viewPortfolioDetails(row)">
+          <td>{{row.name}}</td>
+          <td>{{row.description}}</td>
           <td style="text-align: right;">
             <button md-raised-button type="button" (click)="stopPropagation($event)" *ngIf="!editing" [mdMenuTriggerFor]="deleteMenu" class="ol-dialog-button pink-button" mdTooltip="Delete">
               <md-icon>delete</md-icon>
             </button>
             <md-menu #deleteMenu="mdMenu">
               <button md-menu-item type="button" disabled class="pink-button">Are you sure?</button>
-              <button md-menu-item type="button" (click)="removeStudent(row.id)">Yes, delete it</button>
+              <button md-menu-item type="button" (click)="removePortfolioItem(row.id)">Yes, delete it</button>
               <button md-menu-item type="button">No, go back</button>
             </md-menu>
           </td>
