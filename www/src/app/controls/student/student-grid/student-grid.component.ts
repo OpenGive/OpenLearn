@@ -79,11 +79,11 @@ export class StudentGridComponent implements OnInit {
     });
   }
 
-  // removeStudent(id: Number): void {
-  //   this.courseService.deleteStudentCourse(id).subscribe(resp => {
-  //     this.students = _.filter(this.students, student => student.id !== id);
-  //   });
-  // }
+  removeStudent(id: Number): void {
+    this.courseService.deleteStudentCourse(id).subscribe(resp => {
+      this.courses = _.filter(this.courses, course => course.id !== id);
+    });
+  }
 
   getCourses(): void {
     this.courseService.getStudentCoursesByStudent(this.student.id).subscribe(courses => {

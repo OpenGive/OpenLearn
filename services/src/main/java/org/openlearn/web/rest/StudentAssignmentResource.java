@@ -115,7 +115,7 @@ public class StudentAssignmentResource {
 	 *      or with ... TODO: Error handling
 	 */
 	@PutMapping
-	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
 	public ResponseEntity update(@RequestBody @Valid final StudentAssignmentDTO studentAssignmentDTO) {
 		log.debug("PUT request to update studentAssignment : {}", studentAssignmentDTO);
 		StudentAssignmentDTO response = studentAssignmentService.save(studentAssignmentDTO);
