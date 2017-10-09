@@ -22,9 +22,9 @@
           <td>{{row.course.name}}</td>
           <td>{{row.course.description}}</td>
           <td>{{row.grade}}
-            <md-icon (click)="editGrade(row, $event)" class="edit-icon" mdTooltip="Edit">edit</md-icon>
+            <md-icon *ngIf="!studentView" (click)="editGrade(row, $event)" class="edit-icon" mdTooltip="Edit">edit</md-icon>
           </td>
-          <td style="text-align: right;">
+          <td style="text-align: right;" *ngIf="!studentView">
             <button md-raised-button type="button" (click)="stopPropagation($event)" *ngIf="!editing" [mdMenuTriggerFor]="deleteMenu" class="ol-dialog-button pink-button" mdTooltip="Delete">
               <md-icon>delete</md-icon>
             </button>

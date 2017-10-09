@@ -114,7 +114,7 @@ public class StudentCourseResource {
 	 *      or with ... TODO: Error handling
 	 */
 	@DeleteMapping(path = "/{id}")
-	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
 	public ResponseEntity delete(@PathVariable final Long id) {
 		log.debug("DELETE request to delete studentCourse : {}", id);
 		studentCourseService.delete(id);

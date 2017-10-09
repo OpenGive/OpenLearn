@@ -21,7 +21,7 @@
         <tr *ngFor="let row of portfolioItems" (click)="viewPortfolioDetails(row)">
           <td>{{row.name}}</td>
           <td>{{row.description}}</td>
-          <td style="text-align: right;">
+          <td style="text-align: right;" *ngIf="!studentView">
             <button md-raised-button type="button" (click)="stopPropagation($event)" *ngIf="!editing" [mdMenuTriggerFor]="deleteMenu" class="ol-dialog-button pink-button" mdTooltip="Delete">
               <md-icon>delete</md-icon>
             </button>
