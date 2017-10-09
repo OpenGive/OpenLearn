@@ -138,6 +138,7 @@ export class AdminGridComponent implements OnInit {
       } else if (resp.type === 'DELETE') {
         _.remove(this.grid.rows, row => row.id === resp.data.id);
       }
+      this.getAndMapEntities();
       this.sort(_.find(this.grid.columns, {'property': this.sortColumn}), this.reverse);
     }
   }
