@@ -13,8 +13,6 @@ import {MD_DIALOG_DATA} from "@angular/material";
       <admin-sessions-form *ngSwitchCase="'sessions'" [item]="data.item" [adding]="data.adding"></admin-sessions-form>
       <admin-programs-form *ngSwitchCase="'programs'" [item]="data.item" [adding]="data.adding" [organizations]="data.organizations"></admin-programs-form>
       <admin-courses-form *ngSwitchCase="'courses'" [item]="data.item" [adding]="data.adding"></admin-courses-form>
-      <!--<admin-milestones-form *ngSwitchCase="'milestones'" [item]="data.item" [adding]="data.adding"></admin-milestones-form>-->
-      <!--<admin-achievements-form *ngSwitchCase="'achievements'" [item]="data.item" [adding]="data.adding"></admin-achievements-form>-->
     </div>`
 })
 export class AdminDialogComponent {

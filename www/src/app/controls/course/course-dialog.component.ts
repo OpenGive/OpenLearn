@@ -87,7 +87,8 @@ export class CourseDialogComponent implements OnInit {
               private userService: UserService,
               private courseService: StudentCourseService,
               private adminService: AdminService,
-              private notify: NotifyService) {}
+              private notify: NotifyService,
+              private studentCourseService: StudentCourseService) {}
 
 
   // private getStudents(): void {
@@ -97,6 +98,9 @@ export class CourseDialogComponent implements OnInit {
   // }
 
   private getStudents(): void {
+    // this.studentCourseService.getStudentsNotInCourse(this.data.course.id).subscribe(resp => {
+    //   this.students = resp;
+    // })
     this.adminService.getAll(AdminTabs.Student.route).subscribe(resp => {
       this.students = resp;
     })

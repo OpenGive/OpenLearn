@@ -94,5 +94,21 @@ export const AdminTabs = {
       {property: 'instructorId', display: 'Instructor'}
     ],
     authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor]
+  },
+  Assignment: {
+    title: 'Assignment',
+    route: 'assignments',
+    defaultSort: 'name',
+    columns: [
+      {property: 'name', display: 'Name'},
+      {property: 'description', display: 'Description'}
+    ]
+  },
+  StudentAssignment: {
+    title: 'StudentAssignment',
+    route: 'student-assignments'
+  },
+  Portfolio: {
+    route: 'portfolio-items'
   }
 };

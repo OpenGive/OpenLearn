@@ -16,6 +16,8 @@ import "hammerjs";
 import {CourseCardComponent} from "./controls/course/course-card/course-card.component";
 import {UserService} from "./services/user.service";
 import {StudentCourseService} from "./services/student-course.service";
+import {AssignmentService} from "./services/assignment.service";
+import {PortfolioService} from "./services/portfolio.service";
 import {UserRouteAccessService} from "./shared/auth/user-route-access-service";
 import {Principal} from "./shared/auth/principal.service";
 import {AccountService} from "./shared/auth/account.service";
@@ -35,6 +37,7 @@ import {CourseViewComponent} from "./controls/course/course-view/course-view.com
 import {CourseGridComponent} from "./controls/course/course-grid/course-grid.component";
 import {StudentGridComponent} from "./controls/student/student-grid/student-grid.component"
 import {CourseResourceGridComponent} from "./controls/course/course-resource-grid/course-resource-grid.component";
+import {PortfolioGridComponent} from "./controls/student/portfolio-grid/portfolio-grid.component";
 import {ProfilePageComponent} from "./pages/profile-page/profile-page.component";
 import {NotifyService} from "./services/notify.service";
 import {OLAdminModule} from "./controls/admin/admin.module";
@@ -60,6 +63,7 @@ import {DataService} from "./services/data.service";
     CourseGridComponent,
     StudentGridComponent,
     CourseResourceGridComponent,
+    PortfolioGridComponent,
     ProfilePageComponent,
     DashboardPageComponent
   ],
@@ -81,6 +85,8 @@ import {DataService} from "./services/data.service";
   providers: [
     UserService,
     StudentCourseService,
+    AssignmentService,
+    PortfolioService,
     UserRouteAccessService,
     Principal,
     AccountService,

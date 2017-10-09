@@ -6,6 +6,8 @@ import {MdAutocompleteModule, MdButtonModule, MdCheckboxModule, MdDatepickerModu
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 import {CourseDialogComponent} from "./course-dialog.component";
+import {AssignmentFormComponent} from "./assignment/assignment-form.component";
+import {PortfolioFormComponent} from "./portfolio/portfolio-form.component";
 import {GradeDialogComponent} from "./grade-dialog.component";
 import {CourseStudentDialogComponent} from "./course-student-dialog.component";
 
@@ -14,6 +16,8 @@ import {CourseStudentFormComponent} from "./course-student-form/course-student-f
 @NgModule({
   declarations: [
     CourseDialogComponent,
+    AssignmentFormComponent,
+    PortfolioFormComponent,
     GradeDialogComponent,
     CourseStudentDialogComponent,
     CourseStudentFormComponent
@@ -36,6 +40,8 @@ import {CourseStudentFormComponent} from "./course-student-form/course-student-f
   ],
   entryComponents: [
     CourseDialogComponent,
+    AssignmentFormComponent,
+    PortfolioFormComponent,
     GradeDialogComponent,
     CourseStudentDialogComponent,
     CourseStudentFormComponent

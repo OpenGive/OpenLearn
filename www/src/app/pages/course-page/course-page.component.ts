@@ -87,8 +87,8 @@ export class CoursePageComponent implements OnInit {
     this.getData();
     this.buildForm();
     this.setEditing(this.adding);
-    this.getInstructors();
     if (!this.studentView) {
+      this.getInstructors();
       this.getSessions();
     }
   }

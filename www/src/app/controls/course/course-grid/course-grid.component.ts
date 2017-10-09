@@ -65,7 +65,8 @@ export class CourseGridComponent implements OnInit {
     this.stopPropagation(e);
     this.dialog.open(GradeDialogComponent, {
       data: {
-        student: student
+        student: student,
+        type: 'COURSE'
       },
       width: "50px",
       height: "200px",
@@ -112,9 +113,7 @@ export class CourseGridComponent implements OnInit {
     if (resp) {
       console.log("Response from add student", resp);
 
-      var studentData = resp.data;
-
-      this.students.push(studentData);
+      this.ngOnInit();
     }
   }
 

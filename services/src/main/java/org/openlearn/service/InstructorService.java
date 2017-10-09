@@ -104,6 +104,8 @@ public class InstructorService {
 		log.debug("Request to delete instructor : {}", id);
 		User instructor = userRepository.findOneByIdAndAuthority(id, INSTRUCTOR);
 		if (instructor != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(instructor))) {
+			// TODO: Use Address service
+			if (instructor.getAddress() != null) addressRepository.delete(instructor.getAddress().getId());
 			userRepository.delete(id);
 		} else {
 			// TODO: Error handling / logging

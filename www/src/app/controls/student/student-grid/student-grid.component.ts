@@ -9,6 +9,8 @@ import {CourseStudentDialogComponent} from "../course-student-dialog.component";
 import {StudentCourseService} from "../../../services/student-course.service";
 import {Student} from "../../../models/student.model";
 import {DataService} from "../../../services/data.service";
+import {AppConstants} from "../../../app.constants";
+import {Principal} from "../../../shared/auth/principal.service";
 @Component({
   selector: 'app-student-grid',
   templateUrl: './student-grid.component.html',
@@ -19,16 +21,18 @@ export class StudentGridComponent implements OnInit {
   @Input() student: Student;
   courses: any[];
   columns: any[];
+  studentView: boolean;
 
   sortColumn: any;
   reverse: boolean;
 
   constructor(private dialog: MdDialog,
               private dataService: DataService,
-              private courseService: StudentCourseService) {}
+              private courseService: StudentCourseService,
+              private principal: Principal) {}
 
   ngOnInit(): void {
-
+    this.studentView = this.principal.hasAuthority(AppConstants.Role.Student);
     this.columns = [
       {
         id: "course.name",
@@ -75,11 +79,11 @@ export class StudentGridComponent implements OnInit {
     });
   }
 
-  // removeStudent(id: Number): void {
-  //   this.courseService.deleteStudentCourse(id).subscribe(resp => {
-  //     this.students = _.filter(this.students, student => student.id !== id);
-  //   });
-  // }
+  removeStudent(id: Number): void {
+    this.courseService.deleteStudentCourse(id).subscribe(resp => {
+      this.courses = _.filter(this.courses, course => course.id !== id);
+    });
+  }
 
   getCourses(): void {
     this.courseService.getStudentCoursesByStudent(this.student.id).subscribe(courses => {

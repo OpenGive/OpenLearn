@@ -78,6 +78,19 @@ public class StudentService {
 		}
 	}
 
+	@Transactional(readOnly = true)
+	public Page<StudentDTO> findStudentsNotInCourse(final Long courseId, final Pageable pageable) {
+		log.debug("Request to get all StudentsNotInCourseByOrganization");
+		if (SecurityUtils.isAdmin()) {
+			return userRepository.findStudentsNotInCourse(courseId, pageable)
+				.map(studentTransformer::transform);
+		} else {
+			User user = userService.getCurrentUser();
+			return userRepository.findStudentsNotInCourseByOrganization(courseId,user.getOrganization().getId(),pageable)
+				.map(studentTransformer::transform);
+		}
+	}
+
 	/**
 	 * Get one user by id.
 	 *
@@ -104,6 +117,8 @@ public class StudentService {
 		log.debug("Request to delete student : {}", id);
 		User student = userRepository.findOneByIdAndAuthority(id, STUDENT);
 		if (student != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(student))) {
+			// TODO: Use Address service
+			if (student.getAddress() != null) addressRepository.delete(student.getAddress().getId());
 			userRepository.delete(id);
 		} else {
 			// TODO: Error handling / logging
