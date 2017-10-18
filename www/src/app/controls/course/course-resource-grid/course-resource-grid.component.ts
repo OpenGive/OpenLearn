@@ -1,8 +1,15 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {MdDialog} from "@angular/material";
+import * as _ from "lodash";
 
 import {Course} from '../../../models/course.model';
 import {StudentCourseService} from "../../../services/student-course.service";
+import {AssignmentService} from "../../../services/assignment.service";
+import {AssignmentFormComponent} from "../assignment/assignment-form.component";
+import {AdminTabs} from "../../admin/admin.constants";
+import {AdminService} from "../../../services/admin.service";
+import {Principal} from "../../../shared/auth/principal.service";
+import {AppConstants} from "../../../app.constants";
 
 @Component({
   selector: 'app-course-resource-grid',
@@ -12,77 +19,128 @@ import {StudentCourseService} from "../../../services/student-course.service";
 export class CourseResourceGridComponent implements OnInit {
 
   @Input() course: Course;
-  @Input() resource: any;
-  resources: any[];
+  @Input() assignment: any;
+  assignments: any[];
   columns: any[];
 
   sortColumn: any;
   reverse: boolean;
+  studentView: boolean;
 
   constructor(private dialog: MdDialog,
-              private courseService: StudentCourseService) {}
-
+              private courseService: StudentCourseService,
+              private assignmentService: AssignmentService,
+              private adminService: AdminService,
+              private principal: Principal) {}
   ngOnInit(): void {
+    this.studentView = this.principal.hasAuthority(AppConstants.Role.Student);
+    if(!this.studentView) {
+      this.columns = [
+        {
+          id: "assignment.name",
+          name: "Name"
+        },
+        {
+          id: "assignment.description",
+          name: "Description"
+        }
+      ];
+    } else {
+      this.columns = [
+        {
+          id: "assignment.name",
+          name: "Name"
+        },
+        {
+          id: "assignment.description",
+          name: "Description"
+        },
+        {
+          id: "assignment.grade",
+          name: "Grade"
+        }
+      ];
+    }
 
-    this.columns = [
-      {
-        id: "resource.name",
-        name: "Name"
-      },
-      {
-        id: "resource.description",
-        name: "Description"
-      },
-      {
-        id: "resource.thumbnailImageUrl",
-        name: "Thumbnail image"
-      },
-      {
-        id: "resource.itemUrl",
-        name: "URL"
-      }
-    ];
-
-    this.getCourseResources();
-
+    this.getCourseAssignments();
   }
 
   add(): void {
     console.log('added');
-    // TODO: No longer using ResourceDialogComponent
-    // this.dialog.open(ResourceDialogComponent, {
-    //   data: {
-    //     course: this.course
-    //   },
-    //   width: "400px",
-    //   height: "600px",
-    //   disableClose: true
-    // }).afterClosed().subscribe(resp => {
-    //   this.handleAddResourceResponse(resp)
-    // });
+    this.dialog.open(AssignmentFormComponent, {
+      data: {
+        course: this.course,
+        adding: true,
+        assignment: {},
+        studentView: this.studentView
+      },
+      width: "400px",
+      height: "600px",
+      disableClose: true
+    }).afterClosed().subscribe(resp => {
+      this.handleDialogResponse(resp);
+    });
   }
 
+  viewAssignmentDetails(row){
+    this.dialog.open(AssignmentFormComponent, {
+      data: {
+        course: this.course,
+        adding: false,
+        assignment: this.getAssignment(row),
+        studentView: this.studentView
+      },
+      width: "600px",
+      height: "600px"
+    }).afterClosed().subscribe(resp => {
+      this.handleDialogResponse(resp);
+    })
+}
 
-  removeResource(resourceId: Number): void {
-    this.courseService.removeResourceFromCourse(this.course.id, resourceId).subscribe(resources => {
-      this.resources = this.resources.filter(resources => resources.id !== resourceId);
+  removeAssignment(assignmentId: Number): void {
+    this.adminService.delete(AdminTabs.Assignment.route,assignmentId).subscribe(resp=> {
+      this.assignments = _.filter(this.assignments, assignment => assignment.id !== assignmentId)
     })
   }
 
-  getCourseResources(): void {
-    this.courseService.getCourseResources(this.course.id).subscribe(resources => {
-      this.resources = resources;
-    })
-  }
-
-  private handleAddResourceResponse(resp): void {
-    if (resp) {
-      console.log("Response from add resource", resp);
-
-      var resourceData = resp.data;
-
-      this.resources.push(resourceData);
+  getCourseAssignments(): void {
+    if(!this.studentView) {
+      this.assignmentService.getAssignmentsByCourse(this.course.id).subscribe(assignments => {
+        this.assignments = assignments;
+      })
+    } else {
+      this.assignmentService.getAssignmentByCourseAndStudent(this.course.id,this.principal.getId()).subscribe(assignments => {
+        this.assignments = assignments;
+        console.log("Assignments: ");
+        console.log(assignments);
+      })
     }
+  }
+
+  private handleDialogResponse(resp): void {
+    if(!resp) {
+      return;
+    } else if (resp.type === 'ADD') {
+      console.log("Response from add assignment", resp);
+
+      this.ngOnInit();
+    } else if(resp.type === 'UPDATE') {
+      console.log("Response from update assignment", resp);
+
+      this.ngOnInit();
+    }
+  }
+
+  private getAssignment(row): any {
+    if(this.studentView){
+      return row.assignment
+    } else {
+      return row
+    }
+  }
+
+  stopPropagation(e): void {
+    e.stopPropagation();
   }
 
 }

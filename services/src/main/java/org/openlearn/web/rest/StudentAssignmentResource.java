@@ -61,6 +61,22 @@ public class StudentAssignmentResource {
 	}
 
 	/**
+	 * GET  /student/:studentId/course/:courseId : get a list of studentAssignment by student and course
+	 *
+	 * @param studentId the ID of the student
+	 * @param courseId the ID of the course
+	 * @return the ResponseEntity with status 200 (OK) and a list of studentAssignment with assignment objects in the body
+	 *      or with ... TODO: Error handling
+	 */
+	@GetMapping(path = "/student/{studentId}/course/{courseId}")
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
+	public ResponseEntity getByStudent(@PathVariable final Long studentId, @PathVariable final Long courseId) {
+		log.debug("GET request to get studentAssignments by student : {} and course : {}", studentId, courseId);
+		List<StudentAssignmentDTO> response = studentAssignmentService.findByStudentAndCourse(studentId, courseId);
+		return ResponseEntity.ok(response);
+	}
+
+	/**
 	 * GET  /course/:id : get a list of studentAssignment by assignment
 	 *
 	 * @param id the ID of the assignment
@@ -99,7 +115,7 @@ public class StudentAssignmentResource {
 	 *      or with ... TODO: Error handling
 	 */
 	@PutMapping
-	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
 	public ResponseEntity update(@RequestBody @Valid final StudentAssignmentDTO studentAssignmentDTO) {
 		log.debug("PUT request to update studentAssignment : {}", studentAssignmentDTO);
 		StudentAssignmentDTO response = studentAssignmentService.save(studentAssignmentDTO);

@@ -4,6 +4,7 @@ import org.openlearn.domain.Authority;
 import org.openlearn.domain.User;
 import org.openlearn.dto.StudentDTO;
 import org.openlearn.repository.UserRepository;
+import org.openlearn.repository.AddressRepository;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.security.SecurityUtils;
 import org.openlearn.transformer.StudentTransformer;
@@ -29,13 +30,16 @@ public class StudentService {
 
 	private final UserRepository userRepository;
 
+	private final AddressRepository addressRepository;
+
 	private final UserService userService;
 
-	public StudentService(final StudentTransformer studentTransformer, final UserRepository userRepository,
+	public StudentService(final StudentTransformer studentTransformer, final UserRepository userRepository, final AddressRepository addressRepository,
 	                      final UserService userService) {
 		this.studentTransformer = studentTransformer;
 		this.userRepository = userRepository;
 		this.userService = userService;
+		this.addressRepository = addressRepository;
 	}
 
 	/**
@@ -48,7 +52,9 @@ public class StudentService {
 		log.debug("Request to save student : {}", studentDTO);
 		if (AuthoritiesConstants.STUDENT.equals(studentDTO.getAuthority())
 			&& (SecurityUtils.isAdmin() || inOrgOfCurrentUser(studentDTO))) {
-			return studentTransformer.transform(userRepository.save(studentTransformer.transform(studentDTO)));
+			User user = userRepository.save(studentTransformer.transform(studentDTO));
+			if (user.getAddress() != null) addressRepository.save(user.getAddress());
+			return studentTransformer.transform(user);
 		}
 		// TODO: Error handling / logging
 		return null;
@@ -68,6 +74,19 @@ public class StudentService {
 			return userRepository.findByAuthority(STUDENT, pageable).map(studentTransformer::transform);
 		} else {
 			return userRepository.findByOrganizationAndAuthority(user.getOrganization(), STUDENT, pageable)
+				.map(studentTransformer::transform);
+		}
+	}
+
+	@Transactional(readOnly = true)
+	public Page<StudentDTO> findStudentsNotInCourse(final Long courseId, final Pageable pageable) {
+		log.debug("Request to get all StudentsNotInCourseByOrganization");
+		if (SecurityUtils.isAdmin()) {
+			return userRepository.findStudentsNotInCourse(courseId, pageable)
+				.map(studentTransformer::transform);
+		} else {
+			User user = userService.getCurrentUser();
+			return userRepository.findStudentsNotInCourseByOrganization(courseId,user.getOrganization().getId(),pageable)
 				.map(studentTransformer::transform);
 		}
 	}
@@ -98,6 +117,8 @@ public class StudentService {
 		log.debug("Request to delete student : {}", id);
 		User student = userRepository.findOneByIdAndAuthority(id, STUDENT);
 		if (student != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(student))) {
+			// TODO: Use Address service
+			if (student.getAddress() != null) addressRepository.delete(student.getAddress().getId());
 			userRepository.delete(id);
 		} else {
 			// TODO: Error handling / logging

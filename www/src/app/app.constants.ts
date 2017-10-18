@@ -59,6 +59,22 @@ export class AppConstants {
     {name: 'Wyoming', value: 'WYOMING'},
     {name: 'District of Columbia', value: 'DISTRICT_OF_COLUMBIA'}
   ];
+  public static GradeLevels = [
+    {name: 'Pre-K', value: 'PREK'},
+    {name: 'Kindergarten', value: 'KINDERGARTEN'},
+    {name: '1st', value: 'FIRST'},
+    {name: '2nd', value: 'SECOND'},
+    {name: '3rd', value: 'THIRD'},
+    {name: '4th', value: 'FOURTH'},
+    {name: '5th', value: 'FIFTH'},
+    {name: '6th', value: 'SIXTH'},
+    {name: '7th', value: 'SEVENTH'},
+    {name: '8th', value: 'EIGHTH'},
+    {name: '9th', value: 'NINTH'},
+    {name: '10th', value: 'TENTH'},
+    {name: '11th', value: 'ELEVENTH'},
+    {name: '12th', value: 'TWELFTH'}
+  ];
   public static OLValidators = {
     Email: "^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*$",
     Login: "^[_'.@A-Za-z0-9-]*$",

@@ -5,9 +5,11 @@ import * as _ from "lodash";
 import {AdminDialogComponent} from "../admin-dialog.component";
 import {AdminGridModel} from "../../../models/admin-grid.model";
 import {AdminTabs} from "../admin.constants";
+import {AppConstants} from "../../../app.constants";
 import {AdminService} from "../../../services/admin.service";
 import {AdminGridService} from "../../../services/admin-grid.service";
 import {DataService} from "../../../services/data.service";
+import {Principal} from "../../../shared/auth/principal.service";
 
 @Component({
   selector: 'app-admin-grid',
@@ -30,7 +32,8 @@ export class AdminGridComponent implements OnInit {
   constructor(private dialog: MdDialog,
               private adminGridService: AdminGridService,
               private adminService: AdminService,
-              private dataService: DataService) {
+              private dataService: DataService,
+              private principal: Principal) {
   }
 
   ngOnInit(): void {
@@ -135,6 +138,7 @@ export class AdminGridComponent implements OnInit {
       } else if (resp.type === 'DELETE') {
         _.remove(this.grid.rows, row => row.id === resp.data.id);
       }
+      this.getAndMapEntities();
       this.sort(_.find(this.grid.columns, {'property': this.sortColumn}), this.reverse);
     }
   }
@@ -142,10 +146,10 @@ export class AdminGridComponent implements OnInit {
   displayCell(row, column): string {
     if (['endDate', 'startDate'].includes(column.property)) {
       return this.displayDate(row[column.property]);
-    // } else if (['organizationId', 'programId', 'sessionId'].includes(column.property)) {
-    //   return this.displayObject(row[column.property]);
-    // } else if (['instructorId'].includes(column.property)) {
-    //   return this.displayUser(row[column.property]);
+    } else if (['organizationId', 'programId', 'sessionId'].includes(column.property)) {
+      return this.displayObject(row[column.property.slice(0, -2)]);
+    } else if (['instructorId'].includes(column.property)) {
+      return this.displayUser(row[column.property.slice(0, -2)]);
     } else {
       return row[column.property];
     }
@@ -155,13 +159,13 @@ export class AdminGridComponent implements OnInit {
     return date ? new Date(date).toLocaleDateString() : '';
   }
 
-  // private displayObject(object): string {
-  //   return _.isNil(object) ? '' : object.name;
-  // }
-  //
-  // private displayUser(user): string {
-  //   return user.lastName + ', ' + user.firstName;
-  // }
+  private displayObject(object): string {
+    return _.isNil(object) ? '' : object.name;
+  }
+  
+  private displayUser(user): string {
+    return _.isNil(user) ? '' : user.lastName + ', ' + user.firstName;
+  }
 
   sort(column: any, reverse ?: boolean): void {
     if (!_.isNil(reverse)) { // use reverse parameter if available
@@ -170,13 +174,13 @@ export class AdminGridComponent implements OnInit {
       this.reverse = (this.sortColumn === column.property ? !this.reverse : false);
     }
     this.sortColumn = column.property;
-    // if (['organizationId', 'programId', 'sessionId'].includes(column.property)) {
-    //   this.filteredRows = _.sortBy(this.grid.rows, [row => this.displayObject(row[column.property])]);
-    // } else if (['instructorId'].includes(column.property)) {
-    //   this.filteredRows = _.sortBy(this.grid.rows, [row => this.displayUser(row[column.property])]);
-    // } else {
-    this.filteredRows = _.sortBy(this.grid.rows, [row => row[column.property]]);
-    // }
+    if (['organizationId', 'programId', 'sessionId'].includes(column.property)) {
+      this.filteredRows = _.sortBy(this.grid.rows, [row => this.displayObject(row[column.property])]);
+    } else if (['instructorId'].includes(column.property)) {
+      this.filteredRows = _.sortBy(this.grid.rows, [row => this.displayUser(row[column.property])]);
+    } else {
+      this.filteredRows = _.sortBy(this.grid.rows, [row => row[column.property]]);
+    }
     if (this.reverse) {
       this.filteredRows.reverse();
     }
@@ -189,5 +193,15 @@ export class AdminGridComponent implements OnInit {
     });
     let ndx = _.findIndex(this.grid.columns, {'property': this.sortColumn});
     this.grid.columns[ndx].sortIcon = (this.reverse ? 'keyboard_arrow_up' : 'keyboard_arrow_down');
+  }
+
+  private canAdd(): boolean {
+    var orgAdmin = this.principal.getRole() === AppConstants.Role.OrgAdmin;
+    if ([AdminTabs.Program.route, AdminTabs.Session.route].includes(this.grid.route)) {
+      return !(this.principal.getRole() == AppConstants.Role.Instructor);
+    } else if (AdminTabs.Organization.route == this.grid.route) {
+      return !(this.principal.getRole() == AppConstants.Role.OrgAdmin);
+    }
+    return true;
   }
 }

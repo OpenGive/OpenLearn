@@ -4,6 +4,7 @@ import org.openlearn.domain.Authority;
 import org.openlearn.domain.User;
 import org.openlearn.dto.InstructorDTO;
 import org.openlearn.repository.UserRepository;
+import org.openlearn.repository.AddressRepository;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.security.SecurityUtils;
 import org.openlearn.transformer.InstructorTransformer;
@@ -29,13 +30,16 @@ public class InstructorService {
 
 	private final UserRepository userRepository;
 
+	private final AddressRepository addressRepository;
+
 	private final UserService userService;
 
-	public InstructorService(final InstructorTransformer instructorTransformer, final UserRepository userRepository,
+	public InstructorService(final InstructorTransformer instructorTransformer, final UserRepository userRepository, final AddressRepository addressRepository,
 	                         final UserService userService) {
 		this.instructorTransformer = instructorTransformer;
 		this.userRepository = userRepository;
 		this.userService = userService;
+		this.addressRepository = addressRepository;
 	}
 
 	/**
@@ -48,7 +52,9 @@ public class InstructorService {
 		log.debug("Request to save instructor : {}", instructorDTO);
 		if (AuthoritiesConstants.INSTRUCTOR.equals(instructorDTO.getAuthority())
 			&& (SecurityUtils.isAdmin() || inOrgOfCurrentUser(instructorDTO))) {
-			return instructorTransformer.transform(userRepository.save(instructorTransformer.transform(instructorDTO)));
+			User user = userRepository.save(instructorTransformer.transform(instructorDTO));
+			if (user.getAddress() != null) addressRepository.save(user.getAddress());
+			return instructorTransformer.transform(user);
 		}
 		// TODO: Error handling / logging
 		return null;
@@ -98,6 +104,8 @@ public class InstructorService {
 		log.debug("Request to delete instructor : {}", id);
 		User instructor = userRepository.findOneByIdAndAuthority(id, INSTRUCTOR);
 		if (instructor != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(instructor))) {
+			// TODO: Use Address service
+			if (instructor.getAddress() != null) addressRepository.delete(instructor.getAddress().getId());
 			userRepository.delete(id);
 		} else {
 			// TODO: Error handling / logging

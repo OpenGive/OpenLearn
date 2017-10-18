@@ -4,6 +4,7 @@ import org.openlearn.domain.Authority;
 import org.openlearn.domain.User;
 import org.openlearn.dto.OrgAdminDTO;
 import org.openlearn.repository.UserRepository;
+import org.openlearn.repository.AddressRepository;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.security.SecurityUtils;
 import org.openlearn.transformer.OrgAdminTransformer;
@@ -29,13 +30,16 @@ public class OrgAdminService {
 
 	private final UserRepository userRepository;
 
+	private final AddressRepository addressRepository;
+
 	private final UserService userService;
 
-	public OrgAdminService(final OrgAdminTransformer orgAdminTransformer, final UserRepository userRepository,
+	public OrgAdminService(final OrgAdminTransformer orgAdminTransformer, final UserRepository userRepository, final AddressRepository addressRepository,
 	                       final UserService userService) {
 		this.orgAdminTransformer = orgAdminTransformer;
 		this.userRepository = userRepository;
 		this.userService = userService;
+		this.addressRepository = addressRepository;
 	}
 
 	/**
@@ -48,7 +52,9 @@ public class OrgAdminService {
 		log.debug("Request to save org admin : {}", orgAdminDTO);
 		if (AuthoritiesConstants.ORG_ADMIN.equals(orgAdminDTO.getAuthority())
 			&& (SecurityUtils.isAdmin() || inOrgOfCurrentUser(orgAdminDTO))) {
-			return orgAdminTransformer.transform(userRepository.save(orgAdminTransformer.transform(orgAdminDTO)));
+			User user = userRepository.save(orgAdminTransformer.transform(orgAdminDTO));
+			if (user.getAddress() != null) addressRepository.save(user.getAddress());
+			return orgAdminTransformer.transform(user);
 		}
 		// TODO: Error handling / logging
 		return null;
@@ -98,6 +104,8 @@ public class OrgAdminService {
 		log.debug("Request to delete org admin : {}", id);
 		User orgAdmin = userRepository.findOneByIdAndAuthority(id, ORG_ADMIN);
 		if (orgAdmin != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(orgAdmin))) {
+			// TODO: Use Address service
+			if (orgAdmin.getAddress() != null) addressRepository.delete(orgAdmin.getAddress().getId());
 			userRepository.delete(id);
 		} else {
 			// TODO: Error handling / logging

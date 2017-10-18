@@ -1,7 +1,7 @@
 <div>
   <div id="grid-header" fxLayout="row" fxLayoutAlign="space-between center">
     <span class="grid-header-text">{{grid.title}}</span>
-    <button md-raised-button fxHide.xs (click)="add()" class="grid-add-button" mdTooltip="Add">
+    <button md-raised-button fxHide.xs *ngIf="canAdd()" (click)="add()" class="grid-add-button" mdTooltip="Add">
       <md-icon>add</md-icon>
     </button>
   </div>

@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class UserTransformer {
@@ -20,9 +21,12 @@ public class UserTransformer {
 
 	private final AuthorityRepository authorityRepository;
 
-	public UserTransformer(final AddressRepository addressRepository, final AuthorityRepository authorityRepository) {
+	private final PasswordEncoder passwordEncoder;
+
+	public UserTransformer(final AddressRepository addressRepository, final AuthorityRepository authorityRepository, PasswordEncoder passwordEncoder) {
 		this.addressRepository = addressRepository;
 		this.authorityRepository = authorityRepository;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	/**
@@ -41,8 +45,8 @@ public class UserTransformer {
 		userDTO.setEmail(user.getEmail());
 		userDTO.setPhoneNumber(user.getPhoneNumber());
 		userDTO.setNotes(user.getNotes());
-		if (!CollectionUtils.isEmpty(user.getAddresses())) {
-			Address address = user.getAddresses().get(0);
+		if (user.getAddress() != null) {
+			Address address = user.getAddress();
 			userDTO.setStreetAddress1(address.getStreetAddress1());
 			userDTO.setStreetAddress2(address.getStreetAddress2());
 			userDTO.setCity(address.getCity());
@@ -62,19 +66,23 @@ public class UserTransformer {
 		user.setFirstName(userDTO.getFirstName());
 		user.setLastName(userDTO.getLastName());
 		user.setLogin(userDTO.getLogin());
+		if (userDTO.getPassword() != null) {
+			String encryptedPassword = passwordEncoder.encode(userDTO.getPassword());
+			user.setPassword(encryptedPassword);
+		}
 		user.setAuthority(authorityRepository.findOne(userDTO.getAuthority()));
 		user.setEmail(userDTO.getEmail());
 		user.setPhoneNumber(userDTO.getPhoneNumber());
 		user.setNotes(userDTO.getNotes());
-		if (!isAddressEmpty(userDTO) || !CollectionUtils.isEmpty(user.getAddresses())) {
-			Address address = (CollectionUtils.isEmpty(user.getAddresses()) ? new Address() : user.getAddresses().get(0));
+		if (!isAddressEmpty(userDTO) || user.getAddress() != null) {
+			Address address = (user.getAddress() == null) ? new Address() : user.getAddress();
 			address.setStreetAddress1(userDTO.getStreetAddress1());
 			address.setStreetAddress2(userDTO.getStreetAddress2());
 			address.setCity(userDTO.getCity());
 			address.setState(State.valueOf(userDTO.getState()));
 			address.setPostalCode(userDTO.getPostalCode());
 			address.setUser(user);
-			addressRepository.save(address);
+			user.setAddress(address);
 		}
 	}
 

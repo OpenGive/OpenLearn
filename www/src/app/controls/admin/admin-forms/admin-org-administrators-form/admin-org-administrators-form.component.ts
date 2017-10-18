@@ -8,7 +8,6 @@ import {AdminDialogComponent} from "../../admin-dialog.component";
 import {AdminService} from "../../../../services/admin.service";
 import {AppConstants} from "../../../../app.constants";
 import {NotifyService} from "../../../../services/notify.service";
-import {UserService} from "../../../../services/user.service";
 import {OrgAdmin} from "../../../../models/org-admin.model";
 import {AdminTabs} from "../../admin.constants";
 
@@ -43,13 +42,16 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
     streetAddress1: '',
     streetAddress2: '',
     city: '',
-    postalCode: ''
+    postalCode: '',
+    orgRole: ''
   };
   validationMessages = {
     firstName: {
+      required: 'First Name is required',
       maxlength: 'First Name cannot be more than 50 characters long'
     },
     lastName: {
+      required: 'Last Name is required',
       maxlength: 'Last Name cannot be more than 50 characters long'
     },
     login: {
@@ -91,12 +93,14 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
     },
     postalCode: {
       pattern: 'Postal Code is not formatted correctly'
+    },
+    orgRole: {
+      required: 'Org Role is required'
     }
   };
 
   constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
               private fb: FormBuilder,
-              private userService: UserService,
               private notify: NotifyService,
               private adminService: AdminService) {}
 
@@ -111,9 +115,11 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
   private buildForm(): void {
     this.orgAdministratorForm = this.fb.group({
       firstName: [this.formOrgAdministrator.firstName, [
+        Validators.required,
         Validators.maxLength(50)
       ]],
       lastName: [this.formOrgAdministrator.lastName, [
+        Validators.required,
         Validators.maxLength(50)
       ]],
       login: [this.formOrgAdministrator.login, [
@@ -126,6 +132,7 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
         Validators.minLength(6),
         Validators.maxLength(50)
       ] : []],
+      authority: [AppConstants.Role.OrgAdmin],
       organizationId: [this.formOrgAdministrator.organizationId, [
         Validators.required
       ]],
@@ -156,6 +163,9 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
       state: [this.formOrgAdministrator.state],
       postalCode: [this.formOrgAdministrator.postalCode, [
         Validators.pattern(AppConstants.OLValidators.PostalCode)
+      ]],
+      orgRole: [this.formOrgAdministrator.orgRole, [
+        Validators.required
       ]]
     });
     this.orgAdministratorForm.valueChanges.subscribe(data => this.onValueChanged());
@@ -228,7 +238,7 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
   }
 
   private add(): void {
-    this.userService.create(this.orgAdministratorForm.value).subscribe(resp => {
+    this.adminService.create(AdminTabs.OrgAdministrator.route, this.orgAdministratorForm.value).subscribe(resp => {
       this.dialogRef.close({
         type: 'ADD',
         data: resp
@@ -259,6 +269,7 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
       lastName: this.orgAdministratorForm.get('lastName').value,
       login: this.orgAdministratorForm.get('login').value,
       password: this.orgAdministratorForm.get('password').value,
+      notes: this.orgAdministratorForm.get('notes').value,
       authority: AppConstants.Role.OrgAdmin,
       email: this.orgAdministratorForm.get('email').value,
       phoneNumber: this.orgAdministratorForm.get('phoneNumber').value,
@@ -268,11 +279,12 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
       state: this.orgAdministratorForm.get('state').value,
       postalCode: this.orgAdministratorForm.get('postalCode').value,
       organizationId: this.orgAdministratorForm.get('organizationId').value,
+      orgRole: this.orgAdministratorForm.get('orgRole').value
     };
   }
 
   delete(): void {
-    this.userService.delete(this.formOrgAdministrator.id).subscribe(resp => {
+    this.adminService.delete(AdminTabs.OrgAdministrator.route, this.formOrgAdministrator.id).subscribe(resp => {
       this.dialogRef.close({
         type: 'DELETE',
         data: {

@@ -2,7 +2,6 @@ import {Component, OnInit, Inject, Input} from '@angular/core';
 
 import {AdminTabs} from "../../controls/admin/admin.constants";
 import {AdminService} from "../../services/admin.service";
-import {UserService} from "../../services/user.service";
 import {DataService} from "../../services/data.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NotifyService} from "../../services/notify.service";
@@ -12,6 +11,7 @@ import {Principal} from "../../shared/auth/principal.service";
 import {AppConstants} from "../../app.constants";
 import {User} from "../../models/user.model";
 import {Student} from "../../models/student.model";
+import {FourteenPlusValidator} from "../../controls/admin/custom.validators"
 import * as _ from "lodash";
 
 @Component({
@@ -24,7 +24,6 @@ export class StudentPageComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private adminService: AdminService,
-              private userService: UserService,
               private notify: NotifyService,
               private dataService: DataService,
               private router: Router,
@@ -238,7 +237,7 @@ export class StudentPageComponent implements OnInit {
         Validators.required,
         Validators.maxLength(100)
       ]],
-      gradeLevel: [this.student.guardianEmail, [
+      gradeLevel: [this.student.gradeLevel, [
         Validators.required,
         Validators.maxLength(100)
       ]],
@@ -247,7 +246,7 @@ export class StudentPageComponent implements OnInit {
       ]],
       orgStudentId: [this.student.orgStudentId, [
         Validators.maxLength(100)
-      ]]
+      ]]}, { validator: FourteenPlusValidator('email', 'fourteenPlus')
     });
     this.studentForm.valueChanges.subscribe(data => this.onValueChanged());
     this.onValueChanged();
@@ -350,6 +349,15 @@ export class StudentPageComponent implements OnInit {
       stateStudentId: this.studentForm.get('stateStudentId').value,
       orgStudentId: this.studentForm.get('orgStudentId').value
     };
+  }
+
+  delete(): void {
+    this.adminService.delete(AdminTabs.Student.route, Number(this.studentId)).subscribe(resp => {
+      this.notify.success('Successfully deleted student');
+      this.router.navigate(['/admin/students']);
+    }, error => {
+      this.notify.error('Failed to delete student');
+    });
   }
 
   edit(): void {

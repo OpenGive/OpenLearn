@@ -5,8 +5,10 @@ import {Observable} from "rxjs/Observable";
 
 import {AdminDialogComponent} from "../../admin-dialog.component";
 import {AdminTabs} from "../../admin.constants";
+import {AppConstants} from "../../../../app.constants";
 import {AdminService} from "../../../../services/admin.service";
 import {NotifyService} from "../../../../services/notify.service";
+import {Principal} from "../../../../shared/auth/principal.service";
 
 @Component({
   selector: 'admin-programs-form',
@@ -17,9 +19,10 @@ export class AdminProgramsFormComponent implements OnInit {
 
   @Input('item') formProgram: any;
   @Input() adding: boolean;
+  @Input('organizations') organizations: any[];
   editing: boolean;
 
-  organizations: any[];
+  instructor = this.principal.getRole() === AppConstants.Role.Instructor;
 
   filteredOrganizations: Observable<any[]>;
 
@@ -27,32 +30,34 @@ export class AdminProgramsFormComponent implements OnInit {
   formErrors = {
     name: '',
     description: '',
-    organization: '',
+    organizationId: '',
   };
   validationMessages = {
     name: {
       required: 'Name is required',
       minlength: 'Name must be at least 5 characters long',
-      maxlength: 'Name cannot be more than 100 characters long'
+      maxlength: 'Name cannot be more than 50 characters long'
     },
     description: {
+      required: 'Description is required',
       minlength: 'Description must be at least 5 characters long',
       maxlength: 'Description cannot be more than 200 characters long'
     },
-    organization: {
+    organizationId: {
       required: 'Organization is required'
-    },
+    }
   };
 
   constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
               private fb: FormBuilder,
               private adminService: AdminService,
-              private notify: NotifyService) {}
+              private notify: NotifyService,
+              private principal: Principal) {}
 
   ngOnInit(): void {
     this.buildForm();
     this.setEditing(this.adding);
-    this.getOrganizations();
+    console.log(JSON.stringify(this.organizations));
   }
 
   private buildForm(): void {
@@ -60,16 +65,16 @@ export class AdminProgramsFormComponent implements OnInit {
       name: [this.formProgram.name, [
         Validators.required,
         Validators.minLength(5),
-        Validators.maxLength(100)
+        Validators.maxLength(50)
       ]],
       description: [this.formProgram.description, [
+        Validators.required,
         Validators.minLength(5),
         Validators.maxLength(200)
       ]],
-      organization: [this.formProgram.organization, [
+      organizationId: [this.formProgram.organizationId, [
         Validators.required
-      ]],
-      active: [this.formProgram.active || false]
+      ]]
     });
     this.programForm.valueChanges.subscribe(data => this.onValueChanged());
     this.onValueChanged();
@@ -101,20 +106,6 @@ export class AdminProgramsFormComponent implements OnInit {
         this.editing = false;
       }
     }
-  }
-
-  private getOrganizations(): void {
-    this.adminService.getAll(AdminTabs.Organization.route).subscribe(resp => {
-      this.organizations = resp;
-      this.filteredOrganizations = this.programForm.get('organization')
-        .valueChanges
-        .startWith(null)
-        .map(val => val ? this.filterOrganizations(val) : this.organizations.slice());
-    });
-  }
-
-  private filterOrganizations(val: string): any[] {
-    return this.organizations.filter(organization => new RegExp(`${val}`, 'gi').test(organization.name));
   }
 
   save(): void {
@@ -159,8 +150,7 @@ export class AdminProgramsFormComponent implements OnInit {
       id: this.formProgram.id,
       name: this.programForm.get('name').value,
       description: this.programForm.get('description').value,
-      organization: this.programForm.get('organization').value,
-      active: this.programForm.get('active').value
+      organizationId: this.programForm.get('organizationId').value
     };
   }
 
@@ -188,9 +178,5 @@ export class AdminProgramsFormComponent implements OnInit {
 
   close(): void {
     this.dialogRef.close();
-  }
-
-  displayOrganization(organization: any): string {
-    return organization ? organization.name : '';
   }
 }
