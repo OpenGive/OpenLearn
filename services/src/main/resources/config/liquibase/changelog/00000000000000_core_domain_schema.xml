@@ -269,6 +269,9 @@
 			<column name="grade_level" type="VARCHAR(100)"/>
 			<column name="state_student_id" type="VARCHAR(100)"/>
 			<column name="org_student_id" type="VARCHAR(100)"/>
+			<column name="activated" type="BIT(1)">
+				<constraints nullable="false"/>
+			</column>
 			<column name="created_by" type="VARCHAR(50)">
 				<constraints nullable="false"/>
 			</column>

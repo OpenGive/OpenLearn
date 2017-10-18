@@ -53,6 +53,9 @@ public class UserDTO {
 
 	@Size(max = 2000)
 	private String notes;
+	
+	@NotNull
+	private Boolean activated;
 
 	public Long getId() {
 		return id;
@@ -68,6 +71,14 @@ public class UserDTO {
 
 	public void setLogin(String login) {
 		this.login = login;
+	}
+
+	public Boolean getActivated() {
+		return activated;
+	}
+
+	public void setActivated(Boolean activated) {
+		this.activated = activated;
 	}
 
 	public String getPassword() {

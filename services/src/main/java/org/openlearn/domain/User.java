@@ -87,6 +87,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	@Column(name = "org_student_id", length = 100)
 	private String orgStudentId;
 
+	@Column(name = "activated")
+	private Boolean activated;
+
 	@OneToMany(mappedBy = "user")
 	private List<Address> addresses;
 
@@ -248,6 +251,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
 	public void setOrgStudentId(String orgStudentId) {
 		this.orgStudentId = orgStudentId;
+	}
+
+	public Boolean getActivated() {
+		return activated;
+	}
+
+	public void setActivated(Boolean activated) {
+		this.activated = activated;
 	}
 
 	public List<Address> getAddresses() {
