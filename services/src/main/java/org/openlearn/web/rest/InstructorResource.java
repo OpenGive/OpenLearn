@@ -71,7 +71,7 @@ public class InstructorResource {
 	 * @throws URISyntaxException if the Location URI syntax is incorrect
 	 */
 	@PostMapping
-	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
 	public ResponseEntity create(@RequestBody @Valid final InstructorDTO instructorDTO) throws URISyntaxException {
 		log.debug("POST request to create instructor : {}", instructorDTO);
 		InstructorDTO response = instructorService.save(instructorDTO);
@@ -101,7 +101,7 @@ public class InstructorResource {
 	 *      or with ... TODO: Error handling
 	 */
 	@DeleteMapping(path = "/{id}")
-	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN})
 	public ResponseEntity delete(@PathVariable final Long id) {
 		log.debug("DELETE request to delete instructor : {}", id);
 		instructorService.delete(id);

@@ -9,6 +9,7 @@ import {AppConstants} from "../../../../app.constants";
 import {AdminTabs} from "../../admin.constants";
 import {NotifyService} from "../../../../services/notify.service";
 import {AdminService} from "../../../../services/admin.service";
+import {Principal} from "../../../../shared/auth/principal.service";
 
 @Component({
   selector: 'admin-instructors-form',
@@ -22,6 +23,7 @@ export class AdminInstructorsFormComponent implements OnInit {
   @Input('organizations') organizations: any[];
   editing: boolean;
   changingPassword: boolean;
+  isInstructor: boolean;
 
   roles: string[];
   states: any[];
@@ -101,9 +103,11 @@ export class AdminInstructorsFormComponent implements OnInit {
   constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
               private fb: FormBuilder,
               private notify: NotifyService,
-              private adminService: AdminService) {}
+              private adminService: AdminService,
+              private principal: Principal) {}
 
   ngOnInit(): void {
+    this.isInstructor = this.principal.getRole() == AppConstants.Role.Instructor;
     this.buildForm();
     this.setEditing(this.adding);
     this.resetPassword(false);

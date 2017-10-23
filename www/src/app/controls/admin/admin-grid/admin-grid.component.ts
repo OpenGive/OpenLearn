@@ -196,11 +196,12 @@ export class AdminGridComponent implements OnInit {
   }
 
   private canAdd(): boolean {
-    var orgAdmin = this.principal.getRole() === AppConstants.Role.OrgAdmin;
     if ([AdminTabs.Program.route, AdminTabs.Session.route].includes(this.grid.route)) {
       return !(this.principal.getRole() == AppConstants.Role.Instructor);
     } else if (AdminTabs.Organization.route == this.grid.route) {
       return !(this.principal.getRole() == AppConstants.Role.OrgAdmin);
+    } else if ([AdminTabs.Instructor.route].includes(this.grid.route)) {
+      return !(this.principal.getRole() == AppConstants.Role.Instructor);
     }
     return true;
   }
