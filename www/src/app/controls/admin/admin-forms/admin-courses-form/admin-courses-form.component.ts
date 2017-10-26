@@ -5,9 +5,11 @@ import {Observable} from "rxjs/Observable";
 
 import {AdminDialogComponent} from "../../admin-dialog.component";
 import {AdminTabs} from "../../admin.constants";
+import {AppConstants} from "../.././../../app.constants";
 import {AdminService} from "../../../../services/admin.service";
 import {NotifyService} from "../../../../services/notify.service";
 import {UserService} from "../../../../services/user.service";
+import {Principal} from "../../../../shared/auth/principal.service";
 
 @Component({
   selector: 'admin-courses-form',
@@ -69,7 +71,8 @@ export class AdminCoursesFormComponent implements OnInit {
   constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
               private fb: FormBuilder,
               private adminService: AdminService,
-              private notify: NotifyService) {}
+              private notify: NotifyService,
+              private principal: Principal) {}
 
   ngOnInit(): void {
     this.buildForm();
@@ -138,13 +141,23 @@ export class AdminCoursesFormComponent implements OnInit {
   }
 
   private getInstructors(): void {
-    this.adminService.getAll(AdminTabs.Instructor.route).subscribe(resp => {
-      this.instructors = resp;
-      this.filteredInstructors = this.courseForm.get('instructorId')
-        .valueChanges
-        .startWith(null)
-        .map(val => val ? this.filterInstructors(val) : this.instructors.slice());
-    });
+    if (this.principal.hasAuthority(AppConstants.Role.Instructor)) {
+      this.adminService.get(AdminTabs.Instructor.route, this.principal.getId()).subscribe(resp => {
+        this.instructors = [resp];
+        this.filteredInstructors = this.courseForm.get('instructorId')
+          .valueChanges
+          .startWith(null)
+          .map(val => val ? this.filterInstructors(val) : this.instructors.slice());
+      });
+    } else {
+      this.adminService.getAll(AdminTabs.Instructor.route).subscribe(resp => {
+        this.instructors = resp;
+        this.filteredInstructors = this.courseForm.get('instructorId')
+          .valueChanges
+          .startWith(null)
+          .map(val => val ? this.filterInstructors(val) : this.instructors.slice());
+      });
+    }
   }
 
   private filterInstructors(val: string): any[] {

@@ -11,10 +11,10 @@
       <button md-raised-button type="reset" *ngIf="editing && !adding" (click)="cancel()" class="ol-dialog-button navy-button" mdTooltip="Cancel">
         <md-icon>clear</md-icon>
       </button>
-      <button md-raised-button type="button" *ngIf="!editing" (click)="edit()" class="ol-dialog-button grey-button" mdTooltip="Edit">
+      <button md-raised-button type="button" *ngIf="instructorCheck && !editing" (click)="edit()" class="ol-dialog-button grey-button" mdTooltip="Edit">
         <md-icon>create</md-icon>
       </button>
-      <button md-raised-button type="button" *ngIf="!editing" [mdMenuTriggerFor]="deleteMenu" class="ol-dialog-button pink-button" mdTooltip="Delete">
+      <button md-raised-button type="button" *ngIf="instructorCheck && !editing" [mdMenuTriggerFor]="deleteMenu" class="ol-dialog-button pink-button" mdTooltip="Delete">
         <md-icon>delete</md-icon>
       </button>
       <md-menu #deleteMenu="mdMenu">

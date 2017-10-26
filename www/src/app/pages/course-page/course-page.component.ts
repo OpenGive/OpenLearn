@@ -34,6 +34,7 @@ export class CoursePageComponent implements OnInit {
   private adding: boolean = false;
   private editing: boolean = false;
   private studentView: boolean = false;
+  private instructorCheck: boolean = true;
 
   private instructors: any[];
   private sessions: any[];
@@ -85,6 +86,7 @@ export class CoursePageComponent implements OnInit {
   ngOnInit(): void {
     this.studentView = this.principal.hasAuthority(AppConstants.Role.Student);
     this.getData();
+    if (this.principal.hasAuthority(AppConstants.Role.Instructor)) this.instructorCheck = this.course.instructorId == this.principal.getId();
     this.buildForm();
     this.setEditing(this.adding);
     if (!this.studentView) {

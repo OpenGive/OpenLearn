@@ -7,6 +7,7 @@ import org.openlearn.dto.CourseDTO;
 import org.openlearn.repository.CourseRepository;
 import org.openlearn.repository.SessionRepository;
 import org.openlearn.security.SecurityUtils;
+import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.transformer.CourseTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +49,10 @@ public class CourseService {
 	 */
 	public CourseDTO save(final CourseDTO courseDTO) {
 		log.debug("Request to save Course : {}", courseDTO);
-		if (SecurityUtils.isAdmin() || inOrgOfCurrentUser(courseDTO)) {
+		User user = userService.getCurrentUser();
+		boolean instructorCheck = true;
+		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.INSTRUCTOR)) instructorCheck = user.getId() == courseDTO.getInstructorId();
+		if ((SecurityUtils.isAdmin() || inOrgOfCurrentUser(courseDTO)) && instructorCheck) {
 			return courseTransformer.transform(courseRepository.save(courseTransformer.transform(courseDTO)));
 		}
 		// TODO: Error handling / logging
@@ -97,8 +101,11 @@ public class CourseService {
 	 */
 	public void delete(final Long id) {
 		log.debug("Request to delete Course : {}", id);
+		User user = userService.getCurrentUser();
 		Course course = courseRepository.findOne(id);
-		if (course != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(course))) {
+		boolean instructorCheck = true;
+		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.INSTRUCTOR)) instructorCheck = user.getId() == course.getInstructor().getId();
+		if (course != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(course)) && instructorCheck) {
 			courseRepository.delete(id);
 		} else {
 			// TODO: Error handling / logging
