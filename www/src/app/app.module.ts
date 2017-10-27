@@ -35,7 +35,8 @@ import {AdminService} from "./services/admin.service";
 import {StudentPageComponent} from "./pages/student-page/student-page.component";
 import {CourseViewComponent} from "./controls/course/course-view/course-view.component";
 import {CourseGridComponent} from "./controls/course/course-grid/course-grid.component";
-import {StudentGridComponent} from "./controls/student/student-grid/student-grid.component"
+import {StudentGridComponent} from "./controls/student/student-grid/student-grid.component";
+import {TermsPageComponent} from "./pages/terms-page/terms-page.component";
 import {CourseResourceGridComponent} from "./controls/course/course-resource-grid/course-resource-grid.component";
 import {PortfolioGridComponent} from "./controls/student/portfolio-grid/portfolio-grid.component";
 import {ProfilePageComponent} from "./pages/profile-page/profile-page.component";
@@ -56,6 +57,7 @@ import {DataService} from "./services/data.service";
     NavigationMenuComponent,
     CoursePageComponent,
     StudentPageComponent,
+    TermsPageComponent,
     CourseCardComponent,
     AccessDeniedPageComponent,
     CourseListComponent,

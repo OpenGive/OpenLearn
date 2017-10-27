@@ -21,6 +21,7 @@ import {AdminProgramsComponent} from "./controls/admin/admin-tabs/admin-programs
 import {AdminSessionsComponent} from "./controls/admin/admin-tabs/admin-sessions.component";
 import {AdminStudentsComponent} from "./controls/admin/admin-tabs/admin-students.component";
 import {UserRouteAccessService} from "./shared/auth/user-route-access-service";
+import {TermsPageComponent} from "./pages/terms-page/terms-page.component";
 
 const ROUTES: Routes = [
   {
@@ -158,6 +159,13 @@ const ROUTES: Routes = [
     data: {
       authorities: []
     },
+  },
+  {
+    path: 'terms',
+    component: TermsPageComponent,
+    data: {
+
+    }
   },
   {
     path: '**',
