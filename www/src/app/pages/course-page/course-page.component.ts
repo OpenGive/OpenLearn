@@ -13,6 +13,7 @@ import {AppConstants} from "../../app.constants";
 import {User} from "../../models/user.model";
 import {Session} from "../../models/session.model";
 import {UserService} from "../../services/user.service";
+import {FileUploadComponent} from '../../controls/fileupload/fileupload.component';
 
 @Component({
   selector: 'app-course-page',

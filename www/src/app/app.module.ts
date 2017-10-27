@@ -45,6 +45,7 @@ import {OLCourseModule} from "./controls/course/course.module";
 import {OLStudentModule} from "./controls/student/student.module";
 import {DashboardPageComponent} from "./pages/dashboard-page/dashboard-page.component";
 import {DataService} from "./services/data.service";
+import {FileUploadComponent} from './controls/fileupload/fileupload.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import {DataService} from "./services/data.service";
     CourseResourceGridComponent,
     PortfolioGridComponent,
     ProfilePageComponent,
-    DashboardPageComponent
+    DashboardPageComponent,
+    FileUploadComponent
   ],
   imports: [
     AppRoutingModule,

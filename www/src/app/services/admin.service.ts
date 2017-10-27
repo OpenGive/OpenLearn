@@ -40,6 +40,12 @@ export class AdminService {
       .catch(this.handleError);
   }
 
+  upload(type: string, file: FormData): Observable<any> {
+    return this._http.post(this.endpoint + type, file)
+      .map(resp => resp.json())
+      .catch(this.handleError);
+  }
+
   private handleError(error: Response) {
     console.error(error);
     return Observable.throw(error.json() || {message: 'Server Error'});

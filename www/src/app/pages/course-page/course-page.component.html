@@ -78,8 +78,11 @@
   <div fxFlex="50%" *ngIf="!studentView">
     <app-course-resource-grid [course]="course"></app-course-resource-grid>
   </div>
-  <div fxFlex="100%" *ngIf="studentView">
-    <app-course-resource-grid [course]="course"></app-course-resource-grid>
-  </div>
+  <div class="row">
+    
+           <div class="col-md-3">
+    
+             <file-upload></file-upload>
+           </div>
 </div>
 
