@@ -26,6 +26,7 @@ export class CourseResourceGridComponent implements OnInit {
   sortColumn: any;
   reverse: boolean;
   studentView: boolean;
+  instructorCheck: boolean = true;
 
   constructor(private dialog: MdDialog,
               private courseService: StudentCourseService,
@@ -34,6 +35,7 @@ export class CourseResourceGridComponent implements OnInit {
               private principal: Principal) {}
   ngOnInit(): void {
     this.studentView = this.principal.hasAuthority(AppConstants.Role.Student);
+    if (this.principal.hasAuthority(AppConstants.Role.Instructor)) this.instructorCheck = this.course.instructorId == this.principal.getId();
     if(!this.studentView) {
       this.columns = [
         {
