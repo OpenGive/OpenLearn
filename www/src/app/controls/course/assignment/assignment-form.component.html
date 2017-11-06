@@ -58,7 +58,7 @@
                 <td>{{student.student.firstName}}</td>
                 <td>{{student.student.lastName}}</td>
                 <td>{{student.grade}}
-                  <md-icon (click)="editGrade(student, $event)" class="edit-icon" mdTooltip="Edit">edit</md-icon>
+                  <md-icon *ngIf="instructorCheck" (click)="editGrade(student, $event)" class="edit-icon" mdTooltip="Edit">edit</md-icon>
                 </td>
                 <td>
 

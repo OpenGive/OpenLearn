@@ -64,7 +64,7 @@ export class GradeDialogComponent implements OnInit {
       }, error => {
         this.notify.error('Failed to set student grade');
       });
-    } else if(this.data.type === 'ASSIGNMENT') {
+    } else if (this.data.type === 'ASSIGNMENT') {
       this.data.assignment.grade = this.grade;
       this.adminService.update(AdminTabs.StudentAssignment.route,this.data.assignment).subscribe(resp => {
         this.dialog.close({
