@@ -40,7 +40,7 @@ public class CourseResource {
 	private static final Logger log = LoggerFactory.getLogger(CourseResource.class);
 
 	private final CourseService courseService;
-	
+
 	private final StorageService storageService;
 
 	public CourseResource(final CourseService courseService,
@@ -94,7 +94,7 @@ public class CourseResource {
 		CourseDTO response = courseService.save(courseDTO);
 		return ResponseEntity.created(new URI(ENDPOINT + response.getId())).body(response);
 	}
-	
+
 	/**
 	 * POST  / : upload a course file
 	 *
@@ -105,7 +105,7 @@ public class CourseResource {
 	 */
 	@PostMapping(path="/upload")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public String uploadCourseFile(@RequestBody MultipartFile file,
+	public String uploadCourseFile(@RequestParam("file") MultipartFile file,
             RedirectAttributes redirectAttributes) throws URISyntaxException {
 		Long courseId = 1L;
         storageService.store(file, courseId);

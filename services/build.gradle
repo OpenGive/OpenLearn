@@ -131,6 +131,12 @@ repositories {
     maven { url 'http://repo.maven.apache.org/maven2' }
 }
 
+dependencyManagement {
+	imports {
+		mavenBom 'com.amazonaws:aws-java-sdk-bom:1.11.136'
+	}
+}
+
 dependencies {
     compile "io.github.jhipster:jhipster:${jhipster_server_version}"
     compile "io.dropwizard.metrics:metrics-core:${dropwizard_metrics_version}"
@@ -206,7 +212,8 @@ dependencies {
     testCompile 'io.springfox:springfox-staticdocs:2.6.1'
     testCompile 'org.springframework.restdocs:spring-restdocs-mockmvc:1.1.2.RELEASE'
     testCompile 'org.springframework.restdocs:spring-restdocs-core:1.1.2.RELEASE'
-    //jhipster-needle-gradle-dependency - JHipster will add additional dependencies here
+	compile 'com.amazonaws:aws-java-sdk-s3'
+	//jhipster-needle-gradle-dependency - JHipster will add additional dependencies here
 }
 
 clean {

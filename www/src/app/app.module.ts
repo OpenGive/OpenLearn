@@ -45,6 +45,7 @@ import {OLCourseModule} from "./controls/course/course.module";
 import {OLStudentModule} from "./controls/student/student.module";
 import {DashboardPageComponent} from "./pages/dashboard-page/dashboard-page.component";
 import {DataService} from "./services/data.service";
+import { FileUploadModule } from "ng2-file-upload";
 import {FileUploadComponent} from './controls/fileupload/fileupload.component';
 
 @NgModule({
@@ -82,7 +83,8 @@ import {FileUploadComponent} from './controls/fileupload/fileupload.component';
     OLAdminModule,
     OLCourseModule,
     OLStudentModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FileUploadModule
   ],
   providers: [
     UserService,

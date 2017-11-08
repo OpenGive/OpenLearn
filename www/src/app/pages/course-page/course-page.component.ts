@@ -13,7 +13,7 @@ import {AppConstants} from "../../app.constants";
 import {User} from "../../models/user.model";
 import {Session} from "../../models/session.model";
 import {UserService} from "../../services/user.service";
-import {FileUploadComponent} from '../../controls/fileupload/fileupload.component';
+import {FileUploader} from 'ng2-file-upload';
 
 @Component({
   selector: 'app-course-page',
@@ -36,6 +36,17 @@ export class CoursePageComponent implements OnInit {
   private editing: boolean = false;
   private studentView: boolean = false;
   private instructorCheck: boolean = true;
+  public uploader:FileUploader = new FileUploader({url: 'https://dev.openlearn-uploads.credera.s3.amazonaws.com'});
+  public hasBaseDropZoneOver:boolean = false;
+  public hasAnotherDropZoneOver:boolean = false;
+
+  public fileOverBase(e:any):void {
+    this.hasBaseDropZoneOver = e;
+  }
+
+  public fileOverAnother(e:any):void {
+    this.hasAnotherDropZoneOver = e;
+  }
 
   private instructors: any[];
   private sessions: any[];
@@ -93,6 +104,9 @@ export class CoursePageComponent implements OnInit {
     if (!this.studentView) {
       this.getInstructors();
       this.getSessions();
+    }
+    this.uploader.onBeforeUploadItem = (item) => {
+      item.withCredentials = false;
     }
   }
 
