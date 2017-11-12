@@ -25,7 +25,7 @@ import {TermsPageComponent} from "./pages/terms-page/terms-page.component";
 
 const ROUTES: Routes = [
   {
-    path: '',
+    path: 'home',
     component: LandingPageComponent,
     data: {
       authorities: []
@@ -164,12 +164,12 @@ const ROUTES: Routes = [
     path: 'terms',
     component: TermsPageComponent,
     data: {
-
+      authorities: []
     }
   },
   {
     path: '**',
-    redirectTo: ''
+    redirectTo: 'login'
   }
 ];
 
