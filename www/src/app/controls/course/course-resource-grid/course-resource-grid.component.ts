@@ -34,8 +34,8 @@ export class CourseResourceGridComponent implements OnInit {
               private adminService: AdminService,
               private principal: Principal) {}
   ngOnInit(): void {
-    this.studentView = this.principal.hasAuthority(AppConstants.Role.Student);
-    if (this.principal.hasAuthority(AppConstants.Role.Instructor)) this.instructorCheck = this.course.instructorId == this.principal.getId();
+    this.studentView = this.principal.hasAuthority(AppConstants.Role.Student.name);
+    if (this.principal.hasAuthority(AppConstants.Role.Instructor.name)) this.instructorCheck = this.course.instructorId == this.principal.getId();
     if(!this.studentView) {
       this.columns = [
         {

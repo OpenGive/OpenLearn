@@ -22,7 +22,7 @@ export class AdminSessionsFormComponent implements OnInit {
   editing: boolean;
 
   programs: any[];
-  instructor = this.principal.getRole() === AppConstants.Role.Instructor;
+  instructor = this.principal.getRole() === AppConstants.Role.Instructor.name;
 
   filteredPrograms: Observable<any[]>;
 

@@ -132,7 +132,7 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
         Validators.minLength(6),
         Validators.maxLength(50)
       ] : []],
-      authority: [AppConstants.Role.OrgAdmin],
+      authority: [AppConstants.Role.OrgAdmin.name],
       organizationId: [this.formOrgAdministrator.organizationId, [
         Validators.required
       ]],
@@ -270,7 +270,7 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
       login: this.orgAdministratorForm.get('login').value,
       password: this.orgAdministratorForm.get('password').value,
       notes: this.orgAdministratorForm.get('notes').value,
-      authority: AppConstants.Role.OrgAdmin,
+      authority: AppConstants.Role.OrgAdmin.name,
       email: this.orgAdministratorForm.get('email').value,
       phoneNumber: this.orgAdministratorForm.get('phoneNumber').value,
       streetAddress1: this.orgAdministratorForm.get('streetAddress1').value,

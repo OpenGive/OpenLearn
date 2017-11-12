@@ -107,7 +107,7 @@ export class AdminInstructorsFormComponent implements OnInit {
               private principal: Principal) {}
 
   ngOnInit(): void {
-    this.isInstructor = this.principal.getRole() == AppConstants.Role.Instructor;
+    this.isInstructor = this.principal.getRole() == AppConstants.Role.Instructor.name;
     this.buildForm();
     this.setEditing(this.adding);
     this.resetPassword(false);
@@ -135,7 +135,7 @@ export class AdminInstructorsFormComponent implements OnInit {
         Validators.minLength(6),
         Validators.maxLength(50)
       ] : []],
-      authority: [AppConstants.Role.Instructor],
+      authority: [AppConstants.Role.Instructor.name],
       organizationId: [this.formInstructor.organizationId, [
         Validators.required
       ]],
@@ -272,7 +272,7 @@ export class AdminInstructorsFormComponent implements OnInit {
       lastName: this.instructorForm.get('lastName').value,
       login: this.instructorForm.get('login').value,
       password: this.instructorForm.get('password').value,
-      authority: AppConstants.Role.Instructor,
+      authority: AppConstants.Role.Instructor.name,
       notes: this.instructorForm.get('notes').value,
       email: this.instructorForm.get('email').value,
       phoneNumber: this.instructorForm.get('phoneNumber').value,

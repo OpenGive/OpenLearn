@@ -125,7 +125,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
         Validators.minLength(6),
         Validators.maxLength(50)
       ] : []],
-      authority: [AppConstants.Role.Admin],
+      authority: [AppConstants.Role.Admin.name],
       notes: [this.formAdministrator.notes, [
         Validators.maxLength(2000)
       ]],
@@ -252,7 +252,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
       login: this.administratorForm.get('login').value,
       password: this.administratorForm.get('password').value,
       notes: this.administratorForm.get('notes').value,
-      authority: AppConstants.Role.Admin,
+      authority: AppConstants.Role.Admin.name,
       email: this.administratorForm.get('email').value,
       phoneNumber: this.administratorForm.get('phoneNumber').value,
       streetAddress1: this.administratorForm.get('streetAddress1').value,

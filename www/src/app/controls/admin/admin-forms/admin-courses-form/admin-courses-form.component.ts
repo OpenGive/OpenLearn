@@ -141,7 +141,7 @@ export class AdminCoursesFormComponent implements OnInit {
   }
 
   private getInstructors(): void {
-    if (this.principal.hasAuthority(AppConstants.Role.Instructor)) {
+    if (this.principal.hasAuthority(AppConstants.Role.Instructor.name)) {
       this.adminService.get(AdminTabs.Instructor.route, this.principal.getId()).subscribe(resp => {
         this.instructors = [resp];
         this.filteredInstructors = this.courseForm.get('instructorId')

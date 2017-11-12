@@ -151,7 +151,7 @@ export class StudentPageComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    this.studentView = this.principle.getRole() === AppConstants.Role.Student;
+    this.studentView = this.principle.getRole() === AppConstants.Role.Student.name;
     this.student = this.dataService.getStudent();
     this.studentId = this.student.id;
     console.log(this.student);
@@ -329,7 +329,7 @@ export class StudentPageComponent implements OnInit {
       lastName: this.studentForm.get('lastName').value,
       login: this.studentForm.get('login').value,
       password: this.studentForm.get('password').value,
-      authority: AppConstants.Role.Student,
+      authority: AppConstants.Role.Student.name,
       notes: this.studentForm.get('notes').value,
       email: this.studentForm.get('email').value,
       phoneNumber: this.studentForm.get('phoneNumber').value,

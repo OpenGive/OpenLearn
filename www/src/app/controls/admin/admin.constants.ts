@@ -11,7 +11,7 @@ export const AdminTabs = {
       {property: 'lastName', display: 'Last Name'},
       {property: 'email', display: 'Email'}
     ],
-    authorities: [AppConstants.Role.Admin]
+    authorities: [AppConstants.Role.Admin.name]
   },
   OrgAdministrator: {
     title: 'Org Administrators',
@@ -23,7 +23,7 @@ export const AdminTabs = {
       {property: 'lastName', display: 'Last Name'},
       {property: 'organizationId', display: 'Organization'}
     ],
-    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin]
+    authorities: [AppConstants.Role.Admin.name, AppConstants.Role.OrgAdmin.name]
   },
   Instructor: {
     title: 'Instructors',
@@ -35,7 +35,7 @@ export const AdminTabs = {
       {property: 'lastName', display: 'Last Name'},
       {property: 'organizationId', display: 'Organization'}
     ],
-    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor]
+    authorities: [AppConstants.Role.Admin.name, AppConstants.Role.OrgAdmin.name, AppConstants.Role.Instructor.name]
   },
   Student: {
     title: 'Students',
@@ -47,7 +47,7 @@ export const AdminTabs = {
       {property: 'lastName', display: 'Last Name'},
       {property: 'organizationId', display: 'Organization'}
     ],
-    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor]
+    authorities: [AppConstants.Role.Admin.name, AppConstants.Role.OrgAdmin.name, AppConstants.Role.Instructor.name]
   },
   Organization: {
     title: 'Organizations',
@@ -58,7 +58,7 @@ export const AdminTabs = {
       {property: 'primaryContactName', display: 'Primary Contact Name'},
       {property: 'primaryContactInfo', display: 'Primary Contact Info'}
     ],
-    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin]
+    authorities: [AppConstants.Role.Admin.name, AppConstants.Role.OrgAdmin.name]
   },
   Program: {
     title: 'Programs',
@@ -68,7 +68,7 @@ export const AdminTabs = {
       {property: 'name', display: 'Name'},
       {property: 'organizationId', display: 'Organization'},
     ],
-    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor]
+    authorities: [AppConstants.Role.Admin.name, AppConstants.Role.OrgAdmin.name, AppConstants.Role.Instructor.name]
   },
   Session: {
     title: 'Sessions',
@@ -80,7 +80,7 @@ export const AdminTabs = {
       {property: 'endDate', display: 'End Date'},
       {property: 'programId', display: 'Program'}
     ],
-    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor]
+    authorities: [AppConstants.Role.Admin.name, AppConstants.Role.OrgAdmin.name, AppConstants.Role.Instructor.name]
   },
   Course: {
     title: 'Courses',
@@ -93,7 +93,7 @@ export const AdminTabs = {
       {property: 'sessionId', display: 'Session'},
       {property: 'instructorId', display: 'Instructor'}
     ],
-    authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor]
+    authorities: [AppConstants.Role.Admin.name, AppConstants.Role.OrgAdmin.name, AppConstants.Role.Instructor.name]
   },
   Assignment: {
     title: 'Assignment',

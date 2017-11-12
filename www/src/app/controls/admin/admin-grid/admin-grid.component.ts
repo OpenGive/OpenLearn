@@ -162,7 +162,7 @@ export class AdminGridComponent implements OnInit {
   private displayObject(object): string {
     return _.isNil(object) ? '' : object.name;
   }
-  
+
   private displayUser(user): string {
     return _.isNil(user) ? '' : user.lastName + ', ' + user.firstName;
   }
@@ -197,11 +197,11 @@ export class AdminGridComponent implements OnInit {
 
   private canAdd(): boolean {
     if ([AdminTabs.Program.route, AdminTabs.Session.route].includes(this.grid.route)) {
-      return !(this.principal.getRole() == AppConstants.Role.Instructor);
+      return !(this.principal.getRole() == AppConstants.Role.Instructor.name);
     } else if (AdminTabs.Organization.route == this.grid.route) {
-      return !(this.principal.getRole() == AppConstants.Role.OrgAdmin);
+      return !(this.principal.getRole() == AppConstants.Role.OrgAdmin.name);
     } else if ([AdminTabs.Instructor.route].includes(this.grid.route)) {
-      return !(this.principal.getRole() == AppConstants.Role.Instructor);
+      return !(this.principal.getRole() == AppConstants.Role.Instructor.name);
     }
     return true;
   }

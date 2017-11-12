@@ -34,7 +34,7 @@ export class PortfolioGridComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.studentView = this.principal.hasAuthority(AppConstants.Role.Student);
+    this.studentView = this.principal.hasAuthority(AppConstants.Role.Student.name);
     this.columns = [
       {
         id: "portfolioItem.name",

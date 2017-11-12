@@ -81,7 +81,7 @@ export class AssignmentFormComponent implements OnInit {
     this.buildForm();
     this.adding = this.data.adding;
     this.setEditing(this.adding);
-    if (this.principal.hasAuthority(AppConstants.Role.Instructor)) this.instructorCheck = this.data.course.instructorId == this.principal.getId();
+    if (this.principal.hasAuthority(AppConstants.Role.Instructor.name)) this.instructorCheck = this.data.course.instructorId == this.principal.getId();
   }
 
   private buildForm(): void {

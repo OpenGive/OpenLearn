@@ -48,10 +48,10 @@ export class Principal {
 
   private getPointValue(authority: string) {
     switch(authority) {
-      case AppConstants.Role.Admin: return 4;
-      case AppConstants.Role.OrgAdmin: return 3;
-      case AppConstants.Role.Instructor: return 2;
-      case AppConstants.Role.Student: return 1;
+      case AppConstants.Role.Admin.name: return 4;
+      case AppConstants.Role.OrgAdmin.name: return 3;
+      case AppConstants.Role.Instructor.name: return 2;
+      case AppConstants.Role.Student.name: return 1;
     }
   }
 
@@ -76,7 +76,6 @@ export class Principal {
 
     // retrieve the userIdentity data from the server, update the identity object, and then resolve.
     return this.account.get().toPromise().then((account) => {
-      console.log(account);
       if (account) {
         this.userIdentity = account;
         this.authenticated = true;

@@ -202,7 +202,7 @@ export class AdminStudentsFormComponent implements OnInit {
         Validators.pattern(AppConstants.OLValidators.PostalCode)
       ]],
       fourteenPlus: [this.formStudent.fourteenPlus || false],
-      authority: [AppConstants.Role.Student],
+      authority: [AppConstants.Role.Student.name],
       organizationId: [this.formStudent.organizationId, [
         Validators.required
       ]],
@@ -353,7 +353,7 @@ export class AdminStudentsFormComponent implements OnInit {
       lastName: this.studentForm.get('lastName').value,
       login: this.studentForm.get('login').value,
       password: this.studentForm.get('password').value,
-      authority: AppConstants.Role.Student,
+      authority: AppConstants.Role.Student.name,
       notes: this.studentForm.get('notes').value,
       email: this.studentForm.get('email').value,
       phoneNumber: this.studentForm.get('phoneNumber').value,
