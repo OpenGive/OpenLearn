@@ -18,6 +18,7 @@ public class UserDTO {
 	@Size(min = 1, max = 100)
 	private String login;
 
+	@Pattern(regexp = Constants.PASSWORD_REGEX)
 	private String password;
 
 	@NotNull

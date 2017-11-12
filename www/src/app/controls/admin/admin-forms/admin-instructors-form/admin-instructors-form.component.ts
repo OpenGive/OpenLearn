@@ -62,8 +62,7 @@ export class AdminInstructorsFormComponent implements OnInit {
     },
     password: {
       required: 'Password is required',
-      minlength: 'Password must be at least 6 characters long',
-      maxlength: 'Password cannot be more than 50 characters long'
+      pattern: 'Password must be between 8 and 100 characters and contain at least one letter, one digit, and one of !@#$%^&*()_+'
     },
     notes: {
       maxlength: 'Notes cannot be more than 2000 characters long'
@@ -132,8 +131,7 @@ export class AdminInstructorsFormComponent implements OnInit {
       ]],
       password: [this.formInstructor.password, this.adding ? [
         Validators.required,
-        Validators.minLength(6),
-        Validators.maxLength(50)
+        Validators.pattern(AppConstants.OLValidators.Password)
       ] : []],
       authority: [AppConstants.Role.Instructor.name],
       organizationId: [this.formInstructor.organizationId, [
@@ -314,6 +312,14 @@ export class AdminInstructorsFormComponent implements OnInit {
 
   resetPassword(changingPassword: boolean): void {
     this.changingPassword = changingPassword;
+    if (changingPassword) {
+      this.instructorForm.controls.password.setValidators([
+        Validators.required,
+        Validators.pattern(AppConstants.OLValidators.Password)
+      ]);
+    } else {
+      this.instructorForm.controls.password.clearValidators();
+    }
   }
 
   displayState(stateValue: string): string {
