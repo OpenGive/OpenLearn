@@ -8,6 +8,8 @@ import {GradeDialogComponent} from "../grade-dialog.component";
 import {CourseStudentDialogComponent} from "../course-student-dialog.component";
 import {StudentCourseService} from "../../../services/student-course.service";
 import {DataService} from "../../../services/data.service";
+import {Principal} from "../../../shared/auth/principal.service";
+import {AppConstants} from "../../../app.constants";
 
 @Component({
   selector: 'app-course-grid',
@@ -22,13 +24,15 @@ export class CourseGridComponent implements OnInit {
 
   sortColumn: any;
   reverse: boolean;
+  instructorCheck: boolean = true;
 
   constructor(private dialog: MdDialog,
               private dataService: DataService,
-              private courseService: StudentCourseService) {}
+              private courseService: StudentCourseService,
+              private principal: Principal) {}
 
   ngOnInit(): void {
-
+    if (this.principal.hasAuthority(AppConstants.Role.Instructor.name)) this.instructorCheck = this.course.instructorId == this.principal.getId();
     this.columns = [
       {
         id: "student.firstName",

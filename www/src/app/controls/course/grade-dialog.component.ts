@@ -53,7 +53,7 @@ export class GradeDialogComponent implements OnInit {
   }
 
   save(): void {
-    if(this.data.type === 'STUDENT' || this.data.type === 'COURSE') {
+    if (this.data.type === 'STUDENT' || this.data.type === 'COURSE') {
       this.data.student.grade = this.grade;
       this.courseService.updateStudentCourse(this.data.student).subscribe(resp => {
         this.dialog.close({
