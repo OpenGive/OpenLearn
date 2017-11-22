@@ -125,3 +125,4 @@ jhipster:
 # ===================================================================
 
 application:
+    upload-bucket: "tapickens-openlearn-upload"

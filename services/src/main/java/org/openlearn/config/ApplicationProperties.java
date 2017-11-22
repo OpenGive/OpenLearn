@@ -1,5 +1,6 @@
 package org.openlearn.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -9,5 +10,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
+	private String uploadBucket;
 
+	public String getUploadBucket() {
+		return uploadBucket;
+	}
+
+	public void setUploadBucket(String uploadBucket) {
+		this.uploadBucket = uploadBucket;
+	}
 }

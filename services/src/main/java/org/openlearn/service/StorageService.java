@@ -10,12 +10,17 @@ import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import org.openlearn.config.ApplicationProperties;
 import org.openlearn.domain.Course;
 import org.openlearn.domain.FileInformation;
 import org.openlearn.repository.CourseRepository;
 import org.openlearn.repository.FileRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Service
 @Transactional
+@EnableConfigurationProperties
 public class StorageService {
 	private static final Logger log = LoggerFactory.getLogger(AddressService.class);
 
@@ -32,7 +38,8 @@ public class StorageService {
 
 	private final CourseRepository courseRepository;
 
-	private String uploadBucketName = "tapickens-openlearn-upload";
+	@Autowired
+	private ApplicationProperties props;
 
 	public StorageService(final FileRepository fileRepository,
 			final CourseRepository courseRepository) {
@@ -55,7 +62,9 @@ public class StorageService {
 		try {
 			String keyName = file.getOriginalFilename();
 			File f = convertToFile(file);
+			String uploadBucketName = props.getUploadBucket();
 			s3client.putObject(new PutObjectRequest(uploadBucketName, keyName, f));
+			f.delete();
 		} catch (AmazonServiceException e) {
 			log.error(e.getErrorMessage());
 		} catch (Exception e) {
