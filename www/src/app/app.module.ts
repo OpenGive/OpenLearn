@@ -47,6 +47,7 @@ import {DashboardPageComponent} from "./pages/dashboard-page/dashboard-page.comp
 import {DataService} from "./services/data.service";
 import { FileUploadModule } from "ng2-file-upload";
 import {FileUploadComponent} from './controls/fileupload/fileupload.component';
+import {CourseFilesGridComponent} from './controls/course/course-files-grid/course-files-grid.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import {FileUploadComponent} from './controls/fileupload/fileupload.component';
     PortfolioGridComponent,
     ProfilePageComponent,
     DashboardPageComponent,
-    FileUploadComponent
+    FileUploadComponent,
+    CourseFilesGridComponent
   ],
   imports: [
     AppRoutingModule,

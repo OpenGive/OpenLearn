@@ -11,21 +11,21 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "file")
+@Table(name = "file_information")
 public class FileInformation {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long Id;
-	
+
 	@NotNull
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "user")
+	@JoinColumn(name = "userId")
 	private User user;
-	
+
 	@Column(name = "fileUrl", nullable = false)
 	private String fileUrl;
-	
-	@Column(name = "fileType", nullable = false)
+
+	@Column(name = "type", nullable = false)
 	private String fileType; //TODO cbernal make this an enum, restrict DB values
 
 	public Long getId() {
@@ -59,6 +59,6 @@ public class FileInformation {
 	public void setFileType(String fileType) {
 		this.fileType = fileType;
 	}
-	
+
 	//TODO cbernal write tostring, equals etc...from address
 }

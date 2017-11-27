@@ -2,6 +2,7 @@
 import { Component } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import { CookieService } from 'ngx-cookie';
+import {MdDialog, MdDialogRef, MD_DIALOG_DATA} from "@angular/material";
 
 // const URL = '/api/';
 const URL = '/api/courses/upload';
@@ -9,7 +10,7 @@ const URL = '/api/courses/upload';
 @Component({
   selector: 'file-upload',
   templateUrl: './fileupload.component.html',
-  styleUrls: ['./fileupload.component.css']
+  styleUrls: ['./fileupload.component.css', '../dialog-forms.css']
 })
 export class FileUploadComponent {
 
@@ -19,7 +20,9 @@ export class FileUploadComponent {
 
     columns: any[];
 
-    constructor(private _cookieService: CookieService) {
+    constructor(
+            private dialog: MdDialogRef<FileUploadComponent>,
+            private _cookieService: CookieService) {
         let tokenObject = this._cookieService.getObject('token') as any;
         this.uploader.authToken = 'Bearer ' + tokenObject.access_token;
 
@@ -45,6 +48,10 @@ export class FileUploadComponent {
 
     public fileOverAnother(e:any):void {
         this.hasAnotherDropZoneOver = e;
+    }
+
+    close(): void {
+      this.dialog.close();
     }
 
 }

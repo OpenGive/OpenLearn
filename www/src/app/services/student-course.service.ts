@@ -8,6 +8,7 @@ import {User} from "../models/user.model";
 export class StudentCourseService {
 
   private endpoint = '/api/student-courses';
+  private courseEndpoint = '/api/courses';
 
   constructor(private _http: HttpWrapperService) {}
 
@@ -68,6 +69,12 @@ export class StudentCourseService {
 
   addResourceToCourse(courseId: Number, resourceId:Number): Observable<any> {
     return this._http.post(this.endpoint + '/' + courseId + '/resources?itemLinkId=' + resourceId, null)
+      .map(resp => resp.json())
+      .catch(this.handleError);
+  }
+
+  getCourseFiles(courseId: Number): Observable<User[]> {
+    return this._http.get(this.courseEndpoint + '/' + courseId + '/uploads')
       .map(resp => resp.json())
       .catch(this.handleError);
   }

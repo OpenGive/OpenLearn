@@ -2,9 +2,12 @@ package org.openlearn.web.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import javax.validation.Valid;
 
+import com.amazonaws.services.s3.model.ObjectListing;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
 import org.openlearn.dto.CourseDTO;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.service.CourseService;
@@ -104,7 +107,7 @@ public class CourseResource {
 	 * @throws URISyntaxException if the Location URI syntax is incorrect
 	 */
 	@PostMapping(path="/upload")
-	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
 	public String uploadCourseFile(@RequestParam("file") MultipartFile file,
             RedirectAttributes redirectAttributes) throws URISyntaxException {
 		Long courseId = 1L;
@@ -114,6 +117,14 @@ public class CourseResource {
 
         return "You successfully uploaded \" + file.getOriginalFilename() + \"!";
 //		return ResponseEntity.created(new URI(ENDPOINT + response.getId())).body(response);
+	}
+
+	@GetMapping(path="/{id}/uploads")
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
+	public ResponseEntity getUploads(@PathVariable final Long id) {
+		log.debug("GET request to get course uploads : {}", id);
+		List<S3ObjectSummary> response = storageService.get(id).getObjectSummaries();
+		return ResponseEntity.ok(response);
 	}
 
 	/**

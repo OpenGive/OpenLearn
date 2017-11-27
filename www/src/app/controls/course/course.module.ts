@@ -10,6 +10,7 @@ import {AssignmentFormComponent} from "./assignment/assignment-form.component";
 import {PortfolioFormComponent} from "./portfolio/portfolio-form.component";
 import {GradeDialogComponent} from "./grade-dialog.component";
 import {CourseStudentDialogComponent} from "./course-student-dialog.component";
+import {FileUploadComponent} from '../fileupload/fileupload.component';
 
 import {CourseStudentFormComponent} from "./course-student-form/course-student-form.component";
 
@@ -44,7 +45,8 @@ import {CourseStudentFormComponent} from "./course-student-form/course-student-f
     PortfolioFormComponent,
     GradeDialogComponent,
     CourseStudentDialogComponent,
-    CourseStudentFormComponent
+    CourseStudentFormComponent,
+    FileUploadComponent
   ]
 })
 export class OLCourseModule {}

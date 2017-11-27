@@ -9,7 +9,9 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.PutObjectResult;
 import org.openlearn.config.ApplicationProperties;
 import org.openlearn.domain.Course;
 import org.openlearn.domain.FileInformation;
@@ -59,10 +61,10 @@ public class StorageService {
 		//TODO actually send file to s3
 
 		AmazonS3 s3client = new AmazonS3Client(new ProfileCredentialsProvider());
+		String uploadBucketName = props.getUploadBucket();
+		String keyName = file.getOriginalFilename();
 		try {
-			String keyName = file.getOriginalFilename();
 			File f = convertToFile(file);
-			String uploadBucketName = props.getUploadBucket();
 			s3client.putObject(new PutObjectRequest(uploadBucketName, keyName, f));
 			f.delete();
 		} catch (AmazonServiceException e) {
@@ -76,11 +78,10 @@ public class StorageService {
 
 		FileInformation fileInformation = new FileInformation();
 		fileInformation.setFileType("Course");
-		fileInformation.setFileUrl("baseurl" + "course" + course.getId() + "-" + new Date().toString());
+		fileInformation.setFileUrl("https://s3.amazonaws.com/"+uploadBucketName+"/"+keyName);
 		fileInformation.setUser(course.getInstructor());
-		// TODO: commented out because this is not working
-//		return fileRepository.save(fileInformation);
-		return fileInformation;
+
+		return fileRepository.save(fileInformation);
 	}
 
 	private static File convertToFile(MultipartFile file) throws IOException {
@@ -90,6 +91,12 @@ public class StorageService {
 		fos.write(file.getBytes());
 		fos.close();
 		return convFile;
+	}
+
+	public ObjectListing get(Long courseId) {
+		AmazonS3 s3client = new AmazonS3Client(new ProfileCredentialsProvider());
+		String uploadBucketName = props.getUploadBucket();
+		return s3client.listObjects(uploadBucketName);
 	}
 
 }
