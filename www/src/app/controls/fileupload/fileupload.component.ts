@@ -1,11 +1,12 @@
 
-import { Component } from '@angular/core';
+import { Component, Input, Inject} from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import { CookieService } from 'ngx-cookie';
+import {Course} from '../../models/course.model';
 import {MdDialog, MdDialogRef, MD_DIALOG_DATA} from "@angular/material";
 
 // const URL = '/api/';
-const URL = '/api/courses/upload';
+const URL = '/api/courses/{id}/upload';
 
 @Component({
   selector: 'file-upload',
@@ -21,10 +22,12 @@ export class FileUploadComponent {
     columns: any[];
 
     constructor(
+            @Inject(MD_DIALOG_DATA) public data: any,
             private dialog: MdDialogRef<FileUploadComponent>,
             private _cookieService: CookieService) {
         let tokenObject = this._cookieService.getObject('token') as any;
         this.uploader.authToken = 'Bearer ' + tokenObject.access_token;
+        this.uploader.options.url = URL.replace('{id}', data.course.id.toString())
 
         this.columns = [
           {

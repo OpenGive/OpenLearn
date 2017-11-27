@@ -22,6 +22,11 @@ public class FileInformation {
 	@JoinColumn(name = "userId")
 	private User user;
 
+	@NotNull
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "courseId")
+	private Course course;
+
 	@Column(name = "fileUrl", nullable = false)
 	private String fileUrl;
 
@@ -42,6 +47,14 @@ public class FileInformation {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public Course getCourse() {
+		return course;
+	}
+
+	public void setCourse(Course course) {
+		this.course = course;
 	}
 
 	public String getFileUrl() {

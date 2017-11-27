@@ -18,7 +18,7 @@ import {AdminTabs} from "../admin/admin.constants";
       <div class="ol-dialog-content course-view-body">
         <div>
           <md-input-container fxFlex="100%">
-            <input [(ngModel)]="grade" mdInput type="number" required md-maxlength="3">
+            <input [(ngModel)]="grade" mdInput required md-maxlength="3">
           </md-input-container>
           <button (click)="save()" md-raised-button type="button" class="ol-dialog-button grey-button" mdTooltip="Save">
             <md-icon>save</md-icon>
@@ -53,7 +53,7 @@ export class GradeDialogComponent implements OnInit {
   }
 
   save(): void {
-    if(this.data.type === 'STUDENT' || this.data.type === 'COURSE') {
+    if (this.data.type === 'STUDENT' || this.data.type === 'COURSE') {
       this.data.student.grade = this.grade;
       this.courseService.updateStudentCourse(this.data.student).subscribe(resp => {
         this.dialog.close({
@@ -64,7 +64,7 @@ export class GradeDialogComponent implements OnInit {
       }, error => {
         this.notify.error('Failed to set student grade');
       });
-    } else if(this.data.type === 'ASSIGNMENT') {
+    } else if (this.data.type === 'ASSIGNMENT') {
       this.data.assignment.grade = this.grade;
       this.adminService.update(AdminTabs.StudentAssignment.route,this.data.assignment).subscribe(resp => {
         this.dialog.close({

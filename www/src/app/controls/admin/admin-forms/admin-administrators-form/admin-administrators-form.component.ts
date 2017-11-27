@@ -59,8 +59,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
     },
     password: {
       required: 'Password is required',
-      minlength: 'Password must be at least 6 characters long',
-      maxlength: 'Password cannot be more than 50 characters long'
+      pattern: 'Password must be between 8 and 100 characters and contain at least one letter, one digit, and one of !@#$%^&*()_+'
     },
     notes: {
       maxlength: 'Notes cannot be more than 2000 characters long'
@@ -122,10 +121,9 @@ export class AdminAdministratorsFormComponent implements OnInit {
       ]],
       password: [this.formAdministrator.password, this.adding ? [
         Validators.required,
-        Validators.minLength(6),
-        Validators.maxLength(50)
+        Validators.pattern(AppConstants.OLValidators.Password)
       ] : []],
-      authority: [AppConstants.Role.Admin],
+      authority: [AppConstants.Role.Admin.name],
       notes: [this.formAdministrator.notes, [
         Validators.maxLength(2000)
       ]],
@@ -252,7 +250,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
       login: this.administratorForm.get('login').value,
       password: this.administratorForm.get('password').value,
       notes: this.administratorForm.get('notes').value,
-      authority: AppConstants.Role.Admin,
+      authority: AppConstants.Role.Admin.name,
       email: this.administratorForm.get('email').value,
       phoneNumber: this.administratorForm.get('phoneNumber').value,
       streetAddress1: this.administratorForm.get('streetAddress1').value,
@@ -291,6 +289,14 @@ export class AdminAdministratorsFormComponent implements OnInit {
 
   resetPassword(changingPassword: boolean): void {
     this.changingPassword = changingPassword;
+    if (changingPassword) {
+      this.administratorForm.controls.password.setValidators([
+        Validators.required,
+        Validators.pattern(AppConstants.OLValidators.Password)
+      ]);
+    } else {
+      this.administratorForm.controls.password.clearValidators();
+    }
   }
 
   displayState(stateValue: string): string {

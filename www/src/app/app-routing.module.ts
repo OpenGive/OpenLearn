@@ -21,10 +21,11 @@ import {AdminProgramsComponent} from "./controls/admin/admin-tabs/admin-programs
 import {AdminSessionsComponent} from "./controls/admin/admin-tabs/admin-sessions.component";
 import {AdminStudentsComponent} from "./controls/admin/admin-tabs/admin-students.component";
 import {UserRouteAccessService} from "./shared/auth/user-route-access-service";
+import {TermsPageComponent} from "./pages/terms-page/terms-page.component";
 
 const ROUTES: Routes = [
   {
-    path: '',
+    path: 'home',
     component: LandingPageComponent,
     data: {
       authorities: []
@@ -41,7 +42,7 @@ const ROUTES: Routes = [
     path: 'admin',
     component: AdminPageComponent,
     data: {
-      authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor]
+      authorities: [AppConstants.Role.Admin.name, AppConstants.Role.OrgAdmin.name, AppConstants.Role.Instructor.name]
     },
     canActivate: [UserRouteAccessService],
     children: [
@@ -124,7 +125,7 @@ const ROUTES: Routes = [
     path: 'dashboard', // TODO: Rename to my course page or something better than dashboard
     component: DashboardPageComponent,
     data: {
-      authorities: [AppConstants.Role.Instructor]
+      authorities: [AppConstants.Role.Instructor.name]
     },
     canActivate: [UserRouteAccessService]
   },
@@ -132,7 +133,7 @@ const ROUTES: Routes = [
     path: 'course',
     component: CoursePageComponent,
     data: {
-      authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor, AppConstants.Role.Student]
+      authorities: [AppConstants.Role.Admin.name, AppConstants.Role.OrgAdmin.name, AppConstants.Role.Instructor.name, AppConstants.Role.Student.name]
     },
     canActivate: [UserRouteAccessService]
   },
@@ -140,7 +141,7 @@ const ROUTES: Routes = [
     path: 'student',
     component: StudentPageComponent,
     data: {
-       authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor, AppConstants.Role.Student]
+       authorities: [AppConstants.Role.Admin.name, AppConstants.Role.OrgAdmin.name, AppConstants.Role.Instructor.name, AppConstants.Role.Student.name]
     },
     canActivate: [UserRouteAccessService]
   },
@@ -148,7 +149,7 @@ const ROUTES: Routes = [
     path: 'profile',
     component: ProfilePageComponent,
     data: {
-       authorities: [AppConstants.Role.Admin, AppConstants.Role.OrgAdmin, AppConstants.Role.Instructor, AppConstants.Role.Student]
+       authorities: [AppConstants.Role.Admin.name, AppConstants.Role.OrgAdmin.name, AppConstants.Role.Instructor.name, AppConstants.Role.Student.name]
     },
     canActivate: [UserRouteAccessService]
   },
@@ -160,8 +161,15 @@ const ROUTES: Routes = [
     },
   },
   {
+    path: 'terms',
+    component: TermsPageComponent,
+    data: {
+      authorities: []
+    }
+  },
+  {
     path: '**',
-    redirectTo: ''
+    redirectTo: 'login'
   }
 ];
 

@@ -48,21 +48,21 @@ export class NavigationMenuComponent {
 
   private setRoles(): void {
     let role = this.principal.getRole();
-    this.roles.admin = role === AppConstants.Role.Admin;
-    this.roles.orgAdmin = role === AppConstants.Role.OrgAdmin;
-    this.roles.instructor = role === AppConstants.Role.Instructor;
-    this.roles.student = role === AppConstants.Role.Student;
+    this.roles.admin = role === AppConstants.Role.Admin.name;
+    this.roles.orgAdmin = role === AppConstants.Role.OrgAdmin.name;
+    this.roles.instructor = role === AppConstants.Role.Instructor.name;
+    this.roles.student = role === AppConstants.Role.Student.name;
   }
 
   private setRoleDescription(): void {
     let role = this.principal.getRole();
-    if (role === AppConstants.Role.Admin) {
+    if (role === AppConstants.Role.Admin.name) {
       this.roleDescription = this.roleDescriptions.Admin;
-    } else if (role === AppConstants.Role.OrgAdmin) {
+    } else if (role === AppConstants.Role.OrgAdmin.name) {
       this.roleDescription = this.roleDescriptions.OrgAdmin;
-    } else if (role === AppConstants.Role.Instructor) {
+    } else if (role === AppConstants.Role.Instructor.name) {
       this.roleDescription = this.roleDescriptions.Instructor;
-    } else if (role === AppConstants.Role.Student) {
+    } else if (role === AppConstants.Role.Student.name) {
       this.roleDescription = this.roleDescriptions.Student;
     } else {
       this.roleDescription = 'UNAUTHORIZED';

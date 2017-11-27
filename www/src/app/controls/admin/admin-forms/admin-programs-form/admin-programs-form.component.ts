@@ -22,7 +22,7 @@ export class AdminProgramsFormComponent implements OnInit {
   @Input('organizations') organizations: any[];
   editing: boolean;
 
-  instructor = this.principal.getRole() === AppConstants.Role.Instructor;
+  instructor = this.principal.getRole() === AppConstants.Role.Instructor.name;
 
   filteredOrganizations: Observable<any[]>;
 

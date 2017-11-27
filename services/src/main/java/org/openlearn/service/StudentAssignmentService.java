@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.openlearn.domain.Assignment;
 import org.openlearn.domain.Authority;
+import org.openlearn.domain.Course;
 import org.openlearn.domain.StudentAssignment;
 import org.openlearn.domain.User;
 import org.openlearn.dto.StudentAssignmentDTO;
@@ -33,6 +34,8 @@ public class StudentAssignmentService {
 
 	private final AssignmentRepository assignmentRepository;
 
+	private final CourseRepository courseRepository;
+
 	private final StudentAssignmentRepository studentAssignmentRepository;
 
 	private final StudentAssignmentTransformer studentAssignmentTransformer;
@@ -48,6 +51,7 @@ public class StudentAssignmentService {
 	                                final UserRepository userRepository,
 									final UserService userService) {
 		this.assignmentRepository = assignmentRepository;
+		this.courseRepository = courseRepository;
 		this.studentAssignmentRepository = studentAssignmentRepository;
 		this.studentAssignmentTransformer = studentAssignmentTransformer;
 		this.userRepository = userRepository;
@@ -62,7 +66,15 @@ public class StudentAssignmentService {
 	 */
 	public StudentAssignmentDTO save(final StudentAssignmentDTO studentAssignmentDTO) {
 		log.debug("Request to save StudentAssignment : {}", studentAssignmentDTO);
-		if (SecurityUtils.isAdmin() || inOrgOfCurrentUser(studentAssignmentDTO)) {
+		User user = userService.getCurrentUser();
+		boolean instructorCheck = true;
+		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.INSTRUCTOR)) {
+			StudentAssignment studentAssignment = studentAssignmentRepository.findOne(studentAssignmentDTO.getId());
+			Course course = studentAssignment.getAssignment().getCourse();
+			instructorCheck = user.getId() == course.getInstructor().getId();
+		}
+
+		if (instructorCheck && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(studentAssignmentDTO))) {
 			return studentAssignmentTransformer.transform(studentAssignmentRepository
 				.save(studentAssignmentTransformer.transform(studentAssignmentDTO)));
 		}
@@ -176,7 +188,14 @@ public class StudentAssignmentService {
 	public void delete(final Long id) {
 		log.debug("Request to delete StudentAssignment : {}", id);
 		StudentAssignment studentAssignment = studentAssignmentRepository.findOne(id);
-		if (studentAssignment != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(studentAssignment))) {
+		boolean instructorCheck = true;
+		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.INSTRUCTOR)) {
+			User user = userService.getCurrentUser();
+			Course course = studentAssignment.getAssignment().getCourse();
+			instructorCheck = user.getId() == course.getInstructor().getId();
+		}
+
+		if (studentAssignment != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(studentAssignment)) && instructorCheck) {
 			studentAssignmentRepository.delete(id);
 		} else {
 			// TODO: Error handling / logging

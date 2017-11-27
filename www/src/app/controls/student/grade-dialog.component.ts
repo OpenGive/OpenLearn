@@ -16,7 +16,7 @@ import {NotifyService} from "../../services/notify.service";
       <div class="ol-dialog-content course-view-body">
         <div>
           <md-input-container fxFlex="100%">
-            <input [(ngModel)]="grade" mdInput type="number" required md-maxlength="3">
+            <input [(ngModel)]="grade" mdInput required md-maxlength="3">
           </md-input-container>
           <button (click)="save()" md-raised-button type="button" class="ol-dialog-button grey-button" mdTooltip="Save">
             <md-icon>save</md-icon>

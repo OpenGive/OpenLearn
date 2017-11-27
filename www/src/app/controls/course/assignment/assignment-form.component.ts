@@ -13,6 +13,7 @@ import {OrgAdmin} from "../../../models/org-admin.model";
 import {AdminTabs} from "../../admin/admin.constants";
 import {StudentCourseService} from "../../../services/student-course.service";
 import {AssignmentService} from "../../../services/assignment.service";
+import {Principal} from "../../../shared/auth/principal.service";
 import {GradeDialogComponent} from "../grade-dialog.component";
 
 @Component({
@@ -28,6 +29,7 @@ export class AssignmentFormComponent implements OnInit {
   editing: Boolean = false;
   students: any[];
   studentView: boolean;
+  instructorCheck: boolean = true;
 
   assignmentForm: FormGroup;
 
@@ -38,7 +40,8 @@ export class AssignmentFormComponent implements OnInit {
               private notify: NotifyService,
               private adminService: AdminService,
               private courseService: StudentCourseService,
-              private assignmentService: AssignmentService) {}
+              private assignmentService: AssignmentService,
+              private principal: Principal) {}
 
   columns: any[];
   formErrors = {
@@ -78,6 +81,7 @@ export class AssignmentFormComponent implements OnInit {
     this.buildForm();
     this.adding = this.data.adding;
     this.setEditing(this.adding);
+    if (this.principal.hasAuthority(AppConstants.Role.Instructor.name)) this.instructorCheck = this.data.course.instructorId == this.principal.getId();
   }
 
   private buildForm(): void {

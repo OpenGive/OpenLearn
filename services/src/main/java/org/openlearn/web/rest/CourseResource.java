@@ -106,11 +106,11 @@ public class CourseResource {
 	 *      or with ... TODO: Error handling
 	 * @throws URISyntaxException if the Location URI syntax is incorrect
 	 */
-	@PostMapping(path="/upload")
+	@PostMapping(path="/{courseId}/upload")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
-	public String uploadCourseFile(@RequestParam("file") MultipartFile file,
+	public String uploadCourseFile(@PathVariable final Long courseId,
+								   @RequestParam("file") MultipartFile file,
             RedirectAttributes redirectAttributes) throws URISyntaxException {
-		Long courseId = 1L;
         storageService.store(file, courseId);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");

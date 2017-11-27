@@ -8,6 +8,7 @@ import org.openlearn.repository.CourseRepository;
 import org.openlearn.repository.StudentAssignmentRepository;
 import org.openlearn.repository.StudentCourseRepository;
 import org.openlearn.security.SecurityUtils;
+import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.transformer.AssignmentTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,8 +60,14 @@ public class AssignmentService {
 	 */
 	public AssignmentDTO save(final AssignmentDTO assignmentDTO) {
 		log.debug("Request to save Assignment : {}", assignmentDTO);
+		User user = userService.getCurrentUser();
+		boolean instructorCheck = true;
+		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.INSTRUCTOR)) {
+			Course course = courseRepository.findOne(assignmentDTO.getCourseId());
+			instructorCheck = user.getId() == course.getInstructor().getId();
+		}
 
-		if (SecurityUtils.isAdmin() || inOrgOfCurrentUser(assignmentDTO)) {
+		if (instructorCheck && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(assignmentDTO))) {
 			Assignment assignment = assignmentRepository.save(assignmentTransformer.transform(assignmentDTO));
 
 			for (StudentCourse studentCourse : studentCourseRepository.findByCourse(assignment.getCourse())) {
@@ -139,7 +146,14 @@ public class AssignmentService {
 	public void delete(final Long id) {
 		log.debug("Request to delete Assignment : {}", id);
 		Assignment assignment = assignmentRepository.findOne(id);
-		if (assignment != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(assignment))) {
+		User user = userService.getCurrentUser();
+		boolean instructorCheck = true;
+		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.INSTRUCTOR)) {
+			Course course = assignment.getCourse();
+			instructorCheck = user.getId() == course.getInstructor().getId();
+		}
+
+		if (assignment != null && instructorCheck && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(assignment))) {
 			
 			for (StudentAssignment studentAssignment : studentAssignmentRepository.findByAssignment(assignment)) {
 				studentAssignmentRepository.delete(studentAssignment.getId());

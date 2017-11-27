@@ -61,8 +61,7 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
     },
     password: {
       required: 'Password is required',
-      minlength: 'Password must be at least 6 characters long',
-      maxlength: 'Password cannot be more than 50 characters long'
+      pattern: 'Password must be between 8 and 100 characters and contain at least one letter, one digit, and one of !@#$%^&*()_+'
     },
     notes: {
       maxlength: 'Notes cannot be more than 2000 characters long'
@@ -129,10 +128,9 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
       ]],
       password: [this.formOrgAdministrator.password, this.adding ? [
         Validators.required,
-        Validators.minLength(6),
-        Validators.maxLength(50)
+        Validators.pattern(AppConstants.OLValidators.Password)
       ] : []],
-      authority: [AppConstants.Role.OrgAdmin],
+      authority: [AppConstants.Role.OrgAdmin.name],
       organizationId: [this.formOrgAdministrator.organizationId, [
         Validators.required
       ]],
@@ -270,7 +268,7 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
       login: this.orgAdministratorForm.get('login').value,
       password: this.orgAdministratorForm.get('password').value,
       notes: this.orgAdministratorForm.get('notes').value,
-      authority: AppConstants.Role.OrgAdmin,
+      authority: AppConstants.Role.OrgAdmin.name,
       email: this.orgAdministratorForm.get('email').value,
       phoneNumber: this.orgAdministratorForm.get('phoneNumber').value,
       streetAddress1: this.orgAdministratorForm.get('streetAddress1').value,
@@ -311,6 +309,14 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
 
   resetPassword(changingPassword: boolean): void {
     this.changingPassword = changingPassword;
+    if (changingPassword) {
+      this.orgAdministratorForm.controls.password.setValidators([
+        Validators.required,
+        Validators.pattern(AppConstants.OLValidators.Password)
+      ]);
+    } else {
+      this.orgAdministratorForm.controls.password.clearValidators();
+    }
   }
 
   displayState(stateValue: string): string {

@@ -58,11 +58,10 @@ public class StorageService {
 	//TODO cbernal fix blue documentation
 	public FileInformation store(final MultipartFile file, Long courseId) {
 		log.debug("Request to save f : {}", file); //TODO cbernal fix this log statement
-		//TODO actually send file to s3
 
 		AmazonS3 s3client = new AmazonS3Client(new ProfileCredentialsProvider());
 		String uploadBucketName = props.getUploadBucket();
-		String keyName = file.getOriginalFilename();
+		String keyName = courseId + "/" + file.getOriginalFilename();
 		try {
 			File f = convertToFile(file);
 			s3client.putObject(new PutObjectRequest(uploadBucketName, keyName, f));
@@ -80,6 +79,7 @@ public class StorageService {
 		fileInformation.setFileType("Course");
 		fileInformation.setFileUrl("https://s3.amazonaws.com/"+uploadBucketName+"/"+keyName);
 		fileInformation.setUser(course.getInstructor());
+		fileInformation.setCourse(course);
 
 		return fileRepository.save(fileInformation);
 	}
@@ -96,7 +96,7 @@ public class StorageService {
 	public ObjectListing get(Long courseId) {
 		AmazonS3 s3client = new AmazonS3Client(new ProfileCredentialsProvider());
 		String uploadBucketName = props.getUploadBucket();
-		return s3client.listObjects(uploadBucketName);
+		return s3client.listObjects(uploadBucketName, courseId.toString());
 	}
 
 }

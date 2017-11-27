@@ -1,9 +1,21 @@
 export class AppConstants {
   public static Role = {
-    Admin: 'ROLE_ADMIN',
-    OrgAdmin: 'ROLE_ORG_ADMIN',
-    Instructor: 'ROLE_INSTRUCTOR',
-    Student: 'ROLE_STUDENT',
+    Admin: {
+      name: 'ROLE_ADMIN',
+      home: 'admin'
+    },
+    OrgAdmin: {
+      name: 'ROLE_ORG_ADMIN',
+      home: 'admin'
+    },
+    Instructor: {
+      name: 'ROLE_INSTRUCTOR',
+      home: 'dashboard'
+    },
+    Student: {
+      name: 'ROLE_STUDENT',
+      home: 'home'
+    },
   };
   public static ForgotPasswordEmail = "passwordrequest@openlearn.com";
   public static States = [
@@ -78,6 +90,7 @@ export class AppConstants {
   public static OLValidators = {
     Email: "^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*$",
     Login: "^[_'.@A-Za-z0-9-]*$",
+    Password: "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+])[A-Za-z\\d!@#$%^&*()_+]{8,100}$",
     Points: "[0-9]+",
     PostalCode: "^[0-9]{5}(-[0-9]{4})?$"
   }
