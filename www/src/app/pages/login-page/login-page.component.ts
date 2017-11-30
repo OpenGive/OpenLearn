@@ -12,6 +12,7 @@ import {ForgotPasswordDialogComponent} from "../../controls/forgot-password-dial
 })
 export class LoginPageComponent implements OnInit {
   authenticationError: boolean;
+  reCaptchaSiteKey: string;
   password: string;
   rememberMe: boolean;
   username: string;
@@ -23,6 +24,7 @@ export class LoginPageComponent implements OnInit {
               private notify: NotifyService,
               private dialog: MdDialog) {
     this.credentials = {};
+    this.reCaptchaSiteKey = '6LcIyDgUAAAAAGc7KQgXwlH8q17CR00ndcsXuEmN'; // TODO: Move to config
   }
 
   ngOnInit() {
@@ -39,7 +41,7 @@ export class LoginPageComponent implements OnInit {
 
   login(reCaptchaResponse: string) {
     this.loginService.login({
-      captcha: reCaptchaResponse,
+      reCaptcha: reCaptchaResponse,
       username: this.username,
       password: this.password,
       rememberMe: this.rememberMe

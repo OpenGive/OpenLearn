@@ -17,9 +17,13 @@ export class AuthServerProvider {
   }
 
   login(credentials): Observable<any> {
-    const data = 'username=' + encodeURIComponent(credentials.username) + '&password=' +
-      encodeURIComponent(credentials.password) + '&grant_type=password&scope=read%20write&' +
-      'client_secret=my-secret-token-to-change-in-production&client_id=openlearnapp';
+    const data = 'username=' + encodeURIComponent(credentials.username) +
+      '&password=' + encodeURIComponent(credentials.password) +
+      '&recaptcha=' + encodeURIComponent(credentials.reCaptcha) +
+      '&grant_type=password' +
+      '&scope=read%20write' +
+      '&client_secret=my-secret-token-to-change-in-production' +
+      '&client_id=openlearnapp';
     const headers = new Headers({
       'Content-Type': 'application/x-www-form-urlencoded',
       'Accept': 'application/json',

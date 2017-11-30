@@ -14,7 +14,7 @@
         <input type="password" mdInput placeholder="Password" [(ngModel)]="password">
       </md-input-container>
     </div>
-    <re-captcha #captchaRef="reCaptcha" siteKey="6LcIyDgUAAAAAGc7KQgXwlH8q17CR00ndcsXuEmN" size="invisible" (resolved)="$event && login($event)"></re-captcha>
+    <re-captcha #captchaRef="reCaptcha" [siteKey]="reCaptchaSiteKey" size="invisible" (resolved)="$event && login($event)"></re-captcha>
     <div fxLayout="row" fxLayoutAlign="center center">
       <button md-raised-button [fxFlex.xs]="flexSettings.xs" [fxFlex.gt-xs]="flexSettings.sm" color="primary"
               (click)="captchaRef.execute()">
