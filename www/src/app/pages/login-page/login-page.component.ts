@@ -37,8 +37,9 @@ export class LoginPageComponent implements OnInit {
     this.dialog.open(ForgotPasswordDialogComponent);
   }
 
-  login() {
+  login(reCaptchaResponse: string) {
     this.loginService.login({
+      captcha: reCaptchaResponse,
       username: this.username,
       password: this.password,
       rememberMe: this.rememberMe
@@ -51,7 +52,6 @@ export class LoginPageComponent implements OnInit {
       if (this.failureCount > 2) {
         this.isOverLimit = true;
       }
-
     });
   }
 }
