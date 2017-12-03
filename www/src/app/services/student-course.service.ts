@@ -73,11 +73,14 @@ export class StudentCourseService {
       .catch(this.handleError);
   }
 
-  getCourseFiles(courseId: Number): Observable<User[]> {
-    return this._http.get(this.courseEndpoint + '/' + courseId + '/uploads')
-      .map(resp => resp.json())
-      .catch(this.handleError);
-  }
+  // getCourseFile(courseId: Number, keyName: String) {
+  //   // this._http.get(this.courseEndpoint + '/' + courseId + '/upload/' + keyName)
+  //   //   .map(resp => resp.json())
+  //   //   .catch(this.handleError);
+  //     return this._http.get(this.courseEndpoint + '/' + courseId + '/uploads')
+  //       .map(resp => resp.json())
+  //       .catch(this.handleError);
+  // }
 
   private handleError(error: Response) {
     console.error(error);

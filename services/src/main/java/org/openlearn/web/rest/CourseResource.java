@@ -1,5 +1,6 @@
 package org.openlearn.web.rest;
 
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -16,6 +17,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,12 +48,9 @@ public class CourseResource {
 
 	private final CourseService courseService;
 
-	private final StorageService storageService;
-
 	public CourseResource(final CourseService courseService,
 			final StorageService storageService) {
 		this.courseService = courseService;
-		this.storageService = storageService;
 	}
 
 	/**
@@ -96,35 +97,6 @@ public class CourseResource {
 		log.debug("POST request to create course : {}", courseDTO);
 		CourseDTO response = courseService.save(courseDTO);
 		return ResponseEntity.created(new URI(ENDPOINT + response.getId())).body(response);
-	}
-
-	/**
-	 * POST  / : upload a course file
-	 *
-	 * @param courseDTO the course to create
-	 * @return the ResponseEntity with status 200 (OK) and the created course in the body
-	 *      or with ... TODO: Error handling
-	 * @throws URISyntaxException if the Location URI syntax is incorrect
-	 */
-	@PostMapping(path="/{courseId}/upload")
-	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
-	public String uploadCourseFile(@PathVariable final Long courseId,
-								   @RequestParam("file") MultipartFile file,
-            RedirectAttributes redirectAttributes) throws URISyntaxException {
-        storageService.store(file, courseId);
-        redirectAttributes.addFlashAttribute("message",
-                "You successfully uploaded " + file.getOriginalFilename() + "!");
-
-        return "You successfully uploaded \" + file.getOriginalFilename() + \"!";
-//		return ResponseEntity.created(new URI(ENDPOINT + response.getId())).body(response);
-	}
-
-	@GetMapping(path="/{id}/uploads")
-	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
-	public ResponseEntity getUploads(@PathVariable final Long id) {
-		log.debug("GET request to get course uploads : {}", id);
-		List<S3ObjectSummary> response = storageService.get(id).getObjectSummaries();
-		return ResponseEntity.ok(response);
 	}
 
 	/**

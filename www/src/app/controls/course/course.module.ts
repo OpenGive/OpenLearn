@@ -11,6 +11,8 @@ import {PortfolioFormComponent} from "./portfolio/portfolio-form.component";
 import {GradeDialogComponent} from "./grade-dialog.component";
 import {CourseStudentDialogComponent} from "./course-student-dialog.component";
 import {FileUploadComponent} from '../fileupload/fileupload.component';
+import {FilesGridComponent} from './files-grid/files-grid.component';
+import { FileUploadModule } from "ng2-file-upload";
 
 import {CourseStudentFormComponent} from "./course-student-form/course-student-form.component";
 
@@ -21,7 +23,9 @@ import {CourseStudentFormComponent} from "./course-student-form/course-student-f
     PortfolioFormComponent,
     GradeDialogComponent,
     CourseStudentDialogComponent,
-    CourseStudentFormComponent
+    CourseStudentFormComponent,
+    FilesGridComponent,
+    FileUploadComponent
   ],
   imports: [
     CommonModule,
@@ -37,7 +41,8 @@ import {CourseStudentFormComponent} from "./course-student-form/course-student-f
     MdNativeDateModule,
     MdSelectModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FileUploadModule
   ],
   entryComponents: [
     CourseDialogComponent,
@@ -46,7 +51,8 @@ import {CourseStudentFormComponent} from "./course-student-form/course-student-f
     GradeDialogComponent,
     CourseStudentDialogComponent,
     CourseStudentFormComponent,
-    FileUploadComponent
+    FileUploadComponent,
+    FilesGridComponent
   ]
 })
 export class OLCourseModule {}

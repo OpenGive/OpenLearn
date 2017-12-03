@@ -46,9 +46,6 @@ import {OLCourseModule} from "./controls/course/course.module";
 import {OLStudentModule} from "./controls/student/student.module";
 import {DashboardPageComponent} from "./pages/dashboard-page/dashboard-page.component";
 import {DataService} from "./services/data.service";
-import { FileUploadModule } from "ng2-file-upload";
-import {FileUploadComponent} from './controls/fileupload/fileupload.component';
-import {CourseFilesGridComponent} from './controls/course/course-files-grid/course-files-grid.component';
 
 @NgModule({
   declarations: [
@@ -70,9 +67,7 @@ import {CourseFilesGridComponent} from './controls/course/course-files-grid/cour
     CourseResourceGridComponent,
     PortfolioGridComponent,
     ProfilePageComponent,
-    DashboardPageComponent,
-    FileUploadComponent,
-    CourseFilesGridComponent
+    DashboardPageComponent
   ],
   imports: [
     AppRoutingModule,
@@ -87,8 +82,7 @@ import {CourseFilesGridComponent} from './controls/course/course-files-grid/cour
     OLAdminModule,
     OLCourseModule,
     OLStudentModule,
-    ReactiveFormsModule,
-    FileUploadModule
+    ReactiveFormsModule
   ],
   providers: [
     UserService,

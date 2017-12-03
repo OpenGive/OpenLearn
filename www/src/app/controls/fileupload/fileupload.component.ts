@@ -5,9 +5,6 @@ import { CookieService } from 'ngx-cookie';
 import {Course} from '../../models/course.model';
 import {MdDialog, MdDialogRef, MD_DIALOG_DATA} from "@angular/material";
 
-// const URL = '/api/';
-const URL = '/api/courses/{id}/upload';
-
 @Component({
   selector: 'file-upload',
   templateUrl: './fileupload.component.html',
@@ -15,19 +12,26 @@ const URL = '/api/courses/{id}/upload';
 })
 export class FileUploadComponent {
 
-    public uploader:FileUploader = new FileUploader({url: URL});
+    public uploader:FileUploader = new FileUploader({});
     public hasBaseDropZoneOver:boolean = false;
     public hasAnotherDropZoneOver:boolean = false;
+
+    @Input()
+    public onSuccessCallback: Function;
+
+    @Input() public assignment: any;
+    @Input() public portfolio: any;
 
     columns: any[];
 
     constructor(
-            @Inject(MD_DIALOG_DATA) public data: any,
             private dialog: MdDialogRef<FileUploadComponent>,
             private _cookieService: CookieService) {
         let tokenObject = this._cookieService.getObject('token') as any;
         this.uploader.authToken = 'Bearer ' + tokenObject.access_token;
-        this.uploader.options.url = URL.replace('{id}', data.course.id.toString())
+        this.uploader.onSuccessItem = (item: any, response: any, status: any, headers: any) => {
+          this.onSuccessCallback(item);
+        }
 
         this.columns = [
           {
@@ -43,6 +47,17 @@ export class FileUploadComponent {
             name: "Size"
           }
         ];
+    }
+
+    ngOnInit(): void {
+      let uploadUrl = '';
+      if (this.assignment) {
+        uploadUrl = '/api/assignments/' + this.assignment.id.toString() + '/upload';
+      } else if (this.portfolio) {
+        uploadUrl = '/api/portfolio-items/' + this.portfolio.id.toString() + '/upload';
+      }
+        
+      this.uploader.options.url = uploadUrl;
     }
 
     public fileOverBase(e:any):void {

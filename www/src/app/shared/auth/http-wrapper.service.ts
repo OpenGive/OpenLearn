@@ -15,6 +15,12 @@ export class HttpWrapperService {
         return this._http.get(this.backend + endpoint, this.getAuthHeader());
     }
 
+    getWithOptions(endpoint: string, options: any) : Observable<any> {
+        let authHeaders = this.getAuthHeader();
+        let combinedOptions = Object.assign(options, authHeaders);
+        return this._http.get(this.backend + endpoint, combinedOptions);
+    }
+
     post(endpoint: string, body: any) : Observable<any> {
         return this._http.post(this.backend + endpoint, body, this.getAuthHeader());
     }

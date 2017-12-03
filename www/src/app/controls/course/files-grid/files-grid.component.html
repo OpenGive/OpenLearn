@@ -1,13 +1,10 @@
 <div>
-  <div id="grid-header" fxLayout="row" fxLayoutAlign="space-between center">
-    <span class="grid-header-text">Uploaded Files</span>
-    <button md-raised-button fxHide.xs (click)="add()" class="grid-add-button" mdTooltip="Add">
-      <md-icon>add</md-icon>
-    </button>
-  </div>
-  <div id="grid-table" fxLayout="row">
-    <div class="table-wrapper">
-      <table>
+  <div id="grid-table">
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <file-upload [assignment]="assignment" [portfolio]="portfolio" [onSuccessCallback]="fileUploadSuccessCallback" class="file-upload-wrapper"></file-upload>
+    </div>
+    <div fxLayout="row" class="table-wrapper">
+      <table *ngIf="files && files.length > 0">
         <thead>
         <tr class="header-row">
           <th width="30%" *ngFor="let column of columns" (click)="sort(column)">
@@ -18,7 +15,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let row of files" (click)="viewStudentDetails(row.student)">
+        <tr *ngFor="let row of files" (click)="getFile(row)">
           <td>{{row.key}}</td>
           <td>{{row.size/1000000}} MB</td>
           <td>{{row.lastModified | date: 'MM/dd/yy h:mm'}}
@@ -30,7 +27,7 @@
             </button>
             <md-menu #deleteMenu="mdMenu">
               <button md-menu-item type="button" disabled class="pink-button">Are you sure?</button>
-              <button md-menu-item type="button" (click)="removeStudent(row.id)">Yes, delete it</button>
+              <button md-menu-item type="button" (click)="removeFile(row.key)">Yes, delete it</button>
               <button md-menu-item type="button">No, go back</button>
             </md-menu>
           </td>
