@@ -37,6 +37,6 @@
         <md-error *ngIf="formErrors.description">{{formErrors.description}}</md-error>
       </md-input-container>
     </div>
-    <app-files-grid [portfolio]="formPortfolio"></app-files-grid>
+    <app-files-grid [studentView]="studentView" [portfolio]="formPortfolio"></app-files-grid>
   </div>
 </form>

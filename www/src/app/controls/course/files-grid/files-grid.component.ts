@@ -1,3 +1,4 @@
+import { PortfolioItem } from './../../../models/portfolio-item.model';
 import {Component, Input, OnInit} from "@angular/core";
 import {MdDialog} from "@angular/material";
 import {saveAs as importedSaveAs} from "file-saver";
@@ -20,7 +21,8 @@ import {DataService} from "../../../services/data.service";
 export class FilesGridComponent implements OnInit {
 
   @Input() assignment: Assignment;
-  @Input() portfolio: Assignment;
+  @Input() portfolio: PortfolioItem;
+  @Input() studentView: boolean = false;
   files: any[];
   columns: any[];
 

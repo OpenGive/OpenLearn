@@ -1,7 +1,7 @@
 <div>
   <div id="grid-table">
     <div fxLayout="row" fxLayoutAlign="space-between center">
-      <file-upload [assignment]="assignment" [portfolio]="portfolio" [onSuccessCallback]="fileUploadSuccessCallback" class="file-upload-wrapper"></file-upload>
+      <file-upload [studentView]="studentView" [assignment]="assignment" [portfolio]="portfolio" [onSuccessCallback]="fileUploadSuccessCallback" class="file-upload-wrapper"></file-upload>
     </div>
     <div fxLayout="row" class="table-wrapper">
       <table *ngIf="files && files.length > 0">
@@ -15,16 +15,21 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let row of files" (click)="getFile(row)">
+        <tr *ngFor="let row of files">
           <td>{{row.key}}</td>
           <td>{{row.size/1000000}} MB</td>
           <td>{{row.lastModified | date: 'MM/dd/yy h:mm'}}
             <md-icon (click)="editGrade(row, $event)" class="edit-icon" mdTooltip="Edit">edit</md-icon>
           </td>
           <td style="text-align: right;">
-            <button md-raised-button type="button" (click)="stopPropagation($event)" *ngIf="!editing" [mdMenuTriggerFor]="deleteMenu" class="ol-dialog-button pink-button" mdTooltip="Delete">
-              <md-icon>delete</md-icon>
-            </button>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+              <button *ngIf="!studentView && !editing" md-raised-button type="button" (click)="stopPropagation($event)" [mdMenuTriggerFor]="deleteMenu" class="ol-dialog-button pink-button" mdTooltip="Delete">
+                <md-icon>delete</md-icon>
+              </button>
+              <button md-raised-button type="button" (click)="getFile(row)" *ngIf="!editing" class="ol-dialog-button pink-button" mdTooltip="Download">
+                <md-icon>get_app</md-icon>
+              </button>
+            </div>
             <md-menu #deleteMenu="mdMenu">
               <button md-menu-item type="button" disabled class="pink-button">Are you sure?</button>
               <button md-menu-item type="button" (click)="removeFile(row.key)">Yes, delete it</button>

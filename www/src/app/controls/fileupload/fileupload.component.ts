@@ -17,6 +17,9 @@ export class FileUploadComponent {
     public hasAnotherDropZoneOver:boolean = false;
 
     @Input()
+    public studentView: boolean = false;
+
+    @Input()
     public onSuccessCallback: Function;
 
     @Input() public assignment: any;
