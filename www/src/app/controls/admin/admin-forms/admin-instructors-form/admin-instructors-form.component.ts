@@ -235,6 +235,7 @@ export class AdminInstructorsFormComponent implements OnInit {
       }
     } else {
       this.instructorForm.markAsTouched();
+      this.updateFormErrors(this.instructorForm, this.formErrors, this.validationMessages);
     }
   }
 
