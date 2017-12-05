@@ -317,8 +317,6 @@ export class AdminInstructorsFormComponent implements OnInit {
         Validators.required,
         Validators.pattern(AppConstants.OLValidators.Password)
       ]);
-    } else {
-      this.instructorForm.controls.password.clearValidators();
     }
   }
 
