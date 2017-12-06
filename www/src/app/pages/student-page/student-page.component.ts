@@ -36,6 +36,9 @@ export class StudentPageComponent implements OnInit {
   filteredStates: Observable<any[]>;
   private roles: any[];
 
+  organizations:         any[];
+  filteredOrganizations: Observable<any[]>;
+
   filteredInstructors: Observable<any[]>;
   filteredSessions: Observable<any[]>;
 
@@ -160,9 +163,11 @@ export class StudentPageComponent implements OnInit {
     this.setEditing(this.adding);
     this.resetPassword(false);
     this.getStates();
+    this.getOrganizations();
     if(!this.studentView) {
     }
   }
+
   private buildForm(): void {
     this.studentForm = this.fb.group({
       firstName: [this.student.firstName, [
@@ -295,8 +300,22 @@ export class StudentPageComponent implements OnInit {
       .map(val => val ? this.filterStates(val) : this.states.slice());
   }
 
+  private getOrganizations(): void {
+    this.adminService.getAll(AdminTabs.Organization.route).subscribe(resp => {
+      this.organizations = resp;
+      this.filteredOrganizations = this.studentForm.get('organizationId')
+      .valueChanges
+      .startWith(null)
+      .map(val => val ? this.filterOrganizations(val) : this.organizations.slice());
+    });
+  }
+
   private filterStates(val: string): any[] {
     return this.states.filter(state => new RegExp(`${val}`, 'gi').test(state.name));
+  }
+
+  private filterOrganizations(val: string): any[] {
+    return this.organizations.filter(organization => new RegExp(`${val}`, 'gi').test(organization.name));
   }
 
   save(): void {
