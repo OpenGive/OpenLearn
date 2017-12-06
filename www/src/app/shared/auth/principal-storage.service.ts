@@ -92,4 +92,8 @@ export class Principal {
   getId(): Number {
     return this.isIdentityResolved() ? this.userIdentity.id : null;
   }
+
+  getOrganizationId(): number {
+    return this.isIdentityResolved() ? this.userIdentity.organizationId : null;
+  }
 }
