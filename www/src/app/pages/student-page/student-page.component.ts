@@ -339,6 +339,7 @@ export class StudentPageComponent implements OnInit {
       }
     } else {
       this.studentForm.markAsTouched();
+      this.updateFormErrors(this.studentForm, this.formErrors, this.validationMessages);
     }
   }
 
