@@ -8,6 +8,7 @@ import {User} from "../models/user.model";
 export class StudentCourseService {
 
   private endpoint = '/api/student-courses';
+  private courseEndpoint = '/api/courses';
 
   constructor(private _http: HttpWrapperService) {}
 
@@ -71,6 +72,15 @@ export class StudentCourseService {
       .map(resp => resp.json())
       .catch(this.handleError);
   }
+
+  // getCourseFile(courseId: Number, keyName: String) {
+  //   // this._http.get(this.courseEndpoint + '/' + courseId + '/upload/' + keyName)
+  //   //   .map(resp => resp.json())
+  //   //   .catch(this.handleError);
+  //     return this._http.get(this.courseEndpoint + '/' + courseId + '/uploads')
+  //       .map(resp => resp.json())
+  //       .catch(this.handleError);
+  // }
 
   private handleError(error: Response) {
     console.error(error);

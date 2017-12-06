@@ -1,0 +1,58 @@
+<div>
+    <div *ngIf="!studentView">
+        <div>
+            <div fxLayout="row">
+            <div ng2FileDrop
+            [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+            (fileOver)="fileOverBase($event)"
+            [uploader]="uploader"
+            class="well file-drop-zone">
+            Drop File Here To Upload
+            </div>
+        </div>
+        <div fxLayout="row" class="file-select">
+            <input type="file" ng2FileSelect [uploader]="uploader" />
+        </div>
+    </div>
+    <div fxLayout="row" style="margin-bottom: 10px;">
+        <table class="table" *ngIf="uploader.queue.length > 0">
+        <thead>
+            <tr>
+                <th width="50%">File Name</th>
+                <th>Size</th>
+                <th>Progress</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of uploader.queue">
+                <td><strong>{{ item?.file?.name }}</strong></td>
+                <td nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+                <td>
+                    <div class="progress">
+                    {{item.progress}}%
+                    </div>
+                </td>
+                <td class="text-center">
+                    <span *ngIf="item.isSuccess">OK</span>
+                    <span *ngIf="item.isCancel">CANCELLED</span>
+                    <span *ngIf="item.isError">ERROR</span>
+                </td>
+                <td nowrap>
+                    <button type="button" class="mat-raised-button"
+                    (click)="item.remove()">
+                    <span class="glyphicon glyphicon-trash"></span> Remove
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
+    <div fxLayout="row" *ngIf="uploader.queue.length > 0">
+        <button type="button" class="mat-raised-button"
+        (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+        <span class="glyphicon glyphicon-upload"></span> Upload All
+        </button>
+    </div>
+</div>

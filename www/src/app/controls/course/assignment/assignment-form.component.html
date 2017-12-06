@@ -37,8 +37,8 @@
         <md-error *ngIf="formErrors.description">{{formErrors.description}}</md-error>
       </md-input-container>
     </div>
-    <div class="course-view-body" *ngIf="!adding && !editing && !studentView">
-      <div>
+    <div class="course-view-body" *ngIf="!adding && !editing">
+      <div *ngIf="!studentView">
         <div id="grid-table" fxLayout="row">
           <div class="table-wrapper">
             <table>
@@ -47,9 +47,6 @@
                 <th *ngFor="let column of columns" (click)="sort(column)">
                   {{column.name}}
                   <md-icon>{{column.sortIcon}}</md-icon>
-                </th>
-                <th>
-
                 </th>
               </tr>
               </thead>
@@ -60,15 +57,13 @@
                 <td>{{student.grade}}
                   <md-icon *ngIf="instructorCheck" (click)="editGrade(student, $event)" class="edit-icon" mdTooltip="Edit">edit</md-icon>
                 </td>
-                <td>
-
-                </td>
               </tr>
               </tbody>
             </table>
           </div>
         </div>
       </div>
+      <app-files-grid [studentView]="studentView" [assignment]="data.assignment"></app-files-grid>
     </div>
   </div>
 </form>

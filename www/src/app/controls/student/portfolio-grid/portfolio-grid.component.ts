@@ -3,7 +3,6 @@ import {MdDialog} from "@angular/material";
 import * as _ from "lodash";
 
 import {Student} from "../../../models/student.model";
-import {DataService} from "../../../services/data.service";
 import {PortfolioFormComponent} from "../../course/portfolio/portfolio-form.component";
 import {AppConstants} from "../../../app.constants";
 import {Principal} from "../../../shared/auth/principal.service";
@@ -27,7 +26,6 @@ export class PortfolioGridComponent implements OnInit {
   reverse: boolean;
 
   constructor(private dialog: MdDialog,
-              private dataService: DataService,
               private principal: Principal,
               private portfolioService: PortfolioService,
               private adminService: AdminService) {}

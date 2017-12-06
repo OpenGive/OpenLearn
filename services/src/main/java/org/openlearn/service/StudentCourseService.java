@@ -65,9 +65,15 @@ public class StudentCourseService {
 	 */
 	public StudentCourseDTO create(final StudentCourseDTO studentCourseDTO) {
 		log.debug("Request to save StudentCourse : {}", studentCourseDTO);
-		if (SecurityUtils.isAdmin() || inOrgOfCurrentUser(studentCourseDTO)) {
+		User user = userService.getCurrentUser();
+		boolean instructorCheck = true;
+		StudentCourse studentCourse = studentCourseTransformer.transform(studentCourseDTO);
+		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.INSTRUCTOR)) {
+			Course course = studentCourse.getCourse();
+			instructorCheck = user.getId() == course.getInstructor().getId();
+		}
 
-			StudentCourse studentCourse = studentCourseTransformer.transform(studentCourseDTO);
+		if (instructorCheck && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(studentCourseDTO))) {
 
 			StudentCourse existing = studentCourseRepository.findByStudentAndCourse(studentCourse.getStudent(), studentCourse.getCourse());
 			if(existing != null) { return studentCourseTransformer.transform(existing); }
@@ -96,8 +102,16 @@ public class StudentCourseService {
 
 	public StudentCourseDTO update(final StudentCourseDTO studentCourseDTO) {
 		log.debug("Request to save StudentCourse : {}", studentCourseDTO);
-		if (SecurityUtils.isAdmin() || inOrgOfCurrentUser(studentCourseDTO)) {
-			return studentCourseTransformer.transform(studentCourseRepository.save(studentCourseTransformer.transform(studentCourseDTO)));
+		User user = userService.getCurrentUser();
+		boolean instructorCheck = true;
+		StudentCourse studentCourse = studentCourseTransformer.transform(studentCourseDTO);
+		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.INSTRUCTOR)) {
+			Course course = studentCourse.getCourse();
+			instructorCheck = user.getId() == course.getInstructor().getId();
+		}
+
+		if (instructorCheck && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(studentCourseDTO))) {
+			return studentCourseTransformer.transform(studentCourseRepository.save(studentCourse));
 		}
 		// TODO: Error handling / logging
 		return null;
@@ -185,7 +199,14 @@ public class StudentCourseService {
 	public void delete(final Long id) {
 		log.debug("Request to delete StudentCourse : {}", id);
 		StudentCourse studentCourse = studentCourseRepository.findOne(id);
-		if (studentCourse != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(studentCourse))) {
+		User user = userService.getCurrentUser();
+		boolean instructorCheck = true;
+		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.INSTRUCTOR)) {
+			Course course = studentCourse.getCourse();
+			instructorCheck = user.getId() == course.getInstructor().getId();
+		}
+
+		if (studentCourse != null && instructorCheck &&  (SecurityUtils.isAdmin() || inOrgOfCurrentUser(studentCourse))) {
 			studentCourseRepository.delete(id);
 		} else {
 			// TODO: Error handling / logging

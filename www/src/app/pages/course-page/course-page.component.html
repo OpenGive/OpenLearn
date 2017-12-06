@@ -75,11 +75,7 @@
   <div fxFlex="50%" *ngIf="!studentView">
     <app-course-grid [course]="course"></app-course-grid>
   </div>
-  <div fxFlex="50%" *ngIf="!studentView">
-    <app-course-resource-grid [course]="course"></app-course-resource-grid>
-  </div>
-  <div fxFlex="100%" *ngIf="studentView">
+  <div fxFlex="50%">
     <app-course-resource-grid [course]="course"></app-course-resource-grid>
   </div>
 </div>
-

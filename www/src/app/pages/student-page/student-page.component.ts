@@ -2,11 +2,10 @@ import {Component, OnInit, Inject, Input} from '@angular/core';
 
 import {AdminTabs} from "../../controls/admin/admin.constants";
 import {AdminService} from "../../services/admin.service";
-import {DataService} from "../../services/data.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NotifyService} from "../../services/notify.service";
 import {Observable} from "rxjs/Observable";
-import {Router} from "@angular/router";
+import {Router, ActivatedRoute} from "@angular/router";
 import {Principal} from "../../shared/auth/principal.service";
 import {AppConstants} from "../../app.constants";
 import {User} from "../../models/user.model";
@@ -21,11 +20,10 @@ import * as _ from "lodash";
 })
 export class StudentPageComponent implements OnInit {
 
-
-  constructor(private fb: FormBuilder,
+  constructor(private route: ActivatedRoute,
+              private fb: FormBuilder,
               private adminService: AdminService,
               private notify: NotifyService,
-              private dataService: DataService,
               private router: Router,
               private principle: Principal) {}
 
@@ -82,8 +80,7 @@ export class StudentPageComponent implements OnInit {
     },
     password: {
       required: 'Password is required',
-      minlength: 'Password must be at least 6 characters long',
-      maxlength: 'Password cannot be more than 50 characters long'
+      pattern: 'Password must be between 8 and 100 characters and contain at least one letter, one digit, and one of !@#$%^&*()_+'
     },
     notes: {
       maxlength: 'Notes cannot be more than 2000 characters long'
@@ -152,7 +149,11 @@ export class StudentPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.studentView = this.principle.getRole() === AppConstants.Role.Student.name;
-    this.student = this.dataService.getStudent();
+
+    this.route.data.subscribe((data: {student: Student}) => {
+      this.student = data.student;
+    });
+
     this.studentId = this.student.id;
     console.log(this.student);
     this.buildForm();
@@ -177,11 +178,10 @@ export class StudentPageComponent implements OnInit {
         Validators.pattern(AppConstants.OLValidators.Login),
         Validators.maxLength(50)
       ]],
-      password: [this.student.password, this.adding ? [
+      password: [this.student.password, [
         Validators.required,
-        Validators.minLength(6),
-        Validators.maxLength(50)
-      ] : []],
+        Validators.pattern(AppConstants.OLValidators.Password)
+      ]],
       email: [this.student.email, [
         // Validators.email, TODO: This forces email to be required, https://github.com/angular/angular/pull/16902 is the fix, pattern below is the workaround
         Validators.pattern(AppConstants.OLValidators.Email),

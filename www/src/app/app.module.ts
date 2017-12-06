@@ -46,7 +46,6 @@ import {OLAdminModule} from "./controls/admin/admin.module";
 import {OLCourseModule} from "./controls/course/course.module";
 import {OLStudentModule} from "./controls/student/student.module";
 import {DashboardPageComponent} from "./pages/dashboard-page/dashboard-page.component";
-import {DataService} from "./services/data.service";
 
 @NgModule({
   declarations: [
@@ -99,7 +98,6 @@ import {DataService} from "./services/data.service";
     StateStorageService,
     HttpWrapperService,
     AdminService,
-    DataService,
     AdminGridService,
     NotifyService
   ],

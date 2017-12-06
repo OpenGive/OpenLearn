@@ -1,13 +1,14 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {MdDialog} from "@angular/material";
+import {Router} from "@angular/router";
 import * as _ from "lodash";
 
 import {Course} from '../../../models/course.model';
 import {CourseDialogComponent} from "../course-dialog.component";
 import {GradeDialogComponent} from "../grade-dialog.component";
-import {CourseStudentDialogComponent} from "../course-student-dialog.component";
 import {StudentCourseService} from "../../../services/student-course.service";
-import {DataService} from "../../../services/data.service";
+import {Principal} from "../../../shared/auth/principal.service";
+import {AppConstants} from "../../../app.constants";
 
 @Component({
   selector: 'app-course-grid',
@@ -22,13 +23,15 @@ export class CourseGridComponent implements OnInit {
 
   sortColumn: any;
   reverse: boolean;
+  instructorCheck: boolean = true;
 
-  constructor(private dialog: MdDialog,
-              private dataService: DataService,
-              private courseService: StudentCourseService) {}
+  constructor(private router: Router,
+              private dialog: MdDialog,
+              private courseService: StudentCourseService,
+              private principal: Principal) {}
 
   ngOnInit(): void {
-
+    if (this.principal.hasAuthority(AppConstants.Role.Instructor.name)) this.instructorCheck = this.course.instructorId == this.principal.getId();
     this.columns = [
       {
         id: "student.firstName",
@@ -89,7 +92,7 @@ export class CourseGridComponent implements OnInit {
   }
 
   viewStudentDetails(student): void {
-    this.dataService.setStudentById(student.id);
+    this.router.navigate(['/students/' + student.id]);
   }
 
   stopPropagation(e): void {

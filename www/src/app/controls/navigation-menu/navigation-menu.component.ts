@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
+import {Router} from "@angular/router";
 
 import {LoginService} from "../../services/login.service";
 import {Principal} from "../../shared/auth/principal.service";
 import {AppConstants} from "../../app.constants";
-import {DataService} from "../../services/data.service";
 
 @Component({
   selector: 'app-navigation-menu',
@@ -28,8 +28,8 @@ export class NavigationMenuComponent {
     Student: 'Student'
   };
 
-  constructor(private loginService: LoginService,
-              private dataService: DataService,
+  constructor(private router: Router,
+              private loginService: LoginService,
               private principal: Principal) {}
 
   authenticated(): boolean {
@@ -75,6 +75,6 @@ export class NavigationMenuComponent {
 
   toStudentPage()
   {
-    this.dataService.setStudentById(this.principal.getId());
+    this.router.navigate(['/students/' + this.principal.getId()]);
   }
 }

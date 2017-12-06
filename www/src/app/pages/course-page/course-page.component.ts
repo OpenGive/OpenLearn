@@ -1,18 +1,16 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit} from "@angular/core";
 
 import {AdminTabs} from "../../controls/admin/admin.constants";
 import {AdminService} from "../../services/admin.service";
-import {Course} from '../../models/course.model';
-import {DataService} from "../../services/data.service"
+import {Course} from "../../models/course.model";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NotifyService} from "../../services/notify.service";
 import {Observable} from "rxjs/Observable";
-import {Router} from "@angular/router";
+import {Router, ActivatedRoute} from "@angular/router";
 import {Principal} from "../../shared/auth/principal.service";
 import {AppConstants} from "../../app.constants";
 import {User} from "../../models/user.model";
 import {Session} from "../../models/session.model";
-import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-course-page',
@@ -21,12 +19,10 @@ import {UserService} from "../../services/user.service";
 })
 export class CoursePageComponent implements OnInit {
 
-
-  constructor(private fb: FormBuilder,
+  constructor(private route: ActivatedRoute,
+              private fb: FormBuilder,
               private adminService: AdminService,
               private notify: NotifyService,
-              private dataService: DataService,
-              private userService: UserService,
               private router: Router,
               private principal: Principal) {
   }
@@ -85,6 +81,11 @@ export class CoursePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.studentView = this.principal.hasAuthority(AppConstants.Role.Student.name);
+
+    this.route.data.subscribe((data: {course: Course}) => {
+      this.course = data.course;
+    });
+
     this.getData();
     if (this.principal.hasAuthority(AppConstants.Role.Instructor.name)) this.instructorCheck = this.course.instructorId == this.principal.getId();
     this.buildForm();
@@ -96,11 +97,6 @@ export class CoursePageComponent implements OnInit {
   }
 
   private getData(): void {
-    this.course = this.dataService.getCourse();
-    console.log(this.course);
-    if (typeof this.course == "undefined") {
-      this.router.navigate(['access-denied']);
-    }
     this.adminService.get(AdminTabs.Session.route, this.course.sessionId).subscribe(resp => {this.session = resp; this.courseForm.patchValue({sessionId: this.session})});
     this.adminService.get(AdminTabs.Instructor.route, this.course.instructorId).subscribe(resp => {this.instructor = resp; this.courseForm.patchValue({instructorId: this.instructor})});
   }
