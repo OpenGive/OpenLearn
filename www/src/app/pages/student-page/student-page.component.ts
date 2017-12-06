@@ -34,7 +34,12 @@ export class StudentPageComponent implements OnInit {
 
   states: any[];
   filteredStates: Observable<any[]>;
+  gradeLevels: any[];
   private roles: any[];
+
+  organizations:         any[];
+  filteredOrganizations: Observable<any[]>;
+  filteredGradeLevels:   Observable<any[]>;
 
   filteredInstructors: Observable<any[]>;
   filteredSessions: Observable<any[]>;
@@ -160,9 +165,12 @@ export class StudentPageComponent implements OnInit {
     this.setEditing(this.adding);
     this.resetPassword(false);
     this.getStates();
+    this.getGradeLevels();
+    this.getOrganizations();
     if(!this.studentView) {
     }
   }
+
   private buildForm(): void {
     this.studentForm = this.fb.group({
       firstName: [this.student.firstName, [
@@ -178,10 +186,7 @@ export class StudentPageComponent implements OnInit {
         Validators.pattern(AppConstants.OLValidators.Login),
         Validators.maxLength(50)
       ]],
-      password: [this.student.password, [
-        Validators.required,
-        Validators.pattern(AppConstants.OLValidators.Password)
-      ]],
+      password: [this.student.password, []],
       email: [this.student.email, [
         // Validators.email, TODO: This forces email to be required, https://github.com/angular/angular/pull/16902 is the fix, pattern below is the workaround
         Validators.pattern(AppConstants.OLValidators.Email),
@@ -295,8 +300,34 @@ export class StudentPageComponent implements OnInit {
       .map(val => val ? this.filterStates(val) : this.states.slice());
   }
 
+  private getGradeLevels(): void {
+    this.gradeLevels = AppConstants.GradeLevels;
+    this.filteredGradeLevels = this.studentForm.get('gradeLevel')
+      .valueChanges
+      .startWith(null)
+      .map(val => val ? this.filterGradeLevels(val) : this.gradeLevels.slice());
+  }
+
+  private getOrganizations(): void {
+    this.adminService.getAll(AdminTabs.Organization.route).subscribe(resp => {
+      this.organizations = resp;
+      this.filteredOrganizations = this.studentForm.get('organizationId')
+      .valueChanges
+      .startWith(null)
+      .map(val => val ? this.filterOrganizations(val) : this.organizations.slice());
+    });
+  }
+
   private filterStates(val: string): any[] {
     return this.states.filter(state => new RegExp(`${val}`, 'gi').test(state.name));
+  }
+
+  private filterGradeLevels(val: string): any[] {
+    return this.gradeLevels.filter(gradeLevel => new RegExp(`${val}`, 'gi').test(gradeLevel.name));
+  }
+
+  private filterOrganizations(val: string): any[] {
+    return this.organizations.filter(organization => new RegExp(`${val}`, 'gi').test(organization.name));
   }
 
   save(): void {
@@ -308,6 +339,7 @@ export class StudentPageComponent implements OnInit {
       }
     } else {
       this.studentForm.markAsTouched();
+      this.updateFormErrors(this.studentForm, this.formErrors, this.validationMessages);
     }
   }
 
@@ -365,6 +397,7 @@ export class StudentPageComponent implements OnInit {
   }
 
   cancel(): void {
+    this.buildForm();
     this.setEditing(this.adding);
     this.resetPassword(false);
   }
@@ -375,10 +408,22 @@ export class StudentPageComponent implements OnInit {
 
   resetPassword(changingPassword: boolean): void {
     this.changingPassword = changingPassword;
+    if (changingPassword) {
+      this.studentForm.controls.password.setValidators([
+        Validators.required,
+        Validators.pattern(AppConstants.OLValidators.Password)
+      ]);
+    } else {
+      this.studentForm.controls.password.clearValidators();
+    }
   }
 
   displayState(stateValue: string): string {
     return stateValue ? _.filter(AppConstants.States, {value: stateValue})[0].name : '';
+  }
+
+  displayGradeLevel(gradeLevelValue: string): string {
+    return gradeLevelValue ? _.filter(AppConstants.GradeLevels, {value: gradeLevelValue})[0].name : '';
   }
 
   displayInstructor(instructor: any): string {

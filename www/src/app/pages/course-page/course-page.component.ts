@@ -242,6 +242,7 @@ export class CoursePageComponent implements OnInit {
   }
 
   cancel(): void {
+    this.buildForm();
     this.setEditing(this.adding);
   }
 
