@@ -34,10 +34,12 @@ export class StudentPageComponent implements OnInit {
 
   states: any[];
   filteredStates: Observable<any[]>;
+  gradeLevels: any[];
   private roles: any[];
 
   organizations:         any[];
   filteredOrganizations: Observable<any[]>;
+  filteredGradeLevels:   Observable<any[]>;
 
   filteredInstructors: Observable<any[]>;
   filteredSessions: Observable<any[]>;
@@ -163,6 +165,7 @@ export class StudentPageComponent implements OnInit {
     this.setEditing(this.adding);
     this.resetPassword(false);
     this.getStates();
+    this.getGradeLevels();
     this.getOrganizations();
     if(!this.studentView) {
     }
@@ -300,6 +303,14 @@ export class StudentPageComponent implements OnInit {
       .map(val => val ? this.filterStates(val) : this.states.slice());
   }
 
+  private getGradeLevels(): void {
+    this.gradeLevels = AppConstants.GradeLevels;
+    this.filteredGradeLevels = this.studentForm.get('gradeLevel')
+      .valueChanges
+      .startWith(null)
+      .map(val => val ? this.filterGradeLevels(val) : this.gradeLevels.slice());
+  }
+
   private getOrganizations(): void {
     this.adminService.getAll(AdminTabs.Organization.route).subscribe(resp => {
       this.organizations = resp;
@@ -312,6 +323,10 @@ export class StudentPageComponent implements OnInit {
 
   private filterStates(val: string): any[] {
     return this.states.filter(state => new RegExp(`${val}`, 'gi').test(state.name));
+  }
+
+  private filterGradeLevels(val: string): any[] {
+    return this.gradeLevels.filter(gradeLevel => new RegExp(`${val}`, 'gi').test(gradeLevel.name));
   }
 
   private filterOrganizations(val: string): any[] {
@@ -399,6 +414,10 @@ export class StudentPageComponent implements OnInit {
 
   displayState(stateValue: string): string {
     return stateValue ? _.filter(AppConstants.States, {value: stateValue})[0].name : '';
+  }
+
+  displayGradeLevel(gradeLevelValue: string): string {
+    return gradeLevelValue ? _.filter(AppConstants.GradeLevels, {value: gradeLevelValue})[0].name : '';
   }
 
   displayInstructor(instructor: any): string {
