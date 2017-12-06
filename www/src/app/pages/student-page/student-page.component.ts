@@ -80,8 +80,7 @@ export class StudentPageComponent implements OnInit {
     },
     password: {
       required: 'Password is required',
-      minlength: 'Password must be at least 6 characters long',
-      maxlength: 'Password cannot be more than 50 characters long'
+      pattern: 'Password must be between 8 and 100 characters and contain at least one letter, one digit, and one of !@#$%^&*()_+'
     },
     notes: {
       maxlength: 'Notes cannot be more than 2000 characters long'
@@ -179,11 +178,10 @@ export class StudentPageComponent implements OnInit {
         Validators.pattern(AppConstants.OLValidators.Login),
         Validators.maxLength(50)
       ]],
-      password: [this.student.password, this.adding ? [
+      password: [this.student.password, [
         Validators.required,
-        Validators.minLength(6),
-        Validators.maxLength(50)
-      ] : []],
+        Validators.pattern(AppConstants.OLValidators.Password)
+      ]],
       email: [this.student.email, [
         // Validators.email, TODO: This forces email to be required, https://github.com/angular/angular/pull/16902 is the fix, pattern below is the workaround
         Validators.pattern(AppConstants.OLValidators.Email),

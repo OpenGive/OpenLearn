@@ -183,6 +183,13 @@ td {
   td:last-child, th:last-child {
     padding-right: 20px;
   }
+
+}
+
+@media only screen and (max-width: 1024px) {
+  md-error.mat-input-error {
+    font-size: 65%;
+  }
 }
 
 .mat-icon.menu-icon {
