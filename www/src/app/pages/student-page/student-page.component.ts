@@ -365,6 +365,7 @@ export class StudentPageComponent implements OnInit {
   }
 
   cancel(): void {
+    this.buildForm();
     this.setEditing(this.adding);
     this.resetPassword(false);
   }
