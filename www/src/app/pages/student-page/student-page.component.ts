@@ -186,10 +186,7 @@ export class StudentPageComponent implements OnInit {
         Validators.pattern(AppConstants.OLValidators.Login),
         Validators.maxLength(50)
       ]],
-      password: [this.student.password, [
-        Validators.required,
-        Validators.pattern(AppConstants.OLValidators.Password)
-      ]],
+      password: [this.student.password, []],
       email: [this.student.email, [
         // Validators.email, TODO: This forces email to be required, https://github.com/angular/angular/pull/16902 is the fix, pattern below is the workaround
         Validators.pattern(AppConstants.OLValidators.Email),
@@ -410,6 +407,14 @@ export class StudentPageComponent implements OnInit {
 
   resetPassword(changingPassword: boolean): void {
     this.changingPassword = changingPassword;
+    if (changingPassword) {
+      this.studentForm.controls.password.setValidators([
+        Validators.required,
+        Validators.pattern(AppConstants.OLValidators.Password)
+      ]);
+    } else {
+      this.studentForm.controls.password.clearValidators();
+    }
   }
 
   displayState(stateValue: string): string {
