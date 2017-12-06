@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {MdDialog} from "@angular/material";
+import {Router} from "@angular/router";
 import * as _ from "lodash";
 
 import {AdminDialogComponent} from "../admin-dialog.component";
@@ -8,8 +9,8 @@ import {AdminTabs} from "../admin.constants";
 import {AppConstants} from "../../../app.constants";
 import {AdminService} from "../../../services/admin.service";
 import {AdminGridService} from "../../../services/admin-grid.service";
-import {DataService} from "../../../services/data.service";
 import {Principal} from "../../../shared/auth/principal.service";
+
 
 @Component({
   selector: 'app-admin-grid',
@@ -29,10 +30,10 @@ export class AdminGridComponent implements OnInit {
   sessions: any[];
   instructors: any[];
 
-  constructor(private dialog: MdDialog,
+  constructor(private router: Router,
+              private dialog: MdDialog,
               private adminGridService: AdminGridService,
               private adminService: AdminService,
-              private dataService: DataService,
               private principal: Principal) {
   }
 
@@ -107,10 +108,10 @@ export class AdminGridComponent implements OnInit {
   viewDetails(row): void {
     switch (this.grid.route) {
       case AdminTabs.Course.route:
-        this.dataService.setCourseById(row.id);
+        this.router.navigate(['/courses/' + row.id]);
         break;
       case AdminTabs.Student.route:
-        this.dataService.setStudentById(row.id);
+        this.router.navigate(['/students/' + row.id]);
         break;
       default:
         this.dialog.open(AdminDialogComponent, {

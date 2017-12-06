@@ -2,11 +2,10 @@ import {Component, OnInit, Inject, Input} from '@angular/core';
 
 import {AdminTabs} from "../../controls/admin/admin.constants";
 import {AdminService} from "../../services/admin.service";
-import {DataService} from "../../services/data.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NotifyService} from "../../services/notify.service";
 import {Observable} from "rxjs/Observable";
-import {Router} from "@angular/router";
+import {Router, ActivatedRoute} from "@angular/router";
 import {Principal} from "../../shared/auth/principal.service";
 import {AppConstants} from "../../app.constants";
 import {User} from "../../models/user.model";
@@ -21,11 +20,10 @@ import * as _ from "lodash";
 })
 export class StudentPageComponent implements OnInit {
 
-
-  constructor(private fb: FormBuilder,
+  constructor(private route: ActivatedRoute,
+              private fb: FormBuilder,
               private adminService: AdminService,
               private notify: NotifyService,
-              private dataService: DataService,
               private router: Router,
               private principle: Principal) {}
 
@@ -152,7 +150,11 @@ export class StudentPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.studentView = this.principle.getRole() === AppConstants.Role.Student.name;
-    this.student = this.dataService.getStudent();
+
+    this.route.data.subscribe((data: {student: Student}) => {
+      this.student = data.student;
+    });
+
     this.studentId = this.student.id;
     console.log(this.student);
     this.buildForm();

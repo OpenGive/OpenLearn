@@ -8,9 +8,11 @@ import {AccessDeniedPageComponent} from './pages/access-denied-page/access-denie
 import {AdminPageComponent} from "./pages/admin-page/admin-page.component";
 import {DashboardPageComponent} from "./pages/dashboard-page/dashboard-page.component";
 import {CoursePageComponent} from "./pages/course-page/course-page.component";
+import {CourseResolver} from "./services/course-resolver.service";
 import {LandingPageComponent} from "./pages/landing-page/landing-page.component";
 import {LoginPageComponent} from "./pages/login-page/login-page.component";
 import {StudentPageComponent} from "./pages/student-page/student-page.component";
+import {StudentResolver} from "./services/student-resolver.service";
 import {ProfilePageComponent} from "./pages/profile-page/profile-page.component";
 import {AdminAdministratorsComponent} from "./controls/admin/admin-tabs/admin-administrators.component";
 import {AdminOrgAdministratorsComponent} from "./controls/admin/admin-tabs/admin-org-administrators.component";
@@ -130,18 +132,24 @@ const ROUTES: Routes = [
     canActivate: [UserRouteAccessService]
   },
   {
-    path: 'course',
+    path: 'courses/:id',
     component: CoursePageComponent,
     data: {
       authorities: [AppConstants.Role.Admin.name, AppConstants.Role.OrgAdmin.name, AppConstants.Role.Instructor.name, AppConstants.Role.Student.name]
     },
+    resolve: {
+      course: CourseResolver
+    },
     canActivate: [UserRouteAccessService]
   },
   {
-    path: 'student',
+    path: 'students/:id',
     component: StudentPageComponent,
     data: {
        authorities: [AppConstants.Role.Admin.name, AppConstants.Role.OrgAdmin.name, AppConstants.Role.Instructor.name, AppConstants.Role.Student.name]
+    },
+    resolve: {
+      student: StudentResolver
     },
     canActivate: [UserRouteAccessService]
   },
@@ -178,7 +186,11 @@ const ROUTES: Routes = [
     CommonModule,
     RouterModule.forRoot(ROUTES)
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [
+    CourseResolver,
+    StudentResolver
+  ]
 })
 export class AppRoutingModule {
 }

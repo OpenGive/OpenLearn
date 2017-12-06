@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {MdDialog} from "@angular/material";
+import {Router} from "@angular/router";
 import * as _ from "lodash";
 
 import {Course} from '../../../models/course.model';
@@ -8,9 +9,9 @@ import {StudentGradeDialogComponent} from "../grade-dialog.component";
 import {CourseStudentDialogComponent} from "../course-student-dialog.component";
 import {StudentCourseService} from "../../../services/student-course.service";
 import {Student} from "../../../models/student.model";
-import {DataService} from "../../../services/data.service";
 import {AppConstants} from "../../../app.constants";
 import {Principal} from "../../../shared/auth/principal.service";
+
 @Component({
   selector: 'app-student-grid',
   templateUrl: './student-grid.component.html',
@@ -26,8 +27,8 @@ export class StudentGridComponent implements OnInit {
   sortColumn: any;
   reverse: boolean;
 
-  constructor(private dialog: MdDialog,
-              private dataService: DataService,
+  constructor(private router: Router,
+              private dialog: MdDialog,
               private courseService: StudentCourseService,
               private principal: Principal) {}
 
@@ -93,7 +94,7 @@ export class StudentGridComponent implements OnInit {
   }
 
   viewCourseDetails(course): void {
-    this.dataService.setCourseById(course.id);
+    this.router.navigate(['/courses/' + course.id]);
   }
 
   stopPropagation(e): void {
