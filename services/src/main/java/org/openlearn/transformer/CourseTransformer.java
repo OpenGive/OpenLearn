@@ -3,6 +3,7 @@ package org.openlearn.transformer;
 import org.openlearn.domain.Authority;
 import org.openlearn.domain.Course;
 import org.openlearn.dto.CourseDTO;
+import org.openlearn.dto.InstructorDTO;
 import org.openlearn.repository.CourseRepository;
 import org.openlearn.repository.SessionRepository;
 import org.openlearn.repository.UserRepository;
@@ -24,11 +25,18 @@ public class CourseTransformer {
 
 	private final UserRepository userRepository;
 
+	private final UserTransformer userTransformer;
+
+	private final SessionTransformer sessionTransformer;
+
 	public CourseTransformer(final CourseRepository courseRepository, final SessionRepository sessionRepository,
-	                         final UserRepository userRepository) {
+	                         final UserRepository userRepository, final UserTransformer userTransformer,
+	                         final SessionTransformer sessionTransformer) {
 		this.courseRepository = courseRepository;
 		this.sessionRepository = sessionRepository;
 		this.userRepository = userRepository;
+		this.userTransformer = userTransformer;
+		this.sessionTransformer = sessionTransformer;
 	}
 
 	/**
@@ -49,6 +57,10 @@ public class CourseTransformer {
 		courseDTO.setInstructorId(course.getInstructor().getId());
 		courseDTO.setLocations(course.getLocations());
 		courseDTO.setTimes(course.getTimes());
+		courseDTO.setSession(this.sessionTransformer.transform(course.getSession()));
+		InstructorDTO instructorDTO = new InstructorDTO();
+		this.userTransformer.transformUserToDTO(instructorDTO, course.getInstructor());
+		courseDTO.setInstructor(instructorDTO);
 		return courseDTO;
 	}
 

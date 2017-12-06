@@ -35,6 +35,10 @@ public class CourseDTO {
 
 	private String times;
 
+	private SessionDTO session;
+
+	private InstructorDTO instructor;
+
 	public Long getId() {
 		return id;
 	}
@@ -106,6 +110,14 @@ public class CourseDTO {
 	public void setTimes(String times) {
 		this.times = times;
 	}
+
+	public SessionDTO getSession() { return session; }
+
+	public void setSession(SessionDTO session) { this.session = session; }
+
+	public InstructorDTO getInstructor() { return instructor; }
+
+	public void setInstructor(InstructorDTO instructor) { this.instructor = instructor; }
 
 	@Override
 	public boolean equals(Object o) {
