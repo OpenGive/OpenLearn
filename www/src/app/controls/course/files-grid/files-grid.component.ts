@@ -11,7 +11,6 @@ import {FileUploadComponent} from "../../fileupload/fileupload.component";
 import {CourseStudentDialogComponent} from "../course-student-dialog.component";
 import {AssignmentService} from "../../../services/assignment.service";
 import {PortfolioService} from "../../../services/portfolio.service";
-import {DataService} from "../../../services/data.service";
 
 @Component({
   selector: 'app-files-grid',
@@ -32,7 +31,6 @@ export class FilesGridComponent implements OnInit {
   public fileUploadSuccessCallback: Function;
 
   constructor(private dialog: MdDialog,
-              private dataService: DataService,
               private assignmentService: AssignmentService,
               private portfolioService: PortfolioService) {}
 
