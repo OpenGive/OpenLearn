@@ -235,6 +235,7 @@ export class AdminInstructorsFormComponent implements OnInit {
       }
     } else {
       this.instructorForm.markAsTouched();
+      this.updateFormErrors(this.instructorForm, this.formErrors, this.validationMessages);
     }
   }
 
@@ -317,8 +318,6 @@ export class AdminInstructorsFormComponent implements OnInit {
         Validators.required,
         Validators.pattern(AppConstants.OLValidators.Password)
       ]);
-    } else {
-      this.instructorForm.controls.password.clearValidators();
     }
   }
 

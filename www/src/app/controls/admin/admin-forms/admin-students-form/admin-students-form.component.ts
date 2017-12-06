@@ -21,6 +21,7 @@ export class AdminStudentsFormComponent implements OnInit {
 
   @Input('item') formStudent: any;
   @Input() adding: boolean;
+  @Input('organizations') organizations: any[];
   editing: boolean;
   changingPassword: boolean;
 
@@ -167,10 +168,10 @@ export class AdminStudentsFormComponent implements OnInit {
         Validators.pattern(AppConstants.OLValidators.Login),
         Validators.maxLength(50)
       ]],
-      password: [this.formStudent.password, this.adding ? [
+      password: [this.formStudent.password, [
         Validators.required,
         Validators.pattern(AppConstants.OLValidators.Password)
-      ] : []],
+      ]],
       notes: [this.formStudent.notes, [
         Validators.maxLength(2000)
       ]],
@@ -406,8 +407,6 @@ export class AdminStudentsFormComponent implements OnInit {
         Validators.required,
         Validators.pattern(AppConstants.OLValidators.Password)
       ]);
-    } else {
-      this.studentForm.controls.password.clearValidators();
     }
   }
 
