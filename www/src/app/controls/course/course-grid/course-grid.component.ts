@@ -8,6 +8,7 @@ import {CourseDialogComponent} from "../course-dialog.component";
 import {GradeDialogComponent} from "../grade-dialog.component";
 import {StudentCourseService} from "../../../services/student-course.service";
 import {Principal} from "../../../shared/auth/principal-storage.service";
+import {CourseAbility} from "../../../shared/course-ability.service";
 import {AppConstants} from "../../../app.constants";
 
 @Component({
@@ -23,15 +24,14 @@ export class CourseGridComponent implements OnInit {
 
   sortColumn: any;
   reverse: boolean;
-  instructorCheck: boolean = true;
 
   constructor(private router: Router,
               private dialog: MdDialog,
               private courseService: StudentCourseService,
-              private principal: Principal) {}
+              private principal: Principal,
+              private ability: CourseAbility) {}
 
   ngOnInit(): void {
-    if (this.principal.hasAuthority(AppConstants.Role.Instructor.name)) this.instructorCheck = this.course.instructorId == this.principal.getId();
     this.columns = [
       {
         id: "student.firstName",
@@ -48,7 +48,6 @@ export class CourseGridComponent implements OnInit {
     ];
 
     this.getStudents();
-
   }
 
   add(): void {
@@ -97,6 +96,18 @@ export class CourseGridComponent implements OnInit {
 
   stopPropagation(e): void {
     e.stopPropagation();
+  }
+
+  canAddStudents(): boolean {
+    return this.ability.canAddStudents(this.course);
+  }
+
+  canEditGrade(): boolean {
+    return this.ability.canEditGrade(this.course);
+  }
+
+  canDelete(): boolean {
+    return this.ability.canDelete(this.course);
   }
 
    private handleEditStudentResponse(resp): void {
