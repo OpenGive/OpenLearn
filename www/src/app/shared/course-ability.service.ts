@@ -7,7 +7,8 @@ import {Principal} from "./auth/principal-storage.service";
 
 @Injectable()
 export class CourseAbility {
-  private principal: Principal;
+  constructor(private principal: Principal) {
+  }
 
   canAddStudents(course: Course): boolean {
     return this.hasCreateUpdateDeleteAuthority(course);
