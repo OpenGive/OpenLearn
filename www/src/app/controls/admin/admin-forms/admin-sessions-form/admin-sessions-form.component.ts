@@ -67,7 +67,7 @@ export class AdminSessionsFormComponent implements OnInit {
   ngOnInit(): void {
     this.buildForm();
     this.setEditing(this.adding);
-    //this.getPrograms();
+    this.getPrograms();
   }
 
   private buildForm(): void {
@@ -207,8 +207,4 @@ export class AdminSessionsFormComponent implements OnInit {
   close(): void {
     this.dialogRef.close();
   }
-
-  // displayProgram(program: any): string {
-  //   return program ? program.name : '';
-  // }
 }
