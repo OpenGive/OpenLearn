@@ -10,22 +10,6 @@ export class PrincipalService {
   constructor(private accountService: AccountService,
               private principal: Principal) {}
 
-  isUser(id: number): boolean {
-    if (!this.authenticated || !this.userIdentity || !this.userIdentity.authority) {
-      return false;
-    }
-
-    return this.getId() === id;
-  }
-
-  inOrganization(id: number): boolean {
-    if (!this.authenticated || !this.userIdentity || !this.userIdentity.authority) {
-      return false;
-    }
-
-    return this.getOrganizationId() === id;
-  }
-
   identity(force?: boolean): Promise<Account> {
     if (!force && this.principal.isIdentityResolved()) {
       return Promise.resolve(this.principal.getUserIdentity());

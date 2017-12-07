@@ -15,7 +15,8 @@ import {
     Principal,
     PrincipalService,
     HasAnyAuthorityDirective,
-    HasAtLeastAuthorityDirective
+    HasAtLeastAuthorityDirective,
+    CourseAbility
 } from './';
 
 @NgModule({
@@ -35,6 +36,7 @@ import {
         StateStorageService,
         Principal,
         PrincipalService,
+        CourseAbility,
         CSRFService,
         AuthServerProvider,
         AuthService,

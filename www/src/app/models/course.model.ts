@@ -1,3 +1,6 @@
+import {Session} from './session.model';
+import {Instructor} from './instructor.model';
+
 export class Course {
   public id?: number;
   public name: string;
@@ -8,4 +11,7 @@ export class Course {
   public instructorId: number;
   public locations?: string;
   public times?: string;
+
+  public session?: Session;
+  public instructor?: Instructor;
 }
