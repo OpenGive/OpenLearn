@@ -14,7 +14,7 @@
             {{column.name}}
             <md-icon>sort</md-icon>
           </th>
-          <th width="10%"></th>
+          <th width="10%" *ngIf="canDeleteAnyCourse"></th>
         </tr>
         </thead>
         <tbody>
@@ -22,9 +22,9 @@
           <td>{{row.course.name}}</td>
           <td>{{row.course.description}}</td>
           <td>{{row.grade}}
-            <md-icon *ngIf="!studentView" (click)="editGrade(row, $event)" class="edit-icon" mdTooltip="Edit">edit</md-icon>
+            <md-icon *ngIf="canEditGrade(row.course)" (click)="editGrade(row, $event)" class="edit-icon" mdTooltip="Edit">edit</md-icon>
           </td>
-          <td style="text-align: right;" *ngIf="!studentView">
+          <td style="text-align: right;" *ngIf="canDelete(row.course)">
             <button md-raised-button type="button" (click)="stopPropagation($event)" *ngIf="!editing" [mdMenuTriggerFor]="deleteMenu" class="ol-dialog-button pink-button" mdTooltip="Delete">
               <md-icon>delete</md-icon>
             </button>
@@ -34,6 +34,7 @@
               <button md-menu-item type="button">No, go back</button>
             </md-menu>
           </td>
+          <td *ngIf="!canDelete(row.course) && canDeleteAnyCourse"></td>
         </tr>
         </tbody>
       </table>
