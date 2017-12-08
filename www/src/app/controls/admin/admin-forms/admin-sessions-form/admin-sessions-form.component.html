@@ -32,13 +32,12 @@
         <input mdInput formControlName="name" placeholder="Name*"/>
         <md-error *ngIf="formErrors.name">{{formErrors.name}}</md-error>
       </md-input-container>
-      <md-input-container fxFlex="30%">
-        <input mdInput formControlName="programId" placeholder="Program*" [mdAutocomplete]="programId">
+      <div fxLayout="column" fxFlex="30%">
+        <md-select formControlName="programId" placeholder="Program*">
+          <md-option *ngFor="let program of programs" [(value)]="program.id">{{program.name}}</md-option>
+        </md-select>
         <md-error *ngIf="formErrors.programId">{{formErrors.programId}}</md-error>
-        <md-autocomplete #programId="mdAutocomplete" [displayWith]="displayProgram">
-          <md-option *ngFor="let program of filteredPrograms | async" [value]="program">{{program.name}}</md-option>
-        </md-autocomplete>
-      </md-input-container>
+      </div>
       <md-input-container fxFlex="15%">
         <input mdInput formControlName="startDate" placeholder="Start Date*" [mdDatepicker]="startDate"/>
         <button mdSuffix *ngIf="editing" [mdDatepickerToggle]="startDate"></button>
