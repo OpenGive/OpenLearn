@@ -2,6 +2,7 @@ package org.openlearn.web.rest;
 
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import io.swagger.annotations.ApiParam;
+import org.openlearn.domain.FileInformation;
 import org.openlearn.dto.AssignmentDTO;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.service.AssignmentService;
@@ -146,15 +147,15 @@ public class AssignmentResource {
 	 */
 	@PostMapping(path="/{assignmentId}/upload")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
-	public String uploadCourseFile(@PathVariable final Long assignmentId,
+	public ResponseEntity uploadCourseFile(@PathVariable final Long assignmentId,
 								   @RequestParam("file") MultipartFile file,
 								   RedirectAttributes redirectAttributes) throws URISyntaxException {
-		storageService.store(file, assignmentId, null);
+		FileInformation response = storageService.store(file, assignmentId, null);
 		redirectAttributes.addFlashAttribute("message",
 			"You successfully uploaded " + file.getOriginalFilename() + "!");
 
-		return "You successfully uploaded " + file.getOriginalFilename() + "!";
-//		return ResponseEntity.created(new URI(ENDPOINT + response.getId())).body(response);
+		URI location = new URI(ENDPOINT + response.getId());
+		return ResponseEntity.created(location).body(response);
 	}
 
 	@GetMapping(path="/{assignmentId}/uploads")

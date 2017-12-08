@@ -7,8 +7,11 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import org.openlearn.config.ApplicationProperties;
+import org.openlearn.domain.Assignment;
 import org.openlearn.domain.Course;
 import org.openlearn.domain.FileInformation;
+import org.openlearn.domain.User;
+import org.openlearn.repository.AssignmentRepository;
 import org.openlearn.repository.CourseRepository;
 import org.openlearn.repository.FileRepository;
 import org.slf4j.Logger;
@@ -37,13 +40,21 @@ public class StorageService {
 
 	private final CourseRepository courseRepository;
 
+	private final AssignmentRepository assignmentRepository;
+
+	private final UserService userService;
+
 	@Autowired
 	private ApplicationProperties props;
 
 	public StorageService(final FileRepository fileRepository,
-			final CourseRepository courseRepository) {
+			final CourseRepository courseRepository,
+			final AssignmentRepository assignmentRepository,
+			final UserService userService) {
 		this.fileRepository = fileRepository;
 		this.courseRepository = courseRepository;
+		this.assignmentRepository = assignmentRepository;
+		this.userService = userService;
 	}
 
 	/**
@@ -69,16 +80,17 @@ public class StorageService {
 		}
 
 
-//		Course course = new Course();//courseRepository.findOne(courseId);
+		Assignment assignment = assignmentRepository.findOne(assignmentId);
+		Course course = assignment.getCourse();
+		User user = userService.getCurrentUser();
 
 		FileInformation fileInformation = new FileInformation();
 		fileInformation.setFileType("Course");
 		fileInformation.setFileUrl("https://s3.amazonaws.com/"+uploadBucketName+"/"+keyName);
-//		fileInformation.setUser(course.getInstructor());
-//		fileInformation.setCourse(course);
+		fileInformation.setUser(user);
+		fileInformation.setCourse(course);
 
-//		return fileRepository.save(fileInformation);
-		return fileInformation;
+		return fileRepository.save(fileInformation);
 	}
 
 	private static File convertToFile(MultipartFile file) throws IOException {
