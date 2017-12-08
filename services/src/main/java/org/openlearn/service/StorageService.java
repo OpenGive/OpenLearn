@@ -4,6 +4,7 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import org.openlearn.config.ApplicationProperties;
 import org.openlearn.domain.Course;
@@ -54,7 +55,7 @@ public class StorageService {
 	public FileInformation store(final MultipartFile file, Long assignmentId, Long portfolioId) {
 		log.debug("Request to save f : {}", file); //TODO cbernal fix this log statement
 
-		AmazonS3 s3client = new AmazonS3Client(new ProfileCredentialsProvider());
+		AmazonS3 s3client = AmazonS3ClientBuilder.defaultClient();
 		String uploadBucketName = props.getUploadBucket();
 		String keyName = getS3FilePrefix(assignmentId, portfolioId) + file.getOriginalFilename();
 		try {
@@ -81,23 +82,30 @@ public class StorageService {
 	}
 
 	private static File convertToFile(MultipartFile file) throws IOException {
-		File convFile = new File(file.getOriginalFilename());
-		convFile.createNewFile();
-		FileOutputStream fos = new FileOutputStream(convFile);
+		File convertedFile = new File(file.getOriginalFilename());
+		convertedFile.createNewFile();
+		FileOutputStream fos = new FileOutputStream(convertedFile);
 		fos.write(file.getBytes());
 		fos.close();
-		return convFile;
+		return convertedFile;
 	}
 
 	public ObjectListing getUploads(Long assignmentId, Long portfolioId) {
-		AmazonS3 s3client = new AmazonS3Client(new ProfileCredentialsProvider());
+		AmazonS3 s3client = AmazonS3ClientBuilder.defaultClient();
 		String uploadBucketName = props.getUploadBucket();
-		return s3client.listObjects(uploadBucketName, getS3FilePrefix(assignmentId, portfolioId));
+		log.debug("Getting uploads in " + uploadBucketName);
+		try {
+			return s3client.listObjects(uploadBucketName, getS3FilePrefix(assignmentId, portfolioId));
+		} catch(Exception e) {
+			log.error(e.getMessage());
+			return new ObjectListing();
+		}
 	}
 
 	public InputStream getUpload(Long assignmentId, Long portfolioId, String fileName) {
-		AmazonS3 s3client = new AmazonS3Client(new ProfileCredentialsProvider());
+		AmazonS3 s3client = AmazonS3ClientBuilder.defaultClient();
 		String uploadBucketName = props.getUploadBucket();
+		log.debug("Getting uploads in " + uploadBucketName);
 		try {
 			String key = getS3FilePrefix(assignmentId, portfolioId) + fileName;
 			S3Object s3Object = s3client.getObject(new GetObjectRequest(uploadBucketName, key));
@@ -110,7 +118,7 @@ public class StorageService {
 	}
 
 	public void deleteUpload(Long assignmentId, Long portfolioId, String fileName) {
-		AmazonS3 s3client = new AmazonS3Client(new ProfileCredentialsProvider());
+		AmazonS3 s3client = AmazonS3ClientBuilder.defaultClient();
 		String uploadBucketName = props.getUploadBucket();
 		try {
 			String key = getS3FilePrefix(assignmentId, portfolioId) + fileName;
