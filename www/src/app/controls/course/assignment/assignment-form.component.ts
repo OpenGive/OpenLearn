@@ -13,7 +13,7 @@ import {OrgAdmin} from "../../../models/org-admin.model";
 import {AdminTabs} from "../../admin/admin.constants";
 import {StudentCourseService} from "../../../services/student-course.service";
 import {AssignmentService} from "../../../services/assignment.service";
-import {Principal} from "../../../shared/auth/principal.service";
+import {Principal} from "../../../shared/auth/principal-storage.service";
 import {GradeDialogComponent} from "../grade-dialog.component";
 
 @Component({

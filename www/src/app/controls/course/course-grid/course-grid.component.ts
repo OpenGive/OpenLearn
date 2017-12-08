@@ -7,7 +7,7 @@ import {Course} from '../../../models/course.model';
 import {CourseDialogComponent} from "../course-dialog.component";
 import {GradeDialogComponent} from "../grade-dialog.component";
 import {StudentCourseService} from "../../../services/student-course.service";
-import {Principal} from "../../../shared/auth/principal.service";
+import {Principal} from "../../../shared/auth/principal-storage.service";
 import {AppConstants} from "../../../app.constants";
 
 @Component({

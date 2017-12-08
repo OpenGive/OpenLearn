@@ -10,7 +10,7 @@ import {CourseStudentDialogComponent} from "../course-student-dialog.component";
 import {StudentCourseService} from "../../../services/student-course.service";
 import {Student} from "../../../models/student.model";
 import {AppConstants} from "../../../app.constants";
-import {Principal} from "../../../shared/auth/principal.service";
+import {Principal} from "../../../shared/auth/principal-storage.service";
 
 @Component({
   selector: 'app-student-grid',

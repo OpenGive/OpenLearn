@@ -6,7 +6,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NotifyService} from "../../services/notify.service";
 import {Observable} from "rxjs/Observable";
 import {Router, ActivatedRoute} from "@angular/router";
-import {Principal} from "../../shared/auth/principal.service";
+import {Principal} from "../../shared/auth/principal-storage.service";
 import {AppConstants} from "../../app.constants";
 import {User} from "../../models/user.model";
 import {Student} from "../../models/student.model";

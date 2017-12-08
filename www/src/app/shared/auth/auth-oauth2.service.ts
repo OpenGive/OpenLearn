@@ -12,10 +12,6 @@ export class AuthServerProvider {
   constructor(private http: Http,
               private $localStorage: StateStorageService) {}
 
-  getToken() {
-    return this.$localStorage.getToken();
-  }
-
   login(credentials): Observable<any> {
     const data = 'username=' + encodeURIComponent(credentials.username) + '&password=' +
       encodeURIComponent(credentials.password) + '&grant_type=password&scope=read%20write&' +
@@ -42,10 +38,7 @@ export class AuthServerProvider {
   }
 
   logout(): Observable<any> {
-    return new Observable((observer) => {
-      this.http.post(this.backend + '/api/logout', {});
-      this.$localStorage.clearToken();
-      observer.complete();
-    });
+    this.$localStorage.clearToken();
+    return this.http.post(this.backend + '/api/logout', {});
   }
 }

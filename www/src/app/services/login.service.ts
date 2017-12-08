@@ -1,16 +1,18 @@
 import {Router} from '@angular/router';
 import {Injectable} from '@angular/core';
 
-import {Principal} from '../shared/auth/principal.service';
 import {AuthServerProvider} from '../shared/auth/auth-oauth2.service';
 import {AppConstants} from "../app.constants";
+import {PrincipalService} from "../shared/auth/principal.service";
+import {LogoutService} from "./logout.service";
 
 @Injectable()
 export class LoginService {
 
-  constructor(private principal: Principal,
+  constructor(private principalService: PrincipalService,
               private authServerProvider: AuthServerProvider,
-              private router: Router) {
+              private router: Router,
+              private logoutService: LogoutService) {
   }
 
   login(credentials, callback?) {
@@ -18,9 +20,10 @@ export class LoginService {
 
     return new Promise((resolve, reject) => {
       this.authServerProvider.login(credentials).subscribe((data) => {
-        this.principal.identity(true).then((account) => {
+        this.principalService.identity(true).then((account) => {
           resolve(data);
-          let home = 'access-denied';
+
+          let home;
           switch (account.authority) {
             case AppConstants.Role.Admin.name:
               home = AppConstants.Role.Admin.home;
@@ -34,20 +37,19 @@ export class LoginService {
             case AppConstants.Role.Student.name:
               home = AppConstants.Role.Student.home;
               break;
+            default:
+              home = 'access-denied';
+              break;
           }
           this.router.navigate([home]);
         });
         return cb();
       }, (err) => {
-        this.logout();
+        this.logoutService.logout();
         reject(err);
         return cb(err);
       });
     });
   }
 
-  logout() {
-    this.authServerProvider.logout().subscribe();
-    this.principal.authenticate(null);
-  }
 }

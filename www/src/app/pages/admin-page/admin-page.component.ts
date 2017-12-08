@@ -1,7 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 
 import {AdminTabs} from "../../controls/admin/admin.constants";
-import {Principal} from "../../shared/auth/principal.service";
+import {Principal} from "../../shared/auth/principal-storage.service";
 
 @Component({
   selector: 'app-admin-page',

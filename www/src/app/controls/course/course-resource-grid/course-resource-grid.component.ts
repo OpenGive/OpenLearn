@@ -8,7 +8,7 @@ import {AssignmentService} from "../../../services/assignment.service";
 import {AssignmentFormComponent} from "../assignment/assignment-form.component";
 import {AdminTabs} from "../../admin/admin.constants";
 import {AdminService} from "../../../services/admin.service";
-import {Principal} from "../../../shared/auth/principal.service";
+import {Principal} from "../../../shared/auth/principal-storage.service";
 import {AppConstants} from "../../../app.constants";
 
 @Component({

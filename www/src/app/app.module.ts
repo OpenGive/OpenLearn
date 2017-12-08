@@ -19,9 +19,11 @@ import {StudentCourseService} from "./services/student-course.service";
 import {AssignmentService} from "./services/assignment.service";
 import {PortfolioService} from "./services/portfolio.service";
 import {UserRouteAccessService} from "./shared/auth/user-route-access-service";
-import {Principal} from "./shared/auth/principal.service";
+import {Principal} from "./shared/auth/principal-storage.service";
+import {PrincipalService} from "./shared/auth/principal.service";
 import {AccountService} from "./shared/auth/account.service";
 import {LoginService} from "./services/login.service";
+import {LogoutService} from "./services/logout.service";
 import {CookieModule} from "ngx-cookie";
 import {AuthServerProvider} from "./shared/auth/auth-oauth2.service";
 import {StateStorageService} from "./shared/auth/state-storage.service";
@@ -90,8 +92,10 @@ import {DashboardPageComponent} from "./pages/dashboard-page/dashboard-page.comp
     PortfolioService,
     UserRouteAccessService,
     Principal,
+    PrincipalService,
     AccountService,
     LoginService,
+    LogoutService,
     AuthServerProvider,
     StateStorageService,
     HttpWrapperService,

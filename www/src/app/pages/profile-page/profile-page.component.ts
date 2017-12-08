@@ -1,7 +1,7 @@
 import {Component, Input} from "@angular/core";
 import {UserService} from "../../services/user.service";
 import {AccountService} from "../../shared/auth/account.service";
-import {Principal} from "../../shared/auth/principal.service";
+import {Principal} from "../../shared/auth/principal-storage.service";
 
 @Component({
   selector: 'profile-form',

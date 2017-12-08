@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
 import {Router} from "@angular/router";
 
-import {LoginService} from "../../services/login.service";
-import {Principal} from "../../shared/auth/principal.service";
+import {Principal} from "../../shared/auth/principal-storage.service";
 import {AppConstants} from "../../app.constants";
+import {LogoutService} from "../../services/logout.service";
 
 @Component({
   selector: 'app-navigation-menu',
@@ -29,7 +29,7 @@ export class NavigationMenuComponent {
   };
 
   constructor(private router: Router,
-              private loginService: LoginService,
+              private logoutService: LogoutService,
               private principal: Principal) {}
 
   authenticated(): boolean {
@@ -70,7 +70,7 @@ export class NavigationMenuComponent {
   }
 
   logout(): void {
-    this.loginService.logout();
+    this.logoutService.logout();
   }
 
   toStudentPage()

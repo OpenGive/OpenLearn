@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Rx';
 import { OpenLearnTestModule } from '../../../test.module';
 import { PasswordComponent } from '../../../../src/app/account/password/password.component';
 import { Password } from '../../../../src/app/account/password/password.service';
-import { Principal } from '../../../../src/app/shared/auth/principal.service';
+import { Principal } from '../../../../src/app/shared/auth/principal-storage.service';
 import { AccountService } from '../../../../src/app/shared/auth/account.service';
 
 

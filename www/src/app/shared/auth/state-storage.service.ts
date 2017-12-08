@@ -4,37 +4,36 @@ import { CookieService } from 'ngx-cookie';
 @Injectable()
 export class StateStorageService {
     constructor(
-        private $sessionStorage: CookieService
+        private cookieService: CookieService
     ) {}
 
     getPreviousState() {
-        return this.$sessionStorage.getObject('previousState');
+        return this.cookieService.getObject('previousState');
     }
 
     resetPreviousState() {
-        this.$sessionStorage.remove('previousState');
+        this.cookieService.remove('previousState');
     }
 
     storePreviousState(previousStateName, previousStateParams) {
         const previousState = { 'name': previousStateName, 'params': previousStateParams };
-        this.$sessionStorage.putObject('previousState', previousState);
+        this.cookieService.putObject('previousState', previousState);
     }
 
     getDestinationState() {
-        return this.$sessionStorage.getObject('destinationState');
+        return this.cookieService.getObject('destinationState');
     }
 
     storeToken(tokens: any) {
-        this.$sessionStorage.putObject('token', tokens);
+        this.cookieService.putObject('token', tokens);
     }
 
     getToken() {
-        let bearerToken = (this.$sessionStorage.getObject('token') as any);
-        return bearerToken.bearerToken;
+        return this.cookieService.getObject('token') as any;
     }
 
     clearToken() {
-      this.$sessionStorage.remove('bearerToken');
+      this.cookieService.remove('token');
     }
 
     storeDestinationState(destinationState, destinationStateParams, fromState) {
@@ -48,6 +47,6 @@ export class StateStorageService {
                 'name': fromState.name,
              }
         };
-        this.$sessionStorage.putObject('destinationState', destinationInfo);
+        this.cookieService.putObject('destinationState', destinationInfo);
     }
 }

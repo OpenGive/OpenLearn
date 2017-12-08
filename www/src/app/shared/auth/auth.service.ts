@@ -1,19 +1,23 @@
 import {Injectable} from "@angular/core";
 import {Router} from "@angular/router";
-import {Principal} from "./principal.service";
-import {StateStorageService} from "./state-storage.service";
 
+import {Principal} from "./principal-storage.service";
+import {StateStorageService} from "./state-storage.service";
+import {PrincipalService} from "./principal.service";
+
+// TODO: MD - Deprecated - remove this file
 @Injectable()
 export class AuthService {
 
     constructor(
         private principal: Principal,
+        private principalService: PrincipalService,
         private stateStorageService: StateStorageService,
         private router: Router
     ) {}
 
     authorize(force) {
-        const authReturn = this.principal.identity(force).then(authThen.bind(this));
+        const authReturn = this.principalService.identity(force).then(authThen.bind(this));
 
         return authReturn;
 
