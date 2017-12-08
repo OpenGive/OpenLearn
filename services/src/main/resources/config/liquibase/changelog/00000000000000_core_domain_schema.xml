@@ -397,4 +397,24 @@
 			<column name="last_modified_date" type="TIMESTAMP"/>
 		</createTable>
 	</changeSet>
+	<changeSet id="34" author="wspurgin">
+		<addColumn tableName="file_information">
+			<column name="user_id" type="BIGINT">
+			<constraints nullable="false"/>
+			</column>
+			<column name="course_id" type="BIGINT">
+			<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet id="35" author="wspurgin">
+		<addForeignKeyConstraint baseColumnNames="user_id" baseTableName="file_information"
+								 constraintName="file_information_userFK" deferrable="false"
+								 initiallyDeferred="false" referencedColumnNames="id" referencedTableName="user"/>
+	</changeSet>
+	<changeSet id="36" author="wspurgin">
+		<addForeignKeyConstraint baseColumnNames="course_id" baseTableName="file_information"
+								 constraintName="file_information_courseFK" deferrable="false"
+								 initiallyDeferred="false" referencedColumnNames="id" referencedTableName="course"/>
+	</changeSet>
 </databaseChangeLog>
