@@ -8,3 +8,9 @@
 // - - 2. IMPORTS - - //
 @import url('./styles/layout.scss');
 @import url('./styles/forms.scss');
+
+md-dialog-container md-select.mat-select-disabled {
+  .mat-select-value-text {
+    color: black;
+  }
+}
