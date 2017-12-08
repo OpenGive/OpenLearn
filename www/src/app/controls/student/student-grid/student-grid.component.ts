@@ -94,13 +94,10 @@ export class StudentGridComponent implements OnInit {
     this.courseService.getStudentCoursesByStudent(this.student.id).subscribe(courses => {
       this.courses = courses;
       console.log(courses);
-      for (let studnetCourse of courses) {
-        let hasPermission = this.canDelete(studnetCourse.course);
-        if (hasPermission) {
-          this.canDeleteAnyCourse = Observable.of(hasPermission);
-          break;
-        }
-      }
+      this.canDeleteAnyCourse = Observable.of(
+        _.some(courses, (course, index, collection) => {
+          this.canDelete(course)
+        }));
     })
   }
 
