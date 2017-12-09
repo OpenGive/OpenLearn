@@ -9,7 +9,7 @@ import {AppConstants} from "../.././../../app.constants";
 import {AdminService} from "../../../../services/admin.service";
 import {NotifyService} from "../../../../services/notify.service";
 import {UserService} from "../../../../services/user.service";
-import {Principal} from "../../../../shared/auth/principal.service";
+import {Principal} from "../../../../shared/auth/principal-storage.service";
 
 @Component({
   selector: 'admin-courses-form',

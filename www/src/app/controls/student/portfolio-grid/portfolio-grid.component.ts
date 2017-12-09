@@ -5,7 +5,7 @@ import * as _ from "lodash";
 import {Student} from "../../../models/student.model";
 import {PortfolioFormComponent} from "../../course/portfolio/portfolio-form.component";
 import {AppConstants} from "../../../app.constants";
-import {Principal} from "../../../shared/auth/principal.service";
+import {Principal} from "../../../shared/auth/principal-storage.service";
 import {PortfolioService} from "../../../services/portfolio.service";
 import {AdminService} from "../../../services/admin.service";
 import {AdminTabs} from "../../admin/admin.constants";

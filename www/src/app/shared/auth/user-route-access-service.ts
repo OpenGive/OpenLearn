@@ -2,13 +2,15 @@ import {Injectable} from "@angular/core";
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from "@angular/router";
 
 import {Principal} from "../";
+import {PrincipalService} from "./principal.service";
 
 @Injectable()
 export class UserRouteAccessService implements CanActivate {
 
     constructor(private router: Router,
-        private principal: Principal/*,
-        private stateStorageService: StateStorageService*/) {
+                private principal: Principal,
+                private principalService: PrincipalService/*,
+                private stateStorageService: StateStorageService*/) {
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Promise<boolean> {
@@ -25,11 +27,9 @@ export class UserRouteAccessService implements CanActivate {
     }
 
     checkLogin(authorities: string[], url: string): Promise<boolean> {
-        const principal = this.principal;
-        const p = principal.identity().then( (account) => {
-
+        const p = this.principalService.identity().then( (account) => {
             if (account) {
-                return principal.hasAnyAuthority(authorities).then( (hasAuth) => {
+                return this.principal.hasAnyAuthority(authorities).then( (hasAuth) => {
                     if (hasAuth) {
                         return Promise.resolve(true);
                     }
@@ -41,6 +41,7 @@ export class UserRouteAccessService implements CanActivate {
                 });
             }
 
+            this.router.navigate(['/login']);
             return Promise.resolve(false);
         });
         return Promise.resolve(p);

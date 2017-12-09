@@ -9,7 +9,7 @@ import {AdminTabs} from "../admin.constants";
 import {AppConstants} from "../../../app.constants";
 import {AdminService} from "../../../services/admin.service";
 import {AdminGridService} from "../../../services/admin-grid.service";
-import {Principal} from "../../../shared/auth/principal.service";
+import {Principal} from "../../../shared/auth/principal-storage.service";
 
 
 @Component({

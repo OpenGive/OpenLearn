@@ -11,7 +11,9 @@ import {
     AccountService,
     StateStorageService,
     LoginService,
+    LogoutService,
     Principal,
+    PrincipalService,
     HasAnyAuthorityDirective,
     HasAtLeastAuthorityDirective
 } from './';
@@ -28,9 +30,11 @@ import {
     providers: [
         CookieService,
         LoginService,
+        LogoutService,
         AccountService,
         StateStorageService,
         Principal,
+        PrincipalService,
         CSRFService,
         AuthServerProvider,
         AuthService,
