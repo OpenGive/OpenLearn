@@ -114,7 +114,7 @@ public class PortfolioItemResource {
 			PortfolioItemDTO response = portfolioItemService.save(portfolioItemDTO);
 			return ResponseEntity.created(new URI(ENDPOINT + response.getId())).body(response);
 		} else {
-			return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity(HttpStatus.FORBIDDEN);
 		}
 
 	}
@@ -134,7 +134,7 @@ public class PortfolioItemResource {
 			PortfolioItemDTO response = portfolioItemService.save(portfolioItemDTO);
 			return ResponseEntity.ok(response);
 		} else {
-			return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity(HttpStatus.FORBIDDEN);
 		}
 	}
 
@@ -154,7 +154,7 @@ public class PortfolioItemResource {
 			portfolioItemService.delete(id);
 			return ResponseEntity.ok().build();
 		} else {
-			return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity(HttpStatus.FORBIDDEN);
 		}
 	}
 
@@ -178,7 +178,7 @@ public class PortfolioItemResource {
 				"You successfully uploaded " + file.getOriginalFilename() + "!");
 			return ResponseEntity.created(new URI(ENDPOINT + response.getId())).body(response);
 		} else {
-			return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity(HttpStatus.FORBIDDEN);
 		}
 	}
 
@@ -191,7 +191,7 @@ public class PortfolioItemResource {
 			List<S3ObjectSummary> response = storageService.getUploads(null, portfolioId).getObjectSummaries();
 			return ResponseEntity.ok(response);
 		} else {
-			return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity(HttpStatus.FORBIDDEN);
 		}
 	}
 
@@ -220,7 +220,7 @@ public class PortfolioItemResource {
 				return new ResponseEntity("File Not Found", HttpStatus.NOT_FOUND);
 			}
 		} else {
-			return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity(HttpStatus.FORBIDDEN);
 		}
 	}
 
@@ -237,7 +237,7 @@ public class PortfolioItemResource {
 			}
 			return new ResponseEntity(HttpStatus.OK);
 		} else {
-			return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity(HttpStatus.FORBIDDEN);
 		}
 	}
 
