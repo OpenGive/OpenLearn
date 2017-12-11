@@ -137,13 +137,13 @@ public class PortfolioItemService {
 		}
 	}
 
-	private boolean inOrgOfCurrentUser(final PortfolioItemDTO portfolioItemDTO) {
+	public boolean inOrgOfCurrentUser(final PortfolioItemDTO portfolioItemDTO) {
 		User user = userService.getCurrentUser();
 		User student = userRepository.findOneByIdAndAuthority(portfolioItemDTO.getStudentId(), STUDENT);
 		return student != null && user.getOrganization().equals(student.getOrganization());
 	}
 
-	private boolean inOrgOfCurrentUser(final PortfolioItem portfolioItem) {
+	public boolean inOrgOfCurrentUser(final PortfolioItem portfolioItem) {
 		User user = userService.getCurrentUser();
 		return user.getOrganization().equals(portfolioItem.getStudent().getOrganization());
 	}
