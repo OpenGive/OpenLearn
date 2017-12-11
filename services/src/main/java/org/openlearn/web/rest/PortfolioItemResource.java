@@ -243,14 +243,12 @@ public class PortfolioItemResource {
 
 	private Boolean canUploadFilesToPortfolio(PortfolioItemDTO portfolioItem) {
 		return SecurityUtils.isAdmin() ||
-			isOrgAdmin(portfolioItem) ||
-			isPortfolioStudent(portfolioItem);
+			isOrgAdmin(portfolioItem);
 	}
 
 	private Boolean hasCreateUpdateDeleteAuthority(PortfolioItemDTO portfolioItem) {
 		return SecurityUtils.isAdmin() ||
-			isOrgAdmin(portfolioItem) ||
-			isPortfolioStudent(portfolioItem);
+			isOrgAdmin(portfolioItem);
 	}
 
 	private Boolean isOrgAdmin(PortfolioItemDTO portfolioItem) {
