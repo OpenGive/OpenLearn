@@ -44,11 +44,14 @@ export class HttpWrapperService {
 
     private handleError(response: Response) {
         if (response.status === 401) {
-            this.logoutService.logout();
-            this.router.navigate(['/login']);
-            this.notify.error('You have been automatically signed out. Please sign in again.')
+          this.logoutService.logout();
+          this.router.navigate(['/login']);
+          this.notify.error('You have been automatically signed out. Please sign in again.')
+          return Observable.throw(new Error('Token has expired. Logging the user out now.'));
+        } else if (response.status === 403) {
+          // They were forrbidden to do whatever attempted action
+          this.router.navigate(['/home']);
         }
-        return Observable.throw(new Error('Token has expired. Logging the user out now.'));
     }
 
     private getAuthHeader(): RequestOptionsArgs {

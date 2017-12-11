@@ -309,6 +309,10 @@ export class StudentPageComponent implements OnInit {
   }
 
   private getOrganizations(): void {
+    // Guard against attempting to retrieve all Organizations if the current
+    // user is the student.
+    if (this.studentView) { return; }
+
     this.adminService.getAll(AdminTabs.Organization.route).subscribe(resp => {
       this.organizations = resp;
       this.filteredOrganizations = this.studentForm.get('organizationId')
