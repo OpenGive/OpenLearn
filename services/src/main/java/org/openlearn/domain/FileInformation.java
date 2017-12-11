@@ -27,9 +27,13 @@ public class FileInformation {
 	@JoinColumn(name = "uploadedByUserId")
 	private User uploadedByUser;
 
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "courseId")
-	private Course course;
+	@ManyToOne
+	@JoinColumn(name = "assignmentId")
+	private Assignment assignment;
+
+	@ManyToOne
+	@JoinColumn(name = "portfolioItemId")
+	private PortfolioItem portfolioItem;
 
 	@Column(name = "fileUrl", nullable = false)
 	private String fileUrl;
@@ -57,13 +61,13 @@ public class FileInformation {
 
 	public void setUploadedByUser(User uploadedByUser) { this.uploadedByUser = uploadedByUser; }
 
-	public Course getCourse() {
-		return course;
-	}
+	public Assignment getAssignment() { return assignment; }
 
-	public void setCourse(Course course) {
-		this.course = course;
-	}
+	public void setAssignment(Assignment assignment) { this.assignment = assignment; }
+
+	public PortfolioItem getPortfolio() { return portfolioItem; }
+
+	public void setPortfolioItem(PortfolioItem portfolioItem) { this.portfolioItem = portfolioItem; }
 
 	public String getFileUrl() {
 		return fileUrl;

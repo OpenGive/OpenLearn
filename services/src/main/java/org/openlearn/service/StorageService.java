@@ -87,11 +87,12 @@ public class StorageService {
 		if (assignmentId != null) {
 			Assignment assignment = assignmentRepository.findOne(assignmentId);
 			Course course = assignment.getCourse();
-			fileInformation.setCourse(course);
+			fileInformation.setAssignment(assignment);
 			fileInformation.setUser(course.getInstructor());
-			fileInformation.setFileType("Course");
+			fileInformation.setFileType("Assignment");
 		} else {
 			PortfolioItem portfolioItem = portfolioItemRepository.findOne(portfolioId);
+			fileInformation.setPortfolioItem(portfolioItem);
 			fileInformation.setUser(portfolioItem.getStudent());
 			fileInformation.setFileType("Portfolio");
 		}
