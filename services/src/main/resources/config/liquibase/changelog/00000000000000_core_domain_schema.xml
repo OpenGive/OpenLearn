@@ -417,4 +417,9 @@
 								 constraintName="file_information_courseFK" deferrable="false"
 								 initiallyDeferred="false" referencedColumnNames="id" referencedTableName="course"/>
 	</changeSet>
+	<changeSet id="37" author="wspurgin">
+		<dropNotNullConstraint columnDataType="BIGINT"
+							   columnName="course_id"
+							   tableName="file_information"/>
+	</changeSet>
 </databaseChangeLog>

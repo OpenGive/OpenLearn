@@ -22,7 +22,6 @@ public class FileInformation {
 	@JoinColumn(name = "userId")
 	private User user;
 
-	@NotNull
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "courseId")
 	private Course course;

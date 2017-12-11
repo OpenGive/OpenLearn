@@ -80,15 +80,18 @@ public class StorageService {
 		}
 
 
-		Assignment assignment = assignmentRepository.findOne(assignmentId);
-		Course course = assignment.getCourse();
 		User user = userService.getCurrentUser();
-
 		FileInformation fileInformation = new FileInformation();
-		fileInformation.setFileType("Course");
-		fileInformation.setFileUrl("https://s3.amazonaws.com/"+uploadBucketName+"/"+keyName);
+		fileInformation.setFileUrl("https://s3.amazonaws.com/" + uploadBucketName + "/" + keyName);
 		fileInformation.setUser(user);
-		fileInformation.setCourse(course);
+		if (assignmentId != null) {
+			Assignment assignment = assignmentRepository.findOne(assignmentId);
+			Course course = assignment.getCourse();
+			fileInformation.setCourse(course);
+			fileInformation.setFileType("Course");
+		} else {
+			fileInformation.setFileType("Portfolio");
+		}
 
 		return fileRepository.save(fileInformation);
 	}

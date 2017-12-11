@@ -11,6 +11,7 @@ import {FileUploadComponent} from "../../fileupload/fileupload.component";
 import {CourseStudentDialogComponent} from "../course-student-dialog.component";
 import {AssignmentService} from "../../../services/assignment.service";
 import {PortfolioService} from "../../../services/portfolio.service";
+import {FileGuardian} from '../../../shared/file-guardian.service';
 
 @Component({
   selector: 'app-files-grid',
@@ -32,7 +33,8 @@ export class FilesGridComponent implements OnInit {
 
   constructor(private dialog: MdDialog,
               private assignmentService: AssignmentService,
-              private portfolioService: PortfolioService) {}
+              private portfolioService: PortfolioService,
+              private fileGuardian: FileGuardian) {}
 
   ngOnInit(): void {
 
@@ -74,11 +76,11 @@ export class FilesGridComponent implements OnInit {
   }
 
   removeFile(key: String): void {
-    if (this.assignment) {
+    if (this.fileGuardian.canHaveFiles(this.assignment)) {
       this.assignmentService.deleteAssignmentFile(this.assignment.id, key).subscribe(resp => {
         this.files = _.filter(this.files, file => file.key !== key);
       });
-    } else if (this.portfolio) {
+    } else if (this.fileGuardian.canHaveFiles(this.portfolio)) {
       this.portfolioService.deletePortfolioFile(this.portfolio.id, key).subscribe(resp => {
         this.files = _.filter(this.files, file => file.key !== key);
       });
@@ -86,14 +88,14 @@ export class FilesGridComponent implements OnInit {
   }
 
   getFiles(): void {
-    if (this.assignment) {
+    if (this.fileGuardian.canHaveFiles(this.assignment)) {
       this.assignmentService.getAssignmentFiles(this.assignment.id).subscribe(files => {
         this.files = files;
         for (let fileIdx = 0; fileIdx < this.files.length; fileIdx++) {
           files[fileIdx].key = files[fileIdx].key.substring(files[fileIdx].key.indexOf("_", 2)+1);
         }
       });
-    } else if (this.portfolio) {
+    } else if (this.fileGuardian.canHaveFiles(this.portfolio)) {
       this.portfolioService.getPortfolioFiles(this.portfolio.id).subscribe(files => {
         this.files = files;
         for (let fileIdx = 0; fileIdx < this.files.length; fileIdx++) {
@@ -104,12 +106,12 @@ export class FilesGridComponent implements OnInit {
   }
 
   getFile(file): void {
-    if (this.assignment) {
+    if (this.fileGuardian.canHaveFiles(this.assignment)) {
       let fileName = file.key;
       this.assignmentService.getAssignmentFile(this.assignment.id, fileName).subscribe(blob => {
         importedSaveAs(blob, fileName);
       });;
-    } else if (this.portfolio) {
+    } else if (this.fileGuardian.canHaveFiles(this.portfolio)) {
       let fileName = file.key;
       this.portfolioService.getPortfolioFile(this.portfolio.id, fileName).subscribe(blob => {
         importedSaveAs(blob, fileName);
