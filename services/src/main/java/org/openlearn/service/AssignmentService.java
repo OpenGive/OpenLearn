@@ -154,30 +154,45 @@ public class AssignmentService {
 		}
 
 		if (assignment != null && instructorCheck && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(assignment))) {
-			
+
 			for (StudentAssignment studentAssignment : studentAssignmentRepository.findByAssignment(assignment)) {
 				studentAssignmentRepository.delete(studentAssignment.getId());
 			}
-			
+
 			assignmentRepository.delete(id);
 		} else {
 			// TODO: Error handling / logging
 		}
 	}
 
-	private boolean inOrgOfCurrentUser(final AssignmentDTO assignmentDTO) {
+	public boolean inOrgOfCurrentUser(final AssignmentDTO assignmentDTO) {
 		User user = userService.getCurrentUser();
 		Course course = courseRepository.findOne(assignmentDTO.getCourseId());
 		return course != null && user.getOrganization().equals(course.getSession().getProgram().getOrganization());
 	}
 
-	private boolean inOrgOfCurrentUser(final Assignment assignment) {
+	public boolean inOrgOfCurrentUser(final Assignment assignment) {
 		User user = userService.getCurrentUser();
 		return user.getOrganization().equals(assignment.getCourse().getSession().getProgram().getOrganization());
 	}
 
-	private boolean inOrgOfCurrentUser(final Course course) {
+	public boolean inOrgOfCurrentUser(final Course course) {
 		User user = userService.getCurrentUser();
 		return user.getOrganization().equals(course.getOrganization());
+	}
+
+	public boolean currentUserIsCourseInstructor(final AssignmentDTO assignmentDTO) {
+		User user = userService.getCurrentUser();
+		Course course = courseRepository.findOne(assignmentDTO.getCourseId());
+
+		return user.equals(course.getInstructor());
+	}
+
+	public boolean currentUserIsEnrolledIn(final AssignmentDTO assignmentDTO) {
+		User user = userService.getCurrentUser();
+		Course course = courseRepository.findOne(assignmentDTO.getCourseId());
+		StudentCourse studentCourse = studentCourseRepository.findByStudentAndCourse(user, course);
+
+		return studentCourse != null;
 	}
 }

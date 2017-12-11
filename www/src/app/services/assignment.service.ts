@@ -20,7 +20,7 @@ export class AssignmentService {
 
   private handleError(error: Response) {
     console.error(error);
-    return Observable.throw(error.json() || {message: 'Server Error'});
+    return Observable.throw((error.json !== undefined ? error.json() : error) || {message: 'Server Error'});
   }
 
   getAssignmentStudentByAssignmentId(assignmentId: Number): Observable<any> {
