@@ -1,19 +1,15 @@
 package org.openlearn.service;
 
 import com.amazonaws.AmazonServiceException;
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import org.openlearn.config.ApplicationProperties;
-import org.openlearn.domain.Assignment;
-import org.openlearn.domain.Course;
-import org.openlearn.domain.FileInformation;
-import org.openlearn.domain.User;
+import org.openlearn.domain.*;
 import org.openlearn.repository.AssignmentRepository;
 import org.openlearn.repository.CourseRepository;
 import org.openlearn.repository.FileRepository;
+import org.openlearn.repository.PortfolioItemRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,17 +40,21 @@ public class StorageService {
 
 	private final UserService userService;
 
+	private final PortfolioItemRepository portfolioItemRepository;
+
 	@Autowired
 	private ApplicationProperties props;
 
 	public StorageService(final FileRepository fileRepository,
 			final CourseRepository courseRepository,
 			final AssignmentRepository assignmentRepository,
-			final UserService userService) {
+			final UserService userService,
+	        final PortfolioItemRepository portfolioItemRepository) {
 		this.fileRepository = fileRepository;
 		this.courseRepository = courseRepository;
 		this.assignmentRepository = assignmentRepository;
 		this.userService = userService;
+		this.portfolioItemRepository = portfolioItemRepository;
 	}
 
 	/**
@@ -83,13 +83,16 @@ public class StorageService {
 		User user = userService.getCurrentUser();
 		FileInformation fileInformation = new FileInformation();
 		fileInformation.setFileUrl("https://s3.amazonaws.com/" + uploadBucketName + "/" + keyName);
-		fileInformation.setUser(user);
+		fileInformation.setUploadedByUser(user);
 		if (assignmentId != null) {
 			Assignment assignment = assignmentRepository.findOne(assignmentId);
 			Course course = assignment.getCourse();
 			fileInformation.setCourse(course);
+			fileInformation.setUser(course.getInstructor());
 			fileInformation.setFileType("Course");
 		} else {
+			PortfolioItem portfolioItem = portfolioItemRepository.findOne(portfolioId);
+			fileInformation.setUser(portfolioItem.getStudent());
 			fileInformation.setFileType("Portfolio");
 		}
 
