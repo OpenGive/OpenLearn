@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {MdDialog} from "@angular/material";
 import {Router} from "@angular/router";
+import {Observable} from "rxjs/Observable";
 import * as _ from "lodash";
 
 import {Course} from '../../../models/course.model';
@@ -11,6 +12,7 @@ import {StudentCourseService} from "../../../services/student-course.service";
 import {Student} from "../../../models/student.model";
 import {AppConstants} from "../../../app.constants";
 import {Principal} from "../../../shared/auth/principal-storage.service";
+import {CourseAbility} from "../../../shared/course-ability.service";
 
 @Component({
   selector: 'app-student-grid',
@@ -24,13 +26,16 @@ export class StudentGridComponent implements OnInit {
   columns: any[];
   studentView: boolean;
 
+  canDeleteAnyCourse: Observable<boolean>;
+
   sortColumn: any;
   reverse: boolean;
 
   constructor(private router: Router,
               private dialog: MdDialog,
               private courseService: StudentCourseService,
-              private principal: Principal) {}
+              private principal: Principal,
+              private ability: CourseAbility) {}
 
   ngOnInit(): void {
     this.studentView = this.principal.hasAuthority(AppConstants.Role.Student.name);
@@ -50,7 +55,6 @@ export class StudentGridComponent implements OnInit {
     ];
 
     this.getCourses();
-
   }
 
   add(): void {
@@ -90,6 +94,10 @@ export class StudentGridComponent implements OnInit {
     this.courseService.getStudentCoursesByStudent(this.student.id).subscribe(courses => {
       this.courses = courses;
       console.log(courses);
+      this.canDeleteAnyCourse = Observable.of(
+        _.some(courses, (course, index, collection) => {
+          this.canDelete(course)
+        }));
     })
   }
 
@@ -101,6 +109,13 @@ export class StudentGridComponent implements OnInit {
     e.stopPropagation();
   }
 
+  canEditGrade(course: Course): boolean {
+    return this.ability.canEditGrade(course);
+  }
+
+  canDelete(course: Course): boolean {
+    return this.ability.canDelete(course);
+  }
 
   private handleAddStudentResponse(resp): void {
     if (resp) {

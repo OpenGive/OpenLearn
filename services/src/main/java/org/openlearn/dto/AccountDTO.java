@@ -55,6 +55,8 @@ public class AccountDTO {
 
 	private String orgRole;
 
+	private Long organizationId;
+
 	public Long getId() {
 		return id;
 	}
@@ -165,6 +167,14 @@ public class AccountDTO {
 
 	public void setOrgRole(String orgRole) {
 		this.orgRole = orgRole;
+	}
+
+	public Long getOrganizationId() {
+		return organizationId;
+	}
+
+	public void setOrganizationId(Long organizationId) {
+		this.organizationId = organizationId;
 	}
 
 	@Override

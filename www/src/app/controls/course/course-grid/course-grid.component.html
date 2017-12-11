@@ -1,7 +1,7 @@
 <div>
   <div id="grid-header" fxLayout="row" fxLayoutAlign="space-between center">
     <span class="grid-header-text">Enrolled Students</span>
-    <button *ngIf="instructorCheck" md-raised-button fxHide.xs (click)="add()" class="grid-add-button" mdTooltip="Add">
+    <button *ngIf="canAddStudents()" md-raised-button fxHide.xs (click)="add()" class="grid-add-button" mdTooltip="Add">
       <md-icon>add</md-icon>
     </button>
   </div>
@@ -14,7 +14,7 @@
             {{column.name}}
             <md-icon>sort</md-icon>
           </th>
-          <th width="10%"></th>
+          <th width="10%" *ngIf="canDelete()"></th>
         </tr>
         </thead>
         <tbody>
@@ -22,10 +22,10 @@
           <td>{{row.student.firstName}}</td>
           <td>{{row.student.lastName}}</td>
           <td>{{row.grade}}
-            <md-icon *ngIf="instructorCheck" (click)="editGrade(row, $event)" class="edit-icon" mdTooltip="Edit">edit</md-icon>
+            <md-icon *ngIf="canEditGrade()" (click)="editGrade(row, $event)" class="edit-icon" mdTooltip="Edit">edit</md-icon>
           </td>
-          <td style="text-align: right;">
-            <button md-raised-button type="button" (click)="stopPropagation($event)" *ngIf="instructorCheck && !editing" [mdMenuTriggerFor]="deleteMenu" class="ol-dialog-button pink-button" mdTooltip="Delete">
+          <td style="text-align: right;" *ngIf="canDelete()">
+            <button md-raised-button type="button" (click)="stopPropagation($event)" *ngIf="canDelete() && !editing" [mdMenuTriggerFor]="deleteMenu" class="ol-dialog-button pink-button" mdTooltip="Delete">
               <md-icon>delete</md-icon>
             </button>
             <md-menu #deleteMenu="mdMenu">

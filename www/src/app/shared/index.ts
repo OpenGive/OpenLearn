@@ -10,6 +10,7 @@ export * from '../services/login.service';
 export * from '../services/logout.service';
 export * from '../models/account.model';
 export * from '../models/user.model';
+export * from './course-ability.service';
 export * from './shared-libs.module';
 export * from './shared-common.module';
 export * from './shared.module';

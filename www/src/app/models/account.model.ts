@@ -13,4 +13,5 @@ export class Account {
   public postalCode?: string;
   public notes?: string;
   public orgRole?: string;
+  public organizationId?: number;
 }

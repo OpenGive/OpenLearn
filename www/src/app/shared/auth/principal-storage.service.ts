@@ -69,6 +69,22 @@ export class Principal {
     return this.userIdentity !== null;
   }
 
+  isUser(id: number): boolean {
+    if (!this.authenticated || !this.userIdentity || !this.userIdentity.authority) {
+      return false;
+    }
+
+    return this.getId() === id;
+  }
+
+  inOrganization(id: number): boolean {
+    if (!this.authenticated || !this.userIdentity || !this.userIdentity.authority) {
+      return false;
+    }
+
+    return this.getOrganizationId() === id;
+  }
+
   getAuthenticationState(): Observable<Account> {
     return this.authenticationState.asObservable();
   }
@@ -91,5 +107,9 @@ export class Principal {
 
   getId(): Number {
     return this.isIdentityResolved() ? this.userIdentity.id : null;
+  }
+
+  getOrganizationId(): number {
+    return this.isIdentityResolved() ? this.userIdentity.organizationId : null;
   }
 }
