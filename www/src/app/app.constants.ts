@@ -93,5 +93,6 @@ export class AppConstants {
     Password: "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+])[A-Za-z\\d!@#$%^&*()_+]{8,100}$",
     Points: "[0-9]+",
     PostalCode: "^[0-9]{5}(-[0-9]{4})?$"
-  }
+  };
+  public static ReCaptchaSiteKey = '6LfmlDwUAAAAALX8BAzR1PdQqdiwfGXNzkob3E51';
 }

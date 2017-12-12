@@ -15,7 +15,6 @@ export class AuthServerProvider {
   login(credentials): Observable<any> {
     const data = 'username=' + encodeURIComponent(credentials.username) +
       '&password=' + encodeURIComponent(credentials.password) +
-      '&recaptcha=' + encodeURIComponent(credentials.reCaptcha) +
       '&grant_type=password' +
       '&scope=read%20write' +
       '&client_secret=my-secret-token-to-change-in-production' +
@@ -23,7 +22,8 @@ export class AuthServerProvider {
     const headers = new Headers({
       'Content-Type': 'application/x-www-form-urlencoded',
       'Accept': 'application/json',
-      'Authorization': 'Basic ' + btoa('openlearnapp' + ':' + 'my-secret-token-to-change-in-production')
+      'Authorization': 'Basic ' + btoa('openlearnapp' + ':' + 'my-secret-token-to-change-in-production'),
+      'ReCaptcha-Response': encodeURIComponent(credentials.reCaptcha)
     });
 
     return this.http.post(this.backend + '/oauth/token', data, {
