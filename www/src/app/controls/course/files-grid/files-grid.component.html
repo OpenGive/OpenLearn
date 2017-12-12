@@ -18,7 +18,7 @@
         <tr *ngFor="let row of files">
           <td>{{row.key}}</td>
           <td>{{row.uploadedByUser.firstName}} {{row.uploadedByUser.lastName}}</td>
-          <td>{{row.createdDate | date: 'MM/dd/yy h:mm'}}</td>
+          <td>{{row.createdDate | date: 'MM/dd/yy h:mm Z'}}</td>
           <td style="text-align: right;">
             <div fxLayout="row" fxLayoutAlign="space-between center">
               <button *ngIf="!studentView && !editing" md-raised-button type="button" (click)="stopPropagation($event)" [mdMenuTriggerFor]="deleteMenu" class="ol-dialog-button pink-button" mdTooltip="Delete">
@@ -30,7 +30,7 @@
             </div>
             <md-menu #deleteMenu="mdMenu">
               <button md-menu-item type="button" disabled class="pink-button">Are you sure?</button>
-              <button md-menu-item type="button" (click)="removeFile(row.key)">Yes, delete it</button>
+              <button md-menu-item type="button" (click)="removeFile(row)">Yes, delete it</button>
               <button md-menu-item type="button">No, go back</button>
             </md-menu>
           </td>

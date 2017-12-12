@@ -76,14 +76,14 @@ export class FilesGridComponent implements OnInit {
     );
   }
 
-  removeFile(key: String): void {
+  removeFile(file): void {
     if (this.fileGuardian.canHaveFiles(this.assignment)) {
-      this.assignmentService.deleteAssignmentFile(this.assignment.id, key).subscribe(resp => {
-        this.files = _.filter(this.files, file => file.key !== key);
+      this.assignmentService.deleteAssignmentFile(this.assignment.id, file.id).subscribe(resp => {
+        this.files = _.filter(this.files, f => f.id !== file.id);
       });
     } else if (this.fileGuardian.canHaveFiles(this.portfolio)) {
-      this.portfolioService.deletePortfolioFile(this.portfolio.id, key).subscribe(resp => {
-        this.files = _.filter(this.files, file => file.key !== key);
+      this.portfolioService.deletePortfolioFile(this.portfolio.id, file.id).subscribe(resp => {
+        this.files = _.filter(this.files, f => f.id !== file.id);
       });
     }
   }
@@ -91,22 +91,21 @@ export class FilesGridComponent implements OnInit {
   getFiles(): void {
     if (this.fileGuardian.canHaveFiles(this.assignment)) {
       this.assignmentService.getAssignmentFiles(this.assignment.id).subscribe(files => {
-        console.log(files);
         this.files = files;
         for (let fileIdx = 0; fileIdx < this.files.length; fileIdx++) {
           let fileUrl = this.files[fileIdx].fileUrl
           let baseName = fileUrl.substr(fileUrl.lastIndexOf("/")+1)
-          console.log(baseName);
-          // this.files[fileIdx].key = baseName.substring(baseName.indexOf("_", 2)+1);
           this.files[fileIdx].key = baseName
         }
-        console.log(this.files);
       });
     } else if (this.fileGuardian.canHaveFiles(this.portfolio)) {
       this.portfolioService.getPortfolioFiles(this.portfolio.id).subscribe(files => {
         this.files = files;
+        console.log(files);
         for (let fileIdx = 0; fileIdx < this.files.length; fileIdx++) {
-          files[fileIdx].key = files[fileIdx].key.substring(files[fileIdx].key.indexOf("_", 2)+1);
+          let fileUrl = this.files[fileIdx].fileUrl
+          let baseName = fileUrl.substr(fileUrl.lastIndexOf("/")+1)
+          this.files[fileIdx].key = baseName
         }
       });
     }
@@ -118,9 +117,8 @@ export class FilesGridComponent implements OnInit {
         importedSaveAs(blob, file.key);
       });;
     } else if (this.fileGuardian.canHaveFiles(this.portfolio)) {
-      let fileName = file.key;
-      this.portfolioService.getPortfolioFile(this.portfolio.id, fileName).subscribe(blob => {
-        importedSaveAs(blob, fileName);
+      this.portfolioService.getPortfolioFile(this.portfolio.id, file.id).subscribe(blob => {
+        importedSaveAs(blob, file.key);
       });;
     }
   }
