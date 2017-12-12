@@ -17,8 +17,8 @@
         <tbody>
         <tr *ngFor="let row of files">
           <td>{{row.key}}</td>
-          <td>{{row.size/1000000}} MB</td>
-          <td>{{row.lastModified | date: 'MM/dd/yy h:mm'}}</td>
+          <td>{{row.uploadedByUser.firstName}} {{row.uploadedByUser.lastName}}</td>
+          <td>{{row.createdDate | date: 'MM/dd/yy h:mm'}}</td>
           <td style="text-align: right;">
             <div fxLayout="row" fxLayoutAlign="space-between center">
               <button *ngIf="!studentView && !editing" md-raised-button type="button" (click)="stopPropagation($event)" [mdMenuTriggerFor]="deleteMenu" class="ol-dialog-button pink-button" mdTooltip="Delete">

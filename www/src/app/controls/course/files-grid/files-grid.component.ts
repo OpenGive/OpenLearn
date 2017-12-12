@@ -44,12 +44,12 @@ export class FilesGridComponent implements OnInit {
         name: "Name"
       },
       {
-        id: "size",
-        name: "Size"
+        id: "uploadedByUser",
+        name: "Uploaded By"
       },
       {
-        id: "lastModified",
-        name: "Date"
+        id: "created_date",
+        name: "Uploaded At"
       }
     ];
 
@@ -60,6 +60,7 @@ export class FilesGridComponent implements OnInit {
   }
 
   addFile(item): void {
+    console.log(item);
     console.log("File upload success callback");
 
     if (!this.files) {
@@ -69,8 +70,8 @@ export class FilesGridComponent implements OnInit {
     this.files.push(
       {
         key: item.file.name,
-        size: item.file.size,
-        lastModified: new Date().toISOString()
+        uploadedByUser: { name: item.uploadedByUser.name },
+        created_date: new Date().toISOString()
       }
     );
   }
@@ -90,10 +91,16 @@ export class FilesGridComponent implements OnInit {
   getFiles(): void {
     if (this.fileGuardian.canHaveFiles(this.assignment)) {
       this.assignmentService.getAssignmentFiles(this.assignment.id).subscribe(files => {
+        console.log(files);
         this.files = files;
         for (let fileIdx = 0; fileIdx < this.files.length; fileIdx++) {
-          files[fileIdx].key = files[fileIdx].key.substring(files[fileIdx].key.indexOf("_", 2)+1);
+          let fileUrl = this.files[fileIdx].fileUrl
+          let baseName = fileUrl.substr(fileUrl.lastIndexOf("/")+1)
+          console.log(baseName);
+          // this.files[fileIdx].key = baseName.substring(baseName.indexOf("_", 2)+1);
+          this.files[fileIdx].key = baseName
         }
+        console.log(this.files);
       });
     } else if (this.fileGuardian.canHaveFiles(this.portfolio)) {
       this.portfolioService.getPortfolioFiles(this.portfolio.id).subscribe(files => {
@@ -107,9 +114,8 @@ export class FilesGridComponent implements OnInit {
 
   getFile(file): void {
     if (this.fileGuardian.canHaveFiles(this.assignment)) {
-      let fileName = file.key;
-      this.assignmentService.getAssignmentFile(this.assignment.id, fileName).subscribe(blob => {
-        importedSaveAs(blob, fileName);
+      this.assignmentService.getAssignmentFile(this.assignment.id, file.id).subscribe(blob => {
+        importedSaveAs(blob, file.key);
       });;
     } else if (this.fileGuardian.canHaveFiles(this.portfolio)) {
       let fileName = file.key;
