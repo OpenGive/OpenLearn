@@ -35,16 +35,20 @@ public class FileInformationService {
 
 	private final FileInformationTransformer fileInformationTransformer;
 
+	private final StorageService storageService;
+
 	public FileInformationService(final FileRepository fileRepository,
 								  final AssignmentRepository assignmentRepository,
 								  final PortfolioItemRepository portfolioItemRepository,
 								  final UserService userService,
-								  final FileInformationTransformer fileInformationTransformer) {
+								  final FileInformationTransformer fileInformationTransformer,
+								  final StorageService storageService) {
 		this.fileRepository = fileRepository;
 		this.portfolioItemRepository = portfolioItemRepository;
 		this.assignmentRepository = assignmentRepository;
 		this.userService = userService;
 		this.fileInformationTransformer = fileInformationTransformer;
+		this.storageService = storageService;
 	}
 
 	/**
@@ -101,5 +105,15 @@ public class FileInformationService {
 		} else {
 			return "";
 		}
+	}
+
+	/**
+	 * Delete a file by portfolio id
+	 *
+	 * @param portfolioItem the portfolio item whose files should be deleted.
+	 */
+	public void deleteByPortfolioItem(PortfolioItem portfolioItem) {
+		storageService.deleteUploads(fileRepository.findByPortfolioItem(portfolioItem));
+		fileRepository.deleteByPortfolioItem(portfolioItem);
 	}
 }

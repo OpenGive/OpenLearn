@@ -4,6 +4,7 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
+import com.google.common.collect.Lists;
 import org.openlearn.config.ApplicationProperties;
 import org.openlearn.domain.*;
 import org.openlearn.dto.FileInformationDTO;
@@ -28,6 +29,8 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.ZonedDateTime;
+import java.util.*;
+import java.util.function.BiConsumer;
 
 /**
  * Service Implementation for managing File upload.
@@ -142,19 +145,59 @@ public class StorageService {
 	}
 
 	public void deleteUpload(Long fileInformationId) {
-		AmazonS3 s3client = AmazonS3ClientBuilder.defaultClient();
 		FileInformation fileInformation = fileRepository.findOne(fileInformationId);
 
 		if (fileInformation == null) throw new FileInformationNotFoundException(fileInformationId);
+		deleteUpload(fileInformation);
+	}
 
+	public void deleteUpload(FileInformation fileInformation) {
+		AmazonS3 s3client = AmazonS3ClientBuilder.defaultClient();
 		String bucket = retrieveBucket(fileInformation);
 		String key = retrieveKeyName(fileInformation);
 
 		try {
 			s3client.deleteObject(new DeleteObjectRequest(bucket, key));
+			fileRepository.delete(fileInformation);
 		} catch(Exception e) {
 			log.error(e.getMessage());
 		}
+	}
+
+	public void deleteUploads(List<FileInformation> files) {
+		AmazonS3 s3client = AmazonS3ClientBuilder.defaultClient();
+		List<String> buckets = Lists.transform(files, this::retrieveBucket);
+		List<String> keys = Lists.transform(files, this::retrieveKeyName);
+
+		Map<String, List<String>> bucketToKeys = new HashMap<>();
+
+		// Test if there's only one bucket (which will be the typical case)
+		Set<String> uniqueBuckets = new HashSet<>(buckets);
+		if (uniqueBuckets.size() > 1) {
+			bucketToKeys.put(buckets.get(0), keys);
+		} else { // There are multiple buckets in the given file set
+
+			for (int index = 0; index < buckets.size(); index++) {
+				String bucket = buckets.get(index);
+				String key = keys.get(index);
+				if (bucketToKeys.containsKey(bucket)) {
+					bucketToKeys.get(bucket).add(key);
+				} else {
+					List<String> list = new ArrayList<>();
+					list.add(key);
+					bucketToKeys.put(bucket, list);
+				}
+			}
+		}
+
+		bucketToKeys.forEach((bucket, keys1) -> {
+            DeleteObjectsRequest request = new DeleteObjectsRequest(bucket);
+            List<DeleteObjectsRequest.KeyVersion> keyVersions = new ArrayList<>(keys1.size());
+            for (String key : keys1)
+                keyVersions.add(new DeleteObjectsRequest.KeyVersion(key));
+            request.setKeys(keyVersions);
+            s3client.deleteObjects(request);
+        });
 	}
 
 	private String createS3FilePrefix(Long assignmentId, Long portfolioId, Long uploadedByUserId) {

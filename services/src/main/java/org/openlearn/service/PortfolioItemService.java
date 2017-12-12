@@ -1,6 +1,7 @@
 package org.openlearn.service;
 
 import org.openlearn.domain.Authority;
+import org.openlearn.domain.FileInformation;
 import org.openlearn.domain.PortfolioItem;
 import org.openlearn.domain.User;
 import org.openlearn.dto.PortfolioItemDTO;
@@ -9,6 +10,8 @@ import org.openlearn.repository.UserRepository;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.security.SecurityUtils;
 import org.openlearn.transformer.PortfolioItemTransformer;
+import org.openlearn.web.rest.errors.AccessDeniedException;
+import org.openlearn.web.rest.errors.PortfolioItemNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.actuate.autoconfigure.ShellProperties;
@@ -17,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,17 +47,21 @@ public class PortfolioItemService {
 
 	private final UserService userService;
 
+	private final FileInformationService fileInformationService;
+
 	public PortfolioItemService(final PortfolioItemRepository portfolioItemRepository,
-	                            final PortfolioItemTransformer portfolioItemTransformer,
-	                            final StudentAssignmentService studentAssignmentService,
-	                            final StudentCourseService studentCourseService, final UserRepository userRepository,
-	                            final UserService userService) {
+								final PortfolioItemTransformer portfolioItemTransformer,
+								final StudentAssignmentService studentAssignmentService,
+								final StudentCourseService studentCourseService, final UserRepository userRepository,
+								final UserService userService,
+								final FileInformationService fileInformationService) {
 		this.portfolioItemRepository = portfolioItemRepository;
 		this.portfolioItemTransformer = portfolioItemTransformer;
 		this.studentAssignmentService = studentAssignmentService;
 		this.studentCourseService = studentCourseService;
 		this.userRepository = userRepository;
 		this.userService = userService;
+		this.fileInformationService = fileInformationService;
 	}
 
 	/**
@@ -130,21 +138,26 @@ public class PortfolioItemService {
 	public void delete(final Long id) {
 		log.debug("Request to delete portfolio item : {}", id);
 		PortfolioItem portfolioItem = portfolioItemRepository.findOne(id);
-		if (portfolioItem != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(portfolioItem))) {
+		if (portfolioItem == null) new PortfolioItemNotFoundException(id);
+
+		if ((SecurityUtils.isAdmin() || inOrgOfCurrentUser(portfolioItem))) {
+			fileInformationService.deleteByPortfolioItem(portfolioItem);
 			portfolioItemRepository.delete(id);
 		} else {
-			// TODO: Error handling / logging
+			throw new AccessDeniedException();
 		}
 	}
 
 	public boolean inOrgOfCurrentUser(final PortfolioItemDTO portfolioItemDTO) {
 		User user = userService.getCurrentUser();
 		User student = userRepository.findOneByIdAndAuthority(portfolioItemDTO.getStudentId(), STUDENT);
-		return student != null && user.getOrganization().equals(student.getOrganization());
+		return student != null && SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ORG_ADMIN) &&
+            user.getOrganization().equals(student.getOrganization());
 	}
 
 	public boolean inOrgOfCurrentUser(final PortfolioItem portfolioItem) {
 		User user = userService.getCurrentUser();
-		return user.getOrganization().equals(portfolioItem.getStudent().getOrganization());
+		return SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ORG_ADMIN) &&
+		user.getOrganization().equals(portfolioItem.getStudent().getOrganization());
 	}
 }
