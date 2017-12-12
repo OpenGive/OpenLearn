@@ -1,15 +1,11 @@
 package org.openlearn.web.rest;
 
-import com.amazonaws.services.s3.model.S3ObjectSummary;
 import io.swagger.annotations.ApiParam;
-import org.openlearn.domain.Assignment;
-import org.openlearn.domain.FileInformation;
 import org.openlearn.dto.AssignmentDTO;
 import org.openlearn.dto.FileInformationDTO;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.security.SecurityUtils;
 import org.openlearn.service.AssignmentService;
-import org.openlearn.service.CourseService;
 import org.openlearn.service.FileInformationService;
 import org.openlearn.service.StorageService;
 import org.openlearn.web.rest.errors.AssignmentNotFoundException;
@@ -30,7 +26,6 @@ import javax.validation.Valid;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/assignments")
@@ -174,7 +169,7 @@ public class AssignmentResource {
 								   @RequestParam("file") MultipartFile file,
 								   RedirectAttributes redirectAttributes) throws URISyntaxException {
 		if (canUploadFilesToAssignment(assignmentService.findOne(assignmentId))) {
-			FileInformation response = storageService.store(file, assignmentId, null);
+			FileInformationDTO response = storageService.store(file, assignmentId, null);
 			redirectAttributes.addFlashAttribute("message",
 				"You successfully uploaded " + file.getOriginalFilename() + "!");
 
@@ -189,7 +184,11 @@ public class AssignmentResource {
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
 	public ResponseEntity getUploads(@PathVariable final Long assignmentId, @ApiParam final Pageable pageable) {
 		log.debug("GET request to get course uploads for assignment " + assignmentId);
-		if (canUploadFilesToAssignment(assignmentService.findOne(assignmentId))) {
+
+		AssignmentDTO assignmentDTO = assignmentService.findOne(assignmentId);
+		if (assignmentDTO == null) throw new AssignmentNotFoundException(assignmentId);
+
+		if (canUploadFilesToAssignment(assignmentDTO)) {
 			Page<FileInformationDTO> response = fileInformationService.findAllForAssignment(assignmentId, pageable);
 			return ResponseEntity.ok(response.getContent());
 		} else {
@@ -202,7 +201,13 @@ public class AssignmentResource {
 	public ResponseEntity getUpload(@PathVariable final Long assignmentId,
 									@PathVariable final Long id) {
 		log.debug("GET request to get course upload : {}", id);
-		if (hasCreateUpdateDeleteAuthority(assignmentService.findOne(assignmentId))) {
+		AssignmentDTO assignmentDTO = assignmentService.findOne(assignmentId);
+		FileInformationDTO fileInformationDTO = fileInformationService.findOne(id);
+
+		if (assignmentDTO == null) throw new AssignmentNotFoundException(assignmentId);
+		if (fileInformationDTO == null) throw new FileInformationNotFoundException(id);
+
+		if (hasCreateUpdateDeleteAuthority(assignmentDTO) && fileInformationDTO.getAssignmentId() == assignmentId) {
 			String fileName = fileInformationService.getFileNameFor(id);
 			InputStream response = storageService.getUpload(id);
 			if (response != null) {
@@ -236,7 +241,7 @@ public class AssignmentResource {
 		if (assignmentDTO == null) throw new AssignmentNotFoundException(assignmentId);
 		if (fileInformationDTO == null) throw new FileInformationNotFoundException(id);
 
-		if (hasCreateUpdateDeleteAuthority(assignmentDTO)) {
+		if (hasCreateUpdateDeleteAuthority(assignmentDTO) && fileInformationDTO.getAssignmentId() == assignmentId) {
 			try {
 				storageService.deleteUpload(id);
 			} catch (Exception e) {

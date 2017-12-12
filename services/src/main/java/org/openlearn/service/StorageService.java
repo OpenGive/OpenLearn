@@ -11,6 +11,7 @@ import org.openlearn.repository.AssignmentRepository;
 import org.openlearn.repository.CourseRepository;
 import org.openlearn.repository.FileRepository;
 import org.openlearn.repository.PortfolioItemRepository;
+import org.openlearn.transformer.FileInformationTransformer;
 import org.openlearn.web.rest.errors.FileInformationNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,19 +48,23 @@ public class StorageService {
 
 	private final PortfolioItemRepository portfolioItemRepository;
 
+	private final FileInformationTransformer fileInformationTransformer;
+
 	@Autowired
 	private ApplicationProperties props;
 
 	public StorageService(final FileRepository fileRepository,
-			final CourseRepository courseRepository,
-			final AssignmentRepository assignmentRepository,
-			final UserService userService,
-	        final PortfolioItemRepository portfolioItemRepository) {
+						  final CourseRepository courseRepository,
+						  final AssignmentRepository assignmentRepository,
+						  final UserService userService,
+						  final PortfolioItemRepository portfolioItemRepository,
+						  final FileInformationTransformer fileInformationTransformer) {
 		this.fileRepository = fileRepository;
 		this.courseRepository = courseRepository;
 		this.assignmentRepository = assignmentRepository;
 		this.userService = userService;
 		this.portfolioItemRepository = portfolioItemRepository;
+		this.fileInformationTransformer = fileInformationTransformer;
 	}
 
 	/**
@@ -68,7 +73,7 @@ public class StorageService {
 	 * @return the persisted entity
 	 */
 	//TODO cbernal fix blue documentation
-	public FileInformation store(final MultipartFile file, Long assignmentId, Long portfolioId) {
+	public FileInformationDTO store(final MultipartFile file, Long assignmentId, Long portfolioId) {
 		log.debug("Request to save f : {}", file); //TODO cbernal fix this log statement
 
 		User user = userService.getCurrentUser();
@@ -103,7 +108,7 @@ public class StorageService {
 			fileInformation.setFileType("Portfolio");
 		}
 
-		return fileRepository.save(fileInformation);
+		return fileInformationTransformer.transform(fileRepository.save(fileInformation));
 	}
 
 	private static File convertToFile(MultipartFile file) throws IOException {

@@ -1,10 +1,6 @@
 package org.openlearn.web.rest;
 
-import com.amazonaws.services.s3.model.S3ObjectSummary;
 import io.swagger.annotations.ApiParam;
-import org.openlearn.domain.FileInformation;
-import org.openlearn.domain.PortfolioItem;
-import org.openlearn.domain.User;
 import org.openlearn.dto.FileInformationDTO;
 import org.openlearn.dto.PortfolioItemDTO;
 import org.openlearn.security.AuthoritiesConstants;
@@ -27,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.swing.text.StyledEditorKit;
 import javax.validation.Valid;
 import java.io.InputStream;
 import java.net.URI;
@@ -181,7 +176,7 @@ public class PortfolioItemResource {
 								   RedirectAttributes redirectAttributes) throws URISyntaxException {
 		PortfolioItemDTO portfolioItem = portfolioItemService.findOne(portfolioId);
 		if (canUploadFilesToPortfolio(portfolioItem)) {
-			FileInformation response = storageService.store(file, null, portfolioId);
+			FileInformationDTO response = storageService.store(file, null, portfolioId);
 			redirectAttributes.addFlashAttribute("message",
 				"You successfully uploaded " + file.getOriginalFilename() + "!");
 			return ResponseEntity.created(new URI(ENDPOINT + response.getId())).body(response);
@@ -195,6 +190,8 @@ public class PortfolioItemResource {
 	public ResponseEntity getUploads(@PathVariable final Long portfolioId, @ApiParam Pageable pageable) {
 		log.debug("GET request to get course uploads for portfolio " + portfolioId);
 		PortfolioItemDTO portfolioItem = portfolioItemService.findOne(portfolioId);
+		if (portfolioItem == null) throw new PortfolioItemNotFoundException(portfolioId);
+
 		if (canUploadFilesToPortfolio(portfolioItem)) {
 			Page<FileInformationDTO> response = fileInformationService.findAllForPorfolioItem(portfolioId, pageable);
 			return ResponseEntity.ok(response.getContent());
@@ -207,9 +204,14 @@ public class PortfolioItemResource {
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
 	public ResponseEntity getUpload(@PathVariable final Long portfolioId,
 									@PathVariable final Long id) {
-		log.debug("GET request to get course upload : {}", id);
+		log.debug("GET request to get portfolio upload : {}", id);
 		PortfolioItemDTO portfolioItem = portfolioItemService.findOne(portfolioId);
-		if (canUploadFilesToPortfolio(portfolioItem)) {
+		FileInformationDTO fileInformationDTO = fileInformationService.findOne(id);
+
+		if (portfolioItem == null) throw new PortfolioItemNotFoundException(portfolioId);
+		if (fileInformationDTO == null) throw new FileInformationNotFoundException(id);
+
+		if (canUploadFilesToPortfolio(portfolioItem) && fileInformationDTO.getPortfolioItemId() == portfolioId) {
 			String fileName = fileInformationService.getFileNameFor(id);
 			InputStream response = storageService.getUpload(id);
 			if (response != null) {
