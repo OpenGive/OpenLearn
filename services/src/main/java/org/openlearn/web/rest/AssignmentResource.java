@@ -12,6 +12,8 @@ import org.openlearn.service.AssignmentService;
 import org.openlearn.service.CourseService;
 import org.openlearn.service.FileInformationService;
 import org.openlearn.service.StorageService;
+import org.openlearn.web.rest.errors.AssignmentNotFoundException;
+import org.openlearn.web.rest.errors.FileInformationNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -188,7 +190,6 @@ public class AssignmentResource {
 	public ResponseEntity getUploads(@PathVariable final Long assignmentId, @ApiParam final Pageable pageable) {
 		log.debug("GET request to get course uploads for assignment " + assignmentId);
 		if (canUploadFilesToAssignment(assignmentService.findOne(assignmentId))) {
-//			List<S3ObjectSummary> response = storageService.getUploads(assignmentId, null).getObjectSummaries();
 			Page<FileInformationDTO> response = fileInformationService.findAllForAssignment(assignmentId, pageable);
 			return ResponseEntity.ok(response.getContent());
 		} else {
@@ -225,13 +226,19 @@ public class AssignmentResource {
 		}
 	}
 
-	@DeleteMapping(path="/{assignmentId}/upload/{keyName:.+}")
+	@DeleteMapping(path="/{assignmentId}/upload/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
 	public ResponseEntity deleteUpload(@PathVariable final Long assignmentId,
-									   @PathVariable final String keyName) {
-		if (hasCreateUpdateDeleteAuthority(assignmentService.findOne(assignmentId))) {
+									   @PathVariable final Long id) {
+		AssignmentDTO assignmentDTO = assignmentService.findOne(assignmentId);
+		FileInformationDTO fileInformationDTO = fileInformationService.findOne(id);
+
+		if (assignmentDTO == null) throw new AssignmentNotFoundException(assignmentId);
+		if (fileInformationDTO == null) throw new FileInformationNotFoundException(id);
+
+		if (hasCreateUpdateDeleteAuthority(assignmentDTO)) {
 			try {
-				storageService.deleteUpload(assignmentId, null, keyName);
+				storageService.deleteUpload(id);
 			} catch (Exception e) {
 				return new ResponseEntity("Error deleting upload", HttpStatus.INTERNAL_SERVER_ERROR);
 			}

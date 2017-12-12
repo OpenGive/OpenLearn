@@ -6,10 +6,12 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import org.openlearn.config.ApplicationProperties;
 import org.openlearn.domain.*;
+import org.openlearn.dto.FileInformationDTO;
 import org.openlearn.repository.AssignmentRepository;
 import org.openlearn.repository.CourseRepository;
 import org.openlearn.repository.FileRepository;
 import org.openlearn.repository.PortfolioItemRepository;
+import org.openlearn.web.rest.errors.FileInformationNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,54 +113,14 @@ public class StorageService {
 		return convertedFile;
 	}
 
-	public ObjectListing getUploads(Long assignmentId, Long portfolioId) {
-		AmazonS3 s3client = AmazonS3ClientBuilder.defaultClient();
-		String uploadBucketName = props.getUploadBucket();
-		log.debug("Getting uploads in " + uploadBucketName);
-		try {
-			return s3client.listObjects(uploadBucketName, getS3FilePrefix(assignmentId, portfolioId));
-		} catch(Exception e) {
-			log.error(e.getMessage());
-			return new ObjectListing();
-		}
-	}
-
-	// TODO Legacy, should be removed after PortfolioResource is updated to use the FileInformation based methods.
-	public InputStream getUpload(Long assignmentId, Long portfolioId, String fileName) {
-		AmazonS3 s3client = AmazonS3ClientBuilder.defaultClient();
-		String uploadBucketName = props.getUploadBucket();
-		log.debug("Getting uploads in " + uploadBucketName);
-		try {
-			String key = getS3FilePrefix(assignmentId, portfolioId) + fileName;
-			S3Object s3Object = s3client.getObject(new GetObjectRequest(uploadBucketName, key));
-			InputStream objectData = s3Object.getObjectContent();
-			return objectData;
-		} catch(Exception e) {
-			log.error(e.getMessage());
-			return null;
-		}
-	}
-
 	public InputStream getUpload(Long fileInformationId) {
 		AmazonS3 s3client = AmazonS3ClientBuilder.defaultClient();
 		FileInformation fileInformation = fileRepository.findOne(fileInformationId);
-		String bucket = null;
-		String key = null;
-		try {
-			String bucketAndKey = new URL(fileInformation.getFileUrl()).getPath()
-				.replaceFirst("/", "");
-			int separatingIndex = bucketAndKey.indexOf("/");
-			bucket = bucketAndKey.substring(0, separatingIndex);
-			key = bucketAndKey.substring(separatingIndex+1);
-		} catch (MalformedURLException e) {
-			log.info("File URL is malformed, Falling back on prefix and bucket logic");
-			Assignment assignment = fileInformation.getAssignment();
-			PortfolioItem portfolioItem = fileInformation.getPortfolioItem();
-			bucket = props.getUploadBucket();
-			key = fileInformation.getFileUrl().substring(
-				fileInformation.getFileUrl().lastIndexOf("/")+1
-			);
-		}
+
+		if (fileInformation == null) throw new FileInformationNotFoundException(fileInformationId);
+
+		String bucket = retrieveBucket(fileInformation);
+		String key = retrieveKeyName(fileInformation);
 
 		log.debug("Retrieving file at " + bucket);
 
@@ -172,24 +134,20 @@ public class StorageService {
 		}
 	}
 
-	public void deleteUpload(Long assignmentId, Long portfolioId, String fileName) {
+	public void deleteUpload(Long fileInformationId) {
 		AmazonS3 s3client = AmazonS3ClientBuilder.defaultClient();
-		String uploadBucketName = props.getUploadBucket();
+		FileInformation fileInformation = fileRepository.findOne(fileInformationId);
+
+		if (fileInformation == null) throw new FileInformationNotFoundException(fileInformationId);
+
+		String bucket = retrieveBucket(fileInformation);
+		String key = retrieveKeyName(fileInformation);
+
 		try {
-			String key = getS3FilePrefix(assignmentId, portfolioId) + fileName;
-			s3client.deleteObject(new DeleteObjectRequest(uploadBucketName, key));
+			s3client.deleteObject(new DeleteObjectRequest(bucket, key));
 		} catch(Exception e) {
 			log.error(e.getMessage());
 		}
-	}
-
-	// TODO - Legacy method for retrieving S3 prefix. Should be removed.
-	private String getS3FilePrefix(Long assignmentId, Long portfolioId) {
-		// s3 file name is a_[assignmentid]_[filename] for assignments and p_[portfolioid]_[filename] for portfolios
-		String assignmentStr = assignmentId != null ? "a_" + assignmentId.toString() + "_" : "";
-		String portfolioStr = portfolioId != null ? "p_" + portfolioId.toString() + "_" : "";
-		String prefix = assignmentStr + portfolioStr;
-		return prefix;
 	}
 
 	private String createS3FilePrefix(Long assignmentId, Long portfolioId, Long uploadedByUserId) {
@@ -201,4 +159,36 @@ public class StorageService {
 		String prefix = assignmentStr + portfolioStr + userStr + "/";
 		return prefix;
 	}
+
+	private String retrieveBucket(FileInformation fileInformation) {
+		String bucketAndKey = retrieveFullPath(fileInformation);
+		int separatingIndex = bucketAndKey.indexOf("/");
+		return bucketAndKey.substring(0, separatingIndex);
+	}
+
+	private String retrieveKeyName(FileInformation fileInformation) {
+		String bucketAndKey = retrieveFullPath(fileInformation);
+		int separatingIndex = bucketAndKey.indexOf("/");
+		return bucketAndKey.substring(separatingIndex+1);
+	}
+
+	private String retrieveFullPath(FileInformation fileInformation) {
+		String bucketAndKey;
+		try {
+			bucketAndKey = new URL(fileInformation.getFileUrl()).getPath()
+				.replaceFirst("/", "");
+		} catch (MalformedURLException e) {
+			log.info("File URL is malformed, Falling back on prefix and bucket logic");
+			Assignment assignment = fileInformation.getAssignment();
+			PortfolioItem portfolioItem = fileInformation.getPortfolioItem();
+			String bucket = props.getUploadBucket();
+			String key = fileInformation.getFileUrl().substring(
+				fileInformation.getFileUrl().lastIndexOf("/")+1
+			);
+			bucketAndKey = bucket + "/" + key;
+		}
+
+		return bucketAndKey;
+	}
 }
+

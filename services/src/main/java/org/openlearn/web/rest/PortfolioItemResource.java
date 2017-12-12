@@ -5,12 +5,16 @@ import io.swagger.annotations.ApiParam;
 import org.openlearn.domain.FileInformation;
 import org.openlearn.domain.PortfolioItem;
 import org.openlearn.domain.User;
+import org.openlearn.dto.FileInformationDTO;
 import org.openlearn.dto.PortfolioItemDTO;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.security.SecurityUtils;
+import org.openlearn.service.FileInformationService;
 import org.openlearn.service.PortfolioItemService;
 import org.openlearn.service.StorageService;
 import org.openlearn.service.UserService;
+import org.openlearn.web.rest.errors.FileInformationNotFoundException;
+import org.openlearn.web.rest.errors.PortfolioItemNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -46,11 +50,15 @@ public class PortfolioItemResource {
 
 	private final UserService userService;
 
+	private final FileInformationService fileInformationService;
+
 	public PortfolioItemResource(final PortfolioItemService portfolioItemService, final StorageService storageService,
-								 final UserService userService) {
+								 final UserService userService,
+								 final FileInformationService fileInformationService) {
 		this.portfolioItemService = portfolioItemService;
 		this.storageService = storageService;
 		this.userService = userService;
+		this.fileInformationService = fileInformationService;
 	}
 
 	/**
@@ -184,31 +192,32 @@ public class PortfolioItemResource {
 
 	@GetMapping(path="/{portfolioId}/uploads")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
-	public ResponseEntity getUploads(@PathVariable final Long portfolioId) {
+	public ResponseEntity getUploads(@PathVariable final Long portfolioId, @ApiParam Pageable pageable) {
 		log.debug("GET request to get course uploads for portfolio " + portfolioId);
 		PortfolioItemDTO portfolioItem = portfolioItemService.findOne(portfolioId);
 		if (canUploadFilesToPortfolio(portfolioItem)) {
-			List<S3ObjectSummary> response = storageService.getUploads(null, portfolioId).getObjectSummaries();
-			return ResponseEntity.ok(response);
+			Page<FileInformationDTO> response = fileInformationService.findAllForPorfolioItem(portfolioId, pageable);
+			return ResponseEntity.ok(response.getContent());
 		} else {
 			return new ResponseEntity(HttpStatus.FORBIDDEN);
 		}
 	}
 
-	@GetMapping(path="/{portfolioId}/upload/{keyName:.+}")
+	@GetMapping(path="/{portfolioId}/upload/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
 	public ResponseEntity getUpload(@PathVariable final Long portfolioId,
-									@PathVariable final String keyName) {
-		log.debug("GET request to get course upload : {}", keyName);
+									@PathVariable final Long id) {
+		log.debug("GET request to get course upload : {}", id);
 		PortfolioItemDTO portfolioItem = portfolioItemService.findOne(portfolioId);
 		if (canUploadFilesToPortfolio(portfolioItem)) {
-			InputStream response = storageService.getUpload(null, portfolioId, keyName);
+			String fileName = fileInformationService.getFileNameFor(id);
+			InputStream response = storageService.getUpload(id);
 			if (response != null) {
 				try {
 					byte[] out = org.apache.commons.io.IOUtils.toByteArray(response);
 
 					HttpHeaders responseHeaders = new HttpHeaders();
-					responseHeaders.add("content-disposition", "attachment; filename=" + keyName);
+					responseHeaders.add("content-disposition", "attachment; filename=" + fileName);
 					// responseHeaders.add("Content-Type", type);
 
 					return new ResponseEntity(out, responseHeaders, HttpStatus.OK);
@@ -224,14 +233,19 @@ public class PortfolioItemResource {
 		}
 	}
 
-	@DeleteMapping(path="/{portfolioId}/upload/{keyName:.+}")
+	@DeleteMapping(path="/{portfolioId}/upload/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
 	public ResponseEntity deleteUpload(@PathVariable final Long portfolioId,
-									   @PathVariable final String keyName) {
+									   @PathVariable final Long id) {
 		PortfolioItemDTO portfolioItem = portfolioItemService.findOne(portfolioId);
-		if (canUploadFilesToPortfolio(portfolioItem)) {
+		FileInformationDTO fileInformationDTO = fileInformationService.findOne(id);
+
+		if (portfolioItem == null) throw new PortfolioItemNotFoundException(portfolioId);
+		if (fileInformationDTO == null) throw new FileInformationNotFoundException(id);
+
+		if (canUploadFilesToPortfolio(portfolioItem) && fileInformationDTO.getPortfolioItemId() == portfolioId) {
 			try {
-				storageService.deleteUpload(null, portfolioId, keyName);
+				storageService.deleteUpload(id);
 			} catch (Exception e) {
 				return new ResponseEntity("Error deleting upload", HttpStatus.INTERNAL_SERVER_ERROR);
 			}
