@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "file_information")
@@ -41,6 +42,9 @@ public class FileInformation {
 	@Column(name = "type", nullable = false)
 	private String fileType; //TODO cbernal make this an enum, restrict DB values
 
+	@Column(name = "createdDate")
+	private ZonedDateTime createdDate;
+
 	public Long getId() {
 		return Id;
 	}
@@ -65,7 +69,7 @@ public class FileInformation {
 
 	public void setAssignment(Assignment assignment) { this.assignment = assignment; }
 
-	public PortfolioItem getPortfolio() { return portfolioItem; }
+	public PortfolioItem getPortfolioItem() { return portfolioItem; }
 
 	public void setPortfolioItem(PortfolioItem portfolioItem) { this.portfolioItem = portfolioItem; }
 
@@ -83,6 +87,14 @@ public class FileInformation {
 
 	public void setFileType(String fileType) {
 		this.fileType = fileType;
+	}
+
+	public ZonedDateTime getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(ZonedDateTime createdDate) {
+		this.createdDate = createdDate;
 	}
 
 	//TODO cbernal write tostring, equals etc...from address

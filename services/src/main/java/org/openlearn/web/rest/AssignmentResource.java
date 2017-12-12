@@ -5,10 +5,12 @@ import io.swagger.annotations.ApiParam;
 import org.openlearn.domain.Assignment;
 import org.openlearn.domain.FileInformation;
 import org.openlearn.dto.AssignmentDTO;
+import org.openlearn.dto.FileInformationDTO;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.security.SecurityUtils;
 import org.openlearn.service.AssignmentService;
 import org.openlearn.service.CourseService;
+import org.openlearn.service.FileInformationService;
 import org.openlearn.service.StorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,8 +44,13 @@ public class AssignmentResource {
 
 	private final StorageService storageService;
 
-	public AssignmentResource(final AssignmentService assignmentService, final StorageService storageService) {
+	private final FileInformationService fileInformationService;
+
+	public AssignmentResource(final AssignmentService assignmentService,
+							  final FileInformationService fileInformationService,
+							  final StorageService storageService) {
 		this.assignmentService = assignmentService;
+		this.fileInformationService = fileInformationService;
 		this.storageService = storageService;
 	}
 
@@ -178,29 +185,31 @@ public class AssignmentResource {
 
 	@GetMapping(path="/{assignmentId}/uploads")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
-	public ResponseEntity getUploads(@PathVariable final Long assignmentId) {
+	public ResponseEntity getUploads(@PathVariable final Long assignmentId, @ApiParam final Pageable pageable) {
 		log.debug("GET request to get course uploads for assignment " + assignmentId);
 		if (canUploadFilesToAssignment(assignmentService.findOne(assignmentId))) {
-			List<S3ObjectSummary> response = storageService.getUploads(assignmentId, null).getObjectSummaries();
-			return ResponseEntity.ok(response);
+//			List<S3ObjectSummary> response = storageService.getUploads(assignmentId, null).getObjectSummaries();
+			Page<FileInformationDTO> response = fileInformationService.findAllForAssignment(assignmentId, pageable);
+			return ResponseEntity.ok(response.getContent());
 		} else {
 			return new ResponseEntity(HttpStatus.FORBIDDEN);
 		}
 	}
 
-	@GetMapping(path="/{assignmentId}/upload/{keyName:.+}")
+	@GetMapping(path="/{assignmentId}/upload/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
 	public ResponseEntity getUpload(@PathVariable final Long assignmentId,
-									@PathVariable final String keyName) {
-		log.debug("GET request to get course upload : {}", keyName);
+									@PathVariable final Long id) {
+		log.debug("GET request to get course upload : {}", id);
 		if (hasCreateUpdateDeleteAuthority(assignmentService.findOne(assignmentId))) {
-			InputStream response = storageService.getUpload(assignmentId, null, keyName);
+			String fileName = fileInformationService.getFileNameFor(id);
+			InputStream response = storageService.getUpload(id);
 			if (response != null) {
 				try {
 					byte[] out = org.apache.commons.io.IOUtils.toByteArray(response);
 
 					HttpHeaders responseHeaders = new HttpHeaders();
-					responseHeaders.add("content-disposition", "attachment; filename=" + keyName);
+					responseHeaders.add("content-disposition", "attachment; filename=" + fileName);
 					// responseHeaders.add("Content-Type", type);
 
 					return new ResponseEntity(out, responseHeaders, HttpStatus.OK);

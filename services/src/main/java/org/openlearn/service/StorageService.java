@@ -22,6 +22,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Service Implementation for managing File upload.
@@ -66,9 +68,10 @@ public class StorageService {
 	public FileInformation store(final MultipartFile file, Long assignmentId, Long portfolioId) {
 		log.debug("Request to save f : {}", file); //TODO cbernal fix this log statement
 
+		User user = userService.getCurrentUser();
 		AmazonS3 s3client = AmazonS3ClientBuilder.defaultClient();
 		String uploadBucketName = props.getUploadBucket();
-		String keyName = getS3FilePrefix(assignmentId, portfolioId) + file.getOriginalFilename();
+		String keyName = createS3FilePrefix(assignmentId, portfolioId, user.getId()) + file.getOriginalFilename();
 		try {
 			File f = convertToFile(file);
 			s3client.putObject(new PutObjectRequest(uploadBucketName, keyName, f));
@@ -80,7 +83,6 @@ public class StorageService {
 		}
 
 
-		User user = userService.getCurrentUser();
 		FileInformation fileInformation = new FileInformation();
 		fileInformation.setFileUrl("https://s3.amazonaws.com/" + uploadBucketName + "/" + keyName);
 		fileInformation.setUploadedByUser(user);
@@ -121,6 +123,7 @@ public class StorageService {
 		}
 	}
 
+	// TODO Legacy, should be removed after PortfolioResource is updated to use the FileInformation based methods.
 	public InputStream getUpload(Long assignmentId, Long portfolioId, String fileName) {
 		AmazonS3 s3client = AmazonS3ClientBuilder.defaultClient();
 		String uploadBucketName = props.getUploadBucket();
@@ -128,6 +131,39 @@ public class StorageService {
 		try {
 			String key = getS3FilePrefix(assignmentId, portfolioId) + fileName;
 			S3Object s3Object = s3client.getObject(new GetObjectRequest(uploadBucketName, key));
+			InputStream objectData = s3Object.getObjectContent();
+			return objectData;
+		} catch(Exception e) {
+			log.error(e.getMessage());
+			return null;
+		}
+	}
+
+	public InputStream getUpload(Long fileInformationId) {
+		AmazonS3 s3client = AmazonS3ClientBuilder.defaultClient();
+		FileInformation fileInformation = fileRepository.findOne(fileInformationId);
+		String bucket = null;
+		String key = null;
+		try {
+			String bucketAndKey = new URL(fileInformation.getFileUrl()).getPath()
+				.replaceFirst("/", "");
+			int separatingIndex = bucketAndKey.indexOf("/");
+			bucket = bucketAndKey.substring(0, separatingIndex);
+			key = bucketAndKey.substring(separatingIndex+1);
+		} catch (MalformedURLException e) {
+			log.info("File URL is malformed, Falling back on prefix and bucket logic");
+			Assignment assignment = fileInformation.getAssignment();
+			PortfolioItem portfolioItem = fileInformation.getPortfolioItem();
+			bucket = props.getUploadBucket();
+			key = fileInformation.getFileUrl().substring(
+				fileInformation.getFileUrl().lastIndexOf("/")+1
+			);
+		}
+
+		log.debug("Retrieving file at " + bucket);
+
+		try {
+			S3Object s3Object = s3client.getObject(new GetObjectRequest(bucket, key));
 			InputStream objectData = s3Object.getObjectContent();
 			return objectData;
 		} catch(Exception e) {
@@ -147,6 +183,7 @@ public class StorageService {
 		}
 	}
 
+	// TODO - Legacy method for retrieving S3 prefix. Should be removed.
 	private String getS3FilePrefix(Long assignmentId, Long portfolioId) {
 		// s3 file name is a_[assignmentid]_[filename] for assignments and p_[portfolioid]_[filename] for portfolios
 		String assignmentStr = assignmentId != null ? "a_" + assignmentId.toString() + "_" : "";
@@ -155,4 +192,13 @@ public class StorageService {
 		return prefix;
 	}
 
+	private String createS3FilePrefix(Long assignmentId, Long portfolioId, Long uploadedByUserId) {
+		// s3 file name is a_[assignmentid]_[filename] for assignments and p_[portfolioid]_[filename] for portfolios
+		// and a unique GUID hash.
+		String assignmentStr = assignmentId != null ? "a_" + assignmentId.toString() + "/" : "";
+		String portfolioStr = portfolioId != null ? "p_" + portfolioId.toString() + "/" : "";
+		String userStr = uploadedByUserId.toString();
+		String prefix = assignmentStr + portfolioStr + userStr + "/";
+		return prefix;
+	}
 }
