@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.ZonedDateTime;
 
 /**
  * Service Implementation for managing File upload.
@@ -88,6 +89,7 @@ public class StorageService {
 		FileInformation fileInformation = new FileInformation();
 		fileInformation.setFileUrl("https://s3.amazonaws.com/" + uploadBucketName + "/" + keyName);
 		fileInformation.setUploadedByUser(user);
+		fileInformation.setCreatedDate(ZonedDateTime.now());
 		if (assignmentId != null) {
 			Assignment assignment = assignmentRepository.findOne(assignmentId);
 			Course course = assignment.getCourse();

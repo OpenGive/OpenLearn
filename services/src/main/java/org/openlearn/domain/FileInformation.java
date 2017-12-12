@@ -42,6 +42,7 @@ public class FileInformation {
 	@Column(name = "type", nullable = false)
 	private String fileType; //TODO cbernal make this an enum, restrict DB values
 
+	@NotNull
 	@Column(name = "createdDate")
 	private ZonedDateTime createdDate;
 
