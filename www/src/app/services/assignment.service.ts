@@ -41,14 +41,14 @@ export class AssignmentService {
     .catch(this.handleError);
   }
 
-  deleteAssignmentFile(assignmentId: Number, keyName: String): Observable<any[]> {
-    return this._http.delete('/api/assignments/' + assignmentId + '/upload/' + keyName)
+  deleteAssignmentFile(assignmentId: Number, id: Number): Observable<any[]> {
+    return this._http.delete('/api/assignments/' + assignmentId + '/upload/' + id)
       .catch(this.handleError);
   }
 
-  getAssignmentFile(assignmentId: Number, keyName: String): Observable<Blob> {
+  getAssignmentFile(assignmentId: Number, id: Number): Observable<Blob> {
     let options = new RequestOptions({responseType: ResponseContentType.Blob });
-    return this._http.getWithOptions('/api/assignments/' + assignmentId + '/upload/' + keyName, options)
+    return this._http.getWithOptions('/api/assignments/' + assignmentId + '/upload/' + id, options)
       .map(res => res.blob())
       .catch(this.handleError);
   }

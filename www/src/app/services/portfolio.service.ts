@@ -24,14 +24,14 @@ export class PortfolioService {
       .catch(this.handleError);
   }
 
-  deletePortfolioFile(portfolioId: Number, keyName: String): Observable<any[]> {
-    return this._http.delete(this.endpoint + '/' + portfolioId + '/upload/' + keyName)
+  deletePortfolioFile(portfolioId: Number, id: Number): Observable<any[]> {
+    return this._http.delete(this.endpoint + '/' + portfolioId + '/upload/' + id)
       .catch(this.handleError);
   }
 
-  getPortfolioFile(portfolioId: Number, keyName: String): Observable<Blob> {
+  getPortfolioFile(portfolioId: Number, id: Number): Observable<Blob> {
     let options = new RequestOptions({responseType: ResponseContentType.Blob });
-    return this._http.getWithOptions(this.endpoint + '/' + portfolioId + '/upload/' + keyName, options)
+    return this._http.getWithOptions(this.endpoint + '/' + portfolioId + '/upload/' + id, options)
       .map(res => res.blob())
       .catch(this.handleError);
   }

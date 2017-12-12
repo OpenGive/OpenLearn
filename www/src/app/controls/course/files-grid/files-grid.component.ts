@@ -69,8 +69,8 @@ export class FilesGridComponent implements OnInit {
 
     this.files.push(
       {
-        key: item.file.name,
-        uploadedByUser: { name: item.uploadedByUser.name },
+        key: this.parseBaseName(item.fileUrl),
+        uploadedByUser: { firstName: item.uploadedByUser.firstName },
         created_date: new Date().toISOString()
       }
     );
@@ -94,8 +94,7 @@ export class FilesGridComponent implements OnInit {
         this.files = files;
         for (let fileIdx = 0; fileIdx < this.files.length; fileIdx++) {
           let fileUrl = this.files[fileIdx].fileUrl
-          let baseName = fileUrl.substr(fileUrl.lastIndexOf("/")+1)
-          this.files[fileIdx].key = baseName
+          this.files[fileIdx].key = this.parseBaseName(fileUrl);
         }
       });
     } else if (this.fileGuardian.canHaveFiles(this.portfolio)) {
@@ -104,8 +103,7 @@ export class FilesGridComponent implements OnInit {
         console.log(files);
         for (let fileIdx = 0; fileIdx < this.files.length; fileIdx++) {
           let fileUrl = this.files[fileIdx].fileUrl
-          let baseName = fileUrl.substr(fileUrl.lastIndexOf("/")+1)
-          this.files[fileIdx].key = baseName
+          this.files[fileIdx].key = this.parseBaseName(fileUrl);
         }
       });
     }
@@ -125,5 +123,9 @@ export class FilesGridComponent implements OnInit {
 
   stopPropagation(e): void {
     e.stopPropagation();
+  }
+
+  private parseBaseName(path: String): String {
+    return path.substr(path.lastIndexOf("/")+1)
   }
 }

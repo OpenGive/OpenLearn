@@ -36,7 +36,7 @@ export class FileUploadComponent {
         let tokenObject = this._cookieService.getObject('token') as any;
         this.uploader.authToken = 'Bearer ' + tokenObject.access_token;
         this.uploader.onSuccessItem = (item: any, response: any, status: any, headers: any) => {
-          this.onSuccessCallback(item);
+          this.onSuccessCallback(JSON.parse(response));
         }
 
         this.columns = [
