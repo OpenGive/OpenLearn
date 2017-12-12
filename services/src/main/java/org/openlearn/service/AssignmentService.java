@@ -10,6 +10,8 @@ import org.openlearn.repository.StudentCourseRepository;
 import org.openlearn.security.SecurityUtils;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.transformer.AssignmentTransformer;
+import org.openlearn.web.rest.errors.AccessDeniedException;
+import org.openlearn.web.rest.errors.AssignmentNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -38,18 +40,22 @@ public class AssignmentService {
 
 	private final UserService userService;
 
+	private final FileInformationService fileInformationService;
+
 	public AssignmentService(final AssignmentRepository assignmentRepository,
 	                         final AssignmentTransformer assignmentTransformer,
 	                         final CourseRepository courseRepository,
 							 final StudentAssignmentRepository studentAssignmentRepository,
 							 final StudentCourseRepository studentCourseRepository,
-							 final UserService userService) {
+							 final UserService userService,
+							 final FileInformationService fileInformationService) {
 		this.assignmentRepository = assignmentRepository;
 		this.assignmentTransformer = assignmentTransformer;
 		this.courseRepository = courseRepository;
 		this.studentAssignmentRepository = studentAssignmentRepository;
 		this.studentCourseRepository = studentCourseRepository;
 		this.userService = userService;
+		this.fileInformationService = fileInformationService;
 	}
 
 	/**
@@ -147,21 +153,21 @@ public class AssignmentService {
 		log.debug("Request to delete Assignment : {}", id);
 		Assignment assignment = assignmentRepository.findOne(id);
 		User user = userService.getCurrentUser();
+
+		if (assignment == null) throw new AssignmentNotFoundException(id);
+
 		boolean instructorCheck = true;
 		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.INSTRUCTOR)) {
 			Course course = assignment.getCourse();
 			instructorCheck = user.getId() == course.getInstructor().getId();
 		}
 
-		if (assignment != null && instructorCheck && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(assignment))) {
-
-			for (StudentAssignment studentAssignment : studentAssignmentRepository.findByAssignment(assignment)) {
-				studentAssignmentRepository.delete(studentAssignment.getId());
-			}
-
+		if (instructorCheck && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(assignment))) {
+			studentAssignmentRepository.deleteByAssignment(assignment);
+			fileInformationService.deleteByAssignment(assignment);
 			assignmentRepository.delete(id);
 		} else {
-			// TODO: Error handling / logging
+			throw new AccessDeniedException();
 		}
 	}
 

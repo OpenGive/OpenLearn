@@ -167,6 +167,21 @@ export class AssignmentFormComponent implements OnInit {
       courseId: this.data.course.id
     }
   }
+
+  delete(): void {
+    if (this.data.assignment !== undefined && this.data.assignment.hasOwnProperty("id")) {
+      this.adminService.delete(AdminTabs.Assignment.route, this.data.assignment.id).subscribe(resp => {
+        this.dialogRef.close({
+          type: 'DELETE',
+          data: resp
+        });
+        this.notify.success('Successfully deleted assignment');
+      }, error => {
+        this.notify.error('Failed to delete assignment');
+      });
+    }
+  }
+
   close(): void {
     this.dialogRef.close();
   }

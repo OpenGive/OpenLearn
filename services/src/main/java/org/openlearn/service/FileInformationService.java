@@ -108,12 +108,22 @@ public class FileInformationService {
 	}
 
 	/**
-	 * Delete a file by portfolio id
+	 * Delete a file by portfolio
 	 *
 	 * @param portfolioItem the portfolio item whose files should be deleted.
 	 */
 	public void deleteByPortfolioItem(PortfolioItem portfolioItem) {
 		storageService.deleteUploads(fileRepository.findByPortfolioItem(portfolioItem));
 		fileRepository.deleteByPortfolioItem(portfolioItem);
+	}
+
+	/**
+	 * Delete a file by assignment
+	 *
+	 * @param assignment the assignment whose files should be deleted.
+	 */
+	public void deleteByAssignment(Assignment assignment) {
+		storageService.deleteUploads(fileRepository.findByAssignment(assignment));
+		fileRepository.deleteByAssignment(assignment);
 	}
 }
