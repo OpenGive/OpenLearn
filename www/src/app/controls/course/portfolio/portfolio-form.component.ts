@@ -148,6 +148,19 @@ export class PortfolioFormComponent implements OnInit {
       studentId: this.data.student.id
     }
   }
+
+  delete(): void {
+    this.adminService.delete(AdminTabs.Portfolio.route, this.data.portfolioItem.id).subscribe(resp => {
+      this.dialogRef.close({
+        type: 'DELETE',
+        data: resp
+      });
+      this.notify.success('Successfully deleted portfolio item');
+    }, error => {
+      this.notify.error('Failed to delete portfolio item');
+    });
+  }
+
   close(): void {
     this.dialogRef.close();
   }
