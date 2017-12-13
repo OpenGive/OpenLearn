@@ -1,22 +1,22 @@
 <div>
-  <div class="ol-dialog-header" [ngClass]="{edit: adminForm.editing}" fxLayout="row" fxLayoutAlign="space-between center">
+  <div class="ol-dialog-header" [ngClass]="{edit: editing}" fxLayout="row" fxLayoutAlign="space-between center">
     <div fxLayout="row" fxLayoutAlign="start center">
       <div><button md-button type="reset" (click)="close()"><i class="fa fa-times fa-lg"></i></button></div>
-      <span class="ol-dialog-title" *ngIf="!adminForm.editing">Administrator Details</span>
-      <span class="ol-dialog-title edit" *ngIf="adminForm.adding">New Administrator</span>
-      <span class="ol-dialog-title edit" *ngIf="adminForm.editing && !adminForm.adding">Edit Administrator</span>
+      <span class="ol-dialog-title" *ngIf="!editing">Administrator Details</span>
+      <span class="ol-dialog-title edit" *ngIf="adding">New Administrator</span>
+      <span class="ol-dialog-title edit" *ngIf="editing && !adding">Edit Administrator</span>
     </div>
     <div fxLayout="row">
-      <button md-raised-button type="button" *ngIf="adminForm.editing" (click)="adminForm.save()" class="ol-dialog-button grey-button" mdTooltip="Save">
+      <button md-raised-button type="submit" *ngIf="editing" (click)="adminForm.save()" class="ol-dialog-button grey-button" mdTooltip="Save">
         <md-icon>save</md-icon>
       </button>
-      <button md-raised-button type="reset" *ngIf="adminForm.editing && !adminForm.adding" (click)="adminForm.cancel()" class="ol-dialog-button navy-button" mdTooltip="Cancel">
+      <button md-raised-button type="reset" *ngIf="editing && !adding" (click)="adminForm.cancel()" class="ol-dialog-button navy-button" mdTooltip="Cancel">
         <md-icon>clear</md-icon>
       </button>
-      <button md-raised-button type="button" *ngIf="!adminForm.editing" (click)="adminForm.edit()" class="ol-dialog-button grey-button" mdTooltip="Edit">
+      <button md-raised-button type="button" *ngIf="!editing" (click)="adminForm.edit()" class="ol-dialog-button grey-button" mdTooltip="Edit">
         <md-icon>create</md-icon>
       </button>
-      <button md-raised-button type="button" *ngIf="!adminForm.editing" [mdMenuTriggerFor]="deleteMenu" class="ol-dialog-button pink-button" mdTooltip="Delete">
+      <button md-raised-button type="button" *ngIf="!editing" [mdMenuTriggerFor]="deleteMenu" class="ol-dialog-button pink-button" mdTooltip="Delete">
         <md-icon>delete</md-icon>
       </button>
       <md-menu #deleteMenu="mdMenu">
@@ -27,6 +27,6 @@
     </div>
   </div>
   <admin-administrators-form #adminForm [item]="formAdministrator" [adding]="adding" [organizations]="organizations"
-                             (onAdd)="added($event)" (onUpdate)="updated($event)" (onDelete)="deleted()">
+                             (onAdd)="added($event)" (onUpdate)="updated($event)" (onDelete)="deleted()" (onEdit)="updateEditing($event)">
   </admin-administrators-form>
 </div>

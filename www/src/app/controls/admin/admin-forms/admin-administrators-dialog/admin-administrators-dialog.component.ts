@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from "@angular/core";
+import {Component, Input} from "@angular/core";
 import {MdDialogRef} from "@angular/material";
 
 import {AdminDialogComponent} from "../../admin-dialog.component";
@@ -15,7 +15,13 @@ export class AdminAdministratorsDialogComponent {
   @Input() adding: boolean;
   @Input('organizations') organizations: any[];
 
+  editing: boolean = false;
+
   constructor(public dialogRef: MdDialogRef<AdminDialogComponent>) {}
+
+  updateEditing(isEditing: boolean): void {
+    this.editing = isEditing;
+  };
 
   added(account: Account): void {
     this.dialogRef.close({

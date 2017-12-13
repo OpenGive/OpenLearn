@@ -25,6 +25,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
   @Output() onAdd = new EventEmitter<Account>();
   @Output() onUpdate = new EventEmitter<Account>();
   @Output() onDelete = new EventEmitter();
+  @Output() onEdit = new EventEmitter<boolean>();
 
   editing: boolean;
   changingPassword: boolean;
@@ -217,7 +218,9 @@ export class AdminAdministratorsFormComponent implements OnInit {
       }
     } else {
       this.administratorForm.markAsTouched();
-      this.administratorForm.markAsDirty();
+      for (let key in this.administratorForm.controls) {
+        this.administratorForm.controls[key].markAsTouched();
+      }
     }
   }
 
@@ -270,10 +273,12 @@ export class AdminAdministratorsFormComponent implements OnInit {
 
   edit(): void {
     this.setEditing(true);
+    this.onEdit.emit(true);
   }
 
   cancel(): void {
     this.ngOnInit();
+    this.onEdit.emit(false);
   }
 
   resetPassword(changingPassword: boolean): void {
