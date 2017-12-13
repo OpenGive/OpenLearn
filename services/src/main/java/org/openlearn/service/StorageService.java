@@ -13,7 +13,9 @@ import org.openlearn.repository.CourseRepository;
 import org.openlearn.repository.FileRepository;
 import org.openlearn.repository.PortfolioItemRepository;
 import org.openlearn.transformer.FileInformationTransformer;
+import org.openlearn.web.rest.errors.AssignmentNotFoundException;
 import org.openlearn.web.rest.errors.FileInformationNotFoundException;
+import org.openlearn.web.rest.errors.PortfolioItemNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +80,18 @@ public class StorageService {
 	//TODO cbernal fix blue documentation
 	public FileInformationDTO store(final MultipartFile file, Long assignmentId, Long portfolioId) {
 		log.debug("Request to save f : {}", file); //TODO cbernal fix this log statement
+		Assignment assignment = null;
+		PortfolioItem portfolioItem = null;
+
+		if (assignmentId != null) {
+			assignment = assignmentRepository.findOne(assignmentId);
+
+			if (assignment == null) throw new AssignmentNotFoundException(assignmentId);
+		} else {
+			portfolioItem = portfolioItemRepository.findOne(portfolioId);
+
+			if (portfolioItem == null) throw new PortfolioItemNotFoundException(portfolioId);
+		}
 
 		User user = userService.getCurrentUser();
 		AmazonS3 s3client = AmazonS3ClientBuilder.defaultClient();
@@ -98,14 +112,12 @@ public class StorageService {
 		fileInformation.setFileUrl("https://s3.amazonaws.com/" + uploadBucketName + "/" + keyName);
 		fileInformation.setUploadedByUser(user);
 		fileInformation.setCreatedDate(ZonedDateTime.now());
-		if (assignmentId != null) {
-			Assignment assignment = assignmentRepository.findOne(assignmentId);
+		if (assignment != null) {
 			Course course = assignment.getCourse();
 			fileInformation.setAssignment(assignment);
 			fileInformation.setUser(course.getInstructor());
 			fileInformation.setFileType("Assignment");
 		} else {
-			PortfolioItem portfolioItem = portfolioItemRepository.findOne(portfolioId);
 			fileInformation.setPortfolioItem(portfolioItem);
 			fileInformation.setUser(portfolioItem.getStudent());
 			fileInformation.setFileType("Portfolio");
