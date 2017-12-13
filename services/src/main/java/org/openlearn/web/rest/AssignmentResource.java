@@ -207,7 +207,7 @@ public class AssignmentResource {
 		if (assignmentDTO == null) throw new AssignmentNotFoundException(assignmentId);
 		if (fileInformationDTO == null) throw new FileInformationNotFoundException(id);
 
-		if (hasCreateUpdateDeleteAuthority(assignmentDTO) && fileInformationDTO.getAssignmentId() == assignmentId) {
+		if (canUploadFilesToAssignment(assignmentDTO) && fileInformationDTO.getAssignmentId().equals(assignmentId)) {
 			String fileName = fileInformationService.getFileNameFor(id);
 			InputStream response = storageService.getUpload(id);
 			if (response != null) {
@@ -241,7 +241,8 @@ public class AssignmentResource {
 		if (assignmentDTO == null) throw new AssignmentNotFoundException(assignmentId);
 		if (fileInformationDTO == null) throw new FileInformationNotFoundException(id);
 
-		if (hasCreateUpdateDeleteAuthority(assignmentDTO) && fileInformationDTO.getAssignmentId() == assignmentId) {
+		log.debug("File requested for Assignment " + assignmentId.toString() + " File " + id.toString());
+		if (hasCreateUpdateDeleteAuthority(assignmentDTO) && fileInformationDTO.getAssignmentId().equals(assignmentId)) {
 			try {
 				storageService.deleteUpload(id);
 			} catch (Exception e) {

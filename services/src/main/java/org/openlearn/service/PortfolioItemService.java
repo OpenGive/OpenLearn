@@ -138,7 +138,7 @@ public class PortfolioItemService {
 	public void delete(final Long id) {
 		log.debug("Request to delete portfolio item : {}", id);
 		PortfolioItem portfolioItem = portfolioItemRepository.findOne(id);
-		if (portfolioItem == null) new PortfolioItemNotFoundException(id);
+		if (portfolioItem == null) throw new PortfolioItemNotFoundException(id);
 
 		if ((SecurityUtils.isAdmin() || inOrgOfCurrentUser(portfolioItem))) {
 			fileInformationService.deleteByPortfolioItem(portfolioItem);

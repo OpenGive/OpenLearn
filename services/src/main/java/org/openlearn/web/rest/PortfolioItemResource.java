@@ -211,7 +211,7 @@ public class PortfolioItemResource {
 		if (portfolioItem == null) throw new PortfolioItemNotFoundException(portfolioId);
 		if (fileInformationDTO == null) throw new FileInformationNotFoundException(id);
 
-		if (canUploadFilesToPortfolio(portfolioItem) && fileInformationDTO.getPortfolioItemId() == portfolioId) {
+		if (canUploadFilesToPortfolio(portfolioItem) && fileInformationDTO.getPortfolioItemId().equals(portfolioId)) {
 			String fileName = fileInformationService.getFileNameFor(id);
 			InputStream response = storageService.getUpload(id);
 			if (response != null) {
@@ -245,7 +245,7 @@ public class PortfolioItemResource {
 		if (portfolioItem == null) throw new PortfolioItemNotFoundException(portfolioId);
 		if (fileInformationDTO == null) throw new FileInformationNotFoundException(id);
 
-		if (canUploadFilesToPortfolio(portfolioItem) && fileInformationDTO.getPortfolioItemId() == portfolioId) {
+		if (canUploadFilesToPortfolio(portfolioItem) && fileInformationDTO.getPortfolioItemId().equals(portfolioId)) {
 			try {
 				storageService.deleteUpload(id);
 			} catch (Exception e) {
@@ -275,6 +275,6 @@ public class PortfolioItemResource {
 
 	private Boolean isPortfolioStudent(PortfolioItemDTO portfolioItem) {
 		return SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.STUDENT) &&
-			portfolioItem.getStudentId() == userService.getCurrentUser().getId();
+			portfolioItem.getStudentId().equals(userService.getCurrentUser().getId());
 	}
 }

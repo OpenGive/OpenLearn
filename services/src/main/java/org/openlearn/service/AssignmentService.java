@@ -70,7 +70,7 @@ public class AssignmentService {
 		boolean instructorCheck = true;
 		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.INSTRUCTOR)) {
 			Course course = courseRepository.findOne(assignmentDTO.getCourseId());
-			instructorCheck = user.getId() == course.getInstructor().getId();
+			instructorCheck = user.getId().equals(course.getInstructor().getId());
 		}
 
 		if (instructorCheck && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(assignmentDTO))) {
@@ -159,7 +159,7 @@ public class AssignmentService {
 		boolean instructorCheck = true;
 		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.INSTRUCTOR)) {
 			Course course = assignment.getCourse();
-			instructorCheck = user.getId() == course.getInstructor().getId();
+			instructorCheck = user.getId().equals(course.getInstructor().getId());
 		}
 
 		if (instructorCheck && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(assignment))) {
