@@ -15,11 +15,13 @@ import {AdminOrganizationsFormComponent} from "./admin-organizations-form/admin-
 import {AdminProgramsFormComponent} from "./admin-programs-form/admin-programs-form.component";
 import {AdminSessionsFormComponent} from "./admin-sessions-form/admin-sessions-form.component";
 import {AdminStudentsFormComponent} from "./admin-students-form/admin-students-form.component";
+import {AdminAdministratorsDialogComponent} from "./admin-administrators-dialog/admin-administrators-dialog.component";
 
 @NgModule({
   declarations: [
     // AdminAchievementsFormComponent,
     AdminAdministratorsFormComponent,
+    AdminAdministratorsDialogComponent,
     AdminCoursesFormComponent,
     AdminInstructorsFormComponent,
     // AdminMilestonesFormComponent,
@@ -47,6 +49,7 @@ import {AdminStudentsFormComponent} from "./admin-students-form/admin-students-f
   exports: [
     // AdminAchievementsFormComponent,
     AdminAdministratorsFormComponent,
+    AdminAdministratorsDialogComponent,
     AdminCoursesFormComponent,
     AdminInstructorsFormComponent,
     // AdminMilestonesFormComponent,

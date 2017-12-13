@@ -1,15 +1,14 @@
-import {Component, Input, OnInit} from "@angular/core";
+import {Component, Input, OnInit, EventEmitter, Output} from "@angular/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {MdDialogRef} from "@angular/material";
 import {Observable} from "rxjs/Observable";
 import * as _ from "lodash";
 
-import {AdminDialogComponent} from "../../admin-dialog.component";
 import {AdminService} from "../../../../services/admin.service";
 import {AppConstants} from "../../../../app.constants";
 import {NotifyService} from "../../../../services/notify.service";
 import {Admin} from "../../../../models/admin.model";
 import {AdminTabs} from "../../admin.constants";
+import {Account} from "../../../../models/account.model";
 
 @Component({
   selector: 'admin-administrators-form',
@@ -21,6 +20,12 @@ export class AdminAdministratorsFormComponent implements OnInit {
   @Input('item') formAdministrator: Admin;
   @Input() adding: boolean;
   @Input('organizations') organizations: any[];
+
+  // TODO: Make these optional
+  @Output() onAdd = new EventEmitter<Account>();
+  @Output() onUpdate = new EventEmitter<Account>();
+  @Output() onDelete = new EventEmitter();
+
   editing: boolean;
   changingPassword: boolean;
 
@@ -90,8 +95,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
     }
   };
 
-  constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
-              private fb: FormBuilder,
+  constructor(private fb: FormBuilder,
               private notify: NotifyService,
               private adminService: AdminService) {}
 
@@ -101,7 +105,6 @@ export class AdminAdministratorsFormComponent implements OnInit {
     this.resetPassword(false);
     this.getRoles();
     this.getStates();
-    console.log(JSON.stringify(this.organizations));
   }
 
   private buildForm(): void {
@@ -214,15 +217,13 @@ export class AdminAdministratorsFormComponent implements OnInit {
       }
     } else {
       this.administratorForm.markAsTouched();
+      this.administratorForm.markAsDirty();
     }
   }
 
   private add(): void {
     this.adminService.create(AdminTabs.Administrator.route, this.administratorForm.value).subscribe(resp => {
-      this.dialogRef.close({
-        type: 'ADD',
-        data: resp
-      });
+      this.onAdd.emit(resp);
       this.notify.success('Successfully added administrator');
     }, error => {
       this.notify.error('Failed to add administrator');
@@ -232,10 +233,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
   private update(): void {
     const toUpdate = this.prepareToUpdate();
     this.adminService.update(AdminTabs.Administrator.route, toUpdate).subscribe(resp => {
-      this.dialogRef.close({
-        type: 'UPDATE',
-        data: resp
-      });
+      this.onUpdate.emit(resp);
       this.notify.success('Successfully updated administrator');
     }, error => {
       this.notify.error('Failed to update administrator');
@@ -263,12 +261,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
 
   delete(): void {
     this.adminService.delete(AdminTabs.Administrator.route, this.formAdministrator.id).subscribe(resp => {
-      this.dialogRef.close({
-        type: 'DELETE',
-        data: {
-          id: this.formAdministrator.id
-        }
-      });
+      this.onDelete.emit();
       this.notify.success('Successfully deleted administrator');
     }, error => {
       this.notify.error('Failed to delete administrator');
@@ -281,10 +274,6 @@ export class AdminAdministratorsFormComponent implements OnInit {
 
   cancel(): void {
     this.ngOnInit();
-  }
-
-  close(): void {
-    this.dialogRef.close();
   }
 
   resetPassword(changingPassword: boolean): void {
