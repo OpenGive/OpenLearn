@@ -223,6 +223,8 @@ export class AssignmentFormComponent implements OnInit {
   }
 
   getStudents(): void {
+    if (this.studentView) return;
+
     this.assignmentService.getAssignmentStudentByAssignmentId(this.data.assignment.id).subscribe(assignmentStudents => {
       this.students = assignmentStudents;
       console.log(this.students)
