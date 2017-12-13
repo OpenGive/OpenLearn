@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -117,6 +118,7 @@ public class PortfolioItemResource {
 			PortfolioItemDTO response = portfolioItemService.save(portfolioItemDTO);
 			return ResponseEntity.created(new URI(ENDPOINT + response.getId())).body(response);
 		} else {
+			log.info("User is not authorized to create portfolio items");
 			return new ResponseEntity(HttpStatus.FORBIDDEN);
 		}
 
@@ -137,6 +139,7 @@ public class PortfolioItemResource {
 			PortfolioItemDTO response = portfolioItemService.save(portfolioItemDTO);
 			return ResponseEntity.ok(response);
 		} else {
+			log.info("User is not authorized to update portfolio item: {}.", portfolioItemDTO.getId());
 			return new ResponseEntity(HttpStatus.FORBIDDEN);
 		}
 	}
@@ -151,12 +154,13 @@ public class PortfolioItemResource {
 	@DeleteMapping(path = "/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
 	public ResponseEntity delete(@PathVariable final Long id) {
+		log.debug("DELETE request to delete portfolio item : {}", id);
 		PortfolioItemDTO portfolioItem = portfolioItemService.findOne(id);
 		if (hasCreateUpdateDeleteAuthority(portfolioItem)) {
-			log.debug("DELETE request to delete portfolio item : {}", id);
 			portfolioItemService.delete(id);
 			return ResponseEntity.ok().build();
 		} else {
+			log.info("User is not authorized to delete portfolio item: {}.", id);
 			return new ResponseEntity(HttpStatus.FORBIDDEN);
 		}
 	}
@@ -172,8 +176,8 @@ public class PortfolioItemResource {
 	@PostMapping(path="/{portfolioId}/upload")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
 	public ResponseEntity uploadCourseFile(@PathVariable final Long portfolioId,
-								   @RequestParam("file") MultipartFile file,
-								   RedirectAttributes redirectAttributes) throws URISyntaxException {
+										@RequestParam("file") MultipartFile file,
+										RedirectAttributes redirectAttributes) throws URISyntaxException {
 		PortfolioItemDTO portfolioItem = portfolioItemService.findOne(portfolioId);
 		if (canUploadFilesToPortfolio(portfolioItem)) {
 			FileInformationDTO response = storageService.store(file, null, portfolioId);
@@ -181,6 +185,7 @@ public class PortfolioItemResource {
 				"You successfully uploaded " + file.getOriginalFilename() + "!");
 			return ResponseEntity.created(new URI(ENDPOINT + response.getId())).body(response);
 		} else {
+			log.info("User is not authorized to upload files for portfolio item: {}.", portfolioId);
 			return new ResponseEntity(HttpStatus.FORBIDDEN);
 		}
 	}
@@ -196,6 +201,7 @@ public class PortfolioItemResource {
 			Page<FileInformationDTO> response = fileInformationService.findAllForPorfolioItem(portfolioId, pageable);
 			return ResponseEntity.ok(response.getContent());
 		} else {
+			log.info("User is not authorized to retrieve uploaded files for portfolio item {}.", portfolioId);
 			return new ResponseEntity(HttpStatus.FORBIDDEN);
 		}
 	}
@@ -214,23 +220,20 @@ public class PortfolioItemResource {
 		if (canUploadFilesToPortfolio(portfolioItem) && fileInformationDTO.getPortfolioItemId().equals(portfolioId)) {
 			String fileName = fileInformationService.getFileNameFor(id);
 			InputStream response = storageService.getUpload(id);
-			if (response != null) {
-				try {
-					byte[] out = org.apache.commons.io.IOUtils.toByteArray(response);
+			try {
+				byte[] out = org.apache.commons.io.IOUtils.toByteArray(response);
 
-					HttpHeaders responseHeaders = new HttpHeaders();
-					responseHeaders.add("content-disposition", "attachment; filename=" + fileName);
-					// responseHeaders.add("Content-Type", type);
+				HttpHeaders responseHeaders = new HttpHeaders();
+				responseHeaders.add("content-disposition", "attachment; filename=" + fileName);
 
-					return new ResponseEntity(out, responseHeaders, HttpStatus.OK);
-				} catch (Exception e) {
-					new ResponseEntity("File Not Found", HttpStatus.NOT_FOUND);
-				}
-				return new ResponseEntity("File Not Found", HttpStatus.NOT_FOUND);
-			} else {
-				return new ResponseEntity("File Not Found", HttpStatus.NOT_FOUND);
+				return new ResponseEntity(out, responseHeaders, HttpStatus.OK);
+			} catch (IOException e) {
+				log.error(e.getMessage());
+				log.error("File entity '{}' could not be converted to a Byte Array.", id);
+				return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		} else {
+			log.info("User is not authorized to retrieve uploaded file {}.", id);
 			return new ResponseEntity(HttpStatus.FORBIDDEN);
 		}
 	}
@@ -249,10 +252,12 @@ public class PortfolioItemResource {
 			try {
 				storageService.deleteUpload(id);
 			} catch (Exception e) {
+				log.error(e.getMessage());
 				return new ResponseEntity("Error deleting upload", HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 			return new ResponseEntity(HttpStatus.OK);
 		} else {
+			log.info("User is not authorized to delete uploaded file {}.", id);
 			return new ResponseEntity(HttpStatus.FORBIDDEN);
 		}
 	}
@@ -269,7 +274,7 @@ public class PortfolioItemResource {
 
 	private Boolean isOrgAdmin(PortfolioItemDTO portfolioItem) {
 		return SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ORG_ADMIN) &&
-			portfolioItemService.inOrgOfCurrentUser(portfolioItem);
+			portfolioItemService.isOrgAdminOfCurrentUser(portfolioItem);
 
 	}
 

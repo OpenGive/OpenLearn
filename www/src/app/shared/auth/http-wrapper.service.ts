@@ -46,15 +46,13 @@ export class HttpWrapperService {
         if (response.status === 401) {
           this.logoutService.logout();
           this.router.navigate(['/login']);
-          this.notify.error('You have been automatically signed out. Please sign in again.')
+          this.notify.error('You have been automatically signed out. Please sign in again.');
           return Observable.throw(new Error('Token has expired. Logging the user out now.'));
         } else if (response.status === 403) {
-          // They were forrbidden to do whatever attempted action
-          // this.router.navigate(['/dashboard']);
-          this.notify.error('You are not permitted to perform that action.')
+          this.notify.error('You are not permitted to perform that action.');
           return Observable.throw(new Error("Access Denied"));
         }
-      return Observable.throw(response.json());
+      return Observable.throw(response);
     }
 
     private getAuthHeader(): RequestOptionsArgs {

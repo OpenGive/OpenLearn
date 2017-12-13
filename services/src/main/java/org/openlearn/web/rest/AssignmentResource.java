@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -112,6 +113,7 @@ public class AssignmentResource {
 			AssignmentDTO response = assignmentService.save(assignmentDTO);
 			return ResponseEntity.created(new URI(ENDPOINT + response.getId())).body(response);
 		} else {
+			log.info("User is not authorized to create assignments");
 			return new ResponseEntity(HttpStatus.FORBIDDEN);
 		}
 	}
@@ -131,6 +133,7 @@ public class AssignmentResource {
 			AssignmentDTO response = assignmentService.save(assignmentDTO);
 			return ResponseEntity.ok(response);
 		} else {
+			log.info("User is not authorized to update assignment: {}.", assignmentDTO.getId());
 			return new ResponseEntity(HttpStatus.FORBIDDEN);
 		}
 	}
@@ -150,6 +153,7 @@ public class AssignmentResource {
 			assignmentService.delete(id);
 			return ResponseEntity.ok().build();
 		} else {
+			log.info("User is not authorized to delete assignment: {}.", id);
 			return new ResponseEntity(HttpStatus.FORBIDDEN);
 		}
 	}
@@ -176,6 +180,7 @@ public class AssignmentResource {
 			URI location = new URI(ENDPOINT + response.getId());
 			return ResponseEntity.created(location).body(response);
 		} else {
+			log.info("User is not authorized to upload files for assignment: {}.", assignmentId);
 			return new ResponseEntity(HttpStatus.FORBIDDEN);
 		}
 	}
@@ -192,6 +197,7 @@ public class AssignmentResource {
 			Page<FileInformationDTO> response = fileInformationService.findAllForAssignment(assignmentId, pageable);
 			return ResponseEntity.ok(response.getContent());
 		} else {
+			log.info("User is not authorized to retrieve uploaded files for assignment: {}.", assignmentId);
 			return new ResponseEntity(HttpStatus.FORBIDDEN);
 		}
 	}
@@ -210,23 +216,20 @@ public class AssignmentResource {
 		if (canUploadFilesToAssignment(assignmentDTO) && fileInformationDTO.getAssignmentId().equals(assignmentId)) {
 			String fileName = fileInformationService.getFileNameFor(id);
 			InputStream response = storageService.getUpload(id);
-			if (response != null) {
-				try {
-					byte[] out = org.apache.commons.io.IOUtils.toByteArray(response);
+			try {
+				byte[] out = org.apache.commons.io.IOUtils.toByteArray(response);
 
-					HttpHeaders responseHeaders = new HttpHeaders();
-					responseHeaders.add("content-disposition", "attachment; filename=" + fileName);
-					// responseHeaders.add("Content-Type", type);
+				HttpHeaders responseHeaders = new HttpHeaders();
+				responseHeaders.add("content-disposition", "attachment; filename=" + fileName);
 
-					return new ResponseEntity(out, responseHeaders, HttpStatus.OK);
-				} catch (Exception e) {
-					new ResponseEntity("File Not Found", HttpStatus.NOT_FOUND);
-				}
-				return new ResponseEntity("File Not Found", HttpStatus.NOT_FOUND);
-			} else {
-				return new ResponseEntity("File Not Found", HttpStatus.NOT_FOUND);
+				return new ResponseEntity(out, responseHeaders, HttpStatus.OK);
+			} catch (IOException e) {
+				log.error(e.getMessage());
+				log.error("File entity '{}' could not be converted to a Byte Array.", id);
+				return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		} else {
+			log.info("User is not authorized to retrieve upload file {}.", id);
 			return new ResponseEntity(HttpStatus.FORBIDDEN);
 		}
 	}
@@ -246,10 +249,12 @@ public class AssignmentResource {
 			try {
 				storageService.deleteUpload(id);
 			} catch (Exception e) {
+				log.error(e.getMessage());
 				return new ResponseEntity("Error deleting upload", HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 			return new ResponseEntity(HttpStatus.OK);
 		} else {
+			log.info("User is not authorized to delete upload file {}.", id);
 			return new ResponseEntity(HttpStatus.FORBIDDEN);
 		}
 	}

@@ -12,6 +12,8 @@ import org.openlearn.repository.PortfolioItemRepository;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.security.SecurityUtils;
 import org.openlearn.transformer.FileInformationTransformer;
+import org.openlearn.web.rest.errors.AssignmentNotFoundException;
+import org.openlearn.web.rest.errors.FileInformationNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -62,6 +64,8 @@ public class FileInformationService {
 	public Page<FileInformationDTO> findAllForAssignment(final Long assignmentId, Pageable pageable) {
 		log.debug("Request to get File Information for Assignment : {}", assignmentId);
 		Assignment assignment = assignmentRepository.findOne(assignmentId);
+		if (assignment == null) throw new AssignmentNotFoundException(assignmentId);
+
 		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.STUDENT)) {
 			return fileRepository.findByAssignmentAndUploadedByUser(assignment, userService.getCurrentUser(), pageable)
 				.map(fileInformationTransformer::transform);
@@ -97,14 +101,17 @@ public class FileInformationService {
 		return fileInformationTransformer.transform(fileRepository.findOne(id));
 	}
 
+	/**
+	 *
+	 * @param id
+	 * @return the String base name of the file.
+	 */
 	@Transactional(readOnly = true)
 	public String getFileNameFor(final Long id) {
 		FileInformationDTO fileInformation = this.findOne(id);
-		if (fileInformation != null) {
-			return fileInformationTransformer.getFileBaseName(fileInformation);
-		} else {
-			return "";
-		}
+		if (fileInformation == null) throw new FileInformationNotFoundException(id);
+
+		return fileInformationTransformer.getFileBaseName(fileInformation);
 	}
 
 	/**

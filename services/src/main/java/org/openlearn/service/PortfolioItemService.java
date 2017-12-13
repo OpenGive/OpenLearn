@@ -1,7 +1,6 @@
 package org.openlearn.service;
 
 import org.openlearn.domain.Authority;
-import org.openlearn.domain.FileInformation;
 import org.openlearn.domain.PortfolioItem;
 import org.openlearn.domain.User;
 import org.openlearn.dto.PortfolioItemDTO;
@@ -14,13 +13,11 @@ import org.openlearn.web.rest.errors.AccessDeniedException;
 import org.openlearn.web.rest.errors.PortfolioItemNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.actuate.autoconfigure.ShellProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -72,7 +69,7 @@ public class PortfolioItemService {
 	 */
 	public PortfolioItemDTO save(final PortfolioItemDTO portfolioItemDTO) {
 		log.debug("Request to save portfolio item : {}", portfolioItemDTO);
-		if (SecurityUtils.isAdmin() || inOrgOfCurrentUser(portfolioItemDTO)) {
+		if (SecurityUtils.isAdmin() || isOrgAdminOfCurrentUser(portfolioItemDTO)) {
 			return portfolioItemTransformer.transform(portfolioItemRepository.save(portfolioItemTransformer.transform(portfolioItemDTO)));
 		}
 		// TODO: Error handling / logging
@@ -107,7 +104,7 @@ public class PortfolioItemService {
 	public PortfolioItemDTO findOne(final Long id) {
 		log.debug("Request to get portfolio item : {}", id);
 		PortfolioItem portfolioItem = portfolioItemRepository.findOne(id);
-		if (portfolioItem != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(portfolioItem))) {
+		if (portfolioItem != null && (SecurityUtils.isAdmin() || isOrgAdminOfCurrentUser(portfolioItem))) {
 			return portfolioItemTransformer.transform(portfolioItem);
 		}
 		// TODO: Error handling / logging
@@ -140,22 +137,23 @@ public class PortfolioItemService {
 		PortfolioItem portfolioItem = portfolioItemRepository.findOne(id);
 		if (portfolioItem == null) throw new PortfolioItemNotFoundException(id);
 
-		if ((SecurityUtils.isAdmin() || inOrgOfCurrentUser(portfolioItem))) {
+		if ((SecurityUtils.isAdmin() || isOrgAdminOfCurrentUser(portfolioItem))) {
 			fileInformationService.deleteByPortfolioItem(portfolioItem);
 			portfolioItemRepository.delete(id);
 		} else {
+			log.error("User is not allowed to delete porfolio item.");
 			throw new AccessDeniedException();
 		}
 	}
 
-	public boolean inOrgOfCurrentUser(final PortfolioItemDTO portfolioItemDTO) {
+	public boolean isOrgAdminOfCurrentUser(final PortfolioItemDTO portfolioItemDTO) {
 		User user = userService.getCurrentUser();
 		User student = userRepository.findOneByIdAndAuthority(portfolioItemDTO.getStudentId(), STUDENT);
 		return student != null && SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ORG_ADMIN) &&
             user.getOrganization().equals(student.getOrganization());
 	}
 
-	public boolean inOrgOfCurrentUser(final PortfolioItem portfolioItem) {
+	public boolean isOrgAdminOfCurrentUser(final PortfolioItem portfolioItem) {
 		User user = userService.getCurrentUser();
 		return SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ORG_ADMIN) &&
 		user.getOrganization().equals(portfolioItem.getStudent().getOrganization());

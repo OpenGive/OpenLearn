@@ -13,9 +13,7 @@ import org.openlearn.repository.CourseRepository;
 import org.openlearn.repository.FileRepository;
 import org.openlearn.repository.PortfolioItemRepository;
 import org.openlearn.transformer.FileInformationTransformer;
-import org.openlearn.web.rest.errors.AssignmentNotFoundException;
-import org.openlearn.web.rest.errors.FileInformationNotFoundException;
-import org.openlearn.web.rest.errors.PortfolioItemNotFoundException;
+import org.openlearn.web.rest.errors.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +30,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.ZonedDateTime;
 import java.util.*;
-import java.util.function.BiConsumer;
 
 /**
  * Service Implementation for managing File upload.
@@ -103,8 +100,10 @@ public class StorageService {
 			f.delete();
 		} catch (AmazonServiceException e) {
 			log.error(e.getErrorMessage());
-		} catch (Exception e) {
+			throw new FileInformationAccessFailedException();
+		} catch (IOException e) {
 			log.error(e.getMessage());
+			throw new UploadCouldNotBeConvertedException();
 		}
 
 
@@ -150,9 +149,9 @@ public class StorageService {
 			S3Object s3Object = s3client.getObject(new GetObjectRequest(bucket, key));
 			InputStream objectData = s3Object.getObjectContent();
 			return objectData;
-		} catch(Exception e) {
-			log.error(e.getMessage());
-			return null;
+		} catch (AmazonServiceException e) {
+			log.error(e.getErrorMessage());
+			throw new FileInformationAccessFailedException();
 		}
 	}
 
@@ -178,6 +177,16 @@ public class StorageService {
 
 	public void deleteUploads(List<FileInformation> files) {
 		AmazonS3 s3client = AmazonS3ClientBuilder.defaultClient();
+
+		Map<String, List<String>> bucketToKeyMapping = buildBucketToKeyMapping(files);
+
+		bucketToKeyMapping.forEach((bucket, keys) -> {
+            DeleteObjectsRequest request = buildDeleteObjectsRequest(bucket, keys);
+            s3client.deleteObjects(request);
+        });
+	}
+
+	private Map<String, List<String>> buildBucketToKeyMapping(List<FileInformation> files) {
 		List<String> buckets = Lists.transform(files, this::retrieveBucket);
 		List<String> keys = Lists.transform(files, this::retrieveKeyName);
 
@@ -185,7 +194,7 @@ public class StorageService {
 
 		// Test if there's only one bucket (which will be the typical case)
 		Set<String> uniqueBuckets = new HashSet<>(buckets);
-		if (uniqueBuckets.size() > 1) {
+		if (uniqueBuckets.size() == 1) {
 			bucketToKeys.put(buckets.get(0), keys);
 		} else { // There are multiple buckets in the given file set
 
@@ -202,19 +211,23 @@ public class StorageService {
 			}
 		}
 
-		bucketToKeys.forEach((bucket, keys1) -> {
-            DeleteObjectsRequest request = new DeleteObjectsRequest(bucket);
-            List<DeleteObjectsRequest.KeyVersion> keyVersions = new ArrayList<>(keys1.size());
-            for (String key : keys1)
-                keyVersions.add(new DeleteObjectsRequest.KeyVersion(key));
-            request.setKeys(keyVersions);
-            s3client.deleteObjects(request);
-        });
+		return bucketToKeys;
+	}
+
+	private DeleteObjectsRequest buildDeleteObjectsRequest(String bucket, List<String> keys) {
+		DeleteObjectsRequest request = new DeleteObjectsRequest(bucket);
+		List<DeleteObjectsRequest.KeyVersion> keyVersions = new ArrayList<>(keys.size());
+
+		for (String key : keys)
+			keyVersions.add(new DeleteObjectsRequest.KeyVersion(key));
+
+		request.setKeys(keyVersions);
+		return request;
 	}
 
 	private String createS3FilePrefix(Long assignmentId, Long portfolioId, Long uploadedByUserId) {
-		// s3 file name is a_[assignmentid]_[filename] for assignments and p_[portfolioid]_[filename] for portfolios
-		// and a unique GUID hash.
+		// s3 file name is a_[assignmentId]_[filename] for assignments and p_[portfolioId]_[filename] for portfolios
+		// and the user uploading the file's hash.
 		String assignmentStr = assignmentId != null ? "a_" + assignmentId.toString() + "/" : "";
 		String portfolioStr = portfolioId != null ? "p_" + portfolioId.toString() + "/" : "";
 		String userStr = uploadedByUserId.toString();

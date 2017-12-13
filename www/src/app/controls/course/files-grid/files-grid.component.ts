@@ -93,7 +93,7 @@ export class FilesGridComponent implements OnInit {
       this.assignmentService.getAssignmentFiles(this.assignment.id).subscribe(files => {
         this.files = files;
         for (let fileIdx = 0; fileIdx < this.files.length; fileIdx++) {
-          let fileUrl = this.files[fileIdx].fileUrl
+          const fileUrl = this.files[fileIdx].fileUrl
           this.files[fileIdx].key = this.parseBaseName(fileUrl);
         }
       });
@@ -102,7 +102,7 @@ export class FilesGridComponent implements OnInit {
         this.files = files;
         console.log(files);
         for (let fileIdx = 0; fileIdx < this.files.length; fileIdx++) {
-          let fileUrl = this.files[fileIdx].fileUrl
+          const fileUrl = this.files[fileIdx].fileUrl
           this.files[fileIdx].key = this.parseBaseName(fileUrl);
         }
       });
