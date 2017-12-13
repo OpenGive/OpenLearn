@@ -32,6 +32,8 @@ export class FilesGridComponent implements OnInit {
 
   public fileUploadSuccessCallback: Function;
 
+  private getAssignmentFilesFunction: Function;
+
   constructor(private dialog: MdDialog,
               private assignmentService: AssignmentService,
               private notify: NotifyService,
@@ -55,6 +57,9 @@ export class FilesGridComponent implements OnInit {
       }
     ];
 
+
+    this.getAssignmentFilesFunction =  this.assignmentService.getAssignmentFiles.bind(this.assignmentService)
+    this.getAssignmentFilesFunction =  this.assignmentService.getAssignmentInstructorFiles.bind(this.assignmentService)
     this.getFiles();
 
     this.fileUploadSuccessCallback = this.addFile.bind(this);
@@ -87,7 +92,7 @@ export class FilesGridComponent implements OnInit {
 
   getFiles(): void {
     if (this.fileGuardian.canHaveFiles(this.assignment)) {
-      this.assignmentService.getAssignmentFiles(this.assignment.id).subscribe(files => {
+      this.getAssignmentFilesFunction(this.assignment.id).subscribe(files => {
         this.files = files;
         for (let fileIdx = 0; fileIdx < this.files.length; fileIdx++) {
           const fileUrl = this.files[fileIdx].fileUrl

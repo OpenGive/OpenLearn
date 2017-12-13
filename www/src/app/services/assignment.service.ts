@@ -41,6 +41,12 @@ export class AssignmentService {
     .catch(this.handleError);
   }
 
+  getAssignmentInstructorFiles(assignmentId: Number): Observable<any[]> {
+    return this._http.get('/api/assignments/' + assignmentId + '/instructor/uploads')
+    .map(resp => resp.json())
+    .catch(this.handleError);
+  }
+
   deleteAssignmentFile(assignmentId: Number, id: Number): Observable<any[]> {
     return this._http.delete('/api/assignments/' + assignmentId + '/upload/' + id)
       .catch(this.handleError);
