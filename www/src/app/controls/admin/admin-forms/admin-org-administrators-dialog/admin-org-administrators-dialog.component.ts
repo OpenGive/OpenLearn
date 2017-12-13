@@ -1,26 +1,25 @@
 import {Component, Input, OnInit} from "@angular/core";
+import {FormGroup} from "@angular/forms";
 import {MdDialogRef} from "@angular/material";
 
 import {AdminDialogComponent} from "../../admin-dialog.component";
-import {Admin} from "../../../../models/admin.model";
-import {FormGroup} from "@angular/forms";
 
 @Component({
-  selector: 'admin-administrators-dialog',
-  templateUrl: './admin-administrators-dialog.component.html',
+  selector: 'admin-org-administrators-dialog',
+  templateUrl: './admin-org-administrators-dialog.component.html',
   styleUrls: ['../../../dialog-forms.css']
 })
-export class AdminAdministratorsDialogComponent implements OnInit {
+export class AdminOrgAdministratorsDialogComponent implements OnInit {
 
-  @Input('item') formAdministrator: Admin;
+  @Input('item') formOrgAdministrator: any;
   @Input() adding: boolean;
   @Input('organizations') organizations: any[];
 
-  editing: boolean = false;
-  administratorForm: FormGroup;
+  editing: boolean;
+  orgAdministratorForm: FormGroup;
 
   constructor(public dialogRef: MdDialogRef<AdminDialogComponent>) {
-    this.administratorForm = new FormGroup({});
+    this.orgAdministratorForm = new FormGroup({});
   }
 
   ngOnInit(): void {
@@ -50,7 +49,7 @@ export class AdminAdministratorsDialogComponent implements OnInit {
     this.dialogRef.close({
       type: 'DELETE',
       data: {
-        id: this.formAdministrator.id
+        id: this.formOrgAdministrator.id
       }
     });
   }

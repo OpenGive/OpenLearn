@@ -1,5 +1,5 @@
-import {Component, Input, OnInit, EventEmitter, Output} from "@angular/core";
-import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs/Observable";
 import * as _ from "lodash";
 
@@ -20,7 +20,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
   @Input('item') formAdministrator: Admin;
   @Input() adding: boolean;
   @Input('organizations') organizations: any[];
-  @Input('fg') administratorForm: FormGroup; // TODO: See about giving this a better name
+  @Input('parent') administratorForm: FormGroup;
 
   @Output() onAdd = new EventEmitter<Account>();
   @Output() onUpdate = new EventEmitter<Account>();
@@ -35,7 +35,6 @@ export class AdminAdministratorsFormComponent implements OnInit {
 
   filteredStates: Observable<any[]>;
 
-  // administratorForm: FormGroup;
   formErrors = {
     firstName: '',
     lastName: '',
@@ -55,7 +54,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
       maxlength: 'First Name cannot be more than 50 characters long'
     },
     lastName: {
-      required: 'First Name is required',
+      required: 'Last Name is required',
       maxlength: 'Last Name cannot be more than 50 characters long'
     },
     login: {
@@ -225,11 +224,10 @@ export class AdminAdministratorsFormComponent implements OnInit {
       }
     } else {
       this.administratorForm.markAsTouched();
-      console.log('submitted', this.administratorForm.getRawValue()._submitted);
-      // // TODO: See if this is necessary
       for (let key in this.administratorForm.controls) {
-        const element = this.administratorForm.controls[key];
-        element.markAsTouched();
+        // TODO: MD - Try to take this out at some point
+        // TODO: MD - The child form doesn't show up at submitted, so the validation errors won't show
+        this.administratorForm.controls[key].markAsTouched();
       }
     }
   }

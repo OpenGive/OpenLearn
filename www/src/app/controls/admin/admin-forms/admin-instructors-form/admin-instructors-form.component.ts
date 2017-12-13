@@ -1,15 +1,14 @@
-import {Component, Input, OnInit} from "@angular/core";
+import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {MdDialogRef} from "@angular/material";
 import {Observable} from "rxjs/Observable";
 import * as _ from "lodash";
 
-import {AdminDialogComponent} from "../../admin-dialog.component";
 import {AppConstants} from "../../../../app.constants";
 import {AdminTabs} from "../../admin.constants";
 import {NotifyService} from "../../../../services/notify.service";
 import {AdminService} from "../../../../services/admin.service";
 import {Principal} from "../../../../shared/auth/principal-storage.service";
+import {Account} from "../../../../models/account.model";
 
 @Component({
   selector: 'admin-instructors-form',
@@ -21,6 +20,13 @@ export class AdminInstructorsFormComponent implements OnInit {
   @Input('item') formInstructor: any;
   @Input() adding: boolean;
   @Input('organizations') organizations: any[];
+  @Input('parent') instructorForm: FormGroup;
+
+  @Output() onAdd = new EventEmitter<Account>();
+  @Output() onUpdate = new EventEmitter<Account>();
+  @Output() onDelete = new EventEmitter();
+  @Output() onEdit = new EventEmitter<boolean>();
+
   editing: boolean;
   changingPassword: boolean;
   isInstructor: boolean;
@@ -30,7 +36,6 @@ export class AdminInstructorsFormComponent implements OnInit {
 
   filteredStates: Observable<any[]>;
 
-  instructorForm: FormGroup;
   formErrors = {
     firstName: '',
     lastName: '',
@@ -99,8 +104,7 @@ export class AdminInstructorsFormComponent implements OnInit {
     }
   };
 
-  constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
-              private fb: FormBuilder,
+  constructor(private fb: FormBuilder,
               private notify: NotifyService,
               private adminService: AdminService,
               private principal: Principal) {}
@@ -115,7 +119,7 @@ export class AdminInstructorsFormComponent implements OnInit {
   }
 
   private buildForm(): void {
-    this.instructorForm = this.fb.group({
+    const childForm = this.fb.group({
       firstName: [this.formInstructor.firstName, [
         Validators.required,
         Validators.maxLength(50)
@@ -169,6 +173,10 @@ export class AdminInstructorsFormComponent implements OnInit {
         Validators.required
       ]]
     });
+    for (let key in childForm.controls) {
+      this.instructorForm.addControl(key, childForm.get(key));
+    }
+
     this.instructorForm.valueChanges.subscribe(data => this.onValueChanged());
     this.onValueChanged();
   }
@@ -203,9 +211,11 @@ export class AdminInstructorsFormComponent implements OnInit {
       if (editing) {
         this.instructorForm.enable();
         this.editing = true;
+        this.onEdit.emit(true);
       } else {
         this.instructorForm.disable();
         this.editing = false;
+        this.onEdit.emit(false);
       }
     }
   }
@@ -235,16 +245,19 @@ export class AdminInstructorsFormComponent implements OnInit {
       }
     } else {
       this.instructorForm.markAsTouched();
+      for (let key in this.instructorForm.controls) {
+        // TODO: MD - Try to take this out at some point
+        // TODO: MD - The child form doesn't show up at submitted, so the validation errors won't show
+        this.instructorForm.controls[key].markAsTouched();
+      }
       this.updateFormErrors(this.instructorForm, this.formErrors, this.validationMessages);
     }
   }
 
   private add(): void {
     this.adminService.create(AdminTabs.Instructor.route, this.instructorForm.value).subscribe(resp => {
-      this.dialogRef.close({
-        type: 'ADD',
-        data: resp
-      });
+      this.onAdd.emit(resp);
+      this.setEditing(false);
       this.notify.success('Successfully added instructor');
     }, error => {
       this.notify.error('Failed to add instructor');
@@ -254,10 +267,8 @@ export class AdminInstructorsFormComponent implements OnInit {
   private update(): void {
     const toUpdate = this.prepareToUpdate();
     this.adminService.update(AdminTabs.Instructor.route, toUpdate).subscribe(resp => {
-      this.dialogRef.close({
-        type: 'UPDATE',
-        data: resp
-      });
+      this.onUpdate.emit(resp);
+      this.setEditing(false);
       this.notify.success('Successfully updated instructor');
     }, error => {
       this.notify.error('Failed to update instructor');
@@ -287,12 +298,7 @@ export class AdminInstructorsFormComponent implements OnInit {
 
   delete(): void {
     this.adminService.delete(AdminTabs.Instructor.route, this.formInstructor.id).subscribe(resp => {
-      this.dialogRef.close({
-        type: 'DELETE',
-        data: {
-          id: this.formInstructor.id
-        }
-      });
+      this.onDelete.emit();
       this.notify.success('Successfully deleted instructor');
     }, error => {
       this.notify.error('Failed to delete instructor');
@@ -308,7 +314,8 @@ export class AdminInstructorsFormComponent implements OnInit {
   }
 
   close(): void {
-    this.dialogRef.close();
+    this.ngOnInit();
+    this.onEdit.emit(false);
   }
 
   resetPassword(changingPassword: boolean): void {

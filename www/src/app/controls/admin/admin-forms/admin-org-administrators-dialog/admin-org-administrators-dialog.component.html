@@ -1,19 +1,19 @@
-<form [formGroup]="administratorForm" (ngSubmit)="adminForm.save()" novalidate>
+<form [formGroup]="orgAdministratorForm" (ngSubmit)="orgAdminForm.save()" novalidate>
   <div class="ol-dialog-header" [ngClass]="{edit: editing}" fxLayout="row" fxLayoutAlign="space-between center">
     <div fxLayout="row" fxLayoutAlign="start center">
       <div><button md-button type="reset" (click)="close()"><i class="fa fa-times fa-lg"></i></button></div>
-      <span class="ol-dialog-title" *ngIf="!editing">Administrator Details</span>
-      <span class="ol-dialog-title edit" *ngIf="adding">New Administrator</span>
-      <span class="ol-dialog-title edit" *ngIf="editing && !adding">Edit Administrator</span>
+      <span class="ol-dialog-title" *ngIf="!editing">Org Administrator Details</span>
+      <span class="ol-dialog-title edit" *ngIf="adding">New Org Administrator</span>
+      <span class="ol-dialog-title edit" *ngIf="editing && !adding">Edit Org Administrator</span>
     </div>
     <div fxLayout="row">
       <button md-raised-button type="submit" *ngIf="editing" class="ol-dialog-button grey-button" mdTooltip="Save">
         <md-icon>save</md-icon>
       </button>
-      <button md-raised-button type="reset" *ngIf="editing && !adding" (click)="adminForm.cancel()" class="ol-dialog-button navy-button" mdTooltip="Cancel">
+      <button md-raised-button type="reset" *ngIf="editing && !adding" (click)="orgAdminForm.cancel()" class="ol-dialog-button navy-button" mdTooltip="Cancel">
         <md-icon>clear</md-icon>
       </button>
-      <button md-raised-button type="button" *ngIf="!editing" (click)="adminForm.edit()" class="ol-dialog-button grey-button" mdTooltip="Edit">
+      <button md-raised-button type="button" *ngIf="!editing" (click)="orgAdminForm.edit()" class="ol-dialog-button grey-button" mdTooltip="Edit">
         <md-icon>create</md-icon>
       </button>
       <button md-raised-button type="button" *ngIf="!editing" [mdMenuTriggerFor]="deleteMenu" class="ol-dialog-button pink-button" mdTooltip="Delete">
@@ -21,12 +21,12 @@
       </button>
       <md-menu #deleteMenu="mdMenu">
         <button md-menu-item type="button" disabled class="pink-button">Are you sure?</button>
-        <button md-menu-item type="button" (click)="adminForm.delete()">Yes, delete it</button>
+        <button md-menu-item type="button" (click)="orgAdminForm.delete()">Yes, delete it</button>
         <button md-menu-item type="button">No, go back</button>
       </md-menu>
     </div>
   </div>
-  <admin-administrators-form #adminForm [parent]="administratorForm" [item]="formAdministrator" [adding]="adding" [organizations]="organizations"
+  <admin-org-administrators-form #orgAdminForm [parent]="orgAdministratorForm" [item]="formOrgAdministrator" [adding]="adding" [organizations]="organizations"
                              (onAdd)="added($event)" (onUpdate)="updated($event)" (onDelete)="deleted()" (onEdit)="updateEditing($event)">
-  </admin-administrators-form>
+  </admin-org-administrators-form>
 </form>

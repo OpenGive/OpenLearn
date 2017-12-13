@@ -1,32 +1,37 @@
 import {Component, Input, OnInit} from "@angular/core";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MdDialogRef} from "@angular/material";
+import {Observable} from "rxjs/Observable";
+import * as _ from "lodash";
 
 import {AdminDialogComponent} from "../../admin-dialog.component";
-import {Admin} from "../../../../models/admin.model";
-import {FormGroup} from "@angular/forms";
+import {AppConstants} from "../../../../app.constants";
+import {AdminTabs} from "../../admin.constants";
+import {NotifyService} from "../../../../services/notify.service";
+import {AdminService} from "../../../../services/admin.service";
+import {Principal} from "../../../../shared/auth/principal-storage.service";
 
 @Component({
-  selector: 'admin-administrators-dialog',
-  templateUrl: './admin-administrators-dialog.component.html',
+  selector: 'admin-instructors-dialog',
+  templateUrl: './admin-instructors-dialog.component.html',
   styleUrls: ['../../../dialog-forms.css']
 })
-export class AdminAdministratorsDialogComponent implements OnInit {
+export class AdminInstructorsDialogComponent implements OnInit {
 
-  @Input('item') formAdministrator: Admin;
+  @Input('item') formInstructor: any;
   @Input() adding: boolean;
   @Input('organizations') organizations: any[];
 
-  editing: boolean = false;
-  administratorForm: FormGroup;
+  editing: boolean;
+  instructorForm: FormGroup;
 
   constructor(public dialogRef: MdDialogRef<AdminDialogComponent>) {
-    this.administratorForm = new FormGroup({});
+    this.instructorForm = new FormGroup({});
   }
 
   ngOnInit(): void {
     this.editing = this.adding;
   }
-
   // TODO: Convert this to a 'status' of EDITING, ADDING, VIEWING, etc
   updateEditing(isEditing: boolean): void {
     this.editing = isEditing;
@@ -50,7 +55,7 @@ export class AdminAdministratorsDialogComponent implements OnInit {
     this.dialogRef.close({
       type: 'DELETE',
       data: {
-        id: this.formAdministrator.id
+        id: this.formInstructor.id
       }
     });
   }

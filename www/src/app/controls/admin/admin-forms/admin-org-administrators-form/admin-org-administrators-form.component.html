@@ -1,100 +1,71 @@
-<form [formGroup]="orgAdministratorForm" (ngSubmit)="save()" novalidate>
-  <div class="ol-dialog-header" [ngClass]="{edit: editing}" fxLayout="row" fxLayoutAlign="space-between center">
-    <div fxLayout="row" fxLayoutAlign="start center">
-      <div><button md-button type="reset" (click)="close()"><i class="fa fa-times fa-lg"></i></button></div>
-      <span class="ol-dialog-title" *ngIf="!editing">Org Administrator Details</span>
-      <span class="ol-dialog-title edit" *ngIf="adding">New Org Administrator</span>
-      <span class="ol-dialog-title edit" *ngIf="editing && !adding">Edit Org Administrator</span>
+<div [formGroup]="orgAdministratorForm" class="ol-dialog-content">
+  <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap>
+    <md-input-container fxFlex="30%">
+      <input mdInput formControlName="firstName" placeholder="First Name*"/>
+      <md-error *ngIf="formErrors.firstName">{{formErrors.firstName}}</md-error>
+    </md-input-container>
+    <md-input-container fxFlex="30%">
+      <input mdInput formControlName="lastName" placeholder="Last Name*"/>
+      <md-error *ngIf="formErrors.lastName">{{formErrors.lastName}}</md-error>
+    </md-input-container>
+    <md-input-container fxFlex="30%">
+      <input mdInput formControlName="login" placeholder="Username*"/>
+      <md-error *ngIf="formErrors.login">{{formErrors.login}}</md-error>
+    </md-input-container>
+    <md-input-container fxFlex="30%" *ngIf="adding">
+      <input mdInput formControlName="password" placeholder="Password*"/>
+      <md-error *ngIf="formErrors.password">{{formErrors.password}}</md-error>
+    </md-input-container>
+    <md-input-container fxFlex="30%">
+      <textarea mdInput formControlName="notes" placeholder="Notes"></textarea>
+      <md-error *ngIf="formErrors.notes">{{formErrors.notes}}</md-error>
+    </md-input-container>
+    <md-input-container fxFlex="30%">
+      <input mdInput formControlName="email" placeholder="Email"/>
+      <md-error *ngIf="formErrors.email">{{formErrors.email}}</md-error>
+    </md-input-container>
+    <md-input-container fxFlex="30%">
+      <input mdInput formControlName="streetAddress1" placeholder="Address 1"/>
+      <md-error *ngIf="formErrors.streetAddress1">{{formErrors.streetAddress1}}</md-error>
+    </md-input-container>
+    <md-input-container fxFlex="30%">
+      <input mdInput formControlName="streetAddress2" placeholder="Address 2"/>
+      <md-error *ngIf="formErrors.streetAddress2">{{formErrors.streetAddress2}}</md-error>
+    </md-input-container>
+    <md-input-container fxFlex="20%">
+      <input mdInput formControlName="city" placeholder="City"/>
+      <md-error *ngIf="formErrors.city">{{formErrors.city}}</md-error>
+    </md-input-container>
+    <md-input-container fxFlex="20%">
+      <input mdInput formControlName="state" placeholder="State" [mdAutocomplete]="state"/>
+      <md-autocomplete #state="mdAutocomplete" [displayWith]="displayState">
+        <md-option *ngFor="let state of filteredStates | async" [value]="state.value">{{state.name}}</md-option>
+      </md-autocomplete>
+    </md-input-container>
+    <md-input-container fxFlex="20%">
+      <input mdInput formControlName="phoneNumber" placeholder="Phone"/>
+      <md-error *ngIf="formErrors.phoneNumber">{{formErrors.phoneNumber}}</md-error>
+    </md-input-container>
+    <md-input-container fxFlex="20%">
+      <input mdInput formControlName="postalCode" placeholder="Postal Code"/>
+      <md-error *ngIf="formErrors.postalCode">{{formErrors.postalCode}}</md-error>
+    </md-input-container>
+    <div fxLayout="column" fxFlex="20%">
+      <md-error *ngIf="formErrors.organizationId">{{formErrors.organizationId}}</md-error>
+      <md-select formControlName="organizationId" placeholder="Organization*" [disabled]="!editing">
+        <md-option *ngFor="let organization of organizations" [(value)]="organization.id">{{organization.name}}</md-option>
+      </md-select>
     </div>
-    <div fxLayout="row">
-      <button md-raised-button type="submit" *ngIf="editing" class="ol-dialog-button grey-button" mdTooltip="Save">
-        <md-icon>save</md-icon>
-      </button>
-      <button md-raised-button type="reset" *ngIf="editing && !adding" (click)="cancel()" class="ol-dialog-button navy-button" mdTooltip="Cancel">
-        <md-icon>clear</md-icon>
-      </button>
-      <button md-raised-button type="button" *ngIf="!editing" (click)="edit()" class="ol-dialog-button grey-button" mdTooltip="Edit">
-        <md-icon>create</md-icon>
-      </button>
-      <button md-raised-button type="button" *ngIf="!editing" [mdMenuTriggerFor]="deleteMenu" class="ol-dialog-button pink-button" mdTooltip="Delete">
-        <md-icon>delete</md-icon>
-      </button>
-      <md-menu #deleteMenu="mdMenu">
-        <button md-menu-item type="button" disabled class="pink-button">Are you sure?</button>
-        <button md-menu-item type="button" (click)="delete()">Yes, delete it</button>
-        <button md-menu-item type="button">No, go back</button>
-      </md-menu>
+    <md-input-container fxFlex="20%">
+      <input mdInput formControlName="orgRole" placeholder="Org Role*"/>
+      <md-error *ngIf="formErrors.orgRole">{{formErrors.orgRole}}</md-error>
+    </md-input-container>
+    <div fxFlex="30%" *ngIf="!adding && editing && !changingPassword">
+      <button md-raised-button (click)="resetPassword(true)" class="reset-password">Change Password</button>
     </div>
+    <md-input-container fxFlex="30%" *ngIf="changingPassword">
+      <input mdInput formControlName="password" placeholder="New Password"/>
+      <md-error *ngIf="formErrors.password">{{formErrors.password}}</md-error>
+    </md-input-container>
   </div>
-  <div class="ol-dialog-content">
-    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap>
-      <md-input-container fxFlex="30%">
-        <input mdInput formControlName="firstName" placeholder="First Name*"/>
-        <md-error *ngIf="formErrors.firstName">{{formErrors.firstName}}</md-error>
-      </md-input-container>
-      <md-input-container fxFlex="30%">
-        <input mdInput formControlName="lastName" placeholder="Last Name*"/>
-        <md-error *ngIf="formErrors.lastName">{{formErrors.lastName}}</md-error>
-      </md-input-container>
-      <md-input-container fxFlex="30%">
-        <input mdInput formControlName="login" placeholder="Username*"/>
-        <md-error *ngIf="formErrors.login">{{formErrors.login}}</md-error>
-      </md-input-container>
-      <md-input-container fxFlex="30%" *ngIf="adding">
-        <input mdInput formControlName="password" placeholder="Password*"/>
-        <md-error *ngIf="formErrors.password">{{formErrors.password}}</md-error>
-      </md-input-container>
-      <md-input-container fxFlex="30%">
-        <textarea mdInput formControlName="notes" placeholder="Notes"></textarea>
-        <md-error *ngIf="formErrors.notes">{{formErrors.notes}}</md-error>
-      </md-input-container>
-      <md-input-container fxFlex="30%">
-        <input mdInput formControlName="email" placeholder="Email"/>
-        <md-error *ngIf="formErrors.email">{{formErrors.email}}</md-error>
-      </md-input-container>
-      <md-input-container fxFlex="30%">
-        <input mdInput formControlName="streetAddress1" placeholder="Address 1"/>
-        <md-error *ngIf="formErrors.streetAddress1">{{formErrors.streetAddress1}}</md-error>
-      </md-input-container>
-      <md-input-container fxFlex="30%">
-        <input mdInput formControlName="streetAddress2" placeholder="Address 2"/>
-        <md-error *ngIf="formErrors.streetAddress2">{{formErrors.streetAddress2}}</md-error>
-      </md-input-container>
-      <md-input-container fxFlex="20%">
-        <input mdInput formControlName="city" placeholder="City"/>
-        <md-error *ngIf="formErrors.city">{{formErrors.city}}</md-error>
-      </md-input-container>
-      <md-input-container fxFlex="20%">
-        <input mdInput formControlName="state" placeholder="State" [mdAutocomplete]="state"/>
-        <md-autocomplete #state="mdAutocomplete" [displayWith]="displayState">
-          <md-option *ngFor="let state of filteredStates | async" [value]="state.value">{{state.name}}</md-option>
-        </md-autocomplete>
-      </md-input-container>
-      <md-input-container fxFlex="20%">
-        <input mdInput formControlName="phoneNumber" placeholder="Phone"/>
-        <md-error *ngIf="formErrors.phoneNumber">{{formErrors.phoneNumber}}</md-error>
-      </md-input-container>
-      <md-input-container fxFlex="20%">
-        <input mdInput formControlName="postalCode" placeholder="Postal Code"/>
-        <md-error *ngIf="formErrors.postalCode">{{formErrors.postalCode}}</md-error>
-      </md-input-container>
-      <div fxLayout="column" fxFlex="20%">
-        <md-error *ngIf="formErrors.organizationId">{{formErrors.organizationId}}</md-error>
-        <md-select formControlName="organizationId" placeholder="Organization*" [disabled]="!editing">
-          <md-option *ngFor="let organization of organizations" [(value)]="organization.id">{{organization.name}}</md-option>
-        </md-select>
-      </div>
-      <md-input-container fxFlex="20%">
-        <input mdInput formControlName="orgRole" placeholder="Org Role*"/>
-        <md-error *ngIf="formErrors.orgRole">{{formErrors.orgRole}}</md-error>
-      </md-input-container>
-      <div fxFlex="30%" *ngIf="!adding && editing && !changingPassword">
-        <button md-raised-button (click)="resetPassword(true)" class="reset-password">Change Password</button>
-      </div>
-      <md-input-container fxFlex="30%" *ngIf="changingPassword">
-        <input mdInput formControlName="password" placeholder="New Password"/>
-        <md-error *ngIf="formErrors.password">{{formErrors.password}}</md-error>
-      </md-input-container>
-    </div>
-  </div>
-</form>
+</div>

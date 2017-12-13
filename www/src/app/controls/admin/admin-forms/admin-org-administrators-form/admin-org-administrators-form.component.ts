@@ -1,15 +1,13 @@
-import {Component, Input, OnInit} from "@angular/core";
+import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {MdDialogRef} from "@angular/material";
 import {Observable} from "rxjs/Observable";
 import * as _ from "lodash";
 
-import {AdminDialogComponent} from "../../admin-dialog.component";
 import {AdminService} from "../../../../services/admin.service";
 import {AppConstants} from "../../../../app.constants";
 import {NotifyService} from "../../../../services/notify.service";
-import {OrgAdmin} from "../../../../models/org-admin.model";
 import {AdminTabs} from "../../admin.constants";
+import {Account} from "../../../../models/account.model";
 
 @Component({
   selector: 'admin-org-administrators-form',
@@ -21,6 +19,13 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
   @Input('item') formOrgAdministrator: any;
   @Input() adding: boolean;
   @Input('organizations') organizations: any[];
+  @Input('parent') orgAdministratorForm: FormGroup;
+
+  @Output() onAdd = new EventEmitter<Account>();
+  @Output() onUpdate = new EventEmitter<Account>();
+  @Output() onDelete = new EventEmitter();
+  @Output() onEdit = new EventEmitter<boolean>();
+
   editing: boolean;
   changingPassword: boolean;
 
@@ -29,7 +34,6 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
 
   filteredStates: Observable<any[]>;
 
-  orgAdministratorForm: FormGroup;
   formErrors = {
     firstName: '',
     lastName: '',
@@ -98,8 +102,7 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
     }
   };
 
-  constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
-              private fb: FormBuilder,
+  constructor(private fb: FormBuilder,
               private notify: NotifyService,
               private adminService: AdminService) {}
 
@@ -112,7 +115,7 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
   }
 
   private buildForm(): void {
-    this.orgAdministratorForm = this.fb.group({
+    const childForm = this.fb.group({
       firstName: [this.formOrgAdministrator.firstName, [
         Validators.required,
         Validators.maxLength(50)
@@ -166,6 +169,10 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
         Validators.required
       ]]
     });
+    for (let key in childForm.controls) {
+      this.orgAdministratorForm.addControl(key, childForm.get(key));
+    }
+
     this.orgAdministratorForm.valueChanges.subscribe(data => this.onValueChanged());
     this.onValueChanged();
   }
@@ -200,9 +207,11 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
       if (editing) {
         this.orgAdministratorForm.enable();
         this.editing = true;
+        this.onEdit.emit(true);
       } else {
         this.orgAdministratorForm.disable();
         this.editing = false;
+        this.onEdit.emit(false);
       }
     }
   }
@@ -232,15 +241,18 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
       }
     } else {
       this.orgAdministratorForm.markAsTouched();
+      for (let key in this.orgAdministratorForm.controls) {
+        // TODO: MD - Try to take this out at some point
+        // TODO: MD - The child form doesn't show up at submitted, so the validation errors won't show
+        this.orgAdministratorForm.controls[key].markAsTouched();
+      }
     }
   }
 
   private add(): void {
     this.adminService.create(AdminTabs.OrgAdministrator.route, this.orgAdministratorForm.value).subscribe(resp => {
-      this.dialogRef.close({
-        type: 'ADD',
-        data: resp
-      });
+      this.onAdd.emit(resp);
+      this.setEditing(false);
       this.notify.success('Successfully added org administrator');
     }, error => {
       this.notify.error('Failed to add org administrator');
@@ -250,10 +262,8 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
   private update(): void {
     const toUpdate = this.prepareToUpdate();
     this.adminService.update(AdminTabs.OrgAdministrator.route, toUpdate).subscribe(resp => {
-      this.dialogRef.close({
-        type: 'UPDATE',
-        data: resp
-      });
+      this.onUpdate.emit(resp);
+      this.setEditing(false);
       this.notify.success('Successfully updated org administrator');
     }, error => {
       this.notify.error('Failed to update org administrator');
@@ -283,12 +293,7 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
 
   delete(): void {
     this.adminService.delete(AdminTabs.OrgAdministrator.route, this.formOrgAdministrator.id).subscribe(resp => {
-      this.dialogRef.close({
-        type: 'DELETE',
-        data: {
-          id: this.formOrgAdministrator.id
-        }
-      });
+      this.onDelete.emit();
       this.notify.success('Successfully deleted org administrator');
     }, error => {
       this.notify.error('Failed to delete org administrator');
@@ -301,10 +306,7 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
 
   cancel(): void {
     this.ngOnInit();
-  }
-
-  close(): void {
-    this.dialogRef.close();
+    this.onEdit.emit(false);
   }
 
   resetPassword(changingPassword: boolean): void {
