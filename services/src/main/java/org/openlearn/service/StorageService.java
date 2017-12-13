@@ -95,9 +95,9 @@ public class StorageService {
 		String uploadBucketName = props.getUploadBucket();
 		String keyName = createS3FilePrefix(assignmentId, portfolioId, user.getId()) + file.getOriginalFilename();
 		try {
-			File f = convertToFile(file);
-			s3client.putObject(new PutObjectRequest(uploadBucketName, keyName, f));
-			f.delete();
+			ObjectMetadata metadata = new ObjectMetadata();
+			metadata.setContentLength(file.getSize());
+			s3client.putObject(new PutObjectRequest(uploadBucketName, keyName, file.getInputStream(), metadata));
 		} catch (AmazonServiceException e) {
 			log.error(e.getErrorMessage());
 			throw new FileInformationAccessFailedException();
@@ -123,15 +123,6 @@ public class StorageService {
 		}
 
 		return fileInformationTransformer.transform(fileRepository.save(fileInformation));
-	}
-
-	private static File convertToFile(MultipartFile file) throws IOException {
-		File convertedFile = new File(file.getOriginalFilename());
-		convertedFile.createNewFile();
-		FileOutputStream fos = new FileOutputStream(convertedFile);
-		fos.write(file.getBytes());
-		fos.close();
-		return convertedFile;
 	}
 
 	public InputStream getUpload(Long fileInformationId) {
