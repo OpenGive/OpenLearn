@@ -10,14 +10,17 @@ import io.undertow.UndertowOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.context.embedded.MimeMappings;
 import org.springframework.boot.context.embedded.undertow.UndertowEmbeddedServletContainerFactory;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -40,6 +43,8 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
     private final JHipsterProperties jHipsterProperties;
 
     private MetricRegistry metricRegistry;
+
+    private static final int SPRING_SECURITY_ORDER = 0;
 
     public WebConfigurer(Environment env, JHipsterProperties jHipsterProperties) {
 
@@ -167,6 +172,30 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
             source.registerCorsConfiguration("/oauth/**", config);
         }
         return new CorsFilter(source);
+    }
+
+    @Bean
+    public FilterRegistrationBean corsFilterRegistration(CorsFilter filter) {
+        FilterRegistrationBean registration = new FilterRegistrationBean(filter);
+        registration.setOrder(SPRING_SECURITY_ORDER - 200);
+        return registration;
+    }
+
+    @Bean
+    public FilterRegistrationBean reCaptchaFilterRegistration(ReCaptchaFilter filter) {
+        FilterRegistrationBean registration = new FilterRegistrationBean(filter);
+        registration.addUrlPatterns("/oauth/token");
+        registration.setOrder(SPRING_SECURITY_ORDER - 100);
+        return registration;
+    }
+
+    @Bean
+    public FilterRegistrationBean securityFilterChainRegistration(
+        @Qualifier(AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME) Filter securityFilter) {
+        FilterRegistrationBean registration = new FilterRegistrationBean(securityFilter);
+        registration.setOrder(SPRING_SECURITY_ORDER);
+        registration.setName(AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME);
+        return registration;
     }
 
     /**

@@ -24,8 +24,6 @@ import org.springframework.security.oauth2.provider.code.AuthorizationCodeServic
 import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
-import org.springframework.security.web.access.channel.ChannelProcessingFilter;
-import org.springframework.web.filter.CorsFilter;
 
 import javax.sql.DataSource;
 
@@ -53,15 +51,12 @@ public class OAuth2ServerConfiguration {
 
         private final AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler;
 
-        private final CorsFilter corsFilter;
-
         public ResourceServerConfiguration(TokenStore tokenStore, Http401UnauthorizedEntryPoint http401UnauthorizedEntryPoint,
-            AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler, CorsFilter corsFilter) {
+                                           AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler) {
 
             this.tokenStore = tokenStore;
             this.http401UnauthorizedEntryPoint = http401UnauthorizedEntryPoint;
             this.ajaxLogoutSuccessHandler = ajaxLogoutSuccessHandler;
-            this.corsFilter = corsFilter;
         }
 
         @Override
@@ -76,7 +71,6 @@ public class OAuth2ServerConfiguration {
             .and()
                 .csrf()
                 .disable()
-                .addFilterBefore(corsFilter, ChannelProcessingFilter.class)
                 .headers()
                 .frameOptions().disable()
             .and()
@@ -149,4 +143,5 @@ public class OAuth2ServerConfiguration {
             clients.jdbc(dataSource);
         }
     }
+
 }

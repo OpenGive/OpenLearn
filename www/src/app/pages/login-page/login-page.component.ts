@@ -1,9 +1,12 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, ViewChild} from "@angular/core";
 import {MdDialog} from "@angular/material";
+
+import {RecaptchaComponent} from "ng-recaptcha";
 
 import {LoginService} from "../../services/login.service";
 import {NotifyService} from "../../services/notify.service";
 import {ForgotPasswordDialogComponent} from "../../controls/forgot-password-dialog/forgot-password-dialog.component";
+import {AppConstants} from "../../app.constants";
 
 @Component({
   selector: 'app-login-page',
@@ -11,6 +14,9 @@ import {ForgotPasswordDialogComponent} from "../../controls/forgot-password-dial
   styleUrls: ['./login-page.component.css']
 })
 export class LoginPageComponent implements OnInit {
+
+  @ViewChild('captchaRef') reCaptchaComponent: RecaptchaComponent;
+
   authenticationError: boolean;
   reCaptchaSiteKey: string;
   password: string;
@@ -24,7 +30,7 @@ export class LoginPageComponent implements OnInit {
               private notify: NotifyService,
               private dialog: MdDialog) {
     this.credentials = {};
-    this.reCaptchaSiteKey = '6LcIyDgUAAAAAGc7KQgXwlH8q17CR00ndcsXuEmN'; // TODO: Move to config
+    this.reCaptchaSiteKey = AppConstants.ReCaptchaSiteKey;
   }
 
   ngOnInit() {
@@ -47,9 +53,16 @@ export class LoginPageComponent implements OnInit {
       rememberMe: this.rememberMe
     }).then(() => {
       this.authenticationError = false;
-    }).catch(() => {
+    }).catch((error) => {
       this.authenticationError = true;
-      this.notify.error('Incorrect username or password');
+
+      if (error.json().error === 'invalid_grant') {
+        this.notify.error('Incorrect username or password');
+      } else {
+        this.notify.error('We encountered an error while trying to sign you in. Please try again.');
+      }
+
+      this.reCaptchaComponent.reset();
       this.failureCount++;
       if (this.failureCount > 2) {
         this.isOverLimit = true;
