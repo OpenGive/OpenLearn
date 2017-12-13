@@ -2,43 +2,40 @@ import {Component, Input} from "@angular/core";
 import {UserService} from "../../services/user.service";
 import {AccountService} from "../../shared/auth/account.service";
 import {Principal} from "../../shared/auth/principal-storage.service";
+import {Account} from "../../models/account.model";
+import {AdminService} from "../../services/admin.service";
+import {AdminTabs} from "../../controls/admin/admin.constants";
+import {FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'profile-form',
   templateUrl: './profile-page.component.html',
-  styleUrls: ['./profile-page.component.css', '../../controls/dialog-forms.css']
+  styleUrls: ['./profile-page.component.css']
 })
 export class ProfilePageComponent {
 
   @Input() profile: any = {};
-  @Input() editing: boolean;
 
-  constructor(private userService: UserService, private accountService: AccountService, private principal: Principal) {
+  item: Account;
+  organizations: any[];
+  administratorForm: FormGroup;
+  editing: boolean = false;
+
+  constructor(private userService: UserService,
+              private accountService: AccountService,
+              private adminService: AdminService,
+              private principal: Principal) {
+
+    this.item = this.principal.getUserIdentity();
+    this.adminService.getAll(AdminTabs.Organization.route);
     this.accountService.get().subscribe(resp => {this.profile = resp});
+    this.administratorForm = new FormGroup({});
   }
 
-  edit(): void {
-    this.editing = true;
-  }
 
-  cancel(exit: boolean): void {
-    this.editing = false;
-    this.accountService.get().subscribe(resp => {this.profile = resp});
-  }
-
-  save(): void {
-    this.userService.update(this.profile).subscribe(resp => {
-      this.handleSaveResponse(resp);
-      this.principal.authenticate(resp);
-    });
-  }
-
-  handleSaveResponse(resp): void {
-    this.editing = false;
-  }
-
-  ageAllowed(): boolean {
-    return this.profile['14Plus'];
-  }
+  // TODO: Convert this to a 'status' of EDITING, ADDING, VIEWING, etc
+  updateEditing(isEditing: boolean): void {
+    this.editing = isEditing;
+  };
 
 }

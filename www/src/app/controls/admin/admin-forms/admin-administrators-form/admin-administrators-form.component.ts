@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, EventEmitter, Output} from "@angular/core";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs/Observable";
 import * as _ from "lodash";
 
@@ -20,8 +20,8 @@ export class AdminAdministratorsFormComponent implements OnInit {
   @Input('item') formAdministrator: Admin;
   @Input() adding: boolean;
   @Input('organizations') organizations: any[];
+  @Input('fg') administratorForm: FormGroup; // TODO: See about giving this a better name
 
-  // TODO: Make these optional
   @Output() onAdd = new EventEmitter<Account>();
   @Output() onUpdate = new EventEmitter<Account>();
   @Output() onDelete = new EventEmitter();
@@ -35,7 +35,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
 
   filteredStates: Observable<any[]>;
 
-  administratorForm: FormGroup;
+  // administratorForm: FormGroup;
   formErrors = {
     firstName: '',
     lastName: '',
@@ -109,7 +109,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
   }
 
   private buildForm(): void {
-    this.administratorForm = this.fb.group({
+    const childForm = this.fb.group({
       firstName: [this.formAdministrator.firstName, [
         Validators.required,
         Validators.maxLength(50)
@@ -157,6 +157,11 @@ export class AdminAdministratorsFormComponent implements OnInit {
         Validators.pattern(AppConstants.OLValidators.PostalCode)
       ]]
     });
+    // TODO: See if this is necessary
+    for (let key in childForm.controls) {
+      this.administratorForm.addControl(key, childForm.get(key));
+    }
+
     this.administratorForm.valueChanges.subscribe(data => this.onValueChanged());
     this.onValueChanged();
   }
@@ -186,9 +191,11 @@ export class AdminAdministratorsFormComponent implements OnInit {
       if (editing) {
         this.administratorForm.enable();
         this.editing = true;
+        this.onEdit.emit(true);
       } else {
         this.administratorForm.disable();
         this.editing = false;
+        this.onEdit.emit(false);
       }
     }
   }
@@ -218,8 +225,11 @@ export class AdminAdministratorsFormComponent implements OnInit {
       }
     } else {
       this.administratorForm.markAsTouched();
+      console.log('submitted', this.administratorForm.getRawValue()._submitted);
+      // // TODO: See if this is necessary
       for (let key in this.administratorForm.controls) {
-        this.administratorForm.controls[key].markAsTouched();
+        const element = this.administratorForm.controls[key];
+        element.markAsTouched();
       }
     }
   }
@@ -227,6 +237,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
   private add(): void {
     this.adminService.create(AdminTabs.Administrator.route, this.administratorForm.value).subscribe(resp => {
       this.onAdd.emit(resp);
+      this.setEditing(false);
       this.notify.success('Successfully added administrator');
     }, error => {
       this.notify.error('Failed to add administrator');
@@ -237,6 +248,7 @@ export class AdminAdministratorsFormComponent implements OnInit {
     const toUpdate = this.prepareToUpdate();
     this.adminService.update(AdminTabs.Administrator.route, toUpdate).subscribe(resp => {
       this.onUpdate.emit(resp);
+      this.setEditing(false);
       this.notify.success('Successfully updated administrator');
     }, error => {
       this.notify.error('Failed to update administrator');
@@ -273,7 +285,6 @@ export class AdminAdministratorsFormComponent implements OnInit {
 
   edit(): void {
     this.setEditing(true);
-    this.onEdit.emit(true);
   }
 
   cancel(): void {
