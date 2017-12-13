@@ -67,13 +67,8 @@ export class FilesGridComponent implements OnInit {
       this.files = [];
     }
 
-    this.files.push(
-      {
-        key: this.parseBaseName(item.fileUrl),
-        uploadedByUser: { firstName: item.uploadedByUser.firstName },
-        created_date: new Date().toISOString()
-      }
-    );
+    item.key = this.parseBaseName(item.fileUrl);
+    this.files.push(item);
   }
 
   removeFile(file): void {
