@@ -161,8 +161,9 @@ public class StorageService {
 		try {
 			s3client.deleteObject(new DeleteObjectRequest(bucket, key));
 			fileRepository.delete(fileInformation);
-		} catch(Exception e) {
-			log.error(e.getMessage());
+		} catch(AmazonServiceException e) {
+			log.error(e.getErrorMessage());
+			throw new FileInformationAccessFailedException();
 		}
 	}
 
@@ -172,9 +173,15 @@ public class StorageService {
 		Map<String, List<String>> bucketToKeyMapping = buildBucketToKeyMapping(files);
 
 		bucketToKeyMapping.forEach((bucket, keys) -> {
-            DeleteObjectsRequest request = buildDeleteObjectsRequest(bucket, keys);
-            s3client.deleteObjects(request);
-        });
+			DeleteObjectsRequest request = buildDeleteObjectsRequest(bucket, keys);
+
+			try {
+				s3client.deleteObjects(request);
+			} catch(AmazonServiceException e) {
+				log.error(e.getErrorMessage());
+				throw new FileInformationAccessFailedException();
+			}
+		});
 	}
 
 	private Map<String, List<String>> buildBucketToKeyMapping(List<FileInformation> files) {
