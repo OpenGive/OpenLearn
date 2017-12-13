@@ -1,10 +1,8 @@
 package org.openlearn.service;
 
 import org.openlearn.domain.Assignment;
-import org.openlearn.domain.FileInformation;
 import org.openlearn.domain.PortfolioItem;
 import org.openlearn.domain.User;
-import org.openlearn.dto.AssignmentDTO;
 import org.openlearn.dto.FileInformationDTO;
 import org.openlearn.repository.AssignmentRepository;
 import org.openlearn.repository.FileRepository;
@@ -132,5 +130,20 @@ public class FileInformationService {
 	public void deleteByAssignment(Assignment assignment) {
 		storageService.deleteUploads(fileRepository.findByAssignment(assignment));
 		fileRepository.deleteByAssignment(assignment);
+	}
+
+	public Boolean isUploadedByCurrentUser(FileInformationDTO fileInformationDTO) {
+		return isUploadedByUser(fileInformationDTO, userService.getCurrentUser());
+	}
+
+	public Boolean isUploadedByCourseInstructor(FileInformationDTO fileInformationDTO, Long assignmentId) {
+		Assignment assignment = assignmentRepository.findOne(assignmentId);
+		if (assignment == null) throw new AssignmentNotFoundException(assignmentId);
+
+		return isUploadedByUser(fileInformationDTO, assignment.getCourse().getInstructor());
+	}
+
+	private Boolean isUploadedByUser(FileInformationDTO fileInformationDTO, User user) {
+		return fileInformationDTO.getUploadedByUserId().equals(user);
 	}
 }

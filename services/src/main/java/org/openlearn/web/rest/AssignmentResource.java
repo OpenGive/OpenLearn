@@ -27,12 +27,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/assignments")
 public class AssignmentResource {
-
-	// TODO: Error handling / logging
 
 	private static final String ENDPOINT = "/api/assignments/";
 
@@ -57,7 +56,6 @@ public class AssignmentResource {
 	 *
 	 * @param id the ID of the assignment to get
 	 * @return the ResponseEntity with status 200 (OK) and the assignment in the body
-	 *      or with ... TODO: Error handling
 	 */
 	@GetMapping(path = "/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
@@ -72,7 +70,6 @@ public class AssignmentResource {
 	 *
 	 * @param pageable the pagination information
 	 * @return the ResponseEntity with status 200 (OK) and a list of assignments in the body
-	 *      or with ... TODO: Error handling
 	 */
 	@GetMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
@@ -87,7 +84,6 @@ public class AssignmentResource {
 	 *
 	 * @param pageable the pagination information
 	 * @return the ResponseEntity with status 200 (OK) and a list of assignments in the body
-	 *      or with ... TODO: Error handling
 	 */
 	@GetMapping(path = "/course/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
@@ -102,7 +98,6 @@ public class AssignmentResource {
 	 *
 	 * @param assignmentDTO the assignment to create
 	 * @return the ResponseEntity with status 200 (OK) and the created assignment in the body
-	 *      or with ... TODO: Error handling
 	 * @throws URISyntaxException if the Location URI syntax is incorrect
 	 */
 	@PostMapping
@@ -123,7 +118,6 @@ public class AssignmentResource {
 	 *
 	 * @param assignmentDTO the assignment to update
 	 * @return the ResponseEntity with status 200 (OK) and the updated assignment in the body
-	 *      or with ... TODO: Error handling
 	 */
 	@PutMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
@@ -143,7 +137,6 @@ public class AssignmentResource {
 	 *
 	 * @param id the ID of the assignment to delete
 	 * @return the ResponseEntity with status 200 (OK)
-	 *      or with ... TODO: Error handling
 	 */
 	@DeleteMapping(path = "/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
@@ -164,7 +157,6 @@ public class AssignmentResource {
 	 * POST  / : upload a course file
 	 *
 	 * @return the ResponseEntity with status 200 (OK) and the created course in the body
-	 *      or with ... TODO: Error handling
 	 * @throws URISyntaxException if the Location URI syntax is incorrect
 	 */
 	@PostMapping(path="/{assignmentId}/upload")
@@ -172,7 +164,8 @@ public class AssignmentResource {
 	public ResponseEntity uploadCourseFile(@PathVariable final Long assignmentId,
 								   @RequestParam("file") MultipartFile file,
 								   RedirectAttributes redirectAttributes) throws URISyntaxException {
-		if (canUploadFilesToAssignment(assignmentService.findOne(assignmentId))) {
+		AssignmentDTO assignment = assignmentService.findOne(assignmentId);
+		if (canUploadFilesToAssignment(assignment)) {
 			FileInformationDTO response = storageService.store(file, assignmentId, null);
 			redirectAttributes.addFlashAttribute("message",
 				"You successfully uploaded " + file.getOriginalFilename() + "!");
@@ -185,8 +178,14 @@ public class AssignmentResource {
 		}
 	}
 
+	/**
+	 * GET /:assignmentId/uploads : get uploaded course files
+	 * @param assignmentId
+	 * @param pageable
+	 * @return the ResponseEntity with status 200 (OK) and the request page of File Information in the body
+	 */
 	@GetMapping(path="/{assignmentId}/uploads")
-	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
 	public ResponseEntity getUploads(@PathVariable final Long assignmentId, @ApiParam final Pageable pageable) {
 		log.debug("GET request to get course uploads for assignment " + assignmentId);
 
@@ -202,6 +201,13 @@ public class AssignmentResource {
 		}
 	}
 
+	/**
+	 * GET /:assignmentId/upload/:id : get a specific uploaded course file
+	 *
+	 * @param assignmentId
+	 * @param id
+	 * @return the ResponseEntity with status 200 (OK) and the File Information in the body
+	 */
 	@GetMapping(path="/{assignmentId}/upload/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
 	public ResponseEntity getUpload(@PathVariable final Long assignmentId,
@@ -213,7 +219,7 @@ public class AssignmentResource {
 		if (assignmentDTO == null) throw new AssignmentNotFoundException(assignmentId);
 		if (fileInformationDTO == null) throw new FileInformationNotFoundException(id);
 
-		if (canUploadFilesToAssignment(assignmentDTO) && fileInformationDTO.getAssignmentId().equals(assignmentId)) {
+		if (canGetUploadedFile(fileInformationDTO, assignmentDTO)) {
 			String fileName = fileInformationService.getFileNameFor(id);
 			InputStream response = storageService.getUpload(id);
 			try {
@@ -234,6 +240,13 @@ public class AssignmentResource {
 		}
 	}
 
+	/**
+	 * DELETE /:assignmentId/upload/:id : delete a specific uploaded course file
+	 *
+	 * @param assignmentId
+	 * @param id
+	 * @return a ResponseEntity with status 200 (OK)
+	 */
 	@DeleteMapping(path="/{assignmentId}/upload/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
 	public ResponseEntity deleteUpload(@PathVariable final Long assignmentId,
@@ -257,6 +270,14 @@ public class AssignmentResource {
 			log.info("User is not authorized to delete upload file {}.", id);
 			return new ResponseEntity(HttpStatus.FORBIDDEN);
 		}
+	}
+
+	private Boolean canGetUploadedFile(FileInformationDTO fileInformationDTO, AssignmentDTO assignmentDTO) {
+		return fileInformationDTO.getAssignmentId().equals(assignmentDTO.getId()) &&
+			SecurityUtils.isAdmin() ||
+			isOrgAdmin(assignmentDTO) ||
+			isCourseInstructor(assignmentDTO) ||
+			hasStudentLevelFileAccess(fileInformationDTO, assignmentDTO);
 	}
 
 	private Boolean canUploadFilesToAssignment(AssignmentDTO assignmentDTO) {
@@ -284,5 +305,12 @@ public class AssignmentResource {
 
 	private Boolean isCourseStudent(AssignmentDTO assignmentDTO) {
 		return assignmentService.currentUserIsEnrolledIn(assignmentDTO);
+	}
+
+	private Boolean hasStudentLevelFileAccess(FileInformationDTO fileInformationDTO, AssignmentDTO assignmentDTO) {
+		return isCourseStudent(assignmentDTO) && (
+			fileInformationService.isUploadedByCurrentUser(fileInformationDTO) ||
+				fileInformationService.isUploadedByCourseInstructor(fileInformationDTO, assignmentDTO.getId())
+			);
 	}
 }

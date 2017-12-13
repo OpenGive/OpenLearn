@@ -12,6 +12,8 @@ import org.openlearn.repository.AssignmentRepository;
 import org.openlearn.repository.CourseRepository;
 import org.openlearn.repository.FileRepository;
 import org.openlearn.repository.PortfolioItemRepository;
+import org.openlearn.security.AuthoritiesConstants;
+import org.openlearn.security.SecurityUtils;
 import org.openlearn.transformer.FileInformationTransformer;
 import org.openlearn.web.rest.errors.*;
 import org.slf4j.Logger;
@@ -74,26 +76,27 @@ public class StorageService {
 	 *
 	 * @return the persisted entity
 	 */
-	//TODO cbernal fix blue documentation
 	public FileInformationDTO store(final MultipartFile file, Long assignmentId, Long portfolioId) {
 		log.debug("Request to save f : {}", file); //TODO cbernal fix this log statement
 		Assignment assignment = null;
 		PortfolioItem portfolioItem = null;
+		User uploadedBy = null;
 
 		if (assignmentId != null) {
 			assignment = assignmentRepository.findOne(assignmentId);
 
 			if (assignment == null) throw new AssignmentNotFoundException(assignmentId);
+			uploadedBy = getUploadedBy(assignment);
 		} else {
 			portfolioItem = portfolioItemRepository.findOne(portfolioId);
 
 			if (portfolioItem == null) throw new PortfolioItemNotFoundException(portfolioId);
+			uploadedBy = getUploadedBy(portfolioItem);
 		}
 
-		User user = userService.getCurrentUser();
 		AmazonS3 s3client = AmazonS3ClientBuilder.defaultClient();
 		String uploadBucketName = props.getUploadBucket();
-		String keyName = createS3FilePrefix(assignmentId, portfolioId, user.getId()) + file.getOriginalFilename();
+		String keyName = createS3FilePrefix(assignmentId, portfolioId, uploadedBy.getId()) + file.getOriginalFilename();
 		try {
 			ObjectMetadata metadata = new ObjectMetadata();
 			metadata.setContentLength(file.getSize());
@@ -109,7 +112,7 @@ public class StorageService {
 
 		FileInformation fileInformation = new FileInformation();
 		fileInformation.setFileUrl("https://s3.amazonaws.com/" + uploadBucketName + "/" + keyName);
-		fileInformation.setUploadedByUser(user);
+		fileInformation.setUploadedByUser(uploadedBy);
 		fileInformation.setCreatedDate(ZonedDateTime.now());
 		if (assignment != null) {
 			Course course = assignment.getCourse();
@@ -231,6 +234,20 @@ public class StorageService {
 		String userStr = uploadedByUserId.toString();
 		String prefix = assignmentStr + portfolioStr + userStr + "/";
 		return prefix;
+	}
+
+	private User getUploadedBy(Assignment assignment) {
+		if (SecurityUtils.isAdmin() || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ORG_ADMIN))
+			return assignment.getCourse().getInstructor();
+		else
+			return userService.getCurrentUser();
+	}
+
+	private User getUploadedBy(PortfolioItem portfolioItem) {
+		if (SecurityUtils.isAdmin() || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ORG_ADMIN))
+			return portfolioItem.getStudent();
+		else
+			return userService.getCurrentUser();
 	}
 
 	private String retrieveBucket(FileInformation fileInformation) {
