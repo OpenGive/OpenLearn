@@ -100,6 +100,16 @@ export class PortfolioGridComponent implements OnInit {
     e.stopPropagation();
   }
 
+  canDelete(): boolean {
+    return this.principal.hasAuthority(AppConstants.Role.Admin.name) ||
+      this.currentUserIsOrgAdminForStudent()
+  }
+
+  currentUserIsOrgAdminForStudent(): boolean {
+    return this.principal.hasAuthority(AppConstants.Role.OrgAdmin.name) &&
+      this.principal.getOrganizationId() === this.student.organizationId
+  }
+
 
   private handleAddPortfolioResponse(resp): void {
     if (resp) {

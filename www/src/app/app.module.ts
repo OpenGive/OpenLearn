@@ -23,6 +23,7 @@ import {UserRouteAccessService} from "./shared/auth/user-route-access-service";
 import {Principal} from "./shared/auth/principal-storage.service";
 import {PrincipalService} from "./shared/auth/principal.service";
 import {CourseAbility} from "./shared/course-ability.service";
+import {FileGuardian} from "./shared/file-guardian.service";
 import {AccountService} from "./shared/auth/account.service";
 import {LoginService} from "./services/login.service";
 import {LogoutService} from "./services/logout.service";
@@ -97,6 +98,7 @@ import {DashboardPageComponent} from "./pages/dashboard-page/dashboard-page.comp
     Principal,
     PrincipalService,
     CourseAbility,
+    FileGuardian,
     AccountService,
     LoginService,
     LogoutService,

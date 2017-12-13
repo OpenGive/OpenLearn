@@ -5,6 +5,8 @@ import { CookieService } from 'ngx-cookie';
 import {Course} from '../../models/course.model';
 import {MdDialog, MdDialogRef, MD_DIALOG_DATA} from "@angular/material";
 
+import {FileGuardian} from '../../shared/file-guardian.service';
+
 @Component({
   selector: 'file-upload',
   templateUrl: './fileupload.component.html',
@@ -29,11 +31,12 @@ export class FileUploadComponent {
 
     constructor(
             private dialog: MdDialogRef<FileUploadComponent>,
-            private _cookieService: CookieService) {
+            private _cookieService: CookieService,
+            private fileGuardian: FileGuardian) {
         let tokenObject = this._cookieService.getObject('token') as any;
         this.uploader.authToken = 'Bearer ' + tokenObject.access_token;
         this.uploader.onSuccessItem = (item: any, response: any, status: any, headers: any) => {
-          this.onSuccessCallback(item);
+          this.onSuccessCallback(JSON.parse(response));
         }
 
         this.columns = [
@@ -54,12 +57,11 @@ export class FileUploadComponent {
 
     ngOnInit(): void {
       let uploadUrl = '';
-      if (this.assignment) {
+      if (this.fileGuardian.canHaveFiles(this.assignment)) {
         uploadUrl = '/api/assignments/' + this.assignment.id.toString() + '/upload';
-      } else if (this.portfolio) {
+      } else if (this.fileGuardian.canHaveFiles(this.portfolio)) {
         uploadUrl = '/api/portfolio-items/' + this.portfolio.id.toString() + '/upload';
       }
-        
       this.uploader.options.url = uploadUrl;
     }
 
@@ -74,5 +76,4 @@ export class FileUploadComponent {
     close(): void {
       this.dialog.close();
     }
-
 }

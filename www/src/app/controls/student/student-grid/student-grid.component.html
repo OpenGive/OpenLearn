@@ -14,7 +14,7 @@
             {{column.name}}
             <md-icon>sort</md-icon>
           </th>
-          <th width="10%" *ngIf="canDeleteAnyCourse"></th>
+          <th width="10%" *ngIf="canDeleteAnyCourse | async"></th>
         </tr>
         </thead>
         <tbody>
@@ -34,7 +34,7 @@
               <button md-menu-item type="button">No, go back</button>
             </md-menu>
           </td>
-          <td *ngIf="!canDelete(row.course) && canDeleteAnyCourse"></td>
+          <td *ngIf="!canDelete(row.course) && (canDeleteAnyCourse | async)"></td>
         </tr>
         </tbody>
       </table>

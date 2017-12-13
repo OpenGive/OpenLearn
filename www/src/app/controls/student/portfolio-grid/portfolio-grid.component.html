@@ -14,14 +14,14 @@
             {{column.name}}
             <md-icon>sort</md-icon>
           </th>
-          <th width="10%"></th>
+          <th width="10%" *ngIf="canDelete()"></th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let row of portfolioItems" (click)="viewPortfolioDetails(row)">
           <td>{{row.name}}</td>
           <td>{{row.description}}</td>
-          <td style="text-align: right;" *ngIf="!studentView">
+          <td style="text-align: right;" *ngIf="canDelete()">
             <button md-raised-button type="button" (click)="stopPropagation($event)" *ngIf="!editing" [mdMenuTriggerFor]="deleteMenu" class="ol-dialog-button pink-button" mdTooltip="Delete">
               <md-icon>delete</md-icon>
             </button>
