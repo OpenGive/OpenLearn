@@ -12,6 +12,7 @@ import {CourseStudentDialogComponent} from "../course-student-dialog.component";
 import {AssignmentService} from "../../../services/assignment.service";
 import {PortfolioService} from "../../../services/portfolio.service";
 import {FileGuardian} from '../../../shared/file-guardian.service';
+import {NotifyService} from "../../../services/notify.service";
 
 @Component({
   selector: 'app-files-grid',
@@ -33,6 +34,7 @@ export class FilesGridComponent implements OnInit {
 
   constructor(private dialog: MdDialog,
               private assignmentService: AssignmentService,
+              private notify: NotifyService,
               private portfolioService: PortfolioService,
               private fileGuardian: FileGuardian) {}
 
@@ -108,16 +110,21 @@ export class FilesGridComponent implements OnInit {
     if (this.fileGuardian.canHaveFiles(this.assignment)) {
       this.assignmentService.getAssignmentFile(this.assignment.id, file.id).subscribe(blob => {
         importedSaveAs(blob, file.key);
-      });;
+      }, this.errorOnDownload);
     } else if (this.fileGuardian.canHaveFiles(this.portfolio)) {
       this.portfolioService.getPortfolioFile(this.portfolio.id, file.id).subscribe(blob => {
         importedSaveAs(blob, file.key);
-      });;
+      }, this.errorOnDownload);
     }
   }
 
   stopPropagation(e): void {
     e.stopPropagation();
+  }
+
+  private errorOnDownload(error: Response): void {
+    this.notify.error("An error occurred, the file could not be downloaded.");
+    console.error(error);
   }
 
   private parseBaseName(path: String): String {
