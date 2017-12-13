@@ -201,6 +201,23 @@ public class AssignmentResource {
 		}
 	}
 
+	@GetMapping(path="/{assignmentId}/instructor/uploads")
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
+	public ResponseEntity getInstructorUploads(@PathVariable final Long assignmentId) {
+		log.debug("GET request to retrieve course instructor uploads for assignment " + assignmentId);
+
+		AssignmentDTO assignmentDTO = assignmentService.findOne(assignmentId);
+		if (assignmentDTO == null) throw new AssignmentNotFoundException(assignmentId);
+
+		if (canUploadFilesToAssignment(assignmentDTO)) {
+			List<FileInformationDTO> response = fileInformationService.findInstructorUploadsForAssignment(assignmentId);
+			return ResponseEntity.ok(response);
+		} else {
+			log.info("User is not authorized to retrieve uploaded files for assignment: {}.", assignmentId);
+			return new ResponseEntity(HttpStatus.FORBIDDEN);
+		}
+	}
+
 	/**
 	 * GET /:assignmentId/upload/:id : get a specific uploaded course file
 	 *

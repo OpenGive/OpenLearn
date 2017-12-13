@@ -19,6 +19,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Transactional
 public class FileInformationService {
@@ -72,6 +75,20 @@ public class FileInformationService {
 				.map(fileInformationTransformer::transform);
 		}
 	}
+
+	@Transactional(readOnly = true)
+	public List<FileInformationDTO> findInstructorUploadsForAssignment(final Long assignmentId) {
+		log.debug("Request to get File Information for Assignment : {}", assignmentId);
+		Assignment assignment = assignmentRepository.findOne(assignmentId);
+		if (assignment == null) throw new AssignmentNotFoundException(assignmentId);
+
+		return fileRepository
+			.findByAssignmentAndUploadedByUser(assignment, assignment.getCourse().getInstructor())
+			.stream()
+			.map(fileInformationTransformer::transform)
+			.collect(Collectors.toList());
+	}
+
 
 	/**
 	 * Get all file information for a given portfolio item.

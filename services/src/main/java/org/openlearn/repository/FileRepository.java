@@ -18,6 +18,7 @@ public interface FileRepository extends JpaRepository<FileInformation, Long>{
 	Page<FileInformation> findByPortfolioItem(PortfolioItem portfolioItem, Pageable pageable);
 	List<FileInformation> findByPortfolioItem(PortfolioItem portfolioItem);
 	Page<FileInformation> findByAssignmentAndUploadedByUser(Assignment assignment, User uploadedByUser, Pageable pageable);
+	List<FileInformation> findByAssignmentAndUploadedByUser(Assignment assignment, User uploadedByUser);
 
 	void deleteByPortfolioItem(PortfolioItem portfolioItem);
 	void deleteByAssignment(Assignment assignment);
