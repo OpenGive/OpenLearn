@@ -161,6 +161,6 @@ public class FileInformationService {
 	}
 
 	private Boolean isUploadedByUser(FileInformationDTO fileInformationDTO, User user) {
-		return fileInformationDTO.getUploadedByUserId().equals(user);
+		return fileInformationDTO.getUploadedByUserId().equals(user.getId());
 	}
 }
