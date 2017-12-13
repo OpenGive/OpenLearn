@@ -56,11 +56,11 @@ public class StorageService {
 	private ApplicationProperties props;
 
 	public StorageService(final FileRepository fileRepository,
-						  final CourseRepository courseRepository,
-						  final AssignmentRepository assignmentRepository,
-						  final UserService userService,
-						  final PortfolioItemRepository portfolioItemRepository,
-						  final FileInformationTransformer fileInformationTransformer) {
+							final CourseRepository courseRepository,
+							final AssignmentRepository assignmentRepository,
+							final UserService userService,
+							final PortfolioItemRepository portfolioItemRepository,
+							final FileInformationTransformer fileInformationTransformer) {
 		this.fileRepository = fileRepository;
 		this.courseRepository = courseRepository;
 		this.assignmentRepository = assignmentRepository;
