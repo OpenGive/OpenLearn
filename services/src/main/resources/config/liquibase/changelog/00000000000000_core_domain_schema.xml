@@ -397,4 +397,58 @@
 			<column name="last_modified_date" type="TIMESTAMP"/>
 		</createTable>
 	</changeSet>
+	<changeSet id="34" author="wspurgin">
+		<addColumn tableName="file_information">
+			<column name="user_id" type="BIGINT">
+			<constraints nullable="false"/>
+			</column>
+			<column name="course_id" type="BIGINT">
+			<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet id="35" author="wspurgin">
+		<addForeignKeyConstraint baseColumnNames="user_id" baseTableName="file_information"
+								 constraintName="file_information_userFK" deferrable="false"
+								 initiallyDeferred="false" referencedColumnNames="id" referencedTableName="user"/>
+	</changeSet>
+	<changeSet id="36" author="wspurgin">
+		<addForeignKeyConstraint baseColumnNames="course_id" baseTableName="file_information"
+								 constraintName="file_information_courseFK" deferrable="false"
+								 initiallyDeferred="false" referencedColumnNames="id" referencedTableName="course"/>
+	</changeSet>
+	<changeSet id="37" author="wspurgin">
+		<dropNotNullConstraint columnDataType="BIGINT"
+							   columnName="course_id"
+							   tableName="file_information"/>
+	</changeSet>
+	<changeSet id="38" author="wspurgin">
+		<addColumn tableName="file_information">
+			<column name="uploaded_by_user_id" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet id="39" author="wspurgin">
+		<addForeignKeyConstraint baseColumnNames="uploaded_by_user_id" baseTableName="file_information"
+								 constraintName="file_information_uploaded_by_userFK" deferrable="false"
+								 initiallyDeferred="false" referencedColumnNames="id" referencedTableName="user"/>
+	</changeSet>
+	<changeSet id="40" author="wspurgin">
+		<dropColumn tableName="file_information" columnName="course_id" />
+	</changeSet>
+	<changeSet id="41" author="wspurgin">
+		<addColumn tableName="file_information">
+			<column name="assignment_id" type="BIGINT" />
+			<column name="portfolio_item_id" type="BIGINT" />
+		</addColumn>
+	</changeSet>
+	<changeSet id="42" author="wspurgin">
+		<addForeignKeyConstraint baseTableName="file_information" baseColumnNames="assignment_id"
+								 constraintName="file_information_assignmentFK" referencedTableName="assignment"
+								 referencedColumnNames="id" />
+		<addForeignKeyConstraint baseTableName="file_information" baseColumnNames="portfolio_item_id"
+								 constraintName="file_information_portfolio_itemFK" referencedTableName="portfolio_item"
+								 referencedColumnNames="id" />
+	</changeSet>
 </databaseChangeLog>

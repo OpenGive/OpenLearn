@@ -9,6 +9,8 @@ import org.openlearn.repository.StudentCourseRepository;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.security.SecurityUtils;
 import org.openlearn.transformer.AssignmentTransformer;
+import org.openlearn.web.rest.errors.AccessDeniedException;
+import org.openlearn.web.rest.errors.AssignmentNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -38,18 +40,22 @@ public class AssignmentService {
 
 	private final UserService userService;
 
+	private final FileInformationService fileInformationService;
+
 	public AssignmentService(final AssignmentRepository assignmentRepository,
 	                         final AssignmentTransformer assignmentTransformer,
 	                         final CourseRepository courseRepository,
 							 final StudentAssignmentRepository studentAssignmentRepository,
 							 final StudentCourseRepository studentCourseRepository,
-							 final UserService userService) {
+							 final UserService userService,
+							 final FileInformationService fileInformationService) {
 		this.assignmentRepository = assignmentRepository;
 		this.assignmentTransformer = assignmentTransformer;
 		this.courseRepository = courseRepository;
 		this.studentAssignmentRepository = studentAssignmentRepository;
 		this.studentCourseRepository = studentCourseRepository;
 		this.userService = userService;
+		this.fileInformationService = fileInformationService;
 	}
 
 	/**
@@ -64,7 +70,7 @@ public class AssignmentService {
 		boolean instructorCheck = true;
 		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.INSTRUCTOR)) {
 			Course course = courseRepository.findOne(assignmentDTO.getCourseId());
-			instructorCheck = user.getId() == course.getInstructor().getId();
+			instructorCheck = user.getId().equals(course.getInstructor().getId());
 		}
 
 		if (instructorCheck && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(assignmentDTO))) {
@@ -153,37 +159,52 @@ public class AssignmentService {
 		log.debug("Request to delete Assignment : {}", id);
 		Assignment assignment = assignmentRepository.findOne(id);
 		User user = userService.getCurrentUser();
+
+		if (assignment == null) throw new AssignmentNotFoundException(id);
+
 		boolean instructorCheck = true;
 		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.INSTRUCTOR)) {
 			Course course = assignment.getCourse();
-			instructorCheck = user.getId() == course.getInstructor().getId();
+			instructorCheck = user.getId().equals(course.getInstructor().getId());
 		}
 
-		if (assignment != null && instructorCheck && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(assignment))) {
-
-			for (StudentAssignment studentAssignment : studentAssignmentRepository.findByAssignment(assignment)) {
-				studentAssignmentRepository.delete(studentAssignment.getId());
-			}
-
+		if (instructorCheck && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(assignment))) {
+			studentAssignmentRepository.deleteByAssignment(assignment);
+			fileInformationService.deleteByAssignment(assignment);
 			assignmentRepository.delete(id);
 		} else {
-			// TODO: Error handling / logging
+			throw new AccessDeniedException();
 		}
 	}
 
-	private boolean inOrgOfCurrentUser(final AssignmentDTO assignmentDTO) {
+	public boolean inOrgOfCurrentUser(final AssignmentDTO assignmentDTO) {
 		User user = userService.getCurrentUser();
 		Course course = courseRepository.findOne(assignmentDTO.getCourseId());
 		return course != null && user.getOrganization().equals(course.getSession().getProgram().getOrganization());
 	}
 
-	private boolean inOrgOfCurrentUser(final Assignment assignment) {
+	public boolean inOrgOfCurrentUser(final Assignment assignment) {
 		User user = userService.getCurrentUser();
 		return user.getOrganization().equals(assignment.getCourse().getSession().getProgram().getOrganization());
 	}
 
-	private boolean inOrgOfCurrentUser(final Course course) {
+	public boolean inOrgOfCurrentUser(final Course course) {
 		User user = userService.getCurrentUser();
 		return user.getOrganization().equals(course.getOrganization());
+	}
+
+	public boolean currentUserIsCourseInstructor(final AssignmentDTO assignmentDTO) {
+		User user = userService.getCurrentUser();
+		Course course = courseRepository.findOne(assignmentDTO.getCourseId());
+
+		return user.equals(course.getInstructor());
+	}
+
+	public boolean currentUserIsEnrolledIn(final AssignmentDTO assignmentDTO) {
+		User user = userService.getCurrentUser();
+		Course course = courseRepository.findOne(assignmentDTO.getCourseId());
+		StudentCourse studentCourse = studentCourseRepository.findByStudentAndCourse(user, course);
+
+		return studentCourse != null;
 	}
 }

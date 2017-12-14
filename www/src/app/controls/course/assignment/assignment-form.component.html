@@ -16,7 +16,7 @@
       <button md-raised-button type="button" *ngIf="instructorCheck && !editing" (click)="edit()" class="ol-dialog-button grey-button" mdTooltip="Edit">
         <md-icon>create</md-icon>
       </button>
-      <button md-raised-button type="button" *ngIf="instructorCheck && !editing" [mdMenuTriggerFor]="deleteMenu" class="ol-dialog-button pink-button" mdTooltip="Delete">
+      <button md-raised-button type="button" *ngIf="instructorCheck && !editing && !adding" [mdMenuTriggerFor]="deleteMenu" class="ol-dialog-button pink-button" mdTooltip="Delete">
         <md-icon>delete</md-icon>
       </button>
       <md-menu #deleteMenu="mdMenu">

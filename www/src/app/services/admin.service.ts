@@ -48,7 +48,7 @@ export class AdminService {
 
   private handleError(error: Response) {
     console.error(error);
-    return Observable.throw(error.json() || {message: 'Server Error'});
+    return Observable.throw(error.json !== undefined ? error.json() : null || {message: 'Server Error'});
   }
 
   // Converts empty strings to nulls
