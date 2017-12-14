@@ -185,7 +185,7 @@ public class AssignmentResource {
 	 * @return the ResponseEntity with status 200 (OK) and the request page of File Information in the body
 	 */
 	@GetMapping(path="/{assignmentId}/uploads")
-	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
 	public ResponseEntity getUploads(@PathVariable final Long assignmentId, @ApiParam final Pageable pageable) {
 		log.debug("GET request to get course uploads for assignment " + assignmentId);
 

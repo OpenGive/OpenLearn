@@ -25,12 +25,14 @@ export class FilesGridComponent implements OnInit {
   @Input() portfolio: PortfolioItem;
   @Input() studentView: boolean = false;
   files: any[];
+  studentFiles: any[];
   columns: any[];
 
   sortColumn: any;
   reverse: boolean;
 
   public fileUploadSuccessCallback: Function;
+  public studentFileUploadSuccessCallback: Function;
 
   private getAssignmentFilesFunction: Function;
 
@@ -59,26 +61,35 @@ export class FilesGridComponent implements OnInit {
 
 
     if (!this.studentView)
-      this.getAssignmentFilesFunction =  this.assignmentService.getAssignmentFiles.bind(this.assignmentService)
+      this.getAssignmentFilesFunction =  this.assignmentService.getAssignmentFiles.bind(this.assignmentService);
     else
-      this.getAssignmentFilesFunction =  this.assignmentService.getAssignmentInstructorFiles.bind(this.assignmentService)
+      this.getAssignmentFilesFunction =  this.assignmentService.getAssignmentInstructorFiles.bind(this.assignmentService);
 
+    this.files = [];
+    this.studentFiles = [];
     this.getFiles();
+    this.getStudentFiles();
+    console.log(this.studentFiles);
 
-    this.fileUploadSuccessCallback = this.addFile.bind(this);
+    this.fileUploadSuccessCallback = this.addFileCallback.bind(this);
+    this.studentFileUploadSuccessCallback = this.addStudentFileCallback.bind(this);
 
   }
 
-  addFile(item): void {
+  addFileCallback(item): void {
+    this.addFile(item, this.files);
+  }
+
+  addStudentFileCallback(item): void {
+    this.addFile(item, this.studentFiles);
+  }
+
+  addFile(item, files): void {
     console.log(item);
     console.log("File upload success callback");
 
-    if (!this.files) {
-      this.files = [];
-    }
-
     item.key = this.parseBaseName(item.fileUrl);
-    this.files.push(item);
+    files.push(item);
   }
 
   removeFile(file): void {
@@ -96,20 +107,11 @@ export class FilesGridComponent implements OnInit {
   getFiles(): void {
     if (this.fileGuardian.canHaveFiles(this.assignment)) {
       this.getAssignmentFilesFunction(this.assignment.id).subscribe(files => {
-        this.files = files;
-        for (let fileIdx = 0; fileIdx < this.files.length; fileIdx++) {
-          const fileUrl = this.files[fileIdx].fileUrl
-          this.files[fileIdx].key = this.parseBaseName(fileUrl);
-        }
+        this.files = this.addFileKeys(files);
       });
     } else if (this.fileGuardian.canHaveFiles(this.portfolio)) {
       this.portfolioService.getPortfolioFiles(this.portfolio.id).subscribe(files => {
-        this.files = files;
-        console.log(files);
-        for (let fileIdx = 0; fileIdx < this.files.length; fileIdx++) {
-          const fileUrl = this.files[fileIdx].fileUrl
-          this.files[fileIdx].key = this.parseBaseName(fileUrl);
-        }
+        this.files = this.addFileKeys(files);
       });
     }
   }
@@ -118,21 +120,44 @@ export class FilesGridComponent implements OnInit {
     if (this.fileGuardian.canHaveFiles(this.assignment)) {
       this.assignmentService.getAssignmentFile(this.assignment.id, file.id).subscribe(blob => {
         importedSaveAs(blob, file.key);
-      }, this.errorOnDownload);
+      }, this.errorOnDownload.bind(this));
     } else if (this.fileGuardian.canHaveFiles(this.portfolio)) {
       this.portfolioService.getPortfolioFile(this.portfolio.id, file.id).subscribe(blob => {
         importedSaveAs(blob, file.key);
-      }, this.errorOnDownload);
+      }, this.errorOnDownload.bind(this));
     }
+  }
+
+  getStudentFiles(): void {
+    if (!this.studentView || !this.fileGuardian.canHaveFiles(this.assignment))
+      return
+
+    this.assignmentService.getAssignmentFiles(this.assignment.id).subscribe(files => {
+      this.studentFiles = this.addFileKeys(files);
+      console.log(this.studentFiles);
+    }, this.errorOnLoadingFiles.bind(this));
   }
 
   stopPropagation(e): void {
     e.stopPropagation();
   }
 
+  private errorOnLoadingFiles(error: Response): void {
+    this.notify.error("An error occurred while attempting to retrieve all files.");
+    console.error(error);
+  }
+
   private errorOnDownload(error: Response): void {
     this.notify.error("An error occurred, the file could not be downloaded.");
     console.error(error);
+  }
+
+  private addFileKeys(files: any[]): any[] {
+    for (let file of files) {
+      file.key = this.parseBaseName(file.fileUrl);
+    }
+
+    return files;
   }
 
   private parseBaseName(path: String): String {
