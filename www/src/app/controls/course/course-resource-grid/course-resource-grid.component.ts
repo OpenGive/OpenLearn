@@ -26,7 +26,7 @@ export class CourseResourceGridComponent implements OnInit {
   sortColumn: any;
   reverse: boolean;
   studentView: boolean;
-  instructorCheck: boolean = true;
+  instructorCheck = true;
 
   constructor(private dialog: MdDialog,
               private courseService: StudentCourseService,
@@ -35,8 +35,12 @@ export class CourseResourceGridComponent implements OnInit {
               private principal: Principal) {}
   ngOnInit(): void {
     this.studentView = this.principal.hasAuthority(AppConstants.Role.Student.name);
-    if (this.principal.hasAuthority(AppConstants.Role.Instructor.name)) this.instructorCheck = this.course.instructorId == this.principal.getId();
-    if(!this.studentView) {
+    if (this.principal.hasAuthority(AppConstants.Role.Instructor.name)) {
+      this.instructorCheck = this.course.instructorId === this.principal.getId();
+    } else if (this.studentView) {
+      this.instructorCheck = false;
+    }
+    if (!this.studentView) {
       this.columns = [
         {
           id: "assignment.name",
@@ -84,7 +88,7 @@ export class CourseResourceGridComponent implements OnInit {
     });
   }
 
-  viewAssignmentDetails(row){
+  viewAssignmentDetails(row) {
     this.dialog.open(AssignmentFormComponent, {
       data: {
         course: this.course,
@@ -100,18 +104,18 @@ export class CourseResourceGridComponent implements OnInit {
 }
 
   removeAssignment(assignmentId: Number): void {
-    this.adminService.delete(AdminTabs.Assignment.route,assignmentId).subscribe(resp=> {
+    this.adminService.delete(AdminTabs.Assignment.route, assignmentId).subscribe(resp => {
       this.assignments = _.filter(this.assignments, assignment => assignment.id !== assignmentId)
     })
   }
 
   getCourseAssignments(): void {
-    if(!this.studentView) {
+    if (!this.studentView) {
       this.assignmentService.getAssignmentsByCourse(this.course.id).subscribe(assignments => {
         this.assignments = assignments;
       })
     } else {
-      this.assignmentService.getAssignmentByCourseAndStudent(this.course.id,this.principal.getId()).subscribe(assignments => {
+      this.assignmentService.getAssignmentByCourseAndStudent(this.course.id, this.principal.getId()).subscribe(assignments => {
         this.assignments = assignments;
         console.log("Assignments: ");
         console.log(assignments);
@@ -134,7 +138,7 @@ export class CourseResourceGridComponent implements OnInit {
   }
 
   private getAssignment(row): any {
-    if(this.studentView){
+    if (this.studentView) {
       return row.assignment
     } else {
       return row

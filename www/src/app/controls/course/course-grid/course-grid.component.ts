@@ -114,9 +114,9 @@ export class CourseGridComponent implements OnInit {
     if (resp) {
       console.log("Response from edit student", resp);
 
-      for (var i = 0; i < this.students.length; i++) {
-         let student = this.students[i];
-         if (student.student.id == resp.data.id) {
+      for (let i = 0; i < this.students.length; i++) {
+         const student = this.students[i];
+         if (student.student.id === resp.data.id) {
            this.students[i].student = resp.data;
          }
       }
@@ -135,9 +135,9 @@ export class CourseGridComponent implements OnInit {
     if (resp) {
       console.log("Response from edit grade", resp);
 
-      for (var i = 0; i < this.students.length; i++) {
-         let student = this.students[i];
-         if (student.student.id == resp.data.student.id) {
+      for (let i = 0; i < this.students.length; i++) {
+         const student = this.students[i];
+         if (student.student.id === resp.data.student.id) {
            student.grade = resp.data.grade;
          }
       }
