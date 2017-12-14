@@ -120,17 +120,20 @@ export class CourseResourceGridComponent implements OnInit {
   }
 
   private handleDialogResponse(resp): void {
-    if(!resp) {
+    if (!resp) {
       return;
     } else if (resp.type === 'ADD') {
       console.log("Response from add assignment", resp);
 
-      this.ngOnInit();
-    } else if(resp.type === 'UPDATE') {
+    } else if (resp.type === 'UPDATE') {
       console.log("Response from update assignment", resp);
 
-      this.ngOnInit();
+    } else if (resp.type === 'DELETE') {
+      console.log("Response from delete assignment", resp);
+
     }
+
+    this.ngOnInit();
   }
 
   private getAssignment(row): any {
