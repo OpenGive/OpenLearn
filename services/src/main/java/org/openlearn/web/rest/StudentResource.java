@@ -1,13 +1,10 @@
 package org.openlearn.web.rest;
 
-import io.swagger.annotations.ApiParam;
 import org.openlearn.dto.StudentDTO;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.service.StudentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/students")
@@ -50,24 +48,23 @@ public class StudentResource {
 	/**
 	 * GET  / : get a list of all student users, filtered by organization
 	 *
-	 * @param pageable the pagination information
 	 * @return the ResponseEntity with status 200 (OK) and a list of students in the body
 	 *      or with ... TODO: Error handling
 	 */
 	@GetMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity get(@ApiParam final Pageable pageable) {
+	public ResponseEntity get() {
 		log.debug("GET request for all students");
-		Page<StudentDTO> response = studentService.findAll(pageable);
-		return ResponseEntity.ok(response.getContent());
+		List<StudentDTO> response = studentService.findAll();
+		return ResponseEntity.ok(response);
 	}
 
 	@GetMapping(path = "/notInCourse/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity get(@ApiParam final Pageable pageable, @PathVariable final Long id) {
+	public ResponseEntity getStudentNotInCourse(@PathVariable final Long id) {
 		log.debug("GET request for students not in course: " + id.toString());
-		Page<StudentDTO> response = studentService.findStudentsNotInCourse(id,pageable);
-		return ResponseEntity.ok(response.getContent());
+		List<StudentDTO> response = studentService.findStudentsNotInCourse(id);
+		return ResponseEntity.ok(response);
 	}
 
 	/**

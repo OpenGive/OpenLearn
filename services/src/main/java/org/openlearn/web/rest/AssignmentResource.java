@@ -12,8 +12,6 @@ import org.openlearn.web.rest.errors.AssignmentNotFoundException;
 import org.openlearn.web.rest.errors.FileInformationNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,29 +66,27 @@ public class AssignmentResource {
 	/**
 	 * GET  / : get a list of all assignment, filtered by organization
 	 *
-	 * @param pageable the pagination information
 	 * @return the ResponseEntity with status 200 (OK) and a list of assignments in the body
 	 */
 	@GetMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity get(@ApiParam final Pageable pageable) {
+	public ResponseEntity get() {
 		log.debug("GET request for all assignments");
-		Page<AssignmentDTO> response = assignmentService.findAll(pageable);
-		return ResponseEntity.ok(response.getContent());
+		List<AssignmentDTO> response = assignmentService.findAll();
+		return ResponseEntity.ok(response);
 	}
 
 	/**
 	 * GET  / : get a list of all assignments for a course
 	 *
-	 * @param pageable the pagination information
 	 * @return the ResponseEntity with status 200 (OK) and a list of assignments in the body
 	 */
 	@GetMapping(path = "/course/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity getByCourse(@PathVariable final Long id, @ApiParam final Pageable pageable) {
+	public ResponseEntity getByCourse(@PathVariable final Long id) {
 		log.debug("GET request for all assignments by course: {}", id);
-		Page<AssignmentDTO> response = assignmentService.findByCourse(id, pageable);
-		return ResponseEntity.ok(response.getContent());
+		List<AssignmentDTO> response = assignmentService.findByCourse(id);
+		return ResponseEntity.ok(response);
 	}
 
 	/**
@@ -181,20 +177,19 @@ public class AssignmentResource {
 	/**
 	 * GET /:assignmentId/uploads : get uploaded course files
 	 * @param assignmentId
-	 * @param pageable
-	 * @return the ResponseEntity with status 200 (OK) and the request page of File Information in the body
+	 * @return the ResponseEntity with status 200 (OK) and the File Information in the body
 	 */
 	@GetMapping(path="/{assignmentId}/uploads")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
-	public ResponseEntity getUploads(@PathVariable final Long assignmentId, @ApiParam final Pageable pageable) {
+	public ResponseEntity getUploads(@PathVariable final Long assignmentId) {
 		log.debug("GET request to get course uploads for assignment " + assignmentId);
 
 		AssignmentDTO assignmentDTO = assignmentService.findOne(assignmentId);
 		if (assignmentDTO == null) throw new AssignmentNotFoundException(assignmentId);
 
 		if (canUploadFilesToAssignment(assignmentDTO)) {
-			Page<FileInformationDTO> response = fileInformationService.findAllForAssignment(assignmentId, pageable);
-			return ResponseEntity.ok(response.getContent());
+			List<FileInformationDTO> response = fileInformationService.findAllForAssignment(assignmentId);
+			return ResponseEntity.ok(response);
 		} else {
 			log.info("User is not authorized to retrieve uploaded files for assignment: {}.", assignmentId);
 			return new ResponseEntity(HttpStatus.FORBIDDEN);

@@ -8,10 +8,11 @@ import org.openlearn.security.SecurityUtils;
 import org.openlearn.transformer.OrganizationTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing Organization.
@@ -53,18 +54,22 @@ public class OrganizationService {
 	/**
 	 * Get all the organizations.
 	 *
-	 * @param pageable the pagination information
 	 * @return the list of entities
 	 */
 	@Transactional(readOnly = true)
-	public Page<OrganizationDTO> findAll(final Pageable pageable) {
+	public List<OrganizationDTO> findAll() {
 		log.debug("Request to get all Organizations");
 		User user = userService.getCurrentUser();
 		if (SecurityUtils.isAdmin()) {
-			return organizationRepository.findAll(pageable).map(organizationTransformer::transform);
+			return organizationRepository.findAll()
+				.stream()
+				.map(organizationTransformer::transform)
+				.collect(Collectors.toList());
 		} else {
-			return organizationRepository.findById(user.getOrganization().getId(), pageable)
-				.map(organizationTransformer::transform);
+			return organizationRepository.findById(user.getOrganization().getId())
+				.stream()
+				.map(organizationTransformer::transform)
+				.collect(Collectors.toList());
 		}
 	}
 

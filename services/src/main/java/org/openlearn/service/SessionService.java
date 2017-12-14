@@ -10,10 +10,11 @@ import org.openlearn.security.SecurityUtils;
 import org.openlearn.transformer.SessionTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing Session.
@@ -58,18 +59,22 @@ public class SessionService {
 	/**
 	 * Get all the sessions.
 	 *
-	 * @param pageable the pagination information
 	 * @return the list of entities
 	 */
 	@Transactional(readOnly = true)
-	public Page<SessionDTO> findAll(final Pageable pageable) {
+	public List<SessionDTO> findAll() {
 		log.debug("Request to get all Sessions");
 		User user = userService.getCurrentUser();
 		if (SecurityUtils.isAdmin()) {
-			return sessionRepository.findAll(pageable).map(sessionTransformer::transform);
+			return sessionRepository.findAll()
+				.stream()
+				.map(sessionTransformer::transform)
+				.collect(Collectors.toList());
 		} else {
-			return sessionRepository.findByOrganization(user.getOrganization(), pageable)
-				.map(sessionTransformer::transform);
+			return sessionRepository.findByOrganization(user.getOrganization())
+				.stream()
+				.map(sessionTransformer::transform)
+				.collect(Collectors.toList());
 		}
 	}
 

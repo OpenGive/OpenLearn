@@ -3,16 +3,17 @@ package org.openlearn.service;
 import org.openlearn.domain.Authority;
 import org.openlearn.domain.User;
 import org.openlearn.dto.AdminDTO;
-import org.openlearn.repository.UserRepository;
 import org.openlearn.repository.AddressRepository;
+import org.openlearn.repository.UserRepository;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.transformer.AdminTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing admin users.
@@ -53,13 +54,15 @@ public class AdminService {
 	/**
 	 * Get all the admin users.
 	 *
-	 * @param pageable the pagination information
 	 * @return the list of entities
 	 */
 	@Transactional(readOnly = true)
-	public Page<AdminDTO> findAll(final Pageable pageable) {
+	public List<AdminDTO> findAll() {
 		log.debug("Request to get all admin users");
-		return userRepository.findByAuthority(ADMIN, pageable).map(adminTransformer::transform);
+		return userRepository.findByAuthority(ADMIN)
+			.stream()
+			.map(adminTransformer::transform)
+			.collect(Collectors.toList());
 	}
 
 	/**

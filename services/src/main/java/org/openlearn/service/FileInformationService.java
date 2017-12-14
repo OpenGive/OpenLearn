@@ -14,8 +14,6 @@ import org.openlearn.web.rest.errors.AssignmentNotFoundException;
 import org.openlearn.web.rest.errors.FileInformationNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,21 +56,24 @@ public class FileInformationService {
 	 * Get all file information for a given assignment.
 	 *
 	 * @param assignmentId the id of the assignment
-	 * @param pageable the pagination information
 	 * @return the list of entities
 	 */
 	@Transactional(readOnly = true)
-	public Page<FileInformationDTO> findAllForAssignment(final Long assignmentId, Pageable pageable) {
+	public List<FileInformationDTO> findAllForAssignment(final Long assignmentId) {
 		log.debug("Request to get File Information for Assignment : {}", assignmentId);
 		Assignment assignment = assignmentRepository.findOne(assignmentId);
 		if (assignment == null) throw new AssignmentNotFoundException(assignmentId);
 
 		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.STUDENT)) {
-			return fileRepository.findByAssignmentAndUploadedByUser(assignment, userService.getCurrentUser(), pageable)
-				.map(fileInformationTransformer::transform);
+			return fileRepository.findByAssignmentAndUploadedByUser(assignment, userService.getCurrentUser())
+				.stream()
+				.map(fileInformationTransformer::transform)
+				.collect(Collectors.toList());
 		} else {
-			return fileRepository.findByAssignment(assignment, pageable)
-				.map(fileInformationTransformer::transform);
+			return fileRepository.findByAssignment(assignment)
+				.stream()
+				.map(fileInformationTransformer::transform)
+				.collect(Collectors.toList());
 		}
 	}
 
@@ -94,14 +95,16 @@ public class FileInformationService {
 	 * Get all file information for a given portfolio item.
 	 *
 	 * @param portfolioItemId the id of the portfolio item
-	 * @param pageable the pagination information
 	 * @return the list of entities
 	 */
 	@Transactional(readOnly = true)
-	public Page<FileInformationDTO> findAllForPorfolioItem(final Long portfolioItemId, Pageable pageable) {
+	public List<FileInformationDTO> findAllForPorfolioItem(final Long portfolioItemId) {
 		log.debug("Request to get File Information for PortfolioItem : {}", portfolioItemId);
 		PortfolioItem portfolioItem = portfolioItemRepository.findOne(portfolioItemId);
-		return fileRepository.findByPortfolioItem(portfolioItem, pageable).map(fileInformationTransformer::transform);
+		return fileRepository.findByPortfolioItem(portfolioItem)
+			.stream()
+			.map(fileInformationTransformer::transform)
+			.collect(Collectors.toList());
 	}
 
 	/**
