@@ -1,12 +1,9 @@
-#grid-header {
+.grid-header {
   height: 70px;
   padding: 20px;
   margin: 0 20px;
   overflow-x: scroll;
   overflow-y: hidden;
-  border: 2px solid #FF5252;
-  border-radius: 4px;
-  box-shadow: 0 2px 2px rgba(0,0,0,.24), 0 0 2px rgba(0,0,0,.12);
 }
 
 .grid-header-text {
@@ -32,7 +29,7 @@
   color: #FFFFFF;
 }
 
-#grid-table {
+.grid-table {
   padding: 20px;
   margin: 20px 20px 10px 20px;
   border: 2px solid #FF5252;
