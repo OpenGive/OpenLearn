@@ -6,7 +6,6 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
 import org.openlearn.config.ApplicationProperties;
-import org.openlearn.domain.Course;
 import org.openlearn.domain.FileInformation;
 import org.openlearn.repository.CourseRepository;
 import org.openlearn.repository.FileRepository;

@@ -3,17 +3,18 @@ package org.openlearn.service;
 import org.openlearn.domain.Authority;
 import org.openlearn.domain.User;
 import org.openlearn.dto.StudentDTO;
-import org.openlearn.repository.UserRepository;
 import org.openlearn.repository.AddressRepository;
+import org.openlearn.repository.UserRepository;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.security.SecurityUtils;
 import org.openlearn.transformer.StudentTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing student users.
@@ -63,31 +64,39 @@ public class StudentService {
 	/**
 	 * Get all the student users.
 	 *
-	 * @param pageable the pagination information
 	 * @return the list of entities
 	 */
 	@Transactional(readOnly = true)
-	public Page<StudentDTO> findAll(final Pageable pageable) {
+	public List<StudentDTO> findAll() {
 		log.debug("Request to get all student users");
 		User user = userService.getCurrentUser();
 		if (SecurityUtils.isAdmin()) {
-			return userRepository.findByAuthority(STUDENT, pageable).map(studentTransformer::transform);
+			return userRepository.findByAuthority(STUDENT)
+				.stream()
+				.map(studentTransformer::transform)
+				.collect(Collectors.toList());
 		} else {
-			return userRepository.findByOrganizationAndAuthority(user.getOrganization(), STUDENT, pageable)
-				.map(studentTransformer::transform);
+			return userRepository.findByOrganizationAndAuthority(user.getOrganization(), STUDENT)
+				.stream()
+				.map(studentTransformer::transform)
+				.collect(Collectors.toList());
 		}
 	}
 
 	@Transactional(readOnly = true)
-	public Page<StudentDTO> findStudentsNotInCourse(final Long courseId, final Pageable pageable) {
+	public List<StudentDTO> findStudentsNotInCourse(final Long courseId) {
 		log.debug("Request to get all StudentsNotInCourseByOrganization");
 		if (SecurityUtils.isAdmin()) {
-			return userRepository.findStudentsNotInCourse(courseId, pageable)
-				.map(studentTransformer::transform);
+			return userRepository.findStudentsNotInCourse(courseId)
+				.stream()
+				.map(studentTransformer::transform)
+				.collect(Collectors.toList());
 		} else {
 			User user = userService.getCurrentUser();
-			return userRepository.findStudentsNotInCourseByOrganization(courseId,user.getOrganization().getId(),pageable)
-				.map(studentTransformer::transform);
+			return userRepository.findStudentsNotInCourseByOrganization(courseId,user.getOrganization().getId())
+				.stream()
+				.map(studentTransformer::transform)
+				.collect(Collectors.toList());
 		}
 	}
 

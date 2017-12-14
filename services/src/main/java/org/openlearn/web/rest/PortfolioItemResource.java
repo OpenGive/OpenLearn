@@ -1,15 +1,12 @@
 package org.openlearn.web.rest;
 
 import com.amazonaws.services.s3.model.S3ObjectSummary;
-import io.swagger.annotations.ApiParam;
 import org.openlearn.dto.PortfolioItemDTO;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.service.PortfolioItemService;
 import org.openlearn.service.StorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,16 +58,15 @@ public class PortfolioItemResource {
 	/**
 	 * GET  / : get a list of all portfolio item, filtered by organization
 	 *
-	 * @param pageable the pagination information
 	 * @return the ResponseEntity with status 200 (OK) and a list of portfolio items in the body
 	 *      or with ... TODO: Error handling
 	 */
 	@GetMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity get(@ApiParam final Pageable pageable) {
+	public ResponseEntity get() {
 		log.debug("GET request for all portfolio items");
-		Page<PortfolioItemDTO> response = portfolioItemService.findAll(pageable);
-		return ResponseEntity.ok(response.getContent());
+		List<PortfolioItemDTO> response = portfolioItemService.findAll();
+		return ResponseEntity.ok(response);
 	}
 
 	/**

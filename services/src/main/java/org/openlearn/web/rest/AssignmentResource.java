@@ -1,16 +1,12 @@
 package org.openlearn.web.rest;
 
 import com.amazonaws.services.s3.model.S3ObjectSummary;
-import io.swagger.annotations.ApiParam;
 import org.openlearn.dto.AssignmentDTO;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.service.AssignmentService;
-import org.openlearn.service.CourseService;
 import org.openlearn.service.StorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,31 +58,29 @@ public class AssignmentResource {
 	/**
 	 * GET  / : get a list of all assignment, filtered by organization
 	 *
-	 * @param pageable the pagination information
 	 * @return the ResponseEntity with status 200 (OK) and a list of assignments in the body
 	 *      or with ... TODO: Error handling
 	 */
 	@GetMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity get(@ApiParam final Pageable pageable) {
+	public ResponseEntity get() {
 		log.debug("GET request for all assignments");
-		Page<AssignmentDTO> response = assignmentService.findAll(pageable);
-		return ResponseEntity.ok(response.getContent());
+		List<AssignmentDTO> response = assignmentService.findAll();
+		return ResponseEntity.ok(response);
 	}
 
 	/**
 	 * GET  / : get a list of all assignments for a course
 	 *
-	 * @param pageable the pagination information
 	 * @return the ResponseEntity with status 200 (OK) and a list of assignments in the body
 	 *      or with ... TODO: Error handling
 	 */
 	@GetMapping(path = "/course/{id}")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity getByCourse(@PathVariable final Long id, @ApiParam final Pageable pageable) {
+	public ResponseEntity getByCourse(@PathVariable final Long id) {
 		log.debug("GET request for all assignments by course: {}", id);
-		Page<AssignmentDTO> response = assignmentService.findByCourse(id, pageable);
-		return ResponseEntity.ok(response.getContent());
+		List<AssignmentDTO> response = assignmentService.findByCourse(id);
+		return ResponseEntity.ok(response);
 	}
 
 	/**

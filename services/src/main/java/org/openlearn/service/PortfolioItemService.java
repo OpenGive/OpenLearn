@@ -11,9 +11,6 @@ import org.openlearn.security.SecurityUtils;
 import org.openlearn.transformer.PortfolioItemTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.actuate.autoconfigure.ShellProperties;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,18 +71,22 @@ public class PortfolioItemService {
 	/**
 	 * Get all the portfolio items.
 	 *
-	 * @param pageable the pagination information
 	 * @return the list of entities
 	 */
 	@Transactional(readOnly = true)
-	public Page<PortfolioItemDTO> findAll(final Pageable pageable) {
+	public List<PortfolioItemDTO> findAll() {
 		log.debug("Request to get all portfolio items");
 		User user = userService.getCurrentUser();
 		if (SecurityUtils.isAdmin()) {
-			return portfolioItemRepository.findAll(pageable).map(portfolioItemTransformer::transform);
+			return portfolioItemRepository.findAll()
+				.stream()
+				.map(portfolioItemTransformer::transform)
+				.collect(Collectors.toList());
 		} else {
-			return portfolioItemRepository.findByOrganization(user.getOrganization(), pageable)
-				.map(portfolioItemTransformer::transform);
+			return portfolioItemRepository.findByOrganization(user.getOrganization())
+				.stream()
+				.map(portfolioItemTransformer::transform)
+				.collect(Collectors.toList());
 		}
 	}
 

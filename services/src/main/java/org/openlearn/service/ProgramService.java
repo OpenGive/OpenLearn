@@ -8,10 +8,11 @@ import org.openlearn.security.SecurityUtils;
 import org.openlearn.transformer.ProgramTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing Program.
@@ -53,18 +54,22 @@ public class ProgramService {
 	/**
 	 * Get all the programs.
 	 *
-	 * @param pageable the pagination information
 	 * @return the list of entities
 	 */
 	@Transactional(readOnly = true)
-	public Page<ProgramDTO> findAll(final Pageable pageable) {
+	public List<ProgramDTO> findAll() {
 		log.debug("Request to get all Programs");
 		User user = userService.getCurrentUser();
 		if (SecurityUtils.isAdmin()) {
-			return programRepository.findAll(pageable).map(programTransformer::transform);
+			return programRepository.findAll()
+				.stream()
+				.map(programTransformer::transform)
+				.collect(Collectors.toList());
 		} else {
-			return programRepository.findByOrganization(user.getOrganization(), pageable)
-				.map(programTransformer::transform);
+			return programRepository.findByOrganization(user.getOrganization())
+				.stream()
+				.map(programTransformer::transform)
+				.collect(Collectors.toList());
 		}
 	}
 

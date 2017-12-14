@@ -4,10 +4,10 @@ import org.openlearn.domain.Address;
 import org.openlearn.repository.AddressRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Service Implementation for managing Address.
@@ -38,13 +38,12 @@ public class AddressService {
 	/**
 	 * Get all the addresses.
 	 *
-	 * @param pageable the pagination information
 	 * @return the list of entities
 	 */
 	@Transactional(readOnly = true)
-	public Page<Address> findAll(final Pageable pageable) {
+	public List<Address> findAll() {
 		log.debug("Request to get all Addresses");
-		return addressRepository.findAll(pageable);
+		return addressRepository.findAll();
 	}
 
 	/**

@@ -2,20 +2,20 @@ package org.openlearn.service;
 
 import org.openlearn.domain.*;
 import org.openlearn.dto.AssignmentDTO;
-import org.openlearn.dto.StudentCourseDTO;
 import org.openlearn.repository.AssignmentRepository;
 import org.openlearn.repository.CourseRepository;
 import org.openlearn.repository.StudentAssignmentRepository;
 import org.openlearn.repository.StudentCourseRepository;
-import org.openlearn.security.SecurityUtils;
 import org.openlearn.security.AuthoritiesConstants;
+import org.openlearn.security.SecurityUtils;
 import org.openlearn.transformer.AssignmentTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing Assignment.
@@ -88,18 +88,22 @@ public class AssignmentService {
 	/**
 	 * Get all the assignments.
 	 *
-	 * @param pageable the pagination information
 	 * @return the list of entities
 	 */
 	@Transactional(readOnly = true)
-	public Page<AssignmentDTO> findAll(final Pageable pageable) {
+	public List<AssignmentDTO> findAll() {
 		log.debug("Request to get all Assignments");
 		User user = userService.getCurrentUser();
 		if (SecurityUtils.isAdmin()) {
-			return assignmentRepository.findAll(pageable).map(assignmentTransformer::transform);
+			return assignmentRepository.findAll()
+				.stream()
+				.map(assignmentTransformer::transform)
+				.collect(Collectors.toList());
 		} else {
-			return assignmentRepository.findByOrganization(user.getOrganization(), pageable)
-				.map(assignmentTransformer::transform);
+			return assignmentRepository.findByOrganization(user.getOrganization())
+				.stream()
+				.map(assignmentTransformer::transform)
+				.collect(Collectors.toList());
 		}
 	}
 
@@ -107,15 +111,17 @@ public class AssignmentService {
 	 * Get all the assignments for a course
 	 *
 	 * @param id the course id
-	 * @param pageable the pagination information
 	 * @return the list of entities
 	 */
 	@Transactional(readOnly = true)
-	public Page<AssignmentDTO> findByCourse(final Long id, final Pageable pageable) {
+	public List<AssignmentDTO> findByCourse(final Long id) {
 		log.debug("Request to get StudentCourses by Course : {}", id);
 		Course course = courseRepository.findOne(id);
 		if (course != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(course))) {
-			return assignmentRepository.findByCourse(course, pageable).map(assignmentTransformer::transform);
+			return assignmentRepository.findByCourse(course)
+				.stream()
+				.map(assignmentTransformer::transform)
+				.collect(Collectors.toList());
 		}
 		// TODO: Error handling / logging
 		return null;
@@ -154,11 +160,11 @@ public class AssignmentService {
 		}
 
 		if (assignment != null && instructorCheck && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(assignment))) {
-			
+
 			for (StudentAssignment studentAssignment : studentAssignmentRepository.findByAssignment(assignment)) {
 				studentAssignmentRepository.delete(studentAssignment.getId());
 			}
-			
+
 			assignmentRepository.delete(id);
 		} else {
 			// TODO: Error handling / logging
