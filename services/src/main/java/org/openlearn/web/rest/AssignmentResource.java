@@ -1,6 +1,5 @@
 package org.openlearn.web.rest;
 
-import com.amazonaws.services.s3.model.S3ObjectSummary;
 import io.swagger.annotations.ApiParam;
 import org.openlearn.dto.AssignmentDTO;
 import org.openlearn.dto.FileInformationDTO;
@@ -178,20 +177,19 @@ public class AssignmentResource {
 	/**
 	 * GET /:assignmentId/uploads : get uploaded course files
 	 * @param assignmentId
-	 * @param pageable
-	 * @return the ResponseEntity with status 200 (OK) and the request page of File Information in the body
+	 * @return the ResponseEntity with status 200 (OK) and the File Information in the body
 	 */
 	@GetMapping(path="/{assignmentId}/uploads")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
-	public ResponseEntity getUploads(@PathVariable final Long assignmentId, @ApiParam final Pageable pageable) {
+	public ResponseEntity getUploads(@PathVariable final Long assignmentId) {
 		log.debug("GET request to get course uploads for assignment " + assignmentId);
 
 		AssignmentDTO assignmentDTO = assignmentService.findOne(assignmentId);
 		if (assignmentDTO == null) throw new AssignmentNotFoundException(assignmentId);
 
 		if (canUploadFilesToAssignment(assignmentDTO)) {
-			Page<FileInformationDTO> response = fileInformationService.findAllForAssignment(assignmentId, pageable);
-			return ResponseEntity.ok(response.getContent());
+			List<FileInformationDTO> response = fileInformationService.findAllForAssignment(assignmentId);
+			return ResponseEntity.ok(response);
 		} else {
 			log.info("User is not authorized to retrieve uploaded files for assignment: {}.", assignmentId);
 			return new ResponseEntity(HttpStatus.FORBIDDEN);

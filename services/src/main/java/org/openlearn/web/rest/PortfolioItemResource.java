@@ -190,14 +190,14 @@ public class PortfolioItemResource {
 
 	@GetMapping(path="/{portfolioId}/uploads")
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
-	public ResponseEntity getUploads(@PathVariable final Long portfolioId, @ApiParam Pageable pageable) {
+	public ResponseEntity getUploads(@PathVariable final Long portfolioId) {
 		log.debug("GET request to get course uploads for portfolio " + portfolioId);
 		PortfolioItemDTO portfolioItem = portfolioItemService.findOne(portfolioId);
 		if (portfolioItem == null) throw new PortfolioItemNotFoundException(portfolioId);
 
 		if (canUploadFilesToPortfolio(portfolioItem)) {
-			Page<FileInformationDTO> response = fileInformationService.findAllForPorfolioItem(portfolioId, pageable);
-			return ResponseEntity.ok(response.getContent());
+			List<FileInformationDTO> response = fileInformationService.findAllForPorfolioItem(portfolioId);
+			return ResponseEntity.ok(response);
 		} else {
 			log.info("User is not authorized to retrieve uploaded files for portfolio item {}.", portfolioId);
 			return new ResponseEntity(HttpStatus.FORBIDDEN);
