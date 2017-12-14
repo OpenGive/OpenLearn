@@ -58,8 +58,11 @@ export class FilesGridComponent implements OnInit {
     ];
 
 
-    this.getAssignmentFilesFunction =  this.assignmentService.getAssignmentFiles.bind(this.assignmentService)
-    this.getAssignmentFilesFunction =  this.assignmentService.getAssignmentInstructorFiles.bind(this.assignmentService)
+    if (!this.studentView)
+      this.getAssignmentFilesFunction =  this.assignmentService.getAssignmentFiles.bind(this.assignmentService)
+    else
+      this.getAssignmentFilesFunction =  this.assignmentService.getAssignmentInstructorFiles.bind(this.assignmentService)
+
     this.getFiles();
 
     this.fileUploadSuccessCallback = this.addFile.bind(this);
