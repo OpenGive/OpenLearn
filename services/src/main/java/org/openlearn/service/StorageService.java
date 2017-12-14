@@ -9,7 +9,6 @@ import org.openlearn.config.ApplicationProperties;
 import org.openlearn.domain.*;
 import org.openlearn.dto.FileInformationDTO;
 import org.openlearn.repository.AssignmentRepository;
-import org.openlearn.domain.FileInformation;
 import org.openlearn.repository.CourseRepository;
 import org.openlearn.repository.FileRepository;
 import org.openlearn.repository.PortfolioItemRepository;

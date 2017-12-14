@@ -99,6 +99,4 @@
 								 referencedTableName="user"
 								 onDelete="CASCADE"/>
 	</changeSet>
-
-	<include file="classpath:config/liquibase/changelog/99999999999999_data_load.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

@@ -10,7 +10,5 @@ xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liqui
 	<include file="classpath:config/liquibase/changelog/99999999999999_data_load.xml" relativeToChangelogFile="false"/>
 
 	<!--<include file="classpath:config/liquibase/changelog/99999999999999_load_system_user.xml" relativeToChangelogFile="false"/>-->
-	<include file="classpath:config/liquibase/changelog/99999999999999_data_load.xml" relativeToChangelogFile="false"/>
-
 
 </databaseChangeLog>
