@@ -6,7 +6,7 @@ import {RecaptchaComponent} from "ng-recaptcha";
 import {LoginService} from "../../services/login.service";
 import {NotifyService} from "../../services/notify.service";
 import {ForgotPasswordDialogComponent} from "../../controls/forgot-password-dialog/forgot-password-dialog.component";
-import {AppConstants} from "../../app.constants";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-login-page',
@@ -30,7 +30,7 @@ export class LoginPageComponent implements OnInit {
               private notify: NotifyService,
               private dialog: MdDialog) {
     this.credentials = {};
-    this.reCaptchaSiteKey = AppConstants.ReCaptchaSiteKey;
+    this.reCaptchaSiteKey = environment.reCaptchaSiteKey;
   }
 
   ngOnInit() {
