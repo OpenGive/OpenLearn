@@ -1,6 +1,6 @@
 <div *ngIf="item" [ngSwitch]="route">
 
-  <form *ngSwitchCase="'administrators'" [formGroup]="administratorForm" (ngSubmit)="adminForm.save()" novalidate>
+  <form *ngSwitchCase="'administrators'" [formGroup]="profileForm" (ngSubmit)="adminForm.save()" novalidate>
     <div class="profile-form" [ngClass]="{edit: editing}" fxLayout="row" fxLayoutAlign="space-between center">
       <div fxLayout="row" fxLayoutAlign="start center">
         <h2 class="ol-dialog-title" *ngIf="!editing">Profile Details</h2>
@@ -18,12 +18,12 @@
         </button>
       </div>
     </div>
-    <admin-administrators-form #adminForm [parent]="administratorForm" [item]="item" [adding]="adding" [organizations]="organizations"
+    <admin-administrators-form #adminForm [parent]="profileForm" [item]="item" [adding]="adding" [organizations]="organizations"
                                (onUpdate)="updated($event)" (onEdit)="updateEditing($event)">
     </admin-administrators-form>
   </form>
 
-  <form *ngSwitchCase="'org-administrators'" [formGroup]="orgAdministratorForm" (ngSubmit)="orgAdminForm.save()" novalidate>
+  <form *ngSwitchCase="'org-administrators'" [formGroup]="profileForm" (ngSubmit)="orgAdminForm.save()" novalidate>
     <div class="profile-form" [ngClass]="{edit: editing}" fxLayout="row" fxLayoutAlign="space-between center">
       <div fxLayout="row" fxLayoutAlign="start center">
         <h2 class="ol-dialog-title" *ngIf="!editing">Profile Details</h2>
@@ -41,12 +41,12 @@
         </button>
       </div>
     </div>
-    <admin-org-administrators-form #orgAdminForm [parent]="orgAdministratorForm" [item]="item" [adding]="adding" [organizations]="organizations"
+    <admin-org-administrators-form #orgAdminForm [parent]="profileForm" [item]="item" [adding]="adding" [organizations]="organizations"
                                (onUpdate)="updated($event)" (onEdit)="updateEditing($event)">
     </admin-org-administrators-form>
   </form>
 
-  <form *ngSwitchCase="'instructors'" [formGroup]="instructorForm" (ngSubmit)="instructForm.save()" novalidate>
+  <form *ngSwitchCase="'instructors'" [formGroup]="profileForm" (ngSubmit)="instructorForm.save()" novalidate>
     <div class="profile-form" [ngClass]="{edit: editing}" fxLayout="row" fxLayoutAlign="space-between center">
       <div fxLayout="row" fxLayoutAlign="start center">
         <h2 class="ol-dialog-title" *ngIf="!editing">Profile Details</h2>
@@ -56,15 +56,15 @@
         <button md-raised-button type="submit" *ngIf="editing" class="ol-dialog-button grey-button" mdTooltip="Save">
           <md-icon>save</md-icon>
         </button>
-        <button md-raised-button type="reset" *ngIf="editing && !adding" (click)="instructForm.cancel()" class="ol-dialog-button navy-button" mdTooltip="Cancel">
+        <button md-raised-button type="reset" *ngIf="editing && !adding" (click)="instructorForm.cancel()" class="ol-dialog-button navy-button" mdTooltip="Cancel">
           <md-icon>clear</md-icon>
         </button>
-        <button md-raised-button type="button" *ngIf="!editing" (click)="instructForm.edit()" class="ol-dialog-button grey-button" mdTooltip="Edit">
+        <button md-raised-button type="button" *ngIf="!editing" (click)="instructorForm.edit()" class="ol-dialog-button grey-button" mdTooltip="Edit">
           <md-icon>create</md-icon>
         </button>
       </div>
     </div>
-    <admin-instructors-form #instructForm [parent]="instructorForm" [item]="item" [adding]="adding" [organizations]="organizations"
+    <admin-instructors-form #instructorForm [parent]="profileForm" [item]="item" [adding]="adding" [organizations]="organizations"
                             (onUpdate)="updated($event)" (onEdit)="updateEditing($event)">
     </admin-instructors-form>
   </form>

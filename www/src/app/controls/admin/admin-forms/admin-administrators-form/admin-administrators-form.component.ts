@@ -108,13 +108,13 @@ export class AdminAdministratorsFormComponent implements OnInit {
     this.getStates();
   }
 
-  changingPasswordValidators(c: AbstractControl): ValidationErrors {
+  changingPasswordValidators(control: AbstractControl): ValidationErrors {
     if (this.changingPassword) {
       const validators = Validators.compose([
           Validators.required,
           Validators.pattern(AppConstants.OLValidators.Password)
       ]);
-      return validators(c);
+      return validators(control);
     } else {
       return null;
     }

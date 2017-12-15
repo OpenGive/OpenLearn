@@ -17,7 +17,7 @@ export class ProfilePageComponent implements OnInit {
 
   item: Account;
   organizations: any[];
-  administratorForm: FormGroup;
+  profileForm: FormGroup;
   editing: boolean = false;
 
   route: string;
@@ -27,7 +27,7 @@ export class ProfilePageComponent implements OnInit {
               private adminService: AdminService,
               private principal: Principal) {
 
-    this.administratorForm = new FormGroup({});
+    this.profileForm = new FormGroup({});
   }
 
   ngOnInit(): void {
