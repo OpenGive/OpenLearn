@@ -1,0 +1,40 @@
+# ===================================================================
+# Spring Boot "Custom" configurations for the current profile.
+#
+# NOTE FOR DEVELOPERS:
+# 	You'll want to copy this file to application-custom.yml and fill
+#   in the datasource information and S3 information.
+#
+#   Assuming you're in the project root
+#   cp services/src/main/resources/config/application-custom.example.yml services/src/main/resources/config/application-custom.yml
+#
+# This configuration overrides the application.yml and the current
+# application-[profile] file.
+#
+# More information on profiles: https://jhipster.github.io/profiles/
+# More information on configuration properties: https://jhipster.github.io/common-application-properties/
+# ===================================================================
+
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+spring:
+    datasource:
+        url: ******************
+        username: *************
+        password: *************
+
+liquibase:
+    contexts: dev
+
+
+
+application:
+
+  upload-bucket: dev.openlearn-uploads.credera
+
+  recaptcha:
+    site-secret: 6LfmlDwUAAAAAN8uRe-dkXwWPoIk4mFznmj6Cdzt

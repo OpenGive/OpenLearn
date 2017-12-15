@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from "@angular/router";
 
-import {Principal} from "../";
+import {Principal} from "./principal-storage.service";
 import {PrincipalService} from "./principal.service";
 
 @Injectable()

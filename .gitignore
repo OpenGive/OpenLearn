@@ -6,6 +6,11 @@
 /src/test/javascript/coverage/
 /src/test/javascript/PhantomJS*/
 
+###########################
+# Custom Application Config
+###########################
+/services/src/main/resources/config/application-custom.yml
+
 ######################
 # Node
 ######################

@@ -14,6 +14,9 @@ import {AdminProgramsComponent} from "./admin-tabs/admin-programs.component";
 import {AdminSessionsComponent} from "./admin-tabs/admin-sessions.component";
 import {AdminStudentsComponent} from "./admin-tabs/admin-students.component";
 import {OLAdminFormsModule} from "./admin-forms/admin-forms.module";
+import {AdminAdministratorsFormComponent} from "./admin-forms/admin-administrators-form/admin-administrators-form.component";
+import {AdminOrgAdministratorsFormComponent} from "./admin-forms/admin-org-administrators-form/admin-org-administrators-form.component";
+import {AdminInstructorsFormComponent} from "./admin-forms/admin-instructors-form/admin-instructors-form.component";
 
 @NgModule({
   declarations: [
@@ -35,6 +38,11 @@ import {OLAdminFormsModule} from "./admin-forms/admin-forms.module";
     MdIconModule,
     MdTooltipModule,
     OLAdminFormsModule
+  ],
+  exports: [
+    AdminAdministratorsFormComponent,
+    AdminOrgAdministratorsFormComponent,
+    AdminInstructorsFormComponent,
   ],
   entryComponents: [
     AdminDialogComponent

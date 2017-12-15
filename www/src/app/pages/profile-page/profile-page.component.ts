@@ -1,39 +1,58 @@
-import {Component, Input} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
+
 import {AccountService} from "../../shared/auth/account.service";
 import {Principal} from "../../shared/auth/principal-storage.service";
+import {Account} from "../../models/account.model";
+import {AdminService} from "../../services/admin.service";
+import {AdminTabs} from "../../controls/admin/admin.constants";
+import {FormGroup} from "@angular/forms";
+import {AppConstants} from "../../app.constants";
 
 @Component({
   selector: 'profile-form',
   templateUrl: './profile-page.component.html',
-  styleUrls: ['./profile-page.component.css', '../../controls/dialog-forms.css']
+  styleUrls: ['./profile-page.component.css']
 })
-export class ProfilePageComponent {
+export class ProfilePageComponent implements OnInit {
 
-  @Input() profile: any = {};
-  @Input() editing: boolean;
+  item: Account;
+  organizations: any[];
+  profileForm: FormGroup;
+  editing: boolean = false;
 
-  constructor(private accountService: AccountService, private principal: Principal) {
-    this.accountService.get().subscribe(resp => {this.profile = resp});
+  route: string;
+
+  constructor(private accountService: AccountService,
+              private adminService: AdminService,
+              private principal: Principal) {
+
+    this.profileForm = new FormGroup({});
   }
 
-  edit(): void {
-    this.editing = true;
+  ngOnInit(): void {
+    switch (this.principal.getRole()) {
+      case AppConstants.Role.Admin.name:
+        this.route = AdminTabs.Administrator.route;
+        break;
+      case AppConstants.Role.OrgAdmin.name:
+        this.route = AdminTabs.OrgAdministrator.route;
+        break;
+      case AppConstants.Role.Instructor.name:
+        this.route = AdminTabs.Instructor.route;
+        break;
+    }
+
+    this.adminService.get(this.route, this.principal.getId()).subscribe(resp => {
+      this.item = resp;
+    });
   }
 
-  cancel(exit: boolean): void {
+  updateEditing(isEditing: boolean): void {
+    this.editing = isEditing;
+  };
+
+  updated(): void {
     this.editing = false;
-    this.accountService.get().subscribe(resp => {this.profile = resp});
-  }
-
-  save(): void {
-  }
-
-  handleSaveResponse(resp): void {
-    this.editing = false;
-  }
-
-  ageAllowed(): boolean {
-    return this.profile['14Plus'];
   }
 
 }

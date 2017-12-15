@@ -94,5 +94,4 @@ export class AppConstants {
     Points: "[0-9]+",
     PostalCode: "^[0-9]{5}(-[0-9]{4})?$"
   };
-  public static ReCaptchaSiteKey = '6LfmlDwUAAAAALX8BAzR1PdQqdiwfGXNzkob3E51';
 }
