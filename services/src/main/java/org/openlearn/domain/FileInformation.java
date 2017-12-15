@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "file_information")
@@ -24,14 +25,26 @@ public class FileInformation {
 
 	@NotNull
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "courseId")
-	private Course course;
+	@JoinColumn(name = "uploadedByUserId")
+	private User uploadedByUser;
+
+	@ManyToOne
+	@JoinColumn(name = "assignmentId")
+	private Assignment assignment;
+
+	@ManyToOne
+	@JoinColumn(name = "portfolioItemId")
+	private PortfolioItem portfolioItem;
 
 	@Column(name = "fileUrl", nullable = false)
 	private String fileUrl;
 
 	@Column(name = "type", nullable = false)
 	private String fileType; //TODO cbernal make this an enum, restrict DB values
+
+	@NotNull
+	@Column(name = "createdDate")
+	private ZonedDateTime createdDate;
 
 	public Long getId() {
 		return Id;
@@ -49,13 +62,17 @@ public class FileInformation {
 		this.user = user;
 	}
 
-	public Course getCourse() {
-		return course;
-	}
+	public User getUploadedByUser() { return this.uploadedByUser; }
 
-	public void setCourse(Course course) {
-		this.course = course;
-	}
+	public void setUploadedByUser(User uploadedByUser) { this.uploadedByUser = uploadedByUser; }
+
+	public Assignment getAssignment() { return assignment; }
+
+	public void setAssignment(Assignment assignment) { this.assignment = assignment; }
+
+	public PortfolioItem getPortfolioItem() { return portfolioItem; }
+
+	public void setPortfolioItem(PortfolioItem portfolioItem) { this.portfolioItem = portfolioItem; }
 
 	public String getFileUrl() {
 		return fileUrl;
@@ -71,6 +88,14 @@ public class FileInformation {
 
 	public void setFileType(String fileType) {
 		this.fileType = fileType;
+	}
+
+	public ZonedDateTime getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(ZonedDateTime createdDate) {
+		this.createdDate = createdDate;
 	}
 
 	//TODO cbernal write tostring, equals etc...from address

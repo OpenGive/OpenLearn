@@ -82,7 +82,7 @@
         </md-autocomplete>
         <md-error *ngIf="formErrors.gradeLevel">{{formErrors.gradeLevel}}</md-error>
       </md-input-container>
-      <div fxLayout="column" fxFlex="30%">
+      <div *ngIf="!studentView" fxLayout="column" fxFlex="30%">
         <md-select formControlName="organizationId" placeholder="Organization*" [disabled]="!editing">
           <md-option *ngFor="let organization of organizations" [(value)]="organization.id">{{organization.name}}</md-option>
         </md-select>

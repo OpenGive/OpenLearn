@@ -2,20 +2,22 @@ package org.openlearn.service;
 
 import org.openlearn.domain.*;
 import org.openlearn.dto.AssignmentDTO;
-import org.openlearn.dto.StudentCourseDTO;
 import org.openlearn.repository.AssignmentRepository;
 import org.openlearn.repository.CourseRepository;
 import org.openlearn.repository.StudentAssignmentRepository;
 import org.openlearn.repository.StudentCourseRepository;
-import org.openlearn.security.SecurityUtils;
 import org.openlearn.security.AuthoritiesConstants;
+import org.openlearn.security.SecurityUtils;
 import org.openlearn.transformer.AssignmentTransformer;
+import org.openlearn.web.rest.errors.AccessDeniedException;
+import org.openlearn.web.rest.errors.AssignmentNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing Assignment.
@@ -38,18 +40,22 @@ public class AssignmentService {
 
 	private final UserService userService;
 
+	private final FileInformationService fileInformationService;
+
 	public AssignmentService(final AssignmentRepository assignmentRepository,
 	                         final AssignmentTransformer assignmentTransformer,
 	                         final CourseRepository courseRepository,
 							 final StudentAssignmentRepository studentAssignmentRepository,
 							 final StudentCourseRepository studentCourseRepository,
-							 final UserService userService) {
+							 final UserService userService,
+							 final FileInformationService fileInformationService) {
 		this.assignmentRepository = assignmentRepository;
 		this.assignmentTransformer = assignmentTransformer;
 		this.courseRepository = courseRepository;
 		this.studentAssignmentRepository = studentAssignmentRepository;
 		this.studentCourseRepository = studentCourseRepository;
 		this.userService = userService;
+		this.fileInformationService = fileInformationService;
 	}
 
 	/**
@@ -64,7 +70,7 @@ public class AssignmentService {
 		boolean instructorCheck = true;
 		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.INSTRUCTOR)) {
 			Course course = courseRepository.findOne(assignmentDTO.getCourseId());
-			instructorCheck = user.getId() == course.getInstructor().getId();
+			instructorCheck = user.getId().equals(course.getInstructor().getId());
 		}
 
 		if (instructorCheck && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(assignmentDTO))) {
@@ -88,18 +94,22 @@ public class AssignmentService {
 	/**
 	 * Get all the assignments.
 	 *
-	 * @param pageable the pagination information
 	 * @return the list of entities
 	 */
 	@Transactional(readOnly = true)
-	public Page<AssignmentDTO> findAll(final Pageable pageable) {
+	public List<AssignmentDTO> findAll() {
 		log.debug("Request to get all Assignments");
 		User user = userService.getCurrentUser();
 		if (SecurityUtils.isAdmin()) {
-			return assignmentRepository.findAll(pageable).map(assignmentTransformer::transform);
+			return assignmentRepository.findAll()
+				.stream()
+				.map(assignmentTransformer::transform)
+				.collect(Collectors.toList());
 		} else {
-			return assignmentRepository.findByOrganization(user.getOrganization(), pageable)
-				.map(assignmentTransformer::transform);
+			return assignmentRepository.findByOrganization(user.getOrganization())
+				.stream()
+				.map(assignmentTransformer::transform)
+				.collect(Collectors.toList());
 		}
 	}
 
@@ -107,15 +117,17 @@ public class AssignmentService {
 	 * Get all the assignments for a course
 	 *
 	 * @param id the course id
-	 * @param pageable the pagination information
 	 * @return the list of entities
 	 */
 	@Transactional(readOnly = true)
-	public Page<AssignmentDTO> findByCourse(final Long id, final Pageable pageable) {
+	public List<AssignmentDTO> findByCourse(final Long id) {
 		log.debug("Request to get StudentCourses by Course : {}", id);
 		Course course = courseRepository.findOne(id);
 		if (course != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(course))) {
-			return assignmentRepository.findByCourse(course, pageable).map(assignmentTransformer::transform);
+			return assignmentRepository.findByCourse(course)
+				.stream()
+				.map(assignmentTransformer::transform)
+				.collect(Collectors.toList());
 		}
 		// TODO: Error handling / logging
 		return null;
@@ -147,37 +159,52 @@ public class AssignmentService {
 		log.debug("Request to delete Assignment : {}", id);
 		Assignment assignment = assignmentRepository.findOne(id);
 		User user = userService.getCurrentUser();
+
+		if (assignment == null) throw new AssignmentNotFoundException(id);
+
 		boolean instructorCheck = true;
 		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.INSTRUCTOR)) {
 			Course course = assignment.getCourse();
-			instructorCheck = user.getId() == course.getInstructor().getId();
+			instructorCheck = user.getId().equals(course.getInstructor().getId());
 		}
 
-		if (assignment != null && instructorCheck && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(assignment))) {
-			
-			for (StudentAssignment studentAssignment : studentAssignmentRepository.findByAssignment(assignment)) {
-				studentAssignmentRepository.delete(studentAssignment.getId());
-			}
-			
+		if (instructorCheck && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(assignment))) {
+			studentAssignmentRepository.deleteByAssignment(assignment);
+			fileInformationService.deleteByAssignment(assignment);
 			assignmentRepository.delete(id);
 		} else {
-			// TODO: Error handling / logging
+			throw new AccessDeniedException();
 		}
 	}
 
-	private boolean inOrgOfCurrentUser(final AssignmentDTO assignmentDTO) {
+	public boolean inOrgOfCurrentUser(final AssignmentDTO assignmentDTO) {
 		User user = userService.getCurrentUser();
 		Course course = courseRepository.findOne(assignmentDTO.getCourseId());
 		return course != null && user.getOrganization().equals(course.getSession().getProgram().getOrganization());
 	}
 
-	private boolean inOrgOfCurrentUser(final Assignment assignment) {
+	public boolean inOrgOfCurrentUser(final Assignment assignment) {
 		User user = userService.getCurrentUser();
 		return user.getOrganization().equals(assignment.getCourse().getSession().getProgram().getOrganization());
 	}
 
-	private boolean inOrgOfCurrentUser(final Course course) {
+	public boolean inOrgOfCurrentUser(final Course course) {
 		User user = userService.getCurrentUser();
 		return user.getOrganization().equals(course.getOrganization());
+	}
+
+	public boolean currentUserIsCourseInstructor(final AssignmentDTO assignmentDTO) {
+		User user = userService.getCurrentUser();
+		Course course = courseRepository.findOne(assignmentDTO.getCourseId());
+
+		return user.equals(course.getInstructor());
+	}
+
+	public boolean currentUserIsEnrolledIn(final AssignmentDTO assignmentDTO) {
+		User user = userService.getCurrentUser();
+		Course course = courseRepository.findOne(assignmentDTO.getCourseId());
+		StudentCourse studentCourse = studentCourseRepository.findByStudentAndCourse(user, course);
+
+		return studentCourse != null;
 	}
 }

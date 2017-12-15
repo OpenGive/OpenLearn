@@ -20,7 +20,7 @@ export class AssignmentService {
 
   private handleError(error: Response) {
     console.error(error);
-    return Observable.throw(error.json() || {message: 'Server Error'});
+    return Observable.throw((error.json !== undefined ? error.json() : error) || {message: 'Server Error'});
   }
 
   getAssignmentStudentByAssignmentId(assignmentId: Number): Observable<any> {
@@ -37,18 +37,24 @@ export class AssignmentService {
 
   getAssignmentFiles(assignmentId: Number): Observable<any[]> {
     return this._http.get('/api/assignments/' + assignmentId + '/uploads')
-      .map(resp => resp.json())
+    .map(resp => resp.json())
+    .catch(this.handleError);
+  }
+
+  getAssignmentInstructorFiles(assignmentId: Number): Observable<any[]> {
+    return this._http.get('/api/assignments/' + assignmentId + '/instructor/uploads')
+    .map(resp => resp.json())
+    .catch(this.handleError);
+  }
+
+  deleteAssignmentFile(assignmentId: Number, id: Number): Observable<any[]> {
+    return this._http.delete('/api/assignments/' + assignmentId + '/upload/' + id)
       .catch(this.handleError);
   }
 
-  deleteAssignmentFile(assignmentId: Number, keyName: String): Observable<any[]> {
-    return this._http.delete('/api/assignments/' + assignmentId + '/upload/' + keyName)
-      .catch(this.handleError);
-  }
-
-  getAssignmentFile(assignmentId: Number, keyName: String): Observable<Blob> {
+  getAssignmentFile(assignmentId: Number, id: Number): Observable<Blob> {
     let options = new RequestOptions({responseType: ResponseContentType.Blob });
-    return this._http.getWithOptions('/api/assignments/' + assignmentId + '/upload/' + keyName, options)
+    return this._http.getWithOptions('/api/assignments/' + assignmentId + '/upload/' + id, options)
       .map(res => res.blob())
       .catch(this.handleError);
   }

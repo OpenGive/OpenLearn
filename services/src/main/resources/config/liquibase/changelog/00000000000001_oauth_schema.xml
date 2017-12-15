@@ -78,4 +78,25 @@
 		          separator=","
 		          tableName="oauth_client_details"/>
 	</changeSet>
+	<changeSet id="2" author="mdavis">
+		<dropForeignKeyConstraint baseTableName="oauth_client_token"
+		                          constraintName="fk_oauth_client_token_username"/>
+
+		<dropForeignKeyConstraint baseTableName="oauth_access_token"
+		                          constraintName="fk_oauth_access_token_username"/>
+
+		<addForeignKeyConstraint baseColumnNames="user_name"
+								 baseTableName="oauth_client_token"
+								 constraintName="fk_oauth_client_token_username"
+								 referencedColumnNames="login"
+								 referencedTableName="user"
+								 onDelete="CASCADE"/>
+
+		<addForeignKeyConstraint baseColumnNames="user_name"
+								 baseTableName="oauth_access_token"
+								 constraintName="fk_oauth_access_token_username"
+								 referencedColumnNames="login"
+								 referencedTableName="user"
+								 onDelete="CASCADE"/>
+	</changeSet>
 </databaseChangeLog>

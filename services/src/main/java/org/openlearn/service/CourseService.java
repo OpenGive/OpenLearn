@@ -6,15 +6,16 @@ import org.openlearn.domain.User;
 import org.openlearn.dto.CourseDTO;
 import org.openlearn.repository.CourseRepository;
 import org.openlearn.repository.SessionRepository;
-import org.openlearn.security.SecurityUtils;
 import org.openlearn.security.AuthoritiesConstants;
+import org.openlearn.security.SecurityUtils;
 import org.openlearn.transformer.CourseTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing Course.
@@ -62,18 +63,22 @@ public class CourseService {
 	/**
 	 * Get all the courses.
 	 *
-	 * @param pageable the pagination information
 	 * @return the list of entities
 	 */
 	@Transactional(readOnly = true)
-	public Page<CourseDTO> findAll(final Pageable pageable) {
+	public List<CourseDTO> findAll() {
 		log.debug("Request to get all Courses");
 		User user = userService.getCurrentUser();
 		if (SecurityUtils.isAdmin()) {
-			return courseRepository.findAll(pageable).map(courseTransformer::transform);
+			return courseRepository.findAll()
+				.stream()
+				.map(courseTransformer::transform)
+				.collect(Collectors.toList());
 		} else {
-			return courseRepository.findByOrganization(user.getOrganization(), pageable)
-				.map(courseTransformer::transform);
+			return courseRepository.findByOrganization(user.getOrganization())
+				.stream()
+				.map(courseTransformer::transform)
+				.collect(Collectors.toList());
 		}
 	}
 

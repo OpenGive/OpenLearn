@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.data.domain.PageRequest;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -85,7 +84,7 @@ public class StudentCourseService {
 
 			studentCourse = studentCourseRepository.save(studentCourse);
 
-			for (Assignment assignment : assignmentRepository.findByCourse(studentCourse.getCourse(), new PageRequest(0,100))) {
+			for (Assignment assignment : assignmentRepository.findByCourse(studentCourse.getCourse())) {
 				StudentAssignment studentAssignment = new StudentAssignment();
 				studentAssignment.setAssignment(assignment);
 				studentAssignment.setComplete(false);

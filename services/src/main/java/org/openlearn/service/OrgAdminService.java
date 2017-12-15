@@ -3,17 +3,18 @@ package org.openlearn.service;
 import org.openlearn.domain.Authority;
 import org.openlearn.domain.User;
 import org.openlearn.dto.OrgAdminDTO;
-import org.openlearn.repository.UserRepository;
 import org.openlearn.repository.AddressRepository;
+import org.openlearn.repository.UserRepository;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.security.SecurityUtils;
 import org.openlearn.transformer.OrgAdminTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing org admin users.
@@ -63,18 +64,22 @@ public class OrgAdminService {
 	/**
 	 * Get all the org admin users.
 	 *
-	 * @param pageable the pagination information
 	 * @return the list of entities
 	 */
 	@Transactional(readOnly = true)
-	public Page<OrgAdminDTO> findAll(final Pageable pageable) {
+	public List<OrgAdminDTO> findAll() {
 		log.debug("Request to get all org admin users");
 		User user = userService.getCurrentUser();
 		if (SecurityUtils.isAdmin()) {
-			return userRepository.findByAuthority(ORG_ADMIN, pageable).map(orgAdminTransformer::transform);
+			return userRepository.findByAuthority(ORG_ADMIN)
+				.stream()
+				.map(orgAdminTransformer::transform)
+				.collect(Collectors.toList());
 		} else {
-			return userRepository.findByOrganizationAndAuthority(user.getOrganization(), ORG_ADMIN, pageable)
-				.map(orgAdminTransformer::transform);
+			return userRepository.findByOrganizationAndAuthority(user.getOrganization(), ORG_ADMIN)
+				.stream()
+				.map(orgAdminTransformer::transform)
+				.collect(Collectors.toList());
 		}
 	}
 

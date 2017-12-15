@@ -1,13 +1,10 @@
 package org.openlearn.web.rest;
 
-import io.swagger.annotations.ApiParam;
 import org.openlearn.dto.ProgramDTO;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.service.ProgramService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/programs")
@@ -50,16 +48,15 @@ public class ProgramResource {
 	/**
 	 * GET  / : get a list of all program, filtered by organization
 	 *
-	 * @param pageable the pagination information
 	 * @return the ResponseEntity with status 200 (OK) and a list of programs in the body
 	 *      or with ... TODO: Error handling
 	 */
 	@GetMapping
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
-	public ResponseEntity get(@ApiParam final Pageable pageable) {
+	public ResponseEntity get() {
 		log.debug("GET request for all programs");
-		Page<ProgramDTO> response = programService.findAll(pageable);
-		return ResponseEntity.ok(response.getContent());
+		List<ProgramDTO> response = programService.findAll();
+		return ResponseEntity.ok(response);
 	}
 
 	/**
