@@ -27,7 +27,6 @@
       <button routerLink="/home" md-button>Home</button>
       <button routerLink="/login" md-button *ngIf="!authenticated()">Login</button>
       <button routerLink="/admin" md-button *ngIf="authenticated() && (roles.admin || roles.orgAdmin || roles.instructor)">Dashboard</button>
-      <button routerLink="/dashboard" md-button *ngIf="authenticated() && roles.instructor && false">My Courses</button>
       <button (click)="toStudentPage()" md-button *ngIf="authenticated() && roles.student">Dashboard</button>
     </div>
     <button class="profile-menu" md-button [mdMenuTriggerFor]="profileMenu" *ngIf="authenticated()">

@@ -48,7 +48,6 @@ import {NotifyService} from "./services/notify.service";
 import {OLAdminModule} from "./controls/admin/admin.module";
 import {OLCourseModule} from "./controls/course/course.module";
 import {OLStudentModule} from "./controls/student/student.module";
-import {DashboardPageComponent} from "./pages/dashboard-page/dashboard-page.component";
 
 @NgModule({
   declarations: [
@@ -69,8 +68,7 @@ import {DashboardPageComponent} from "./pages/dashboard-page/dashboard-page.comp
     StudentGridComponent,
     CourseResourceGridComponent,
     PortfolioGridComponent,
-    ProfilePageComponent,
-    DashboardPageComponent
+    ProfilePageComponent
   ],
   imports: [
     AppRoutingModule,
