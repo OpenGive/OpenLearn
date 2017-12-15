@@ -7,7 +7,6 @@ import {AppConstants} from "../../../../app.constants";
 import {AdminTabs} from "../../admin.constants";
 import {NotifyService} from "../../../../services/notify.service";
 import {AdminService} from "../../../../services/admin.service";
-import {Principal} from "../../../../shared/auth/principal-storage.service";
 import {Account} from "../../../../models/account.model";
 import {ValidationErrors} from "@angular/forms/src/directives/validators";
 
@@ -30,7 +29,6 @@ export class AdminInstructorsFormComponent implements OnInit {
 
   editing: boolean;
   changingPassword: boolean;
-  isInstructor: boolean;
 
   roles: string[];
   states: any[];
@@ -107,11 +105,9 @@ export class AdminInstructorsFormComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private notify: NotifyService,
-              private adminService: AdminService,
-              private principal: Principal) {}
+              private adminService: AdminService) {}
 
   ngOnInit(): void {
-    this.isInstructor = this.principal.getRole() == AppConstants.Role.Instructor.name;
     this.resetPassword(false);
     this.buildForm();
     this.setEditing(this.adding);

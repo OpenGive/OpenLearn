@@ -27,9 +27,9 @@ export class CoursePageComponent implements OnInit {
               private principal: Principal) {
   }
 
-  private adding: boolean = false;
-  private editing: boolean = false;
-  private studentView: boolean = false;
+  adding: boolean = false;
+  editing: boolean = false;
+  studentView: boolean = false;
   private instructorCheck: boolean = true;
 
   private instructors: any[];
@@ -38,7 +38,7 @@ export class CoursePageComponent implements OnInit {
   filteredInstructors: Observable<any[]>;
   filteredSessions: Observable<any[]>;
 
-  private course: Course;
+  course: Course;
   private session: Session;
   private instructor: User;
   courseForm: FormGroup;

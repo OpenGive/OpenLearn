@@ -55,7 +55,7 @@ import {AdminTabs} from "../admin/admin.constants";
 })
 export class StudentDialogComponent implements OnInit {
 
-  private courses: any [];
+  courses: any [];
   columns: any[];
 
   ngOnInit(): void {
