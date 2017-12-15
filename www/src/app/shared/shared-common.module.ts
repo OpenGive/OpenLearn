@@ -2,7 +2,7 @@ import { NgModule, Sanitizer } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import {
     OpenLearnSharedLibsModule,
-} from './';
+} from './shared-libs.module';
 
 @NgModule({
     imports: [
