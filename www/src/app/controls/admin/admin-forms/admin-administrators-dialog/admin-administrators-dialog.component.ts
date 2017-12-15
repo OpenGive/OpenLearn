@@ -27,7 +27,6 @@ export class AdminAdministratorsDialogComponent implements OnInit {
     this.editing = this.adding;
   }
 
-  // TODO: Convert this to a 'status' of EDITING, ADDING, VIEWING, etc
   updateEditing(isEditing: boolean): void {
     this.editing = isEditing;
   };

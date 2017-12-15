@@ -168,7 +168,6 @@ export class AdminAdministratorsFormComponent implements OnInit {
         Validators.pattern(AppConstants.OLValidators.PostalCode)
       ]]
     });
-    // TODO: See if this is necessary
     for (let key in childForm.controls) {
       this.administratorForm.addControl(key, childForm.get(key));
     }
