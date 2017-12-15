@@ -1,14 +1,9 @@
 import {Component, Input, OnInit} from "@angular/core";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormGroup} from "@angular/forms";
 import {MdDialogRef} from "@angular/material";
-import {Observable} from "rxjs/Observable";
-import * as _ from "lodash";
 
 import {AdminDialogComponent} from "../../admin-dialog.component";
 import {AppConstants} from "../../../../app.constants";
-import {AdminTabs} from "../../admin.constants";
-import {NotifyService} from "../../../../services/notify.service";
-import {AdminService} from "../../../../services/admin.service";
 import {Principal} from "../../../../shared/auth/principal-storage.service";
 
 @Component({
@@ -24,13 +19,16 @@ export class AdminInstructorsDialogComponent implements OnInit {
 
   editing: boolean;
   instructorForm: FormGroup;
+  isInstructor: boolean;
 
-  constructor(public dialogRef: MdDialogRef<AdminDialogComponent>) {
+  constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
+              private principal: Principal) {
     this.instructorForm = new FormGroup({});
   }
 
   ngOnInit(): void {
     this.editing = this.adding;
+    this.isInstructor = this.principal.getRole() == AppConstants.Role.Instructor.name;
   }
 
   updateEditing(isEditing: boolean): void {

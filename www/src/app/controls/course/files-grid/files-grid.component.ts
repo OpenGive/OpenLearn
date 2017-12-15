@@ -36,7 +36,7 @@ export class FilesGridComponent implements OnInit {
               private assignmentService: AssignmentService,
               private notify: NotifyService,
               private portfolioService: PortfolioService,
-              private fileGuardian: FileGuardian) {}
+              public fileGuardian: FileGuardian) {}
 
   ngOnInit(): void {
 

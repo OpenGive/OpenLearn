@@ -27,10 +27,10 @@ export class StudentPageComponent implements OnInit {
               private router: Router,
               private principle: Principal) {}
 
-  private adding:boolean = false;
-  private editing:boolean = false;
-  private studentView:boolean = false;
-  private changingPassword:boolean;
+  adding:boolean = false;
+  editing:boolean = false;
+  studentView:boolean = false;
+  changingPassword:boolean;
 
   states: any[];
   filteredStates: Observable<any[]>;
@@ -45,7 +45,7 @@ export class StudentPageComponent implements OnInit {
   filteredSessions: Observable<any[]>;
 
   private studentId: String;
-  private student: Student;
+  student: Student;
   studentForm: FormGroup;
   formErrors = {
     firstName: '',

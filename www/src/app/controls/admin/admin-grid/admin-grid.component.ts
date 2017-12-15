@@ -196,7 +196,7 @@ export class AdminGridComponent implements OnInit {
     this.grid.columns[ndx].sortIcon = (this.reverse ? 'keyboard_arrow_up' : 'keyboard_arrow_down');
   }
 
-  private canAdd(): boolean {
+  canAdd(): boolean {
     if ([AdminTabs.Program.route, AdminTabs.Session.route].includes(this.grid.route)) {
       return !(this.principal.getRole() == AppConstants.Role.Instructor.name);
     } else if (AdminTabs.Organization.route == this.grid.route) {
