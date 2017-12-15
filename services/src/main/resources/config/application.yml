@@ -125,9 +125,6 @@ jhipster:
 # ===================================================================
 
 application:
-    upload-bucket: "tapickens-openlearn-upload"
-
     recaptcha:
         header-name: ReCaptcha-Response
-        site-secret: 6LfmlDwUAAAAAN8uRe-dkXwWPoIk4mFznmj6Cdzt
         verification-url: https://www.google.com/recaptcha/api/siteverify
