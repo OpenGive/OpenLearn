@@ -5,10 +5,6 @@ import {saveAs as importedSaveAs} from "file-saver";
 import * as _ from "lodash";
 
 import {Assignment} from '../../../models/assignment.model';
-import {CourseDialogComponent} from "../course-dialog.component";
-import {GradeDialogComponent} from "../grade-dialog.component";
-import {FileUploadComponent} from "../../fileupload/fileupload.component";
-import {CourseStudentDialogComponent} from "../course-student-dialog.component";
 import {AssignmentService} from "../../../services/assignment.service";
 import {PortfolioService} from "../../../services/portfolio.service";
 import {FileGuardian} from '../../../shared/file-guardian.service';

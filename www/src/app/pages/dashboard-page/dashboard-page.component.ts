@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 
-import {UserService} from "../../services/user.service";
 import {Course} from '../../models/course.model';
 
 @Component({
@@ -10,7 +9,7 @@ import {Course} from '../../models/course.model';
 })
 export class DashboardPageComponent implements OnInit {
 
-  constructor(private userService: UserService) {}
+  constructor() {}
   courses: Course[];
 
   ngOnInit(): void {
@@ -18,9 +17,7 @@ export class DashboardPageComponent implements OnInit {
   }
 
   private getCourses(): void {
-    this.userService.getCoursesInstructedByUser().subscribe(courses => {
-      this.courses = courses;
-    })
+    // TODO: Get courses by instructor (preferrably only the instructors courses)
   }
 
 }

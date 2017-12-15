@@ -8,7 +8,6 @@ import {AdminDialogComponent} from "../../admin-dialog.component";
 import {AdminService} from "../../../../services/admin.service";
 import {AppConstants} from "../../../../app.constants";
 import {NotifyService} from "../../../../services/notify.service";
-import {UserService} from "../../../../services/user.service";
 import {AdminTabs} from "../../admin.constants";
 import {FourteenPlusValidator} from "../../custom.validators";
 
@@ -20,10 +19,7 @@ import {FourteenPlusValidator} from "../../custom.validators";
 export class AdminStudentsFormComponent implements OnInit {
 
   @Input('item') formStudent: any;
-  @Input() adding: boolean;
   @Input('organizations') organizations: any[];
-  editing: boolean;
-  changingPassword: boolean;
 
   roles: string[];
   states: any[];
@@ -140,14 +136,11 @@ export class AdminStudentsFormComponent implements OnInit {
 
   constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
               private fb: FormBuilder,
-              private userService: UserService,
               private notify: NotifyService,
               private adminService: AdminService) {}
 
   ngOnInit(): void {
     this.buildForm();
-    this.setEditing(this.adding);
-    this.resetPassword(false);
     this.getRoles();
     this.getStates();
     this.getGradeLevels();
@@ -268,18 +261,6 @@ export class AdminStudentsFormComponent implements OnInit {
     }
   }
 
-  private setEditing(editing: boolean): void {
-    if (this.studentForm) {
-      if (editing) {
-        this.studentForm.enable();
-        this.editing = true;
-      } else {
-        this.studentForm.disable();
-        this.editing = false;
-      }
-    }
-  }
-
   private getRoles(): void {
     this.roles = Object.keys(AppConstants.Role).map(key => AppConstants.Role[key]);
   }
@@ -310,11 +291,7 @@ export class AdminStudentsFormComponent implements OnInit {
 
   save(): void {
     if (this.studentForm.valid) {
-      if (this.adding) {
-        this.add();
-      } else {
-        this.update();
-      }
+      this.add();
     } else {
       this.studentForm.markAsTouched();
       this.updateFormErrors(this.studentForm, this.formErrors, this.validationMessages);
@@ -333,82 +310,8 @@ export class AdminStudentsFormComponent implements OnInit {
     });
   }
 
-  private update(): void {
-    const toUpdate = this.prepareToUpdate();
-    this.adminService.update(AdminTabs.Student.route, toUpdate).subscribe(resp => {
-      this.dialogRef.close({
-        type: 'UPDATE',
-        data: resp
-      });
-      this.notify.success('Successfully updated student');
-    }, error => {
-      this.notify.error('Failed to update student');
-    });
-  }
-
-  private prepareToUpdate(): any {
-    return {
-      id: this.formStudent.id,
-      firstName: this.studentForm.get('firstName').value,
-      lastName: this.studentForm.get('lastName').value,
-      login: this.studentForm.get('login').value,
-      password: this.studentForm.get('password').value,
-      authority: AppConstants.Role.Student.name,
-      notes: this.studentForm.get('notes').value,
-      email: this.studentForm.get('email').value,
-      phoneNumber: this.studentForm.get('phoneNumber').value,
-      streetAddress1: this.studentForm.get('streetAddress1').value,
-      streetAddress2: this.studentForm.get('streetAddress2').value,
-      city: this.studentForm.get('city').value,
-      state: this.studentForm.get('state').value,
-      postalCode: this.studentForm.get('postalCode').value,
-      fourteenPlus: this.studentForm.get('fourteenPlus').value,
-      organizationId: this.studentForm.get('organizationId').value,
-      guardianFirstName: this.studentForm.get('guardianFirstName').value,
-      guardianLastName: this.studentForm.get('guardianLastName').value,
-      guardianEmail: this.studentForm.get('guardianEmail').value,
-      guardianPhone: this.studentForm.get('guardianPhone').value,
-      school: this.studentForm.get('school').value,
-      gradeLevel: this.studentForm.get('gradeLevel').value,
-      stateStudentId: this.studentForm.get('stateStudentId').value,
-      orgStudentId: this.studentForm.get('orgStudentId').value
-    };
-  }
-
-  delete(): void {
-    this.userService.delete(this.formStudent.id).subscribe(resp => {
-      this.dialogRef.close({
-        type: 'DELETE',
-        data: {
-          id: this.formStudent.id
-        }
-      });
-      this.notify.success('Successfully deleted student');
-    }, error => {
-      this.notify.error('Failed to delete student');
-    });
-  }
-
-  edit(): void {
-    this.setEditing(true);
-  }
-
-  cancel(): void {
-    this.ngOnInit();
-  }
-
   close(): void {
     this.dialogRef.close();
-  }
-
-  resetPassword(changingPassword: boolean): void {
-    this.changingPassword = changingPassword;
-    if (changingPassword) {
-      this.studentForm.controls.password.setValidators([
-        Validators.required,
-        Validators.pattern(AppConstants.OLValidators.Password)
-      ]);
-    }
   }
 
   displayState(stateValue: string): string {

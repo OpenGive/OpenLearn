@@ -15,7 +15,6 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import "hammerjs";
 import {CourseCardComponent} from "./controls/course/course-card/course-card.component";
-import {UserService} from "./services/user.service";
 import {StudentCourseService} from "./services/student-course.service";
 import {AssignmentService} from "./services/assignment.service";
 import {PortfolioService} from "./services/portfolio.service";
@@ -90,7 +89,6 @@ import {DashboardPageComponent} from "./pages/dashboard-page/dashboard-page.comp
     RecaptchaModule.forRoot()
   ],
   providers: [
-    UserService,
     StudentCourseService,
     AssignmentService,
     PortfolioService,

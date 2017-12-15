@@ -2,7 +2,6 @@ import {Component, Input, Inject, OnInit} from "@angular/core";
 import {MdDialog, MdDialogRef, MD_DIALOG_DATA} from "@angular/material";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs/Observable";
-import {UserService} from "../../services/user.service";
 import {StudentCourseService} from "../../services/student-course.service";
 import {NotifyService} from "../../services/notify.service";
 import {AdminService} from "../../services/admin.service";
@@ -84,7 +83,6 @@ export class CourseDialogComponent implements OnInit {
 
   constructor(private dialog: MdDialogRef<CourseDialogComponent>,
               @Inject(MD_DIALOG_DATA) public data: any,
-              private userService: UserService,
               private courseService: StudentCourseService,
               private adminService: AdminService,
               private notify: NotifyService,
