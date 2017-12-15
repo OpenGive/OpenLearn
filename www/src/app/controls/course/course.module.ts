@@ -9,12 +9,9 @@ import {CourseDialogComponent} from "./course-dialog.component";
 import {AssignmentFormComponent} from "./assignment/assignment-form.component";
 import {PortfolioFormComponent} from "./portfolio/portfolio-form.component";
 import {GradeDialogComponent} from "./grade-dialog.component";
-import {CourseStudentDialogComponent} from "./course-student-dialog.component";
 import {FileUploadComponent} from '../fileupload/fileupload.component';
 import {FilesGridComponent} from './files-grid/files-grid.component';
 import { FileUploadModule } from "ng2-file-upload";
-
-import {CourseStudentFormComponent} from "./course-student-form/course-student-form.component";
 
 @NgModule({
   declarations: [
@@ -22,8 +19,6 @@ import {CourseStudentFormComponent} from "./course-student-form/course-student-f
     AssignmentFormComponent,
     PortfolioFormComponent,
     GradeDialogComponent,
-    CourseStudentDialogComponent,
-    CourseStudentFormComponent,
     FilesGridComponent,
     FileUploadComponent
   ],
@@ -49,8 +44,6 @@ import {CourseStudentFormComponent} from "./course-student-form/course-student-f
     AssignmentFormComponent,
     PortfolioFormComponent,
     GradeDialogComponent,
-    CourseStudentDialogComponent,
-    CourseStudentFormComponent,
     FileUploadComponent,
     FilesGridComponent
   ]

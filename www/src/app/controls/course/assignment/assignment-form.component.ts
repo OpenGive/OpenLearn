@@ -8,7 +8,6 @@ import {AdminDialogComponent} from "../../admin/admin-dialog.component";
 import {AdminService} from "../../../services/admin.service";
 import {AppConstants} from "../../../app.constants";
 import {NotifyService} from "../../../services/notify.service";
-import {UserService} from "../../../services/user.service";
 import {OrgAdmin} from "../../../models/org-admin.model";
 import {AdminTabs} from "../../admin/admin.constants";
 import {StudentCourseService} from "../../../services/student-course.service";

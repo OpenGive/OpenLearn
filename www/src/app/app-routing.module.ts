@@ -6,7 +6,6 @@ import {AppConstants} from './app.constants';
 import {AdminTabs} from "./controls/admin/admin.constants";
 import {AccessDeniedPageComponent} from './pages/access-denied-page/access-denied-page.component';
 import {AdminPageComponent} from "./pages/admin-page/admin-page.component";
-import {DashboardPageComponent} from "./pages/dashboard-page/dashboard-page.component";
 import {CoursePageComponent} from "./pages/course-page/course-page.component";
 import {CourseResolver} from "./services/course-resolver.service";
 import {LandingPageComponent} from "./pages/landing-page/landing-page.component";
@@ -122,14 +121,6 @@ const ROUTES: Routes = [
         redirectTo: AdminTabs.Course.route
       }
     ]
-  },
-  {
-    path: 'dashboard', // TODO: Rename to my course page or something better than dashboard
-    component: DashboardPageComponent,
-    data: {
-      authorities: [AppConstants.Role.Instructor.name]
-    },
-    canActivate: [UserRouteAccessService]
   },
   {
     path: 'courses/:id',

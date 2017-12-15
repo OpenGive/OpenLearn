@@ -10,7 +10,7 @@ export class AppConstants {
     },
     Instructor: {
       name: 'ROLE_INSTRUCTOR',
-      home: 'dashboard'
+      home: 'admin'
     },
     Student: {
       name: 'ROLE_STUDENT',

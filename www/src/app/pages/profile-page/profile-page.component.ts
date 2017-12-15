@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from "@angular/core";
-import {UserService} from "../../services/user.service";
+import {Component, OnInit} from "@angular/core";
+
 import {AccountService} from "../../shared/auth/account.service";
 import {Principal} from "../../shared/auth/principal-storage.service";
 import {Account} from "../../models/account.model";
@@ -22,8 +22,7 @@ export class ProfilePageComponent implements OnInit {
 
   route: string;
 
-  constructor(private userService: UserService,
-              private accountService: AccountService,
+  constructor(private accountService: AccountService,
               private adminService: AdminService,
               private principal: Principal) {
 
