@@ -61,7 +61,7 @@
       <md-error *ngIf="formErrors.orgRole">{{formErrors.orgRole}}</md-error>
     </md-input-container>
     <div fxFlex="30%" *ngIf="!adding && editing && !changingPassword">
-      <button md-raised-button (click)="resetPassword(true)" class="reset-password">Change Password</button>
+      <button md-raised-button type="button" (click)="resetPassword(true)" class="reset-password">Change Password</button>
     </div>
     <md-input-container fxFlex="30%" *ngIf="changingPassword">
       <input mdInput formControlName="password" placeholder="New Password"/>

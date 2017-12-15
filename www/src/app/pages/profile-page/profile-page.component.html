@@ -1,8 +1,6 @@
-<div *ngIf="item" [ngSwitch]="route"> <!--TODO: MD - Cleanup-->
+<div *ngIf="item" [ngSwitch]="route">
 
   <form *ngSwitchCase="'administrators'" [formGroup]="administratorForm" (ngSubmit)="adminForm.save()" novalidate>
-    <p>{{route}}</p>
-    <p>administrators</p>
     <div class="profile-form" [ngClass]="{edit: editing}" fxLayout="row" fxLayoutAlign="space-between center">
       <div fxLayout="row" fxLayoutAlign="start center">
         <h2 class="ol-dialog-title" *ngIf="!editing">Profile Details</h2>
@@ -25,9 +23,7 @@
     </admin-administrators-form>
   </form>
 
-  <form *ngSwitchCase="'org-administrators'" [formGroup]="administratorForm" (ngSubmit)="adminForm.save()" novalidate>
-    <p>{{route}}</p>
-    <p>org-administrators</p>
+  <form *ngSwitchCase="'org-administrators'" [formGroup]="orgAdministratorForm" (ngSubmit)="orgAdminForm.save()" novalidate>
     <div class="profile-form" [ngClass]="{edit: editing}" fxLayout="row" fxLayoutAlign="space-between center">
       <div fxLayout="row" fxLayoutAlign="start center">
         <h2 class="ol-dialog-title" *ngIf="!editing">Profile Details</h2>
@@ -37,22 +33,20 @@
         <button md-raised-button type="submit" *ngIf="editing" class="ol-dialog-button grey-button" mdTooltip="Save">
           <md-icon>save</md-icon>
         </button>
-        <button md-raised-button type="reset" *ngIf="editing && !adding" (click)="adminForm.cancel()" class="ol-dialog-button navy-button" mdTooltip="Cancel">
+        <button md-raised-button type="reset" *ngIf="editing && !adding" (click)="orgAdminForm.cancel()" class="ol-dialog-button navy-button" mdTooltip="Cancel">
           <md-icon>clear</md-icon>
         </button>
-        <button md-raised-button type="button" *ngIf="!editing" (click)="adminForm.edit()" class="ol-dialog-button grey-button" mdTooltip="Edit">
+        <button md-raised-button type="button" *ngIf="!editing" (click)="orgAdminForm.edit()" class="ol-dialog-button grey-button" mdTooltip="Edit">
           <md-icon>create</md-icon>
         </button>
       </div>
     </div>
-    <admin-org-administrators-form #adminForm [parent]="administratorForm" [item]="item" [adding]="adding" [organizations]="organizations"
+    <admin-org-administrators-form #orgAdminForm [parent]="orgAdministratorForm" [item]="item" [adding]="adding" [organizations]="organizations"
                                (onUpdate)="updated($event)" (onEdit)="updateEditing($event)">
     </admin-org-administrators-form>
   </form>
 
-  <form *ngSwitchCase="'instructors'" [formGroup]="administratorForm" (ngSubmit)="adminForm.save()" novalidate>
-    <p>{{route}}</p>
-    <p>instructors</p>
+  <form *ngSwitchCase="'instructors'" [formGroup]="instructorForm" (ngSubmit)="instructForm.save()" novalidate>
     <div class="profile-form" [ngClass]="{edit: editing}" fxLayout="row" fxLayoutAlign="space-between center">
       <div fxLayout="row" fxLayoutAlign="start center">
         <h2 class="ol-dialog-title" *ngIf="!editing">Profile Details</h2>
@@ -62,16 +56,16 @@
         <button md-raised-button type="submit" *ngIf="editing" class="ol-dialog-button grey-button" mdTooltip="Save">
           <md-icon>save</md-icon>
         </button>
-        <button md-raised-button type="reset" *ngIf="editing && !adding" (click)="adminForm.cancel()" class="ol-dialog-button navy-button" mdTooltip="Cancel">
+        <button md-raised-button type="reset" *ngIf="editing && !adding" (click)="instructForm.cancel()" class="ol-dialog-button navy-button" mdTooltip="Cancel">
           <md-icon>clear</md-icon>
         </button>
-        <button md-raised-button type="button" *ngIf="!editing" (click)="adminForm.edit()" class="ol-dialog-button grey-button" mdTooltip="Edit">
+        <button md-raised-button type="button" *ngIf="!editing" (click)="instructForm.edit()" class="ol-dialog-button grey-button" mdTooltip="Edit">
           <md-icon>create</md-icon>
         </button>
       </div>
     </div>
-    <admin-instructors-form #adminForm [parent]="administratorForm" [item]="item" [adding]="adding" [organizations]="organizations"
-                               (onUpdate)="updated($event)" (onEdit)="updateEditing($event)">
+    <admin-instructors-form #instructForm [parent]="instructorForm" [item]="item" [adding]="adding" [organizations]="organizations"
+                            (onUpdate)="updated($event)" (onEdit)="updateEditing($event)">
     </admin-instructors-form>
   </form>
 

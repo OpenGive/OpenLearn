@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs/Observable";
 import * as _ from "lodash";
 
@@ -9,6 +9,7 @@ import {NotifyService} from "../../../../services/notify.service";
 import {AdminService} from "../../../../services/admin.service";
 import {Principal} from "../../../../shared/auth/principal-storage.service";
 import {Account} from "../../../../models/account.model";
+import {ValidationErrors} from "@angular/forms/src/directives/validators";
 
 @Component({
   selector: 'admin-instructors-form',
@@ -111,11 +112,23 @@ export class AdminInstructorsFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.isInstructor = this.principal.getRole() == AppConstants.Role.Instructor.name;
+    this.resetPassword(false);
     this.buildForm();
     this.setEditing(this.adding);
-    this.resetPassword(false);
     this.getRoles();
     this.getStates();
+  }
+
+  changingPasswordValidators(c: AbstractControl): ValidationErrors {
+    if (this.changingPassword) {
+      const validators = Validators.compose([
+        Validators.required,
+        Validators.pattern(AppConstants.OLValidators.Password)
+      ]);
+      return validators(c);
+    } else {
+      return null;
+    }
   }
 
   private buildForm(): void {
@@ -133,10 +146,9 @@ export class AdminInstructorsFormComponent implements OnInit {
         Validators.pattern(AppConstants.OLValidators.Login),
         Validators.maxLength(50)
       ]],
-      password: [this.formInstructor.password, this.adding ? [
-        Validators.required,
-        Validators.pattern(AppConstants.OLValidators.Password)
-      ] : []],
+      password: [this.formInstructor.password,
+        this.changingPasswordValidators.bind(this)
+      ],
       authority: [AppConstants.Role.Instructor.name],
       organizationId: [this.formInstructor.organizationId, [
         Validators.required
@@ -246,8 +258,6 @@ export class AdminInstructorsFormComponent implements OnInit {
     } else {
       this.instructorForm.markAsTouched();
       for (let key in this.instructorForm.controls) {
-        // TODO: MD - Try to take this out at some point
-        // TODO: MD - The child form doesn't show up at submitted, so the validation errors won't show
         this.instructorForm.controls[key].markAsTouched();
       }
       this.updateFormErrors(this.instructorForm, this.formErrors, this.validationMessages);
@@ -320,12 +330,6 @@ export class AdminInstructorsFormComponent implements OnInit {
 
   resetPassword(changingPassword: boolean): void {
     this.changingPassword = changingPassword;
-    if (changingPassword) {
-      this.instructorForm.controls.password.setValidators([
-        Validators.required,
-        Validators.pattern(AppConstants.OLValidators.Password)
-      ]);
-    }
   }
 
   displayState(stateValue: string): string {
