@@ -434,6 +434,9 @@
 								 constraintName="file_information_uploaded_by_userFK" deferrable="false"
 								 initiallyDeferred="false" referencedColumnNames="id" referencedTableName="user"/>
 	</changeSet>
+	<changeSet id="39.5" author="wspurgin">
+		<dropForeignKeyConstraint baseTableName="file_information" constraintName="file_information_courseFK"/>
+	</changeSet>
 	<changeSet id="40" author="wspurgin">
 		<dropColumn tableName="file_information" columnName="course_id" />
 	</changeSet>
