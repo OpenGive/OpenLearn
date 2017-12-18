@@ -6,6 +6,7 @@ import {Course} from '../../models/course.model';
 import {MdDialog, MdDialogRef, MD_DIALOG_DATA} from "@angular/material";
 
 import {FileGuardian} from '../../shared/file-guardian.service';
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'file-upload',
@@ -28,6 +29,8 @@ export class FileUploadComponent {
     @Input() public portfolio: any;
 
     columns: any[];
+
+    private backend = environment.backend;
 
     constructor(
             private dialog: MdDialogRef<FileUploadComponent>,
@@ -58,9 +61,9 @@ export class FileUploadComponent {
     ngOnInit(): void {
       let uploadUrl = '';
       if (this.fileGuardian.canHaveFiles(this.assignment)) {
-        uploadUrl = '/api/assignments/' + this.assignment.id.toString() + '/upload';
+        uploadUrl = this.backend + '/api/assignments/' + this.assignment.id.toString() + '/upload';
       } else if (this.fileGuardian.canHaveFiles(this.portfolio)) {
-        uploadUrl = '/api/portfolio-items/' + this.portfolio.id.toString() + '/upload';
+        uploadUrl = this.backend + '/api/portfolio-items/' + this.portfolio.id.toString() + '/upload';
       }
       this.uploader.options.url = uploadUrl;
     }
