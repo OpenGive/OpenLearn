@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot} from "@angular/router";
 
 import {Observable} from 'rxjs/Observable';
+import "rxjs/add/operator/take";
 
 import {Course} from "../models/course.model"
 import {AdminService} from "./admin.service"
