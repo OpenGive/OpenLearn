@@ -92,7 +92,7 @@ if (project.hasProperty('prod')) {              // OpenLearn Prod => JHipster Pr
 } else if (project.hasProperty('dev')) {        // OpenLearn Dev => JHipster Test
     apply from: 'gradle/profile_test.gradle'
 } else {                                        // OpenLearn Local => JHipster Dev
-	apply from: 'gradle/profile_dev.gradle'
+  apply from: 'gradle/profile_dev.gradle'
 }
 
 group = 'org.openlearn'
@@ -102,15 +102,20 @@ def release = '0.0.0'
 def versionBuild = 'noVersion'
 def suffix = 'SNAPSHOT'
 if (project.hasProperty('releaseNumber')) {
-	release = releaseNumber
+  release = releaseNumber + '-'
 }
 if (project.hasProperty('buildVersion')) {
-	versionBuild = buildVersion
+  versionBuild = buildVersion + '-'
 }
 if (project.hasProperty('buildType')) {
-	suffix = buildType
+  suffix = buildType
 }
-version = release.toString() + '-' + versionBuild.toString() + '-' + suffix.toString()
+
+if (suffix.equals('RELEASE')) {
+  versionBuild = ''
+}
+
+version = release.toString() + versionBuild.toString() + suffix.toString()
 
 description = ''
 
@@ -132,9 +137,9 @@ repositories {
 }
 
 dependencyManagement {
-	imports {
-		mavenBom 'com.amazonaws:aws-java-sdk-bom:1.11.136'
-	}
+  imports {
+    mavenBom 'com.amazonaws:aws-java-sdk-bom:1.11.228'
+  }
 }
 
 dependencies {
@@ -212,8 +217,8 @@ dependencies {
     testCompile 'io.springfox:springfox-staticdocs:2.6.1'
     testCompile 'org.springframework.restdocs:spring-restdocs-mockmvc:1.1.2.RELEASE'
     testCompile 'org.springframework.restdocs:spring-restdocs-core:1.1.2.RELEASE'
-	compile 'com.amazonaws:aws-java-sdk-s3'
-	//jhipster-needle-gradle-dependency - JHipster will add additional dependencies here
+  compile 'com.amazonaws:aws-java-sdk-s3'
+  //jhipster-needle-gradle-dependency - JHipster will add additional dependencies here
 }
 
 clean {
