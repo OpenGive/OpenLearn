@@ -55,7 +55,7 @@ public class ReCaptchaFilter extends OncePerRequestFilter {
                     log.debug("reCaptcha successfully verified.");
                     chain.doFilter(request, response);
                 } else {
-                    log.error("Provided reCaptcha response failed verification: " + reCaptchaResponse);
+                    log.error("Provided reCaptcha response failed verification: " + verificationResponse);
                     response.sendError(HttpStatus.FORBIDDEN.value(), "Provided reCaptcha failed verification.");
                 }
 
