@@ -2,7 +2,10 @@ package org.openlearn.web.rest;
 
 import org.openlearn.dto.StudentAssignmentDTO;
 import org.openlearn.security.AuthoritiesConstants;
+import org.openlearn.security.SecurityUtils;
 import org.openlearn.service.StudentAssignmentService;
+import org.openlearn.service.UserService;
+import org.openlearn.web.rest.errors.AccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +29,12 @@ public class StudentAssignmentResource {
 
 	private final StudentAssignmentService studentAssignmentService;
 
-	public StudentAssignmentResource(final StudentAssignmentService studentAssignmentService) {
+	private final UserService userService;
+
+	public StudentAssignmentResource(final StudentAssignmentService studentAssignmentService,
+									 final UserService userService) {
 		this.studentAssignmentService = studentAssignmentService;
+		this.userService = userService;
 	}
 
 	/**
@@ -42,6 +49,14 @@ public class StudentAssignmentResource {
 	public ResponseEntity get(@PathVariable final Long id) {
 		log.debug("GET request to get studentAssignment : {}", id);
 		StudentAssignmentDTO response = studentAssignmentService.findOne(id);
+
+		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.STUDENT) &&
+			!userService.getCurrentUser().getId().equals(response.getStudentId())) {
+
+			log.error("Access denied for GET request to get studentAssignment: {}", id);
+			throw new AccessDeniedException();
+		}
+
 		return ResponseEntity.ok(response);
 	}
 
@@ -72,6 +87,14 @@ public class StudentAssignmentResource {
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
 	public ResponseEntity getByStudent(@PathVariable final Long studentId, @PathVariable final Long courseId) {
 		log.debug("GET request to get studentAssignments by student : {} and course : {}", studentId, courseId);
+
+		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.STUDENT) &&
+			!userService.getCurrentUser().getId().equals(studentId)) {
+
+			log.error("Access denied for GET request to get studentAssignments by student: {} and course : {}", studentId, courseId);
+			throw new AccessDeniedException();
+		}
+
 		List<StudentAssignmentDTO> response = studentAssignmentService.findByStudentAndCourse(studentId, courseId);
 		return ResponseEntity.ok(response);
 	}
@@ -84,7 +107,7 @@ public class StudentAssignmentResource {
 	 *      or with ... TODO: Error handling
 	 */
 	@GetMapping(path = "/assignment/{id}")
-	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
 	public ResponseEntity getByAssignment(@PathVariable final Long id) {
 		log.debug("GET request to get studentAssignments by assignment : {}", id);
 		List<StudentAssignmentDTO> response = studentAssignmentService.findByAssignment(id);

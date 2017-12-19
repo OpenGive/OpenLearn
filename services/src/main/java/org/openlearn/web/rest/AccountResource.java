@@ -45,22 +45,4 @@ public class AccountResource {
 		return ResponseEntity.ok(response);
 	}
 
-	/**
-	 * POST  / : update the current user information
-	 *
-	 * @param accountDTO the current user information
-	 * @return the ResponseEntity with status 200 (OK) and the current user in body
-	 *      or with ... // TODO: Error handling
-	 */
-	@PostMapping
-	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
-	public ResponseEntity update(@RequestBody @Valid final AccountDTO accountDTO) {
-		log.debug("POST request to update current user account info : {}", accountDTO);
-		try {
-			AccountDTO response = userService.updateCurrentUserAccount(accountDTO);
-			return ResponseEntity.ok(response);
-		} catch (OpenLearnException e) {
-			return ResponseEntity.badRequest().build();
-		}
-	}
 }
