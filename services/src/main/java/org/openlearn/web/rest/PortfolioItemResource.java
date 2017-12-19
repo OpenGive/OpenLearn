@@ -28,8 +28,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/portfolio-items")
+// TODO enable these endpoints by uncommenting these annotations once better support for creating portfolio items exists
+//@RestController
+//@RequestMapping("/api/portfolio-items")
 public class PortfolioItemResource {
 
 	// TODO: Error handling / logging
