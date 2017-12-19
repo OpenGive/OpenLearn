@@ -2,7 +2,10 @@ package org.openlearn.web.rest;
 
 import org.openlearn.dto.InstructorDTO;
 import org.openlearn.security.AuthoritiesConstants;
+import org.openlearn.security.SecurityUtils;
 import org.openlearn.service.InstructorService;
+import org.openlearn.service.UserService;
+import org.openlearn.web.rest.errors.AccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +29,12 @@ public class InstructorResource {
 
 	private final InstructorService instructorService;
 
-	public InstructorResource(final InstructorService instructorService) {
+	private final UserService userService;
+
+	public InstructorResource(final InstructorService instructorService,
+							  final UserService userService) {
 		this.instructorService = instructorService;
+		this.userService = userService;
 	}
 
 	/**
@@ -86,6 +93,14 @@ public class InstructorResource {
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR})
 	public ResponseEntity update(@RequestBody @Valid final InstructorDTO instructorDTO) {
 		log.debug("PUT request to update instructor : {}", instructorDTO);
+
+		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.INSTRUCTOR) &&
+			!userService.getCurrentUser().getId().equals(instructorDTO.getId())) {
+
+			log.error("Access denied for PUT request to update instructor: {}", instructorDTO.getId());
+			throw new AccessDeniedException();
+		}
+
 		InstructorDTO response = instructorService.save(instructorDTO);
 		return ResponseEntity.ok(response);
 	}
