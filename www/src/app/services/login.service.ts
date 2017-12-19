@@ -35,7 +35,7 @@ export class LoginService {
               home = AppConstants.Role.Instructor.home;
               break;
             case AppConstants.Role.Student.name:
-              home = AppConstants.Role.Student.home;
+              home = AppConstants.Role.Student.home + '/' + account.id;
               break;
             default:
               home = 'access-denied';

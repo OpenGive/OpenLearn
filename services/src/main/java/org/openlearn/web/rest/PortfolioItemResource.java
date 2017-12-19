@@ -1,7 +1,5 @@
 package org.openlearn.web.rest;
 
-import com.amazonaws.services.s3.model.S3ObjectSummary;
-import io.swagger.annotations.ApiParam;
 import org.openlearn.dto.FileInformationDTO;
 import org.openlearn.dto.PortfolioItemDTO;
 import org.openlearn.security.AuthoritiesConstants;
@@ -10,6 +8,7 @@ import org.openlearn.service.FileInformationService;
 import org.openlearn.service.PortfolioItemService;
 import org.openlearn.service.StorageService;
 import org.openlearn.service.UserService;
+import org.openlearn.web.rest.errors.AccessDeniedException;
 import org.openlearn.web.rest.errors.FileInformationNotFoundException;
 import org.openlearn.web.rest.errors.PortfolioItemNotFoundException;
 import org.slf4j.Logger;
@@ -96,6 +95,14 @@ public class PortfolioItemResource {
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
 	public ResponseEntity getPortfolio(@PathVariable final Long id) {
 		log.debug("GET request for portfolio of student : {}", id);
+
+		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.STUDENT) &&
+			!userService.getCurrentUser().getId().equals(id)) {
+
+			log.error("Access denied for GET request for portfolio of student: {}", id);
+			throw new AccessDeniedException();
+		}
+
 		List<PortfolioItemDTO> response = portfolioItemService.getPortfolioForStudent(id);
 		return ResponseEntity.ok(response);
 	}

@@ -14,7 +14,7 @@ export class AppConstants {
     },
     Student: {
       name: 'ROLE_STUDENT',
-      home: 'home'
+      home: 'students'
     },
   };
   public static ForgotPasswordEmail = "passwordrequest@openlearn.com";

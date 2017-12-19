@@ -2,7 +2,10 @@ package org.openlearn.web.rest;
 
 import org.openlearn.dto.StudentCourseDTO;
 import org.openlearn.security.AuthoritiesConstants;
+import org.openlearn.security.SecurityUtils;
 import org.openlearn.service.StudentCourseService;
+import org.openlearn.service.UserService;
+import org.openlearn.web.rest.errors.AccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +29,12 @@ public class StudentCourseResource {
 
 	private final StudentCourseService studentCourseService;
 
-	public StudentCourseResource(final StudentCourseService studentCourseService) {
+	private final UserService userService;
+
+	public StudentCourseResource(final StudentCourseService studentCourseService,
+	                             final UserService userService) {
 		this.studentCourseService = studentCourseService;
+		this.userService = userService;
 	}
 
 	/**
@@ -56,6 +63,14 @@ public class StudentCourseResource {
 	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ORG_ADMIN, AuthoritiesConstants.INSTRUCTOR, AuthoritiesConstants.STUDENT})
 	public ResponseEntity getByStudent(@PathVariable final Long id) {
 		log.debug("GET request to get studentCourses by student : {}", id);
+
+		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.STUDENT) &&
+			!userService.getCurrentUser().getId().equals(id)) {
+
+			log.error("Access denied for GET request for studentCourses by student: {}", id);
+			throw new AccessDeniedException();
+		}
+
 		List<StudentCourseDTO> response = studentCourseService.findByStudent(id);
 		return ResponseEntity.ok(response);
 	}
