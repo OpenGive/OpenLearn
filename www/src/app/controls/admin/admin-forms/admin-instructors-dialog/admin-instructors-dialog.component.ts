@@ -19,7 +19,9 @@ export class AdminInstructorsDialogComponent implements OnInit {
 
   editing: boolean;
   instructorForm: FormGroup;
-  isInstructor: boolean;
+
+  canEdit: boolean;
+  canDelete: boolean;
 
   constructor(public dialogRef: MdDialogRef<AdminDialogComponent>,
               private principal: Principal) {
@@ -28,7 +30,9 @@ export class AdminInstructorsDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.editing = this.adding;
-    this.isInstructor = this.principal.getRole() == AppConstants.Role.Instructor.name;
+    this.canDelete = this.principal.getRole() === AppConstants.Role.Admin.name ||
+                     this.principal.getRole() === AppConstants.Role.OrgAdmin.name;
+    this.canEdit = this.canDelete || this.principal.getId() === this.formInstructor.id;
   }
 
   updateEditing(isEditing: boolean): void {
