@@ -25,16 +25,11 @@ spring:
     jackson:
         serialization.indent_output: true
     datasource:
-        type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:h2:file:./target/h2db/db/openlearn;DB_CLOSE_DELAY=-1
-        username: openlearn
-        password:
-    h2:
-        console:
-            enabled: false
+        driver-class-name: org.mariadb.jdbc.Driver
     jpa:
-        database-platform: io.github.jhipster.domain.util.FixedH2Dialect
-        database: H2
+        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+        database: MYSQL
+        generate-ddl: false
         show-sql: true
         properties:
             hibernate.id.new_generator_mappings: true
