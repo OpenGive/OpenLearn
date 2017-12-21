@@ -14,26 +14,25 @@ public class S3Client {
 
 	private AmazonS3 client;
 
-	private boolean requestServerSideEncryption;
+	private boolean useCustomKmsKey;
+
+	private String kmsKey;
 
 	public S3Client(ApplicationProperties properties) {
+		this.client = AmazonS3ClientBuilder.defaultClient();
+
 		if (properties.getUploadKmsAlias() != null) {
-			// Use custom client-side encryption method
-			this.client = AmazonS3EncryptionClientBuilder
-				.standard()
-				.withCryptoConfiguration(new CryptoConfiguration(CryptoMode.EncryptionOnly))
-				// Can either be Key ID or alias (prefixed with 'alias/')
-				.withEncryptionMaterials(new KMSEncryptionMaterialsProvider(properties.getUploadKmsAlias()))
-				.build();
-			this.requestServerSideEncryption = false;
+			this.kmsKey = properties.getUploadKmsAlias();
+			this.useCustomKmsKey = true;
 		} else {
-			this.client = AmazonS3ClientBuilder.defaultClient();
-			this.requestServerSideEncryption = true;
+			this.useCustomKmsKey = false;
 		}
 	}
 
 	public void putObject(PutObjectRequest request)  throws AmazonServiceException {
-		if (requestServerSideEncryption) {
+		if (useCustomKmsKey) {
+			request.withSSEAwsKeyManagementParams(new SSEAwsKeyManagementParams(this.kmsKey));
+		} else {
 			ObjectMetadata metadata = request.getMetadata();
 			metadata.setSSEAlgorithm(ObjectMetadata.AES_256_SERVER_SIDE_ENCRYPTION);
 		}
