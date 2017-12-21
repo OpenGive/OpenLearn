@@ -1,10 +1,9 @@
 package org.openlearn.service;
 
 import com.amazonaws.AmazonServiceException;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import com.google.common.collect.Lists;
+import org.openlearn.client.S3Client;
 import org.openlearn.config.ApplicationProperties;
 import org.openlearn.domain.*;
 import org.openlearn.dto.FileInformationDTO;
@@ -40,7 +39,7 @@ import java.util.*;
 @Transactional
 @EnableConfigurationProperties
 public class StorageService {
-	private static final Logger log = LoggerFactory.getLogger(AddressService.class);
+	private static final Logger log = LoggerFactory.getLogger(StorageService.class);
 
 	private final FileRepository fileRepository;
 
@@ -94,7 +93,7 @@ public class StorageService {
 			uploadedBy = getUploadedBy(portfolioItem);
 		}
 
-		AmazonS3 s3client = AmazonS3ClientBuilder.defaultClient();
+		S3Client s3client = new S3Client(props);
 		String uploadBucketName = props.getUploadBucket();
 		String keyName = createS3FilePrefix(assignmentId, portfolioId, uploadedBy.getId()) + file.getOriginalFilename();
 		try {
@@ -129,7 +128,7 @@ public class StorageService {
 	}
 
 	public InputStream getUpload(Long fileInformationId) {
-		AmazonS3 s3client = AmazonS3ClientBuilder.defaultClient();
+		S3Client s3client = new S3Client(props);
 		FileInformation fileInformation = fileRepository.findOne(fileInformationId);
 
 		if (fileInformation == null) throw new FileInformationNotFoundException(fileInformationId);
@@ -157,7 +156,7 @@ public class StorageService {
 	}
 
 	public void deleteUpload(FileInformation fileInformation) {
-		AmazonS3 s3client = AmazonS3ClientBuilder.defaultClient();
+		S3Client s3client = new S3Client(props);
 		String bucket = retrieveBucket(fileInformation);
 		String key = retrieveKeyName(fileInformation);
 
@@ -171,7 +170,7 @@ public class StorageService {
 	}
 
 	public void deleteUploads(List<FileInformation> files) {
-		AmazonS3 s3client = AmazonS3ClientBuilder.defaultClient();
+		S3Client s3client = new S3Client(props);
 
 		Map<String, List<String>> bucketToKeyMapping = buildBucketToKeyMapping(files);
 
@@ -268,7 +267,7 @@ public class StorageService {
 			bucketAndKey = new URL(fileInformation.getFileUrl()).getPath()
 				.replaceFirst("/", "");
 		} catch (MalformedURLException e) {
-			log.info("File URL is malformed, Falling back on prefix and bucket logic");
+			log.warn("File URL is malformed, Falling back on prefix and bucket logic");
 			Assignment assignment = fileInformation.getAssignment();
 			PortfolioItem portfolioItem = fileInformation.getPortfolioItem();
 			String bucket = props.getUploadBucket();

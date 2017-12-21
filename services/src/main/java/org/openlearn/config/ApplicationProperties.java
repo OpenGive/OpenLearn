@@ -10,20 +10,28 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
 
-    private String uploadBucket;
-
     private final Recaptcha recaptcha = new Recaptcha();
 
+    private final Uploads uploads = new Uploads();
+
     public String getUploadBucket() {
-        return uploadBucket;
+        return this.uploads.s3bucket;
     }
 
     public void setUploadBucket(String uploadBucket) {
-        this.uploadBucket = uploadBucket;
+        this.uploads.setS3bucket(uploadBucket);
     }
 
     public Recaptcha getRecaptcha() {
         return recaptcha;
+    }
+
+    public Uploads getUploads() {
+      return uploads;
+    }
+
+    public String getUploadKmsAlias() {
+      return this.uploads.getKmsAlias();
     }
 
     public static class Recaptcha {
@@ -57,5 +65,32 @@ public class ApplicationProperties {
         public void setVerificationUrl(String verificationUrl) {
             this.verificationUrl = verificationUrl;
         }
+    }
+
+    public static class Uploads {
+      private String s3bucket;
+
+      private String kmsAlias;
+
+      public String getS3bucket() {
+        return s3bucket;
+      }
+
+      public void setS3bucket(String s3bucket) {
+        this.s3bucket = s3bucket;
+      }
+
+      public String getKmsAlias() {
+        return kmsAlias;
+      }
+
+      public void setKmsAlias(String kmsAlias) {
+        this.kmsAlias = kmsAlias;
+      }
+
+      @Override
+      public String toString() {
+        return super.toString() + "s3bucket=" + this.s3bucket + ";kmAlias=" + this.kmsAlias;
+      }
     }
 }
