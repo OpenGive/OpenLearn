@@ -2,7 +2,7 @@
 # Spring Boot "Custom" configurations for the current profile.
 #
 # NOTE FOR DEVELOPERS:
-# 	You'll want to copy this file to application-custom.yml and fill
+#   You'll want to copy this file to application-custom.yml and fill
 #   in the datasource information and S3 information.
 #
 #   Assuming you're in the project root
@@ -34,7 +34,9 @@ liquibase:
 
 application:
 
-  upload-bucket: dev.openlearn-uploads.credera
+    uploads:
+        s3bucket: example.openlearn-uploads.credera
+        kms-alias: "alias/openlearn"
 
-  recaptcha:
-    site-secret: 6LfmlDwUAAAAAN8uRe-dkXwWPoIk4mFznmj6Cdzt
+    recaptcha:
+        site-secret: 6LfmlDwUAAAAAN8uRe-dkXwWPoIk4mFznmj6Cdzt
