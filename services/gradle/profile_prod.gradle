@@ -8,7 +8,7 @@ dependencies {
 
 }
 
-def profiles = 'prod,no-liquibase'
+def profiles = 'prod'
 
 bootRun {
     args = []
