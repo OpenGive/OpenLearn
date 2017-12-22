@@ -334,15 +334,15 @@ export class AdminInstructorsFormComponent implements OnInit {
     return stateValue ? _.filter(AppConstants.States, {value: stateValue})[0].name : '';
   }
 
-  disableUser() {
+  deactivateUser() {
     const instructor = Object.assign({}, this.formInstructor, {
       password: this.passwordService.generatePassword()
     });
 
     this.adminService.update(AdminTabs.Instructor.route, instructor).subscribe(resp => {
-      this.notify.success('Successfully disabled instructor. To reactivate this user in the future, reset the user\'s password to re-grant account access.', 60 * 1000);
+      this.notify.success('Successfully deactivated instructor. To reactivate this user in the future, reset the user\'s password to re-grant account access.', 60 * 1000);
     }, error => {
-      this.notify.error('Failed to disable instructor');
+      this.notify.error('Failed to deactivate instructor');
     });
   }
 }

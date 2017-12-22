@@ -329,15 +329,15 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
     return stateValue ? _.filter(AppConstants.States, {value: stateValue})[0].name : '';
   }
 
-  disableUser() {
+  deactivateUser() {
     const orgAdmin = Object.assign({}, this.formOrgAdministrator, {
       password: this.passwordService.generatePassword()
     });
 
     this.adminService.update(AdminTabs.OrgAdministrator.route, orgAdmin).subscribe(resp => {
-      this.notify.success('Successfully disabled org administrator. To reactivate this user in the future, reset the user\'s password to re-grant account access.', 60 * 1000);
+      this.notify.success('Successfully deactivated org administrator. To reactivate this user in the future, reset the user\'s password to re-grant account access.', 60 * 1000);
     }, error => {
-      this.notify.error('Failed to disable org administrator');
+      this.notify.error('Failed to deactivate org administrator');
     });
   }
 }

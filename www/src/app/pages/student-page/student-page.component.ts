@@ -440,15 +440,15 @@ export class StudentPageComponent implements OnInit {
     return session ? session.name : '';
   }
 
-  disableUser() {
+  deactivateUser() {
     const student = Object.assign({}, this.student, {
       password: this.passwordService.generatePassword()
     });
 
     this.adminService.update(AdminTabs.Student.route, student).subscribe(resp => {
-      this.notify.success('Successfully disabled student. To reactivate this user in the future, reset the user\'s password to re-grant account access.', 60 * 1000);
+      this.notify.success('Successfully deactivated student. To reactivate this user in the future, reset the user\'s password to re-grant account access.', 60 * 1000);
     }, error => {
-      this.notify.error('Failed to disable student');
+      this.notify.error('Failed to deactivate student');
     });
   }
 }
