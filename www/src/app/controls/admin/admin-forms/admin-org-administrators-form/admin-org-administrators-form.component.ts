@@ -9,6 +9,7 @@ import {NotifyService} from "../../../../services/notify.service";
 import {AdminTabs} from "../../admin.constants";
 import {Account} from "../../../../models/account.model";
 import {ValidationErrors} from "@angular/forms/src/directives/validators";
+import {PasswordService} from "../../../../shared";
 
 @Component({
   selector: 'admin-org-administrators-form',
@@ -105,7 +106,8 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private notify: NotifyService,
-              private adminService: AdminService) {}
+              private adminService: AdminService,
+              private passwordService: PasswordService) {}
 
   ngOnInit(): void {
     this.buildForm();
@@ -325,5 +327,15 @@ export class AdminOrgAdministratorsFormComponent implements OnInit {
 
   displayState(stateValue: string): string {
     return stateValue ? _.filter(AppConstants.States, {value: stateValue})[0].name : '';
+  }
+
+  disableUser() {
+    const instructor = Object.assign({}, this.formOrgAdministrator, {password: this.passwordService.generatePassword()});
+
+    this.adminService.update(AdminTabs.Administrator.route, instructor).subscribe(resp => {
+      this.notify.success('Successfully disabled org administrator. To reactivate this user in the future, reset the user\'s password to re-grant account access.', 60 * 1000);
+    }, error => {
+      this.notify.error('Failed to disable org administrator');
+    });
   }
 }

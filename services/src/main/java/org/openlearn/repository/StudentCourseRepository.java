@@ -17,6 +17,8 @@ public interface StudentCourseRepository extends JpaRepository<StudentCourse, Lo
 	List<StudentCourse> findByStudentAndOnPortfolio(User student, Boolean onPortfolio);
 
 	List<StudentCourse> findByCourse(Course course);
-	
+
+	int countByCourse(Course course);
+
 	StudentCourse findByStudentAndCourse(User student, Course course);
 }

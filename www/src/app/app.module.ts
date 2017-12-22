@@ -48,6 +48,7 @@ import {NotifyService} from "./services/notify.service";
 import {OLAdminModule} from "./controls/admin/admin.module";
 import {OLCourseModule} from "./controls/course/course.module";
 import {OLStudentModule} from "./controls/student/student.module";
+import {PasswordService} from "./shared";
 
 @NgModule({
   declarations: [
@@ -103,7 +104,8 @@ import {OLStudentModule} from "./controls/student/student.module";
     HttpWrapperService,
     AdminService,
     AdminGridService,
-    NotifyService
+    NotifyService,
+    PasswordService
   ],
   bootstrap: [AppComponent],
   entryComponents: [

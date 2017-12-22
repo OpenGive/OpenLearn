@@ -4,11 +4,14 @@ import org.openlearn.domain.Course;
 import org.openlearn.domain.Session;
 import org.openlearn.domain.User;
 import org.openlearn.dto.CourseDTO;
+import org.openlearn.repository.AssignmentRepository;
 import org.openlearn.repository.CourseRepository;
 import org.openlearn.repository.SessionRepository;
+import org.openlearn.repository.StudentCourseRepository;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.security.SecurityUtils;
 import org.openlearn.transformer.CourseTransformer;
+import org.openlearn.web.rest.errors.ItemHasChildrenException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -34,12 +37,22 @@ public class CourseService {
 
 	private final UserService userService;
 
-	public CourseService(final CourseRepository courseRepository, final CourseTransformer courseTransformer,
-	                     final SessionRepository sessionRepository, final UserService userService) {
+	private final AssignmentRepository assignmentRepository;
+
+	private final StudentCourseRepository studentCourseRepository;
+
+	public CourseService(final CourseRepository courseRepository,
+						 final CourseTransformer courseTransformer,
+	                     final SessionRepository sessionRepository,
+						 final UserService userService,
+						 final AssignmentRepository assignmentRepository,
+						 final StudentCourseRepository studentCourseRepository) {
 		this.courseRepository = courseRepository;
 		this.courseTransformer = courseTransformer;
 		this.sessionRepository = sessionRepository;
 		this.userService = userService;
+		this.assignmentRepository = assignmentRepository;
+		this.studentCourseRepository = studentCourseRepository;
 	}
 
 	/**
@@ -111,6 +124,11 @@ public class CourseService {
 		boolean instructorCheck = true;
 		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.INSTRUCTOR)) instructorCheck = user.getId() == course.getInstructor().getId();
 		if (course != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(course)) && instructorCheck) {
+
+			if (studentCourseRepository.countByCourse(course) > 0 || assignmentRepository.countByCourse(course) > 0) {
+				throw new ItemHasChildrenException("Before you delete this course, please remove all students and assignments from the course.");
+			}
+
 			courseRepository.delete(id);
 		} else {
 			// TODO: Error handling / logging

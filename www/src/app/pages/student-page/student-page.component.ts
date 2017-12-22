@@ -12,6 +12,7 @@ import {User} from "../../models/user.model";
 import {Student} from "../../models/student.model";
 import {FourteenPlusValidator} from "../../controls/admin/custom.validators"
 import * as _ from "lodash";
+import {PasswordService} from "../../shared";
 
 @Component({
   selector: 'app-student-page',
@@ -25,7 +26,8 @@ export class StudentPageComponent implements OnInit {
               private adminService: AdminService,
               private notify: NotifyService,
               private router: Router,
-              private principle: Principal) {}
+              private principle: Principal,
+              private passwordService: PasswordService) {}
 
   adding:boolean = false;
   editing:boolean = false;
@@ -436,5 +438,15 @@ export class StudentPageComponent implements OnInit {
 
   displaySession(session: any): string {
     return session ? session.name : '';
+  }
+
+  disableUser() {
+    const instructor = Object.assign({}, this.student, {password: this.passwordService.generatePassword()});
+
+    this.adminService.update(AdminTabs.Administrator.route, instructor).subscribe(resp => {
+      this.notify.success('Successfully disabled student. To reactivate this user in the future, reset the user\'s password to re-grant account access.', 60 * 1000);
+    }, error => {
+      this.notify.error('Failed to disable student');
+    });
   }
 }

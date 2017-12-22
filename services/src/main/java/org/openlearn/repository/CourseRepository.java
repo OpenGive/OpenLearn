@@ -2,6 +2,7 @@ package org.openlearn.repository;
 
 import org.openlearn.domain.Course;
 import org.openlearn.domain.Organization;
+import org.openlearn.domain.Session;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -12,4 +13,6 @@ import java.util.List;
 public interface CourseRepository extends JpaRepository<Course, Long> {
 
 	List<Course> findByOrganization(Organization organization);
+
+	int countBySession(Session session);
 }

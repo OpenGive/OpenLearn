@@ -61,6 +61,13 @@ public class ExceptionTranslator {
         return new ErrorVM(ErrorConstants.ERR_METHOD_NOT_SUPPORTED, exception.getMessage());
     }
 
+	@ExceptionHandler(ItemHasChildrenException.class)
+	@ResponseBody
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ErrorVM processItemHasChildrenException(ItemHasChildrenException exception) {
+		return new ErrorVM(ErrorConstants.ERR_ITEM_HAS_CHILDREN, exception.getMessage());
+	}
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorVM> processRuntimeException(Exception ex) {
         BodyBuilder builder;

@@ -4,6 +4,7 @@ import org.openlearn.dto.CourseDTO;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.service.CourseService;
 import org.openlearn.service.StorageService;
+import org.openlearn.web.rest.errors.ItemHasChildrenException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;

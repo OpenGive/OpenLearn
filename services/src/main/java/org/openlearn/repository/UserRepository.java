@@ -22,6 +22,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	List<User> findByOrganizationAndAuthority(Organization organization, Authority authority);
 
+	int countByOrganization(Organization organization);
+
 	@Query(nativeQuery = true,
 		countQuery = "Select count(*) from user where authority = 'ROLE_STUDENT'  and user.id not in (select student_id from student_course where course_id= :courseId)",
 		value = "Select * from user where authority = 'ROLE_STUDENT'  and user.id not in (select student_id from student_course where course_id= :courseId)")

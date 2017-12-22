@@ -9,10 +9,10 @@ import org.openlearn.repository.StudentCourseRepository;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.security.SecurityUtils;
 import org.openlearn.transformer.AssignmentTransformer;
-import org.openlearn.web.rest.errors.AccessDeniedException;
 import org.openlearn.web.rest.errors.AssignmentNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -173,7 +173,7 @@ public class AssignmentService {
 			fileInformationService.deleteByAssignment(assignment);
 			assignmentRepository.delete(id);
 		} else {
-			throw new AccessDeniedException();
+			throw new AccessDeniedException("Forbidden");
 		}
 	}
 

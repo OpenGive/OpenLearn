@@ -233,7 +233,11 @@ export class CoursePageComponent implements OnInit {
       this.notify.success('Successfully deleted course');
       this.router.navigate(['/admin/courses']);
     }, error => {
-      this.notify.error('Failed to delete course');
+      if (error.message && error.message === 'error.itemHasChildren' && error.description) {
+        this.notify.error(error.description);
+      } else {
+        this.notify.error('Failed to delete course');
+      }
     });
   }
 
