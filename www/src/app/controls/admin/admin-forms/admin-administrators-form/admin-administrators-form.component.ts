@@ -310,9 +310,11 @@ export class AdminAdministratorsFormComponent implements OnInit {
   }
 
   disableUser() {
-    const instructor = Object.assign({}, this.formAdministrator, {password: this.passwordService.generatePassword()});
+    const administrator = Object.assign({}, this.formAdministrator, {
+      password: this.passwordService.generatePassword()
+    });
 
-    this.adminService.update(AdminTabs.Administrator.route, instructor).subscribe(resp => {
+    this.adminService.update(AdminTabs.Administrator.route, administrator).subscribe(resp => {
       this.notify.success('Successfully disabled administrator. To reactivate this user in the future, reset the user\'s password to re-grant account access.', 60 * 1000);
     }, error => {
       this.notify.error('Failed to disable administrator');

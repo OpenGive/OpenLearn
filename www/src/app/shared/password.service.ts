@@ -9,7 +9,7 @@ export class PasswordService {
 
   generatePassword(): string {
     const chars = new Array(100);
-    for (var i = 0 ; i < 100; i++) {
+    for (let i = 0; i < 100; i++) {
       chars[i] = _.sample(this.validCharacters);
     }
     return chars.join("");

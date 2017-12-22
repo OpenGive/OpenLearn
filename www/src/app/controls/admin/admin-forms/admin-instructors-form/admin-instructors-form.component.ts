@@ -335,7 +335,9 @@ export class AdminInstructorsFormComponent implements OnInit {
   }
 
   disableUser() {
-    const instructor = Object.assign({}, this.formInstructor, {password: this.passwordService.generatePassword()});
+    const instructor = Object.assign({}, this.formInstructor, {
+      password: this.passwordService.generatePassword()
+    });
 
     this.adminService.update(AdminTabs.Instructor.route, instructor).subscribe(resp => {
       this.notify.success('Successfully disabled instructor. To reactivate this user in the future, reset the user\'s password to re-grant account access.', 60 * 1000);

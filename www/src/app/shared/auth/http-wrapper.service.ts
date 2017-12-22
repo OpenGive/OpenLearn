@@ -26,8 +26,7 @@ export class HttpWrapperService {
 
     getWithOptions(endpoint: string, options: any) : Observable<any> {
         let authHeaders = this.getAuthHeader();
-        let combinedOptions =
-          Object.assign(options, authHeaders);
+        let combinedOptions = Object.assign(options, authHeaders);
         return this._http.get(this.backend + endpoint, combinedOptions).catch(response => this.handleError(response));
     }
 
