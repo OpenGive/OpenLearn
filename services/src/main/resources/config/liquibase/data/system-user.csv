@@ -1,2 +1,2 @@
-id,created_date, login,password_hash,first_name,last_name,email,phone_num,image_url,activated,created_by,last_modified_by,is_14_plus
-1,"2017-08-26T12:00:00Z,2017-11-15T12:00:00Z",system,$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC,System,System,system@localhost,,,TRUE,system,system,TRUE
+id,login,password_hash,first_name,last_name,authority,email,phone_number,notes,organization_id,org_role,fourteen_plus,guardian_first_name,guardian_last_name,guardian_email,guardian_phone,school,grade_level,state_student_id,org_student_id,created_by,created_date,last_modified_by,last_modified_date
+1,system,$2a$10$cWYWo4qHv.qr8pwKppbxkuhXIhW/ywJ1BXtE7gVCytwCs9MQDxy3m,System,System,ROLE_ADMIN,system@localhost,972.692.0010,This is the system admin user.,null,null,null,null,null,null,null,null,null,null,null,SYSTEM,2017-09-01T12:00:00,null,null
