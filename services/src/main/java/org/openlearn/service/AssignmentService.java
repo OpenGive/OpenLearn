@@ -58,22 +58,12 @@ public class AssignmentService {
 		this.fileInformationService = fileInformationService;
 	}
 
-	/**
-	 * Save an assignment.
-	 *
-	 * @param assignmentDTO the entity to save
-	 * @return the persisted entity
-	 */
-	public AssignmentDTO save(final AssignmentDTO assignmentDTO) {
-		log.debug("Request to save Assignment : {}", assignmentDTO);
-		User user = userService.getCurrentUser();
-		boolean instructorCheck = true;
-		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.INSTRUCTOR)) {
-			Course course = courseRepository.findOne(assignmentDTO.getCourseId());
-			instructorCheck = user.getId().equals(course.getInstructor().getId());
-		}
+	public AssignmentDTO create(final AssignmentDTO assignmentDTO) {
+		log.debug("Request to create Assignment : {}", assignmentDTO);
 
-		if (instructorCheck && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(assignmentDTO))) {
+		if (canCreate(assignmentDTO)) {
+			// Ensure that we are creating a new assignment and not saving an existing one.
+			assignmentDTO.setId(null);
 			Assignment assignment = assignmentRepository.save(assignmentTransformer.transform(assignmentDTO));
 
 			for (StudentCourse studentCourse : studentCourseRepository.findByCourse(assignment.getCourse())) {
@@ -86,9 +76,27 @@ public class AssignmentService {
 			}
 
 			return assignmentTransformer.transform(assignment);
+		} else {
+			throw new AccessDeniedException();
 		}
-		// TODO: Error handling / logging
-		return null;
+	}
+
+	/**
+	 * Save an assignment.
+	 *
+	 * @param assignmentDTO the entity to save
+	 * @return the persisted entity
+	 */
+	public AssignmentDTO save(final AssignmentDTO assignmentDTO) {
+		log.debug("Request to save Assignment : {}", assignmentDTO);
+
+		if (canCreate(assignmentDTO) || canUpdate(assignmentDTO)) {
+			Assignment assignment = assignmentRepository.save(assignmentTransformer.transform(assignmentDTO));
+
+			return assignmentTransformer.transform(assignment);
+		} else {
+			throw new AccessDeniedException();
+		}
 	}
 
 	/**
@@ -206,5 +214,22 @@ public class AssignmentService {
 		StudentCourse studentCourse = studentCourseRepository.findByStudentAndCourse(user, course);
 
 		return studentCourse != null;
+	}
+
+	public boolean canUpdate(AssignmentDTO assignmentDTO) {
+		// For now, the update permission and create permission are identical
+		// so we'll delegate to that permission check
+		return canCreate(assignmentDTO);
+	}
+
+	public boolean canCreate(AssignmentDTO assignmentDTO) {
+		User user = userService.getCurrentUser();
+		boolean isInstructor = false;
+		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.INSTRUCTOR)) {
+			Course course = courseRepository.findOne(assignmentDTO.getCourseId());
+			isInstructor = user.getId().equals(course.getInstructor().getId());
+		}
+
+		return isInstructor || (SecurityUtils.isAdmin() || inOrgOfCurrentUser(assignmentDTO));
 	}
 }
