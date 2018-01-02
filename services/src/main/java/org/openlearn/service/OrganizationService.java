@@ -4,8 +4,11 @@ import org.openlearn.domain.Organization;
 import org.openlearn.domain.User;
 import org.openlearn.dto.OrganizationDTO;
 import org.openlearn.repository.OrganizationRepository;
+import org.openlearn.repository.ProgramRepository;
+import org.openlearn.repository.UserRepository;
 import org.openlearn.security.SecurityUtils;
 import org.openlearn.transformer.OrganizationTransformer;
+import org.openlearn.web.rest.errors.ItemHasChildrenException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -29,11 +32,20 @@ public class OrganizationService {
 
 	private final UserService userService;
 
+	private final ProgramRepository programRepository;
+
+	private final UserRepository userRepository;
+
 	public OrganizationService(final OrganizationRepository organizationRepository,
-	                           final OrganizationTransformer organizationTransformer, final UserService userService) {
+							   final OrganizationTransformer organizationTransformer,
+							   final UserService userService,
+							   final ProgramRepository programRepository,
+							   final UserRepository userRepository) {
 		this.organizationRepository = organizationRepository;
 		this.organizationTransformer = organizationTransformer;
 		this.userService = userService;
+		this.programRepository = programRepository;
+		this.userRepository = userRepository;
 	}
 
 	/**
@@ -97,6 +109,13 @@ public class OrganizationService {
 	 */
 	public void delete(final Long id) {
 		log.debug("Request to delete Organization : {}", id);
+
+		Organization organization = organizationRepository.findOneById(id);
+
+		if (programRepository.existsByOrganization(organization) || userRepository.existsByOrganization(organization)) {
+			throw new ItemHasChildrenException("Before you delete this organization, please remove all users and programs from the organization.");
+		}
+
 		organizationRepository.delete(id);
 	}
 

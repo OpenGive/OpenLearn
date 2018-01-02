@@ -4,8 +4,10 @@ import org.openlearn.domain.Program;
 import org.openlearn.domain.User;
 import org.openlearn.dto.ProgramDTO;
 import org.openlearn.repository.ProgramRepository;
+import org.openlearn.repository.SessionRepository;
 import org.openlearn.security.SecurityUtils;
 import org.openlearn.transformer.ProgramTransformer;
+import org.openlearn.web.rest.errors.ItemHasChildrenException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -29,11 +31,16 @@ public class ProgramService {
 
 	private final UserService userService;
 
-	public ProgramService(final ProgramRepository programRepository, final ProgramTransformer programTransformer,
-	                      final UserService userService) {
+	private final SessionRepository sessionRepository;
+
+	public ProgramService(final ProgramRepository programRepository,
+						  final ProgramTransformer programTransformer,
+	                      final UserService userService,
+						  final SessionRepository sessionRepository) {
 		this.programRepository = programRepository;
 		this.programTransformer = programTransformer;
 		this.userService = userService;
+		this.sessionRepository = sessionRepository;
 	}
 
 	/**
@@ -99,6 +106,11 @@ public class ProgramService {
 		log.debug("Request to delete Program : {}", id);
 		Program program = programRepository.findOne(id);
 		if (program != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(program))) {
+
+			if (sessionRepository.existsByProgram(program)) {
+				throw new ItemHasChildrenException("Before you delete this program, please remove all sessions from the program.");
+			}
+
 			programRepository.delete(id);
 		} else {
 			// TODO: Error handling / logging

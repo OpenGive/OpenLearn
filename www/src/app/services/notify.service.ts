@@ -16,23 +16,23 @@ export class NotifyService {
 
   constructor(private snackBar: MdSnackBar) {}
 
-  success(message: string, actionText = this.actionText, callback = () => {}): void {
+  success(message: string, duration: number = this.duration, actionText = this.actionText, callback = () => {}): void {
     this.snackBar.open(message, actionText, {
-        duration: this.duration,
+        duration: duration,
         extraClasses: this.styles.success
       }).onAction().subscribe(() => callback());
   }
 
-  warning(message: string, actionText = this.actionText, callback = () => {}): void {
+  warning(message: string, duration: number = this.duration, actionText = this.actionText, callback = () => {}): void {
     this.snackBar.open(message, actionText, {
-        duration: this.duration,
+        duration: duration,
         extraClasses: this.styles.warning
       }).onAction().subscribe(() => callback());
   }
 
-  error(message: string, actionText = this.actionText, callback = () => {}): void {
+  error(message: string, duration: number = this.duration, actionText = this.actionText, callback = () => {}): void {
     this.snackBar.open(message, actionText, {
-        duration: this.duration,
+        duration: duration,
         extraClasses: this.styles.error
       }).onAction().subscribe(() => callback());
   }

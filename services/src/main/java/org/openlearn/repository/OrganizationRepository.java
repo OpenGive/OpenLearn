@@ -10,5 +10,7 @@ import java.util.List;
  */
 public interface OrganizationRepository extends JpaRepository<Organization, Long> {
 
+	Organization findOneById(Long id);
+
 	List<Organization> findById(Long id);
 }

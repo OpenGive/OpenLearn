@@ -176,7 +176,11 @@ export class AdminOrganizationsFormComponent implements OnInit {
       });
       this.notify.success('Successfully deleted organization');
     }, error => {
-      this.notify.error('Failed to delete organization');
+      if (error.message && error.message === 'error.itemHasChildren' && error.description) {
+        this.notify.error(error.description);
+      } else {
+        this.notify.error('Failed to delete organization');
+      }
     });
   }
 

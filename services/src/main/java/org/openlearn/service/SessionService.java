@@ -4,10 +4,12 @@ import org.openlearn.domain.Program;
 import org.openlearn.domain.Session;
 import org.openlearn.domain.User;
 import org.openlearn.dto.SessionDTO;
+import org.openlearn.repository.CourseRepository;
 import org.openlearn.repository.ProgramRepository;
 import org.openlearn.repository.SessionRepository;
 import org.openlearn.security.SecurityUtils;
 import org.openlearn.transformer.SessionTransformer;
+import org.openlearn.web.rest.errors.ItemHasChildrenException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -33,12 +35,18 @@ public class SessionService {
 
 	private final UserService userService;
 
-	public SessionService(final ProgramRepository programRepository, final SessionRepository sessionRepository,
-	                      final SessionTransformer sessionTransformer, final UserService userService) {
+	private final CourseRepository courseRepository;
+
+	public SessionService(final ProgramRepository programRepository,
+						  final SessionRepository sessionRepository,
+	                      final SessionTransformer sessionTransformer,
+						  final UserService userService,
+						  final CourseRepository courseRepository) {
 		this.programRepository = programRepository;
 		this.sessionRepository = sessionRepository;
 		this.sessionTransformer = sessionTransformer;
 		this.userService = userService;
+		this.courseRepository = courseRepository;
 	}
 
 	/**
@@ -104,6 +112,11 @@ public class SessionService {
 		log.debug("Request to delete Session : {}", id);
 		Session session = sessionRepository.findOne(id);
 		if (session != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(session))) {
+
+			if (courseRepository.existsBySession(session)) {
+				throw new ItemHasChildrenException("Before you delete this session, please remove all courses from the session.");
+			}
+
 			sessionRepository.delete(id);
 		} else {
 			// TODO: Error handling / logging

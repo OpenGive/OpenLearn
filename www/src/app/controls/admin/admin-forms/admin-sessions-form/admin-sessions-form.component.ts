@@ -192,7 +192,11 @@ export class AdminSessionsFormComponent implements OnInit {
       });
       this.notify.success('Successfully deleted session');
     }, error => {
-      this.notify.error('Failed to delete session');
+      if (error.message && error.message === 'error.itemHasChildren' && error.description) {
+        this.notify.error(error.description);
+      } else {
+        this.notify.error('Failed to delete session');
+      }
     });
   }
 
