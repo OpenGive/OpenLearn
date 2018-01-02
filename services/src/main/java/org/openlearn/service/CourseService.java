@@ -125,7 +125,7 @@ public class CourseService {
 		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.INSTRUCTOR)) instructorCheck = user.getId() == course.getInstructor().getId();
 		if (course != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(course)) && instructorCheck) {
 
-			if (studentCourseRepository.countByCourse(course) > 0 || assignmentRepository.countByCourse(course) > 0) {
+			if (studentCourseRepository.existsByCourse(course) || assignmentRepository.existsByCourse(course)) {
 				throw new ItemHasChildrenException("Before you delete this course, please remove all students and assignments from the course.");
 			}
 

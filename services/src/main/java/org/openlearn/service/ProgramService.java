@@ -107,7 +107,7 @@ public class ProgramService {
 		Program program = programRepository.findOne(id);
 		if (program != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(program))) {
 
-			if (sessionRepository.countByProgram(program) > 0) {
+			if (sessionRepository.existsByProgram(program)) {
 				throw new ItemHasChildrenException("Before you delete this program, please remove all sessions from the program.");
 			}
 

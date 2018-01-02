@@ -14,7 +14,7 @@ public interface AssignmentRepository extends JpaRepository<Assignment, Long> {
 
 	List<Assignment> findByCourse(Course course);
 
-	int countByCourse(Course course);
+	boolean existsByCourse(Course course);
 
 	List<Assignment> findByOrganization(Organization organization);
 }

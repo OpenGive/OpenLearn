@@ -14,5 +14,5 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
 	List<Course> findByOrganization(Organization organization);
 
-	int countBySession(Session session);
+	boolean existsBySession(Session session);
 }

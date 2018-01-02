@@ -113,7 +113,7 @@ public class SessionService {
 		Session session = sessionRepository.findOne(id);
 		if (session != null && (SecurityUtils.isAdmin() || inOrgOfCurrentUser(session))) {
 
-			if (courseRepository.countBySession(session) > 0) {
+			if (courseRepository.existsBySession(session)) {
 				throw new ItemHasChildrenException("Before you delete this session, please remove all courses from the session.");
 			}
 

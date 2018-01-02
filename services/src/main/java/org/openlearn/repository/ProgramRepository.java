@@ -13,6 +13,6 @@ public interface ProgramRepository extends JpaRepository<Program, Long> {
 
 	List<Program> findByOrganization(Organization organization);
 
-	int countByOrganization(Organization organization);
+	boolean existsByOrganization(Organization organization);
 
 }

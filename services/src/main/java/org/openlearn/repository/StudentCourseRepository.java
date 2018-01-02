@@ -18,7 +18,7 @@ public interface StudentCourseRepository extends JpaRepository<StudentCourse, Lo
 
 	List<StudentCourse> findByCourse(Course course);
 
-	int countByCourse(Course course);
+	boolean existsByCourse(Course course);
 
 	StudentCourse findByStudentAndCourse(User student, Course course);
 }

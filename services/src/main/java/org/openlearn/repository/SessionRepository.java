@@ -14,5 +14,5 @@ public interface SessionRepository extends JpaRepository<Session, Long> {
 
 	List<Session> findByOrganization(Organization organization);
 
-	int countByProgram(Program program);
+	boolean existsByProgram(Program program);
 }

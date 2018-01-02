@@ -112,7 +112,7 @@ public class OrganizationService {
 
 		Organization organization = organizationRepository.findOneById(id);
 
-		if (programRepository.countByOrganization(organization) > 0 || userRepository.countByOrganization(organization) > 0) {
+		if (programRepository.existsByOrganization(organization) || userRepository.existsByOrganization(organization)) {
 			throw new ItemHasChildrenException("Before you delete this organization, please remove all users and programs from the organization.");
 		}
 
