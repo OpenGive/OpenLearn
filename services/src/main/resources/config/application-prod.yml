@@ -34,7 +34,7 @@ spring:
             hibernate.cache.region.factory_class: io.github.jhipster.config.jcache.NoDefaultJCacheRegionFactory
 
 liquibase:
-    contexts: dev
+    contexts: prod
 
 # ===================================================================
 # To enable SSL, generate a certificate using:

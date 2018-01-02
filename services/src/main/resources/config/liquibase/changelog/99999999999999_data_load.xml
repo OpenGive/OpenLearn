@@ -14,7 +14,7 @@
 	<!--
 		Test data loader
 	-->
-	<changeSet id="99999999999999-1" author="meverett" context="!test and !old">
+	<changeSet id="99999999999999-1" author="meverett" context="dev or local">
 		<loadData file="config/liquibase/data/authority.csv" tableName="authority"/>
 		<loadData file="config/liquibase/data/organization.csv" tableName="organization"/>
 		<loadData file="config/liquibase/data/user.csv" tableName="user">
@@ -139,6 +139,16 @@
 				  separator=","
 				  tableName="address"/>
 
+	</changeSet>
+
+	<changeSet id="99999999999999-4" author="wspurgin" context="prod">
+		<loadData file="config/liquibase/data/authority.csv" tableName="authority"/>
+		<loadData encoding="UTF-8"
+		          file="config/liquibase/data/system-user.csv"
+		          separator=","
+		          tableName="user">
+			<column name="fourteen_plus" type="BOOLEAN"/>
+		</loadData>
 	</changeSet>
 </databaseChangeLog>
 
