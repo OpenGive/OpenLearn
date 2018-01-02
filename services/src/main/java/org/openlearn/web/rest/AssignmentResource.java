@@ -101,7 +101,7 @@ public class AssignmentResource {
 	public ResponseEntity create(@RequestBody @Valid final AssignmentDTO assignmentDTO) throws URISyntaxException {
 		log.debug("POST request to create assignment : {}", assignmentDTO);
 		if (hasCreateUpdateDeleteAuthority(assignmentDTO)) {
-			AssignmentDTO response = assignmentService.save(assignmentDTO);
+			AssignmentDTO response = assignmentService.create(assignmentDTO);
 			return ResponseEntity.created(new URI(ENDPOINT + response.getId())).body(response);
 		} else {
 			log.info("User is not authorized to create assignments");
