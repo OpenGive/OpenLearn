@@ -190,7 +190,9 @@ export class StudentPageComponent implements OnInit {
       ]],
       password: [this.student.password, []],
       email: [this.student.email, [
-        // Validators.email, TODO: This forces email to be required, https://github.com/angular/angular/pull/16902 is the fix, pattern below is the workaround
+        // Validators.email, TODO: This forces email to be required,
+        // https://github.com/angular/angular/pull/16902 is the fix, pattern
+        // below is the workaround
         Validators.pattern(AppConstants.OLValidators.Email),
         Validators.minLength(5),
         Validators.maxLength(100)
