@@ -8,6 +8,7 @@ import org.openlearn.repository.UserRepository;
 import org.openlearn.security.AuthoritiesConstants;
 import org.openlearn.security.SecurityUtils;
 import org.openlearn.transformer.StudentTransformer;
+import org.openlearn.web.rest.errors.StudentEmailForUnderFourteenException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -49,10 +50,15 @@ public class StudentService {
 	 * @param studentDTO the entity to save
 	 * @return the persisted entity
 	 */
-	public StudentDTO save(final StudentDTO studentDTO) {
+	public StudentDTO save(final StudentDTO studentDTO) throws StudentEmailForUnderFourteenException {
 		log.debug("Request to save student : {}", studentDTO);
 		if (AuthoritiesConstants.STUDENT.equals(studentDTO.getAuthority())
 			&& (SecurityUtils.isAdmin() || inOrgOfCurrentUser(studentDTO))) {
+
+			String studentEmail = studentDTO.getEmail();
+			if (!studentDTO.getFourteenPlus() && !studentEmail.equals(""))
+               throw new StudentEmailForUnderFourteenException("Student is under the age of fourteen cannot have an email address");
+
 			User user = userRepository.save(studentTransformer.transform(studentDTO));
 			if (user.getAddress() != null) addressRepository.save(user.getAddress());
 			return studentTransformer.transform(user);
