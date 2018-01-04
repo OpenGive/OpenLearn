@@ -2,7 +2,7 @@
   <md-sidenav #sidenav class="example-sidenav">
     <div fxLayout="column" fxLayoutAlign="center center">
       <div class="side-logo"></div>
-      <button routerLink="/" (click)="sidenav.close()" md-button>Home</button>
+      <button routerLink="/terms" (click)="sidenav.close()" md-button *ngIf="authenticated()">Privacy Policy/Terms and Condtions</button>
       <button routerLink="/login" (click)="sidenav.close()" md-button *ngIf="!authenticated()">Login</button>
       <button routerLink="/admin" (click)="sidenav.close()" md-button *ngIf="authenticated() && (roles.admin || roles.orgAdmin)">Admin</button>
       <button routerLink="/dashboard" (click)="sidenav.close()" md-button *ngIf="authenticated() && roles.instructor">Dashboard</button>
@@ -24,7 +24,7 @@
   <span class="toolbar-filler"></span>
   <div fxLayout="row" fxLayoutAlign="start center">
     <div fxHide.xs fxHide.sm [ngClass]="{'nav-divide': authenticated()}">
-      <button routerLink="/home" md-button>Home</button>
+      <button routerLink="/terms" md-button *ngIf="authenticated()">Privacy Policy/Terms and Condtions</button>
       <button routerLink="/login" md-button *ngIf="!authenticated()">Login</button>
       <button routerLink="/admin" md-button *ngIf="authenticated() && (roles.admin || roles.orgAdmin || roles.instructor)">Dashboard</button>
       <button (click)="toStudentPage()" md-button *ngIf="authenticated() && roles.student">Dashboard</button>
