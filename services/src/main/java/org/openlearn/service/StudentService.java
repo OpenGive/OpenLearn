@@ -1,5 +1,6 @@
 package org.openlearn.service;
 
+import com.google.common.base.Strings;
 import org.openlearn.domain.Authority;
 import org.openlearn.domain.User;
 import org.openlearn.dto.StudentDTO;
@@ -56,7 +57,7 @@ public class StudentService {
 			&& (SecurityUtils.isAdmin() || inOrgOfCurrentUser(studentDTO))) {
 
 			String studentEmail = studentDTO.getEmail();
-			if (!studentDTO.getFourteenPlus() && !studentEmail.equals(""))
+			if (!studentDTO.getFourteenPlus() && !Strings.isNullOrEmpty(studentEmail))
                throw new StudentEmailForUnderFourteenException("Student is under the age of fourteen cannot have an email address");
 
 			User user = userRepository.save(studentTransformer.transform(studentDTO));
