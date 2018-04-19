@@ -100,30 +100,24 @@ export class AdminStudentsFormComponent implements OnInit {
       required: 'Organization is required'
     },
     guardianFirstName: {
-      required: 'Guardian First Name is required',
       maxlength: 'Guardian First Name cannot be more than 50 characters long'
     },
     guardianLastName: {
-      required: 'Guardian Last Name is required',
       maxlength: 'Guardian Last Name cannot be more than 50 characters long'
     },
     guardianEmail: {
-      required: 'Guardian Last Name is required',
       pattern: 'Guardian Email is not formatted correctly',
       minlength: 'Guardian Email must be at least 5 characters long',
       maxlength: 'Guardian Email cannot be more than 100 characters long'
     },
     guardianPhone: {
-      required: 'Guardian Phone is required',
       pattern: 'Guardian Phone is not formatted correctly',
       maxlength: 'Phone cannot be more than 15 characters long'
     },
     school: {
-      required: 'School is required',
       maxlength: 'School cannot be more than 100 characters long'
     },
     gradeLevel: {
-      required: 'Grade Level is required',
       maxlength: 'Grade Level cannot be more than 100 characters long'
     },
     stateStudentId: {
@@ -199,30 +193,24 @@ export class AdminStudentsFormComponent implements OnInit {
         Validators.required
       ]],
       guardianFirstName: [this.formStudent.guardianFirstName, [
-        Validators.required,
         Validators.maxLength(50)
       ]],
       guardianLastName: [this.formStudent.guardianLastName, [
-        Validators.required,
         Validators.maxLength(50)
       ]],
       guardianEmail: [this.formStudent.guardianEmail, [
-        Validators.required,
         Validators.pattern(AppConstants.OLValidators.Email),
         Validators.minLength(5),
         Validators.maxLength(100)
       ]],
       guardianPhone: [this.formStudent.guardianPhone, [
-        Validators.required,
         // TODO: Pattern
         Validators.maxLength(15)
       ]],
       school: [this.formStudent.school, [
-        Validators.required,
         Validators.maxLength(100)
       ]],
       gradeLevel: [this.formStudent.gradeLevel, [
-        Validators.required,
         Validators.maxLength(100)
       ]],
       stateStudentId: [this.formStudent.stateStudentId, [

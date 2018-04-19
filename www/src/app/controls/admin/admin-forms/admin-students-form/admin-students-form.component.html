@@ -38,27 +38,27 @@
         <md-hint *ngIf="studentForm.errors" class="mat-input-error">Student must be at least 14 to submit an email</md-hint>
       </md-input-container>
       <md-input-container fxFlex="30%">
-        <input mdInput formControlName="guardianFirstName" placeholder="Guardian First Name*"/>
+        <input mdInput formControlName="guardianFirstName" placeholder="Guardian First Name"/>
         <md-error *ngIf="formErrors.guardianFirstName">{{formErrors.guardianFirstName}}</md-error>
       </md-input-container>
       <md-input-container fxFlex="30%">
-        <input mdInput formControlName="guardianLastName" placeholder="Guardian Last Name*"/>
+        <input mdInput formControlName="guardianLastName" placeholder="Guardian Last Name"/>
         <md-error *ngIf="formErrors.guardianLastName">{{formErrors.guardianLastName}}</md-error>
       </md-input-container>
       <md-input-container fxFlex="30%">
-        <input mdInput formControlName="guardianEmail" placeholder="Guardian Email*"/>
+        <input mdInput formControlName="guardianEmail" placeholder="Guardian Email"/>
         <md-error *ngIf="formErrors.guardianEmail">{{formErrors.guardianEmail}}</md-error>
       </md-input-container>
       <md-input-container fxFlex="30%">
-        <input mdInput formControlName="guardianPhone" placeholder="Guardian Phone*"/>
+        <input mdInput formControlName="guardianPhone" placeholder="Guardian Phone"/>
         <md-error *ngIf="formErrors.guardianPhone">{{formErrors.guardianPhone}}</md-error>
       </md-input-container>
       <md-input-container fxFlex="30%">
-        <input mdInput formControlName="school" placeholder="School*"/>
+        <input mdInput formControlName="school" placeholder="School"/>
         <md-error *ngIf="formErrors.school">{{formErrors.school}}</md-error>
       </md-input-container>
       <md-input-container fxFlex="30%">
-        <input mdInput formControlName="gradeLevel" placeholder="Grade Level*" [mdAutocomplete]="gradeLevel"/>
+        <input mdInput formControlName="gradeLevel" placeholder="Grade Level" [mdAutocomplete]="gradeLevel"/>
         <md-autocomplete #gradeLevel="mdAutocomplete" [displayWith]="displayGradeLevel">
           <md-option *ngFor="let gradeLevel of filteredGradeLevels | async" [value]="gradeLevel.value">{{gradeLevel.name}}</md-option>
         </md-autocomplete>

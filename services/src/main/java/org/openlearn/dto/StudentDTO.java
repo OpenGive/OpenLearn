@@ -14,27 +14,21 @@ public class StudentDTO extends UserDTO {
 	@NotNull
 	private Boolean fourteenPlus;
 
-	@NotNull
 	@Size(max = 50)
 	private String guardianFirstName;
 
-	@NotNull
 	@Size(max = 50)
 	private String guardianLastName;
 
-	@NotNull
 	@Size(max = 100)
 	private String guardianEmail;
 
-	@NotNull
 	@Size(max = 100)
 	private String guardianPhone;
 
-	@NotNull
 	@Size(max = 100)
 	private String school;
 
-	@NotNull
 	@Size(max = 100)
 	private String gradeLevel;
 
